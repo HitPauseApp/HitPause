@@ -1,4 +1,5 @@
-# Welcome to the Github Repo for the Anxiety App! *Name Pending*
+# Welcome to the Github Repo for the Anxiety App! 
+*Name Pending*
 
 ## Getting Started
 Helpful Links
