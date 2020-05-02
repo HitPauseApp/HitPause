@@ -2,10 +2,10 @@
 
 ## Getting Started
 Helpful Links
-- [NodeJS.org](#https://nodejs.org/en/)
-- [Expo - Getting Started](#https://expo.io/learn)
+- [NodeJS.org](https://nodejs.org/en/)
+- [Expo - Getting Started](https://expo.io/learn)
 ##### Installation
-1. Make sure you have Node installed. If you do not, go to [NodeJS.org](#https://nodejs.org/en/) and follow the installation instructions.
+1. Make sure you have Node installed. You can check by running `node -v`. If you do not, go to [NodeJS.org](https://nodejs.org/en/) and follow the installation instructions.
 2. Install Expo. In your command line/terminal, run `npm install expo-cli --global`
 3. If you haven't already, make a fork of this Github Repo, and then clone this Github Repo from your fork to your local machine. 
 4. In your command line/terminal, get into the directory of this app. `cd .../AnxietyApp` 
