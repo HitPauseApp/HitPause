@@ -23,15 +23,16 @@ export default function HomeScreen() {
         <View style={styles.getStartedContainer}>
           <DevelopmentModeNotice />
 
+          <Text style={styles.getStartedText}>
+            Woohoo! Welcome to the development of the Anxiety App!
+          </Text>
           <Text style={styles.getStartedText}>Open up the code for this screen:</Text>
 
           <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
             <MonoText>screens/HomeScreen.js</MonoText>
           </View>
 
-          <Text style={styles.getStartedText}>
-            Aye this is neat
-          </Text>
+         
         </View>
 
         <View style={styles.helpContainer}>
