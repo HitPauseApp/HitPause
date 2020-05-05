@@ -24,7 +24,7 @@ export default function HomeScreen() {
           <DevelopmentModeNotice />
 
           <Text style={styles.getStartedText}>
-            Woohoo! Welcome to the development of the Anxiety App!
+            Woohoo! Welcome to the development of HitPause!
           </Text>
           <Text style={styles.getStartedText}>Open up the code for this screen:</Text>
 
