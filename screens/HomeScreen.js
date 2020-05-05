@@ -21,7 +21,7 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.getStartedContainer}>
-          <DevelopmentModeNotice />
+          
 
           <Text style={styles.getStartedText}>
             Woohoo! Welcome to the development of the Anxiety App!
