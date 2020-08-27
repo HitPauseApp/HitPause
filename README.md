@@ -2,6 +2,7 @@
 
 ## Getting Started
 Helpful Links
+- [HitPause Docs Site](https://stupefied-brown-18fe4f.netlify.app)
 - [NodeJS.org](https://nodejs.org/en/)
 - [Expo - Getting Started](https://expo.io/learn)
 ##### Installation
@@ -16,3 +17,6 @@ Helpful Links
 ***If you get an error when trying to open on your phone about "unable to resolve @expo/vector-icons" let me know***
 7. In your favorite IDE, you can start making changes to the app. The best place to start is `AnxietyApp/screens/HomeScreen.js`
 8. Save the file and watch the screen update in real time! 
+
+## Contributing
+We don't know what this looks like yet...
