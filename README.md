@@ -1,11 +1,11 @@
 # Welcome to the Github Repo for HitPause! 
 
+## We have a Docs site!
+Check it out [HERE!](https://stupefied-brown-18fe4f.netlify.app)
 ## Getting Started
 Helpful Links
 - [NodeJS.org](https://nodejs.org/en/)
 - [Expo - Getting Started](https://expo.io/learn)
-## We have a Docs site!
-Check it out [here](https://stupefied-brown-18fe4f.netlify.app)
 ##### Installation
 1. **Node** Make sure you have Node installed. You can check by running `node -v`. If you do not, go to [NodeJS.org](https://nodejs.org/en/) and follow the installation instructions.
 2. **Expo** After Node is installed, in your command line/terminal, run `npm install expo-cli --global`. Download the Expo Client on your phone from the App Store or Google Play.
