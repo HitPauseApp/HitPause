@@ -3,7 +3,7 @@
 ## We have a Docs site!
 Check it out [HERE!](https://stupefied-brown-18fe4f.netlify.app)
 ## App Live Link
-The most update published app lives [HERE!](https://expo.io/@drewpoo99/hitpause)
+The most up to date published app lives [HERE!](https://expo.io/@drewpoo99/hitpause)
 ## Getting Started
 Helpful Links
 - [NodeJS.org](https://nodejs.org/en/)
