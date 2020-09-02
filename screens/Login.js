@@ -1,6 +1,8 @@
 // Login.js
 import React from 'react'
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient';
+
 export default class Login extends React.Component {
   state = { email: '', password: '', errorMessage: null }
   handleLogin = () => {
@@ -10,6 +12,11 @@ export default class Login extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <LinearGradient
+          // Background Linear Gradient
+            colors={['#EE0979', '#FF6A00']}
+            style={styles.gradient}
+        />
         <Text>Login</Text>
         {this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
@@ -19,6 +26,7 @@ export default class Login extends React.Component {
           style={styles.textInput}
           autoCapitalize="none"
           placeholder="Email"
+          placeholderTextColor="#ffffff"
           onChangeText={email => this.setState({ email })}
           value={this.state.email}
         />
@@ -27,10 +35,15 @@ export default class Login extends React.Component {
           style={styles.textInput}
           autoCapitalize="none"
           placeholder="Password"
+          placeholderTextColor="#ffffff"
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
         />
-        <Button title="Login" onPress={this.handleLogin} />
+        <Button 
+            title="Login" 
+            onPress={this.handleLogin}
+            
+        />
         <Button
           title="Don't have an account? Sign Up"
           onPress={() => this.props.navigation.navigate('SignUp')}
@@ -52,8 +65,18 @@ const styles = StyleSheet.create({
   textInput: {
     height: 40,
     width: '90%',
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginTop: 8
-  }
+    borderColor: 'white',
+    color: 'white',
+    borderBottomWidth: 1,
+    marginTop: 20,
+    zIndex: 3
+  },
+  gradient: {
+    flex: 1,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+  },
 })

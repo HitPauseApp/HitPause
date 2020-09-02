@@ -33,12 +33,12 @@ export default function BottomTabNavigator({ navigation, route }) {
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
         }}
       />
-         <BottomTab.Screen
-        name="Return"
-        component={Login}
-        options={{
-          title: 'Back to Login',
-        }}
+      <BottomTab.Screen
+      name="Return"
+      component={Login}
+      options={{
+        title: 'Back to Login',
+      }}
       />
     </BottomTab.Navigator>
   );
