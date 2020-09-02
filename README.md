@@ -1,10 +1,10 @@
 # Welcome to the Github Repo for HitPause! 
 
-## We have a Docs site!
+## We have a Docs site! 💻
 Check it out [HERE!](https://stupefied-brown-18fe4f.netlify.app)
-## App Live Link
+## App Live Link 📲
 The most up to date published app lives [HERE!](https://expo.io/@drewpoo99/hitpause)
-## Getting Started
+## Getting Started 🚀
 Helpful Links
 - [NodeJS.org](https://nodejs.org/en/)
 - [Expo - Getting Started](https://expo.io/learn)
@@ -21,7 +21,7 @@ Helpful Links
 7. In your favorite IDE, you can start making changes to the app. The best place to start is `AnxietyApp/screens/HomeScreen.js`
 8. Save the file and watch the screen update in real time! 
 
-## Contributing
+## Contributing 🎉
 To add your code to this repository, please follow these steps
 1. Make sure your codebase is up to date
 2. Put all changes on it's own branch with a good name. 
