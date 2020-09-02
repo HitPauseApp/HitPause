@@ -6,6 +6,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import firebase from './Firebase';
+
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import useLinking from './navigation/useLinking';
 
@@ -29,7 +31,7 @@ export default function App(props) {
         SplashScreen.preventAutoHide();
 
         // Load our initial navigation state
-        setInitialNavigationState(await getInitialState());
+        // setInitialNavigationState(await getInitialState());
 
         // Load fonts
         await Font.loadAsync({
@@ -57,7 +59,7 @@ export default function App(props) {
         <NavigationContainer>
           <Stack.Navigator 
             initialRouteName="Login"
-          >
+            >
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="SignUp" component={SignUp} />
             <Stack.Screen name="Root" component={BottomTabNavigator} />

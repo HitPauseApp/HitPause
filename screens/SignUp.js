@@ -1,5 +1,6 @@
 // SignUp.js
 import React from 'react'
+import firebase from '../Firebase.js'
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 

@@ -1,5 +1,6 @@
 // Login.js
 import React from 'react'
+import firebase from '../Firebase.js'
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -7,7 +8,8 @@ export default class Login extends React.Component {
   state = { email: '', password: '', errorMessage: null }
   handleLogin = () => {
     // TODO: Firebase stuff...
-    console.log('handleLogin')
+    console.log('handleLogin');
+    firebase.database().ref().push({'login': true});
   }
   render() {
     return (
