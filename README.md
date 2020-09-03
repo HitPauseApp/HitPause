@@ -16,14 +16,15 @@ Helpful Links
 5. Run `npm install` to download all of the app dependancies. This might take a little bit. 
 
 ##### Running the App
-6. Once npm finished installing and you have downloaded the client on your phone, run the `expo start` command. This will start up the app and it should boot up in your web browser. Use your camera/QR code scanner to scan the QR code and open the app on your mobile device. 
-***If you get an error when trying to open on your phone about "unable to resolve @expo/vector-icons" let me know***
-7. In your favorite IDE, you can start making changes to the app. The best place to start is `AnxietyApp/screens/HomeScreen.js`
+6. Once npm finished installing and you have downloaded the client on your phone, run the `expo start` command. This will start up the app and it should boot up Expo DevTools in your web browser. Use your camera/QR code scanner to scan the QR code and open the app on your mobile device.
+***If you get an error when trying to open on your phone about "unable to resolve @expo/vector-icons" let me know.***
+Alternatively, you can choose to open the app in your browser and use the browser's mobile simulation features through the inspector.
+7. In your favorite IDE, you can start making changes to the app. The best place to start is `HitPause/screens/HomeScreen.js`
 8. Save the file and watch the screen update in real time! 
 
 ## Contributing 🎉
 To add your code to this repository, please follow these steps
-1. Make sure your codebase is up to date
-2. Put all changes on it's own branch with a good name. 
+1. Make sure your codebase is up to date.
+2. Put all changes on their own branch with a descriptive name. 
 3. Create a pull request. As the title, put the name of the story associated with the feature you are pushing. Ex for a story named "Feature - Profile Page" title the PR "Story - Feature - Profile Page" so we can keep the backlog and the code well tracked. 
 4. Ask someone on the team to review your PR, it can't be merged until then! 
