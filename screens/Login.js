@@ -16,7 +16,7 @@ export default class Login extends React.Component {
       <View style={styles.container}>
         <LinearGradient
           // Background Linear Gradient
-            colors={['#EE0979', '#FF6A00']}
+            colors={['#EE0979', '#6E00DD']}
             style={styles.gradient}
         />
         <Text>Login</Text>
