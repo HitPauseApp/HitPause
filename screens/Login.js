@@ -51,7 +51,7 @@ export default class Login extends React.Component {
           onPress={() => this.props.navigation.navigate('SignUp')}
         />
         <Button
-          title="Skip Auth (Dev button)"
+          title="Skip Auth (Dev)"
           onPress={() => this.props.navigation.navigate('Root')}
         />
       </View>
