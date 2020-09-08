@@ -1,4 +1,4 @@
-# Welcome to the Github Repo for HitPause! :)
+# Welcome to the Github Repo for HitPause!
 
 ## We have a Docs site! 💻
 Check it out [HERE!](https://stupefied-brown-18fe4f.netlify.app)
