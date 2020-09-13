@@ -26,6 +26,5 @@ Alternatively, you can choose to open the app in your browser and use the browse
 To contribute to this repository, please follow these steps
 1. Directly clone onto your local machine. No need for all of that fancy branching stuff. 
 2. Develop on your own branch. You can call it whatever you want, your own name being a good choice. 
-3. ###Please
-Create a pull request. As the title, put the name of the story associated with the feature you are pushing. Ex for a story named "Feature - Profile Page" title the PR "Feature - Profile Page" so we can keep the backlog and the code well tracked. 
+3. *Please* Create a pull request. As the title, put the name of the story associated with the feature you are pushing. Ex for a story named "Feature - Profile Page" title the PR "Feature - Profile Page" so we can keep the backlog and the code well tracked. 
 4. You can just merge the pull request yourself. 
