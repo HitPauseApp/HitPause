@@ -9,7 +9,11 @@ export default class Login extends React.Component {
   handleLogin = () => {
     // TODO: Firebase stuff...
     console.log('handleLogin');
-    firebase.database().ref().push({'login': true});
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then(() => this.props.navigation.navigate('Root'))
+      .catch(error => this.setState({ errorMessage: error.message }))
   }
   render() {
     return (
@@ -80,5 +84,6 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0,
+    zIndex: -1,
   },
 })

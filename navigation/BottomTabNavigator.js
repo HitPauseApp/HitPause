@@ -34,6 +34,7 @@ export default function BottomTabNavigator({ navigation, route }) {
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
         }}
       />
+      {/* Make signout */}
       <BottomTab.Screen
         name="Account"
         component={Account}

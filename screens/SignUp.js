@@ -54,26 +54,27 @@ export default class SignUp extends React.Component {
     }
 }
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    textInput: {
-        height: 40,
-        width: '90%',
-        borderColor: 'white',
-        color: 'white',
-        borderBottomWidth: 1,
-        marginTop: 20,
-        zIndex: 3
-      },
-      gradient: {
-        flex: 1,
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-      },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  textInput: {
+    height: 40,
+    width: '90%',
+    borderColor: 'white',
+    color: 'white',
+    borderBottomWidth: 1,
+    marginTop: 20,
+    zIndex: 3
+  },
+  gradient: {
+    flex: 1,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    zIndex: -1,
+  },
 })
