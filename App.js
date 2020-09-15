@@ -24,6 +24,20 @@ export default function App(props) {
   // const containerRef = React.useRef();
   // const { getInitialState } = useLinking(containerRef);
 
+  // Establish firebase authentication observer
+  var currentUser = null
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // There is a user
+      console.log("Auth user is non-null");
+      currentUser = user;
+      console.log(currentUser.email);
+    } else {
+      // There is not a user
+      console.log("Auth user is null");
+    }
+  });
+
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
     async function loadResourcesAndDataAsync() {
