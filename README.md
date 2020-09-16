@@ -23,8 +23,9 @@ Alternatively, you can choose to open the app in your browser and use the browse
 8. Save the file and watch the screen update in real time! 
 
 ## Contributing 🎉
-To add your code to this repository, please follow these steps
-1. Make sure your codebase is up to date.
-2. Put all changes on their own branch with a descriptive name. 
-3. Create a pull request. As the title, put the name of the story associated with the feature you are pushing. Ex for a story named "Feature - Profile Page" title the PR "Story - Feature - Profile Page" so we can keep the backlog and the code well tracked. 
-4. Ask someone on the team to review your PR, it can't be merged until then! 
+To contribute to this repository, please follow these steps
+1. Directly clone onto your local machine. No need for all of that fancy forking stuff. 
+2. Develop on your own branch. You can call it whatever you want, your own name being a good choice. 
+3. *Please* Create a pull request. As the title, put the name of the story associated with the feature you are pushing. Ex for a story named "Feature - Profile Page" title the PR "Feature - Profile Page" so we can keep the backlog and the code well tracked. 
+4. You can just merge the pull request yourself. 
+5. Make sure you refresh the master branch on your local machine often!

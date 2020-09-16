@@ -1,6 +1,6 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import TipOTD from '../components/TipOTD';
 
@@ -11,7 +11,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView></ScrollView>
+
       <TipOTD TOTD={TOTD}></TipOTD>
 
     </View>
@@ -20,7 +20,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
-    backgroundColor: '#191414'
+    flex: 1,
+    backgroundColor: '#111625'
   },
 });

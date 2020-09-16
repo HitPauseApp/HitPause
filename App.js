@@ -24,6 +24,20 @@ export default function App(props) {
   // const containerRef = React.useRef();
   // const { getInitialState } = useLinking(containerRef);
 
+  // Establish firebase authentication observer
+  var currentUser = null
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // There is a user
+      console.log("Auth user is non-null");
+      currentUser = user;
+      console.log(currentUser.email);
+    } else {
+      // There is not a user
+      console.log("Auth user is null");
+    }
+  });
+
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
     async function loadResourcesAndDataAsync() {
@@ -57,9 +71,7 @@ export default function App(props) {
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <NavigationContainer>
-          <Stack.Navigator 
-            initialRouteName="Login"
-            >
+          <Stack.Navigator initialRouteName="Login" headerMode="none">
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="SignUp" component={SignUp} />
             <Stack.Screen name="Root" component={BottomTabNavigator} />
