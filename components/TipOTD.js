@@ -16,7 +16,6 @@ export default class TipOTD extends Component{
 const styles = StyleSheet.create({
     container:{
         backgroundColor: '#fff',
-        textAlign: 'center',
         justifyContent: 'center',
         alignContent: 'center',
         width: '80%',
@@ -26,9 +25,11 @@ const styles = StyleSheet.create({
     },
     header:{
         fontSize: 24,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textAlign: 'center'
     },
     bodyText:{
         marginTop: 5,
+        textAlign: 'center'
     },
 });
