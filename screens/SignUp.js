@@ -5,21 +5,34 @@ import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default class SignUp extends React.Component {
-  state = { firstName: '', lastName: '', email: '', password: '', errorMessage: null }
+  state = { firstName: '', lastName: '', email: '', password: '', repeatedPassword: '', errorMessage: null }
+
   handleSignUp = () => {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then((res) => {
-        res.user.updateProfile({displayName: `${this.state.firstName} ${this.state.lastName}`});
-        firebase.database().ref(`/users/${res.user.uid}`).set({
-          firstName: this.state.firstName,
-          lastName: this.state.lastName,
-          email: this.state.email
-        });
-        this.props.navigation.navigate('Main');
-      })
-      .catch(error => this.setState({ errorMessage: error.message }));
+    // TODO: More form validation
+    if (this.confirmPassword()) {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .then((res) => {
+          res.user.updateProfile({displayName: `${this.state.firstName} ${this.state.lastName}`});
+          firebase.database().ref(`/users/${res.user.uid}`).set({
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            email: this.state.email
+          });
+          this.props.navigation.navigate('Main');
+        })
+        .catch(error => this.setState({ errorMessage: error.message }));
+    }
+  }
+  confirmPassword = () => {
+    if (this.state.password != this.state.repeatedPassword) {
+      this.setState({ errorMessage: 'The passwords you entered do not match. Try again!' });
+      return false;
+    } else {
+      this.setState({ errorMessage: '' });
+      return true;
+    }
   }
   render() {
     return (
@@ -66,6 +79,15 @@ export default class SignUp extends React.Component {
           style={styles.textInput}
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
+          />
+        <TextInput
+          secureTextEntry
+          placeholder="Confirm Password"
+          placeholderTextColor="#ffffff"
+          autoCapitalize="none"
+          style={styles.textInput}
+          onChangeText={repeatedPassword => this.setState({ repeatedPassword })}
+          value={this.state.repeatedPassword}
         />
         <Button title="Sign Up" onPress={this.handleSignUp} />
         <Button

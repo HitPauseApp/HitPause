@@ -26,7 +26,6 @@ export default class Account extends React.Component {
   getUserData(uid) {
     firebase.database().ref(`users/${uid}`).once('value').then((snapshot) => {
       this.setState({user: snapshot.val()});
-      console.log('this.state:', this.state);
     });
   }
   render() {
@@ -35,7 +34,7 @@ export default class Account extends React.Component {
         <Image source={user} style={styles.avatar}></Image>
         <View style={styles.category}>
           <MatIcons name="person"></MatIcons>
-          <Text style={styles.text}>{this.state.user.firstName}</Text>
+          <Text style={styles.text}>{this.state.user.firstName} {this.state.user.lastName}</Text>
         </View>
 
         <View style={styles.separator}></View>
