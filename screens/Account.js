@@ -17,9 +17,9 @@ export default class Account extends React.Component {
     console.log('this.state:', this.state);
   }
   handleLogout() {
-    firebase.auth().signOut().then(function () {
-      props.navigation.navigate('Login');
-    }).catch(function (error) {
+    firebase.auth().signOut().then(() => {
+      this.props.navigation.navigate('Login');
+    }).catch((error) => {
       console.error(error);
     });
   }
@@ -69,7 +69,7 @@ export default class Account extends React.Component {
         <FillButton text="EDIT DETAILS"></FillButton>
         <Text
           style={styles.signOut}
-          onPress={this.handleLogout}
+          onPress={() => this.handleLogout()}
         >Sign Out</Text>
       </View>
     );
