@@ -14,7 +14,6 @@ import useLinking from './navigation/useLinking';
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
 
-import { Colors } from './styles/index';
 
 const Stack = createStackNavigator();
 
