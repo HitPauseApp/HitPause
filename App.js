@@ -15,7 +15,7 @@ import Login from './screens/Login';
 import SignUp from './screens/SignUp';
 import QuizScreen from './screens/QuizScreen';
 
-import { Colors } from './styles/index';
+
 
 const Stack = createStackNavigator();
 
