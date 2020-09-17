@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         borderRadius: 10,
         padding: 10,
-        bottom: 10
+        bottom: 10,
+        margin: 10
     },
     header:{
         fontSize: 24,

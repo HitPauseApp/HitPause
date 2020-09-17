@@ -13,6 +13,7 @@ import useLinking from './navigation/useLinking';
 
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
+import QuizScreen from './screens/QuizScreen';
 
 import { Colors } from './styles/index';
 
@@ -75,6 +76,7 @@ export default function App(props) {
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="SignUp" component={SignUp} />
             <Stack.Screen name="Root" component={BottomTabNavigator} />
+            <Stack.Screen name="QuizScreen" component={QuizScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
