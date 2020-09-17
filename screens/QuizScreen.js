@@ -4,7 +4,7 @@ import {StyleSheet, Text, View } from 'react-native';
 
 import TipOTD from '../components/TipOTD';
 
-export default function HomeScreen() {
+export default function QuizScreen() {
 
   return (
     <View style={styles.container}>
