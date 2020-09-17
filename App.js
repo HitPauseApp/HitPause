@@ -13,7 +13,7 @@ import useLinking from './navigation/useLinking';
 
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
-
+import ResetPassword from './screens/ResetPassword';
 
 const Stack = createStackNavigator();
 
@@ -73,6 +73,7 @@ export default function App(props) {
           <Stack.Navigator initialRouteName="Login" headerMode="none">
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen name="ResetPassword" component={ResetPassword} />
             <Stack.Screen name="Root" component={BottomTabNavigator} />
           </Stack.Navigator>
         </NavigationContainer>
