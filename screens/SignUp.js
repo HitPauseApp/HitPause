@@ -20,7 +20,7 @@ export default class SignUp extends React.Component {
             lastName: this.state.lastName,
             email: this.state.email
           });
-          this.props.navigation.navigate('Main');
+          this.props.navigation.navigate('Root');
         })
         .catch(error => this.setState({ errorMessage: error.message }));
     }
@@ -42,8 +42,8 @@ export default class SignUp extends React.Component {
           colors={['#EE0979', '#6E00DD']}
           style={styles.gradient}
         />
-        <Text style={styles.header}>Sign Up</Text>
-        {this.state.errorMessage &&
+        <Text>Sign Up</Text>
+        {!!this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
           </Text>}

@@ -49,11 +49,14 @@ export default class Login extends React.Component {
         <Button 
             title="Login" 
             onPress={this.handleLogin}
-            
         />
         <Button
           title="Don't have an account? Sign Up"
           onPress={() => this.props.navigation.navigate('SignUp')}
+        />
+        <Button
+          title="Forgot your password?"
+          onPress={() => this.props.navigation.navigate('ResetPassword')}
         />
         <Button
           title="Skip Auth (Dev)"
