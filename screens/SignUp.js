@@ -104,6 +104,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  header:{
+    fontSize: 40,
+    fontWeight: 'bold',
+    color: 'white'
+  },
   textInput: {
     height: 40,
     width: '90%',
