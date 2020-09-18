@@ -4,7 +4,7 @@ import {StyleSheet, Text, View } from 'react-native';
 
 
 import WelcomeBanner from '../components/WelcomeBanner';
-
+export default function QuizScreen(){
   return (
     <View style={styles.container}>
 

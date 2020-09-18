@@ -6,15 +6,21 @@ import TipOTD from '../components/TipOTD';
 import WelcomeBanner from '../components/WelcomeBanner';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import FillButton from '../components/buttons/FillButton';
 
 export default function HomeScreen(props) {
 
   const TOTD = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar pellentesque ex at maximus. Nam feugiat rhoncus accumsan. ';
+  const NAME = 'Will';
   const onPress = () => props.navigation.navigate("QuizScreen");
 
   return (
     <View style={styles.container}>
+      <LinearGradient
+        // Background Linear Gradient
+          colors={['#EE0979', '#6E00DD']}
+          style={styles.gradient}
+      />
+      <WelcomeBanner NAME={NAME}></WelcomeBanner>
       <ScrollView>
       
       </ScrollView>
