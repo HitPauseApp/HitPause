@@ -3,6 +3,7 @@ import React from 'react'
 import firebase from '../Firebase.js'
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
+import NoFillButton from '../components/buttons/NoFillButton';
 
 export default class Login extends React.Component {
   state = { email: '', password: '', errorMessage: null }
@@ -23,7 +24,7 @@ export default class Login extends React.Component {
             colors={['#EE0979', '#6E00DD']}
             style={styles.gradient}
         />
-        <Text>Login</Text>
+        <Text style={styles.header}>Login</Text>
         {this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
@@ -67,6 +68,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  header:{
+    fontSize: 40,
+    fontWeight: 'bold',
+    color: 'white'
   },
   textInput: {
     height: 40,
