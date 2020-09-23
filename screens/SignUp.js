@@ -39,10 +39,10 @@ export default class SignUp extends React.Component {
       <View style={styles.container}>
         <LinearGradient
           // Background Linear Gradient
-          colors={['#EE0979', '#6E00DD']}
+          colors={['#B905A2', '#6E00DD']}
           style={styles.gradient}
         />
-        <Text>Sign Up</Text>
+        <Text style = {styles.header}>Sign Up</Text>
         {!!this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
@@ -107,7 +107,8 @@ const styles = StyleSheet.create({
   header:{
     fontSize: 40,
     fontWeight: 'bold',
-    color: 'white'
+    color: 'white',
+    alignItems: 'center'
   },
   textInput: {
     height: 40,

@@ -17,7 +17,7 @@ export default function HomeScreen(props) {
     <View style={styles.container}>
       <LinearGradient
         // Background Linear Gradient
-          colors={['#EE0979', '#6E00DD']}
+          colors={['#B905A2', '#6E00DD']}
           style={styles.gradient}
       />
       <WelcomeBanner NAME={NAME}></WelcomeBanner>
