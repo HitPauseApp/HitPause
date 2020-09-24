@@ -15,6 +15,8 @@ export default function HomeScreen(props) {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.header}>HitPause</Text>
+
       <LinearGradient
         // Background Linear Gradient
           colors={['#B905A2', '#6E00DD']}
@@ -41,6 +43,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#040926'
   },
   header:{
+    fontFamily: 'Poppins-Bold',
     fontSize: 40,
     fontWeight: 'bold',
     color: 'white'
