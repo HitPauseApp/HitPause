@@ -49,19 +49,19 @@ export default class Login extends React.Component {
         />
 
         <TouchableOpacity style={styles.loginButton} onPress={this.handleLogin}>
-            <Text style={styles.text}>Login</Text>
+            <Text style={styles.text1}>Login</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button1} onPress={() => this.props.navigation.navigate('SignUp')}>
-            <Text style={styles.text}>Don't have an account? Sign Up</Text>
+            <Text style={styles.text1}>Don't have an account? Sign Up</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button2} onPress={() => this.props.navigation.navigate('ResetPassword')}>
-            <Text style={styles.text}>Forgot your password?</Text>
+            <Text style={styles.text1}>Forgot your password?</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button2} onPress={() => this.props.navigation.navigate('Root')}>
-            <Text style={styles.text}>Skip Auth (Dev)</Text>
+            <Text style={styles.text1}>Skip Auth (Dev)</Text>
         </TouchableOpacity>
       
       </View>
@@ -89,18 +89,16 @@ const styles = StyleSheet.create({
     height: RFValue(20),
     width: RFValue(70),
     textAlign: 'center',
-    //textAlignVertical: 'center'
-  
-
   },
   button1: { 
     marginTop: 30,
     borderWidth: 2,
     borderColor: 'white' ,
     borderRadius: 50,
-    padding: 10,
-    backgroundColor: 'white',
-    height: 43
+    paddingVertical: 8,
+    paddingHorizontal: 17,
+    height: RFValue(20),
+    width: RFValue(150),
 
   },
   button2: { 
@@ -116,6 +114,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginTop: 20,
     zIndex: 3
+  },
+
+  text1: { 
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'white'
+
   },
   gradient: {
     flex: 1,
