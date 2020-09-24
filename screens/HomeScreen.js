@@ -15,14 +15,9 @@ export default function HomeScreen(props) {
 
   return (
     <View style={styles.container}>
-      <LinearGradient
-        // Background Linear Gradient
-          colors={['#EE0979', '#6E00DD']}
-          style={styles.gradient}
-      />
+      <Image source={require('/GitHub/HitPause/assets/images/splash.png')} />
       <WelcomeBanner NAME={NAME}></WelcomeBanner>
       <ScrollView>
-      
       </ScrollView>
       <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={onPress}>
@@ -39,7 +34,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#341931'
+    backgroundColor: '#040926'
   },
   header:{
     fontSize: 40,

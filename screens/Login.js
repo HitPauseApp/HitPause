@@ -21,7 +21,7 @@ export default class Login extends React.Component {
       <View style={styles.container}>
         <LinearGradient
           // Background Linear Gradient
-            colors={['#EE0979', '#6E00DD']}
+            colors={['#3494E6', '#EC6EAD']}
             style={styles.gradient}
         />
         <Text style={styles.header}>Login</Text>
@@ -46,19 +46,19 @@ export default class Login extends React.Component {
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
         />
-        <Button 
+        <Button style={styles.button}
             title="Login" 
             onPress={this.handleLogin}
         />
-        <Button
+        <Button style={styles.button}
           title="Don't have an account? Sign Up"
           onPress={() => this.props.navigation.navigate('SignUp')}
         />
-        <Button
+        <Button style={styles.button}
           title="Forgot your password?"
           onPress={() => this.props.navigation.navigate('ResetPassword')}
         />
-        <Button
+        <Button style={styles.button}
           title="Skip Auth (Dev)"
           onPress={() => this.props.navigation.navigate('Root')}
         />
@@ -70,12 +70,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: 10
   },
   header:{
     fontSize: 40,
     fontWeight: 'bold',
-    color: 'white'
+    color: 'white',
   },
   textInput: {
     height: 40,

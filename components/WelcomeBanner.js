@@ -15,7 +15,7 @@ export default class WelcomeBanner extends Component{
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor: '#fff',
+        backgroundColor: '#3494E6',
         justifyContent: 'center',
         alignContent: 'center',
         width: '80%',
@@ -23,15 +23,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         marginTop: 20,
-        bottom: 10
+        bottom: 10,
+        overflow: 'hidden'
     },
     header:{
+        color: 'white',
         fontSize: 24,
         fontWeight: 'bold',
-        textAlign: 'center'
-    },
-    bodyText:{
-        marginTop: 5,
         textAlign: 'center'
     },
     gradient: {
