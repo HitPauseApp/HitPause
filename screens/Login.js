@@ -1,9 +1,10 @@
 // Login.js
 import React from 'react'
 import firebase from '../Firebase.js'
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
+import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import NoFillButton from '../components/buttons/NoFillButton';
+import { RFValue } from "react-native-responsive-fontsize";
 
 export default class Login extends React.Component {
   state = { email: '', password: '', errorMessage: null }
@@ -21,7 +22,7 @@ export default class Login extends React.Component {
       <View style={styles.container}>
         <LinearGradient
           // Background Linear Gradient
-            colors={['#3494E6', '#EC6EAD']}
+            colors={['#B905A2', '#6E00DD']}
             style={styles.gradient}
         />
         <Text style={styles.header}>Login</Text>
@@ -46,22 +47,23 @@ export default class Login extends React.Component {
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
         />
-        <Button style={styles.button}
-            title="Login" 
-            onPress={this.handleLogin}
-        />
-        <Button style={styles.button}
-          title="Don't have an account? Sign Up"
-          onPress={() => this.props.navigation.navigate('SignUp')}
-        />
-        <Button style={styles.button}
-          title="Forgot your password?"
-          onPress={() => this.props.navigation.navigate('ResetPassword')}
-        />
-        <Button style={styles.button}
-          title="Skip Auth (Dev)"
-          onPress={() => this.props.navigation.navigate('Root')}
-        />
+
+        <TouchableOpacity style={styles.loginButton} onPress={this.handleLogin}>
+            <Text style={styles.text1}>Login</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button1} onPress={() => this.props.navigation.navigate('SignUp')}>
+            <Text style={styles.text1}>Don't have an account? Sign Up</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button2} onPress={() => this.props.navigation.navigate('ResetPassword')}>
+            <Text style={styles.text1}>Forgot your password?</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button2} onPress={() => this.props.navigation.navigate('Root')}>
+            <Text style={styles.text1}>Skip Auth (Dev)</Text>
+        </TouchableOpacity>
+      
       </View>
     )
   }
@@ -78,6 +80,33 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
+  loginButton: { 
+    marginTop: 30,
+    borderWidth: 2,
+    borderColor: '#FFFFFF'  ,
+    borderRadius: 50,
+    padding: 8,
+    overflow: 'hidden' ,
+    height: RFValue(20),
+    width: RFValue(70),
+    textAlign: 'center',
+  },
+  button1: { 
+    marginTop: 30,
+    borderWidth: 2,
+    borderColor: 'white' ,
+    borderRadius: 50,
+    paddingVertical: 8,
+    paddingHorizontal: 17,
+    height: RFValue(20),
+    width: RFValue(150),
+
+  },
+  button2: { 
+    marginTop: 30,
+    borderRadius: 20,
+
+  },
   textInput: {
     height: 40,
     width: '90%',
@@ -86,6 +115,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginTop: 20,
     zIndex: 3
+  },
+
+  text1: { 
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'white'
+
   },
   gradient: {
     flex: 1,

@@ -15,7 +15,11 @@ export default function HomeScreen(props) {
 
   return (
     <View style={styles.container}>
-      <Image source={require('/GitHub/HitPause/assets/images/splash.png')} />
+      <LinearGradient
+        // Background Linear Gradient
+          colors={['#B905A2', '#6E00DD']}
+          style={styles.gradient}
+      />
       <WelcomeBanner NAME={NAME}></WelcomeBanner>
       <ScrollView>
       </ScrollView>
