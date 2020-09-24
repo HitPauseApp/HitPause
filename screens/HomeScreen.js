@@ -70,5 +70,6 @@ text: {
     color: '#6E00DD',
     fontSize: 16,
     fontWeight: '600',   
+    fontFamily: 'Poppins'
 }
 });

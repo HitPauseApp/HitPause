@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     borderColor: 'white' ,
     borderRadius: 50,
     paddingVertical: 8,
-    paddingHorizontal: 17,
+    paddingHorizontal: 30,
     height: RFValue(20),
     width: RFValue(150),
 
@@ -117,9 +117,10 @@ const styles = StyleSheet.create({
   },
 
   text1: { 
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: '600',
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Poppins'
 
   },
   gradient: {
