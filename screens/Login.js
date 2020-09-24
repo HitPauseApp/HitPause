@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     padding: 10
   },
   header:{
+    fontFamily: 'Poppins-Bold',
     fontSize: 40,
     fontWeight: 'bold',
     color: 'white',
