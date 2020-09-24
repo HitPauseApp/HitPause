@@ -21,8 +21,8 @@ const Stack = createStackNavigator();
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-  // const [initialNavigationState, setInitialNavigationState] = React.useState();
-  // const containerRef = React.useRef();
+  const [initialNavigationState, setInitialNavigationState] = React.useState('Login');
+  const containerRef = React.useRef();
   // const { getInitialState } = useLinking(containerRef);
 
   // Establish firebase authentication observer
@@ -33,6 +33,7 @@ export default function App(props) {
       console.log("Auth user is non-null");
       currentUser = user;
       console.log(currentUser.email);
+      containerRef.current?.navigate('Root');
     } else {
       // There is not a user
       console.log("Auth user is null");
@@ -71,8 +72,8 @@ export default function App(props) {
     return (
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="Login" headerMode="none">
+        <NavigationContainer ref={containerRef}>
+          <Stack.Navigator initialRouteName={initialNavigationState} headerMode="none">
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="SignUp" component={SignUp} />
             <Stack.Screen name="ResetPassword" component={ResetPassword} />

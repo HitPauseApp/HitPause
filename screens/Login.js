@@ -14,8 +14,8 @@ export default class Login extends React.Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => this.props.navigation.navigate('Root'))
       .catch(error => this.setState({ errorMessage: error.message }))
+      // User redirected to home after signIn
   }
   render() {
     return (
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     borderColor: 'white' ,
     borderRadius: 50,
     paddingVertical: 8,
-    paddingHorizontal: 17,
+    paddingHorizontal: 30,
     height: RFValue(20),
     width: RFValue(150),
 
@@ -118,9 +118,10 @@ const styles = StyleSheet.create({
   },
 
   text1: { 
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: '600',
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Poppins'
 
   },
   gradient: {
