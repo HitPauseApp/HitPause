@@ -3,15 +3,24 @@ import * as React from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button } from 'react-native';
 
 import TipOTD from '../components/TipOTD';
-import FillButton from '../components/buttons/FillButton';
+import WelcomeBanner from '../components/WelcomeBanner';
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 export default function HomeScreen(props) {
 
   const TOTD = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar pellentesque ex at maximus. Nam feugiat rhoncus accumsan. ';
+  const NAME = 'Will';
   const onPress = () => props.navigation.navigate("QuizScreen");
 
   return (
     <View style={styles.container}>
+      <LinearGradient
+        // Background Linear Gradient
+          colors={['#B905A2', '#6E00DD']}
+          style={styles.gradient}
+      />
+      <WelcomeBanner NAME={NAME}></WelcomeBanner>
       <ScrollView>
       
       </ScrollView>
@@ -27,8 +36,25 @@ export default function HomeScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
-    backgroundColor: '#191414'
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#341931'
+  },
+  header:{
+    fontSize: 40,
+    fontWeight: 'bold',
+    color: 'white'
+    
+  },
+  gradient: {
+    flex: 1,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    zIndex: -1,
   },
   buttonContainer:{
     alignSelf: 'center',
@@ -44,5 +70,6 @@ text: {
     color: '#6E00DD',
     fontSize: 16,
     fontWeight: '600',   
+    fontFamily: 'Poppins'
 }
 });

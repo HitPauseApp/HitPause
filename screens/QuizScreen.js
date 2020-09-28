@@ -17,7 +17,7 @@ export default function QuizScreen(){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#111625'
+    backgroundColor: '#040926'
   },
   text: {
     color: '#fff'
