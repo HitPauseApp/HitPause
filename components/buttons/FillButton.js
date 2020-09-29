@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         borderRadius: 8
     },
     text: {
-        color: '#6E00DD',
+        color: '#00095e',
         fontSize: 16,
         fontWeight: '600',   
     }

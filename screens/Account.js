@@ -78,7 +78,7 @@ export default class Account extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#6E00DD'
+    backgroundColor: '#00095e'
   },
   text: {
     color: '#fff',

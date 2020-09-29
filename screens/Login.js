@@ -20,11 +20,6 @@ export default class Login extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <LinearGradient
-          // Background Linear Gradient
-            colors={['#B905A2', '#6E00DD']}
-            style={styles.gradient}
-        />
         <Text style={styles.header}>Login</Text>
         {this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
@@ -49,18 +44,18 @@ export default class Login extends React.Component {
         />
 
         <TouchableOpacity style={styles.loginButton} onPress={this.handleLogin}>
-            <Text style={styles.text1}>Login</Text>
+          <Text style={styles.text1}>Login</Text>
+        </TouchableOpacity>
+        <Text style={styles.text2}>Don't have an account?</Text>
+        <TouchableOpacity style={styles.signupButton} onPress={() => this.props.navigation.navigate('SignUp')}>
+          <Text style={styles.text1}>Sign Up</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button1} onPress={() => this.props.navigation.navigate('SignUp')}>
-            <Text style={styles.text1}>Don't have an account? Sign Up</Text>
+        <TouchableOpacity style={styles.forgotButton} onPress={() => this.props.navigation.navigate('ResetPassword')}>
+            <Text style={styles.text3}>Forgot your password?</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button2} onPress={() => this.props.navigation.navigate('ResetPassword')}>
-            <Text style={styles.text1}>Forgot your password?</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button2} onPress={() => this.props.navigation.navigate('Root')}>
+        <TouchableOpacity style={styles.skipButton} onPress={() => this.props.navigation.navigate('Root')}>
             <Text style={styles.text1}>Skip Auth (Dev)</Text>
         </TouchableOpacity>
       
@@ -70,6 +65,7 @@ export default class Login extends React.Component {
 }
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#00095e',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -84,29 +80,24 @@ const styles = StyleSheet.create({
   loginButton: { 
     marginTop: 30,
     borderWidth: 2,
-    borderColor: '#FFFFFF'  ,
+    borderColor: '#FFFFFF',
     borderRadius: 50,
-    padding: 8,
     overflow: 'hidden' ,
-    height: RFValue(20),
-    width: RFValue(70),
+    height: RFValue(30),
+    width: RFValue(100),
     textAlign: 'center',
   },
-  button1: { 
-    marginTop: 30,
+  signupButton: { 
+    textAlign: 'center',
     borderWidth: 2,
     borderColor: 'white' ,
     borderRadius: 50,
-    paddingVertical: 8,
-    paddingHorizontal: 30,
-    height: RFValue(20),
+    height: RFValue(30),
     width: RFValue(150),
 
   },
-  button2: { 
-    marginTop: 30,
+  forgotButton: { 
     borderRadius: 20,
-
   },
   textInput: {
     height: 40,
@@ -117,21 +108,21 @@ const styles = StyleSheet.create({
     marginTop: 20,
     zIndex: 3
   },
-
   text1: { 
-    fontSize: 13,
-    fontWeight: '600',
+    fontSize: 20,
     color: 'white',
-    fontFamily: 'Poppins'
-
+    fontFamily: 'Poppins-Medium'
   },
-  gradient: {
-    flex: 1,
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    zIndex: -1,
+  text2: {
+    marginTop: 15,
+    fontSize: 20,
+    color: 'white',
+    fontFamily: 'Poppins-Thin'
   },
+  text3: {
+    marginTop: 5,
+    fontSize: 15,
+    color: 'white',
+    fontFamily: 'Poppins-Thin'
+  }
 })
