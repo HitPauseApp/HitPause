@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
   header:{
     fontSize: 40,
     fontWeight: 'bold',
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Poppins'
   },
   loginButton: { 
     marginTop: 30,
