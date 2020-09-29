@@ -17,24 +17,24 @@ export default class QuizCard extends React.Component{
 
   render(){
     let responseComponent;
-    if(this.props.quiz.question1.type == "checkbox"){
+    if(this.props.quiz.questions[this.props.quizIndex].type == "checkbox"){
       responseComponent = <Response_Checkbox></Response_Checkbox>
     }
-    else if(this.props.quiz.question1.type == "radio"){
+    else if(this.props.quiz.questions[this.props.quizIndex].type == "radio"){
       responseComponent = <Response_Radio></Response_Radio>
     }
-    else if(this.props.quiz.question1.type == "scale"){
+    else if(this.props.quiz.questions[this.props.quizIndex].type == "scale"){
       responseComponent = <Response_Scale></Response_Scale>
     }
-    else if(this.props.quiz.question1.type == "text"){
+    else if(this.props.quiz.questions[this.props.quizIndex].type == "text"){
       responseComponent = <Response_Text></Response_Text>
     }
-    else if(this.props.quiz.question1.type == "textarea"){
+    else if(this.props.quiz.questions[this.props.quizIndex].type == "textarea"){
       responseComponent = <Response_TextArea></Response_TextArea>
     }
     return(
       <View>
-        <QuizQuestion text={this.props.quiz.question1.text}></QuizQuestion>
+        <QuizQuestion text={this.props.quiz.questions[this.props.quizIndex].text}></QuizQuestion>
         {responseComponent}
       </View>
     );
