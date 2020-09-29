@@ -5,36 +5,39 @@ import firebase from '../Firebase.js'
 import MatIcons from '../components/MatIcons';
 import FillButton from '../components/buttons/FillButton';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
-import user from '../assets/images/user.png';
+import Loading from './Loading';
+import userImg from '../assets/images/user.png';
 
-export default class Account extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {user: {}, uid: firebase.auth().currentUser.uid};
-  }
-  componentDidMount() {
-    this.getUserData(this.state.uid);
-    console.log('this.state:', this.state);
-  }
-  handleLogout() {
+
+export default function Account(props) {
+  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
+  const [user, setUser] = React.useState({});
+  
+  function handleLogout() {
     firebase.auth().signOut().then(() => {
-      this.props.navigation.navigate('Login');
+      props.navigation.navigate('Login');
     }).catch((error) => {
       console.error(error);
     });
   }
-  getUserData(uid) {
-    firebase.database().ref(`users/${uid}`).once('value').then((snapshot) => {
-      this.setState({user: snapshot.val()});
+  
+  // Eventually, we will want to put this logic into BottomTabNavigator, so the whole app has access to 'user'
+  React.useEffect(() => {
+    firebase.database().ref(`users/${firebase.auth().currentUser.uid}`).once('value').then(s => {
+      setUser(s.val());
+      setLoadingComplete(true);
     });
-  }
-  render() {
+  }, []);
+  
+  if (!isLoadingComplete) {
+    return <Loading></Loading>;
+  } else {
     return (
       <View style={styles.container}>
-        <Image source={user} style={styles.avatar}></Image>
+        <Image source={userImg} style={styles.avatar}></Image>
         <View style={styles.category}>
           <MatIcons name="person"></MatIcons>
-          <Text style={styles.text}>{this.state.user.firstName} {this.state.user.lastName}</Text>
+          <Text style={styles.text}>{user.firstName} {user.lastName}</Text>
         </View>
 
         <View style={styles.separator}></View>
@@ -48,7 +51,7 @@ export default class Account extends React.Component {
 
         <View style={styles.category}>
           <MatIcons name="email"></MatIcons>
-          <Text style={styles.text}>{this.state.user.email}</Text>
+          <Text style={styles.text}>{user.email}</Text>
         </View>
 
         <View style={styles.separator}></View>
@@ -56,7 +59,7 @@ export default class Account extends React.Component {
         <View style={styles.category}>
           <FontAwesome name="spotify" size={30} color="white" />
           {/* This is bad data, only using as placeholder */}
-          <Text style={styles.text}>{this.state.uid ? 'Connected' : 'Not Connected'}</Text>
+          <Text style={styles.text}>{user ? 'Connected' : 'Not Connected'}</Text>
         </View>
 
         <View style={styles.separator}></View>
@@ -68,7 +71,7 @@ export default class Account extends React.Component {
         <FillButton text="EDIT DETAILS"></FillButton>
         <Text
           style={styles.signOut}
-          onPress={() => this.handleLogout()}
+          onPress={() => handleLogout()}
         >Sign Out</Text>
       </View>
     );
