@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 
-export default function QuizQuestion(props){
+export default function Response_Scale(props){
   return(
     <View style={styles.quizQuestion}>
-      <Text style={styles.text}>{props.text}</Text>
+      <Text style={styles.text}>I'm the Scale</Text>
     </View>
   );
 }
