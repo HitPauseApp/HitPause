@@ -1,16 +1,17 @@
 import * as React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 
-export default function QuizQuestion(){
+export default function QuizQuestion(props){
   return(
-    <View>
-      <Text style={styles.text}>I'm a Quiz Question</Text>
+    <View style={styles.quizQuestion}>
+      <Text style={styles.text}>{props.quiz.text}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   text:{
-    color: "#fff"
+    color: "#fff",
+    textAlign: "center"
   }
 });
