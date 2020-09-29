@@ -1,75 +1,90 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button } from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, ImageBackground } from 'react-native';
 
 import TipOTD from '../components/TipOTD';
 import WelcomeBanner from '../components/WelcomeBanner';
-import { LinearGradient } from 'expo-linear-gradient';
-
+import ablumImage from '../assets/images/album-placeholder.png';
 
 export default function HomeScreen(props) {
 
   const TOTD = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar pellentesque ex at maximus. Nam feugiat rhoncus accumsan. ';
-  const NAME = 'Will';
   const onPress = () => props.navigation.navigate("QuizScreen");
-
   return (
     <View style={styles.container}>
-      <LinearGradient
-        // Background Linear Gradient
-          colors={['#B905A2', '#6E00DD']}
-          style={styles.gradient}
-      />
-      <WelcomeBanner NAME={NAME}></WelcomeBanner>
+      <ImageBackground style={ styles.imgBackground }  
+          source={require('../assets/images/mountain.png')}>
+          <WelcomeBanner></WelcomeBanner>
+      </ImageBackground>
+      <Text style={styles.header}>Recently Played</Text>
+      <View style={styles.recentTab}>
+        <Image source={ablumImage} style={styles.albumImages}></Image>
+        <Image source={ablumImage} style={styles.albumImages}></Image>
+        <Image source={ablumImage} style={styles.albumImages}></Image>
+      </View>
+      <Text style={styles.header}>Recently Liked</Text>
+      <View style={styles.recentTab}>
+        <Image source={ablumImage} style={styles.albumImages}></Image>
+        <Image source={ablumImage} style={styles.albumImages}></Image>
+        <Image source={ablumImage} style={styles.albumImages}></Image>
+      </View>
       <ScrollView>
-      
       </ScrollView>
-      <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Text style={styles.text}>Quiz Button</Text>
-          </TouchableOpacity>
-        </View>
-        <TipOTD TOTD={TOTD}></TipOTD>
+      <Text style={styles.text2}>Need to adjust your assessment?</Text>
+      <TouchableOpacity style={styles.button} onPress={onPress}>
+        <Text style={styles.text}>Retake Assessment</Text>
+      </TouchableOpacity>
+      <TipOTD TOTD={TOTD}></TipOTD>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#341931'
+    backgroundColor: '#00095e',
+    flex: 1
   },
   header:{
-    fontSize: 40,
-    fontWeight: 'bold',
+    padding: 15,
+    fontFamily: 'Poppins-Thin',
+    fontSize: 20,
     color: 'white'
-    
   },
-  gradient: {
-    flex: 1,
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    zIndex: -1,
+  imgBackground: {
+    width: '100%',
+    height: '20%'
+  },
+  recentTab:{
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  albumImages: {
+    borderRadius: 8,
+    width: 100,
+    height: 100,
   },
   buttonContainer:{
+    margin: 10,
+    padding: 10
+  },
+  button:{
+    marginBottom: 20,
+    backgroundColor: '#132090',
     alignSelf: 'center',
-    margin: 10
-},
-button:{
-    backgroundColor: 'white',
-    alignSelf: 'flex-start',
-    padding: 5,
+    padding: 10,
     borderRadius: 8
-},
-text: {
-    color: '#6E00DD',
-    fontSize: 16,
-    fontWeight: '600',   
-    fontFamily: 'Poppins'
-}
+  },
+  text: {
+    color: 'white',
+    fontSize: 16,   
+    fontFamily: 'Poppins-Medium'
+  },
+  text2: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 14,
+    fontFamily: 'Poppins-Thin'
+  }
+
+  
 });

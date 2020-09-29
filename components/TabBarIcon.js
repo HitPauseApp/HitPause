@@ -9,7 +9,7 @@ export default function TabBarIcon(props) {
       name={props.name}
       size={30}
       style={{ marginBottom: -3 }}
-      color={'grey'}
+      color={'gray'}
     />
   );
 }

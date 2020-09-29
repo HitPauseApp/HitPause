@@ -53,6 +53,11 @@ export default function App(props) {
         await Font.loadAsync({
           ...Ionicons.font,
           'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+          'poppins-bold': require('./assets/fonts/Poppins-Bold.ttf'),
+          'poppins-medium': require('./assets/fonts/Poppins-Medium.ttf'),
+          'poppins-light': require('./assets/fonts/Poppins-Light.ttf'),
+          'poppins-thin': require('./assets/fonts/Poppins-Thin.ttf'),
+
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service

@@ -12,6 +12,7 @@ import LikesScreen from '../screens/LikesScreen';
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
 
+
 export default function BottomTabNavigator({ navigation, route }) {
   // Set the header title on the parent stack navigator depending on the
   // currently active tab. Learn more in the documentation:
@@ -19,13 +20,15 @@ export default function BottomTabNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+    <BottomTab.Navigator 
+      initialRouteName={INITIAL_ROUTE_NAME}
+    >
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
         options={{
           title: 'Home',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home"/>,
         }}
       />
       <BottomTab.Screen
