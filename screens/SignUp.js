@@ -1,8 +1,9 @@
 // SignUp.js
 import React from 'react'
 import firebase from '../Firebase.js'
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
+import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
+import { RFValue } from "react-native-responsive-fontsize";
 
 export default class SignUp extends React.Component {
   state = { firstName: '', lastName: '', email: '', password: '', repeatedPassword: '', errorMessage: null }
@@ -89,11 +90,15 @@ export default class SignUp extends React.Component {
           onChangeText={repeatedPassword => this.setState({ repeatedPassword })}
           value={this.state.repeatedPassword}
         />
-        <Button title="Sign Up" onPress={this.handleSignUp} />
-        <Button
-          title="Already have an account? Login"
-          onPress={() => this.props.navigation.navigate('Login')}
-        />
+
+        <TouchableOpacity style={styles.SignUpButton} onPress={this.handleSignUp}>
+            <Text style={styles.text}>Sign Up</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button1} onPress={() => this.props.navigation.navigate('Login')}>
+            <Text style={styles.text}>Already have an account? Login</Text>
+        </TouchableOpacity>
+
       </View>
     )
   }
@@ -128,4 +133,33 @@ const styles = StyleSheet.create({
     bottom: 0,
     zIndex: -1,
   },
+  SignUpButton: { 
+    marginTop: 30,
+    borderWidth: 2,
+    borderColor: '#FFFFFF'  ,
+    borderRadius: 50,
+    padding: 8,
+    overflow: 'hidden' ,
+    height: RFValue(20),
+    width: RFValue(70),
+    textAlign: 'center',
+  },
+  button1: { 
+    marginTop: 30,
+    borderWidth: 2,
+    borderColor: 'white' ,
+    borderRadius: 50,
+    paddingVertical: 8,
+    paddingHorizontal: 30,
+    height: RFValue(20),
+    width: RFValue(150),
+
+  },
+  text: { 
+    fontSize: 13,
+    fontWeight: '600',
+    color: 'white',
+    fontFamily: 'Poppins'
+
+  }
 })

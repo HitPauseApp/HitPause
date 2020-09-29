@@ -1,8 +1,9 @@
 // Login.js
 import React, { useState }from 'react'
 import firebase from '../Firebase.js'
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
+import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
+import { RFValue } from "react-native-responsive-fontsize";
 
 export default function ResetPassword(props) {
   const [email, setEmail] = React.useState('');
@@ -23,7 +24,7 @@ export default function ResetPassword(props) {
           colors={['#EE0979', '#6E00DD']}
           style={styles.gradient}
       />
-      <Text>Reset Password</Text>
+      <Text style = {styles.header}>Reset Password</Text>
       {!!errorMessage &&
         <Text style={{ color: 'red' }}>
           {errorMessage}
@@ -36,14 +37,15 @@ export default function ResetPassword(props) {
         onChangeText={(email) => setEmail(email)}
         value={email}
       />
-      <Button
-        title="Send Reset Email"
-        onPress={() => handleReset()}
-      />
-      <Button
-        title="Back to Login"
-        onPress={() => props.navigation.navigate('Login')}
-      />
+
+      <TouchableOpacity style={styles.button1} onPress={() => handleReset()}>
+            <Text style={styles.text}>Send Reset Email</Text>
+        </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button2} onPress={() => props.navigation.navigate('Login')}>
+            <Text style={styles.text}>Back to Login</Text>
+      </TouchableOpacity>
+      
     </View>
   )
 }
@@ -52,6 +54,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  header:{
+    fontSize: 40,
+    fontWeight: 'bold',
+    color: 'white',
+    fontFamily: 'Poppins'
   },
   textInput: {
     height: 40,
@@ -70,5 +78,27 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     zIndex: -1,
+  },
+  button1: { 
+    marginTop: 30,
+    borderWidth: 2,
+    borderColor: 'white' ,
+    borderRadius: 50,
+    paddingVertical: 8,
+    paddingHorizontal: 53,
+    height: RFValue(20),
+    width: RFValue(120),
+  },
+  button2: { 
+    marginTop: 30,
+    borderRadius: 20,
+
+  },
+  text: { 
+    fontSize: 13,
+    fontWeight: '600',
+    color: 'white',
+    fontFamily: 'Poppins'
+
   },
 })

@@ -1,17 +1,45 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import {StyleSheet, Text, View } from 'react-native';
+import firebase from '../Firebase.js'
+import { StyleSheet, Text, View } from 'react-native';
 
+import QuizCard from '../components/quiz/QuizCard';
+import Loading from './Loading';
 
-import WelcomeBanner from '../components/WelcomeBanner';
 export default function QuizScreen(){
-  return (
-    <View style={styles.container}>
+  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
+  const [quiz, setQuiz] = React.useState({});
+  const [quizIndex, setQuizIndex] = React.useState({})
 
-      <Text style={styles.text}>Quiz Screen</Text>
+  let quizName = "initialAssessment";
 
-    </View>
-  );
+  React.useEffect(() => {
+    firebase.database().ref(`hitpause/quizzes/${quizName}`).once('value').then(s => {
+      let quizData = s.val();
+      let questionList = quizData.questions;
+      if (!quizData.dynamic) {
+        setQuizIndex(1);
+        let sortedQuestionList = Object.values(questionList).sort((a, b) => a.order - b.order);
+        quizData.questions = sortedQuestionList.slice();
+      }
+      setQuiz(quizData);
+      setLoadingComplete(true);
+    })
+  }, []);
+
+  // React.useEffect(() => {
+  // }, [quiz])
+
+  if (!isLoadingComplete) {
+    return <Loading></Loading>;
+  } else {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.text}>Quiz Screen</Text>
+        <QuizCard quiz={quiz} quizIndex={quizIndex}></QuizCard>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
