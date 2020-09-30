@@ -5,6 +5,7 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import {Provider as PaperProvider} from 'react-native-paper';
 
 import firebase from './Firebase';
 
@@ -75,18 +76,20 @@ export default function App(props) {
     return null;
   } else {
     return (
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <NavigationContainer ref={containerRef}>
-          <Stack.Navigator initialRouteName={initialNavigationState} headerMode="none">
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="SignUp" component={SignUp} />
-            <Stack.Screen name="ResetPassword" component={ResetPassword} />
-            <Stack.Screen name="Root" component={BottomTabNavigator} />
-            <Stack.Screen name="QuizScreen" component={QuizScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </View>
+      <PaperProvider>
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          <NavigationContainer ref={containerRef}>
+            <Stack.Navigator initialRouteName={initialNavigationState} headerMode="none">
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="SignUp" component={SignUp} />
+              <Stack.Screen name="ResetPassword" component={ResetPassword} />
+              <Stack.Screen name="Root" component={BottomTabNavigator} />
+              <Stack.Screen name="QuizScreen" component={QuizScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </View>
+      </PaperProvider>
     );
   }
 }

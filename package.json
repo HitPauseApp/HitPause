@@ -41,6 +41,7 @@
     "react-native-gesture-handler": "~1.6.0",
     "react-native-material-cards": "^1.0.15",
     "react-native-modern-header": "^0.1.0",
+    "react-native-paper": "^4.2.0",
     "react-native-responsive-fontsize": "^0.4.3",
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",

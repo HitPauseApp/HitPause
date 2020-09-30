@@ -11,7 +11,7 @@ export default function QuizQuestion(props){
 
 const styles = StyleSheet.create({
   text:{
-    color: "#fff",
+    color: "#48484A",
     textAlign: "center"
   }
 });

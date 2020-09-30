@@ -1,7 +1,7 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import firebase from '../Firebase.js'
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
 import QuizCard from '../components/quiz/QuizCard';
 import Loading from './Loading';
@@ -30,6 +30,11 @@ export default function QuizScreen(){
   // React.useEffect(() => {
   // }, [quiz])
 
+  function handleNextQuestion(){
+      setQuizIndex(quizIndex + 1);
+  }
+
+
   if (!isLoadingComplete) {
     return <Loading></Loading>;
   } else {
@@ -37,6 +42,7 @@ export default function QuizScreen(){
       <View style={styles.container}>
         <Text style={styles.text}>Quiz Screen</Text>
         <QuizCard quiz={quiz} quizIndex={quizIndex}></QuizCard>
+        <Button onPress={() => handleNextQuestion()}>Next Question</Button>
       </View>
     );
   }
