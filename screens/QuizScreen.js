@@ -18,7 +18,7 @@ export default function QuizScreen(){
       let quizData = s.val();
       let questionList = quizData.questions;
       if (!quizData.dynamic) {
-        setQuizIndex(1);
+        setQuizIndex(0);
         let sortedQuestionList = Object.values(questionList).sort((a, b) => a.order - b.order);
         quizData.questions = sortedQuestionList.slice();
       }
