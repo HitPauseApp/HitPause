@@ -19,6 +19,21 @@ export default class Response_Radio extends React.Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.response !== this.props.response) {
+      let responses = Object.values(this.props.response);
+      this.setState({
+        responses: responses.map(function (obj) {
+          return {
+            score: obj.score,
+            text: obj.text,
+            checked: ''
+          };
+        })
+      });
+    }
+  }
+
   handleChecked(score){
     const response = this.state.responses;
     const index = response.findIndex(x => x.score === score);

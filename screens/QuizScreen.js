@@ -30,9 +30,9 @@ export default function QuizScreen(){
   // React.useEffect(() => {
   // }, [quiz])
 
-  function handleNextQuestion(){
-      setQuizIndex(quizIndex + 1);
-  }
+  // function handleNextQuestion(){
+  //     setQuizIndex(quizIndex + 1);
+  // }
 
 
   if (!isLoadingComplete) {
@@ -42,7 +42,7 @@ export default function QuizScreen(){
       <View style={styles.container}>
         <Text style={styles.text}>Quiz Screen</Text>
         <QuizCard quiz={quiz} quizIndex={quizIndex}></QuizCard>
-        <Button onPress={() => handleNextQuestion()}>Next Question</Button>
+        {/* <Button onPress={() => handleNextQuestion()}>Next Question</Button> */}
       </View>
     );
   }
