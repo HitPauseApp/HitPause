@@ -9,8 +9,6 @@ import Response_Scale from './Response_Scale';
 import Response_Text from './Response_Text';
 import Response_TextArea from './Response_TextArea';
 
-
-
 export default class QuizCard extends React.Component{
   constructor(props){
     super(props);
@@ -52,7 +50,7 @@ export default class QuizCard extends React.Component{
     return(
       <View>
         
-        <QuizQuestion question={this.props.quiz.questions[this.props.quizIndex]}></QuizQuestion>
+        <QuizQuestion question={this.props.quiz.questions[this.state.quizIndex]}></QuizQuestion>
         <View>
 
         </View>

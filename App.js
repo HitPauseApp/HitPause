@@ -27,17 +27,11 @@ export default function App(props) {
   // const { getInitialState } = useLinking(containerRef);
 
   // Establish firebase authentication observer
-  var currentUser = null
-  firebase.auth().onAuthStateChanged(function(user) {
+  firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       // There is a user
-      console.log("Auth user is non-null");
-      currentUser = user;
-      console.log(currentUser.email);
+      console.log("Logged in as:", user.email);
       containerRef.current?.navigate('Root');
-    } else {
-      // There is not a user
-      console.log("Auth user is null");
     }
   });
 
