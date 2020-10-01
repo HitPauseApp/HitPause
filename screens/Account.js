@@ -43,13 +43,6 @@ export default function Account(props) {
         <View style={styles.separator}></View>
 
         <View style={styles.category}>
-          <MatIcons name="phone-iphone"></MatIcons>
-          <Text style={styles.text}>{}</Text>
-        </View>
-
-        <View style={styles.separator}></View>
-
-        <View style={styles.category}>
           <MatIcons name="email"></MatIcons>
           <Text style={styles.text}>{user.email}</Text>
         </View>

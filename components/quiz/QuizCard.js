@@ -36,7 +36,7 @@ export default class QuizCard extends React.Component{
     return(
       <View>
         
-        <QuizQuestion text={this.props.quiz.questions[this.props.quizIndex].text}></QuizQuestion>
+        <QuizQuestion question={this.props.quiz.questions[this.props.quizIndex]}></QuizQuestion>
         <View>
 
         </View>
