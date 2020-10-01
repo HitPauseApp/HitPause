@@ -10,6 +10,7 @@ import Response_Text from './Response_Text';
 import Response_TextArea from './Response_TextArea';
 
 
+
 export default class QuizCard extends React.Component{
   constructor(props){
     super(props);
@@ -49,8 +50,12 @@ export default class QuizCard extends React.Component{
       responseComponent = <Response_TextArea></Response_TextArea>
     }
     return(
-      <View style={styles.card}>
-        <QuizQuestion text={this.props.quiz.questions[this.state.quizIndex].text}></QuizQuestion>
+      <View>
+        
+        <QuizQuestion question={this.props.quiz.questions[this.props.quizIndex]}></QuizQuestion>
+        <View>
+
+        </View>
         {responseComponent}
         <Button onPress={() => this.handleNextQuestion()} title="Next Question"></Button>
       </View>
@@ -59,11 +64,3 @@ export default class QuizCard extends React.Component{
 
 }
 
-const styles = StyleSheet.create({
-  card:{
-    backgroundColor: "#FFF5F5",
-    width: "80vw",
-    alignSelf: "center",
-    height: "40vh"
-  }
-});

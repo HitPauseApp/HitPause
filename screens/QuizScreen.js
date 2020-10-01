@@ -18,7 +18,7 @@ export default function QuizScreen(){
       let quizData = s.val();
       let questionList = quizData.questions;
       if (!quizData.dynamic) {
-        setQuizIndex(1);
+        setQuizIndex(0);
         let sortedQuestionList = Object.values(questionList).sort((a, b) => a.order - b.order);
         quizData.questions = sortedQuestionList.slice();
       }
@@ -40,7 +40,7 @@ export default function QuizScreen(){
   } else {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Quiz Screen</Text>
+        <Text style={styles.header}>Quiz Screen</Text>
         <QuizCard quiz={quiz} quizIndex={quizIndex}></QuizCard>
         {/* <Button onPress={() => handleNextQuestion()}>Next Question</Button> */}
       </View>
@@ -51,9 +51,12 @@ export default function QuizScreen(){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#040926'
+    backgroundColor: '#00095e'
   },
-  text: {
-    color: '#fff'
-  }
+  header:{
+    color: 'white',
+    fontFamily: 'Poppins-Medium',
+    fontSize: 24,
+    textAlign: 'center'
+  },
 });

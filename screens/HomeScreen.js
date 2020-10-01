@@ -11,7 +11,7 @@ export default function HomeScreen(props) {
   const TOTD = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar pellentesque ex at maximus. Nam feugiat rhoncus accumsan. ';
   const onPress = () => props.navigation.navigate("QuizScreen");
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <ImageBackground style={ styles.imgBackground }  
           source={require('../assets/images/mountain.png')}>
           <WelcomeBanner></WelcomeBanner>
@@ -35,7 +35,7 @@ export default function HomeScreen(props) {
         <Text style={styles.text}>Retake Assessment</Text>
       </TouchableOpacity>
       <TipOTD TOTD={TOTD}></TipOTD>
-    </View>
+    </ScrollView>
   );
 }
 
