@@ -10,6 +10,7 @@ import Response_Text from './Response_Text';
 import Response_TextArea from './Response_TextArea';
 
 
+
 export default class QuizCard extends React.Component{
   constructor(props){
     super(props);
@@ -34,11 +35,16 @@ export default class QuizCard extends React.Component{
     }
     return(
       <View>
+        
         <QuizQuestion text={this.props.quiz.questions[this.props.quizIndex].text}></QuizQuestion>
+        <View>
+
+        </View>
         {responseComponent}
       </View>
     );
   }
   
 }
+
 

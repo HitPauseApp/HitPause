@@ -19,11 +19,6 @@ export default function ResetPassword(props) {
 
   return (
     <View style={styles.container}>
-      <LinearGradient
-        // Background Linear Gradient
-          colors={['#EE0979', '#6E00DD']}
-          style={styles.gradient}
-      />
       <Text style = {styles.header}>Reset Password</Text>
       {!!errorMessage &&
         <Text style={{ color: 'red' }}>
@@ -51,6 +46,7 @@ export default function ResetPassword(props) {
 }
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#00095e',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
@@ -70,23 +66,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
     zIndex: 3
   },
-  gradient: {
-    flex: 1,
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    zIndex: -1,
-  },
   button1: { 
     marginTop: 30,
+    textAlign:'center',
     borderWidth: 2,
     borderColor: 'white' ,
     borderRadius: 50,
-    paddingVertical: 8,
-    paddingHorizontal: 53,
-    height: RFValue(20),
+    height: RFValue(40),
     width: RFValue(120),
   },
   button2: { 
@@ -95,8 +81,9 @@ const styles = StyleSheet.create({
 
   },
   text: { 
+    paddingTop: 10,
+    textAlign: 'center',
     fontSize: 13,
-    fontWeight: '600',
     color: 'white',
     fontFamily: 'Poppins'
 
