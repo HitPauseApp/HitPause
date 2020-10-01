@@ -15,6 +15,9 @@ export default class QuizCard extends React.Component{
     super(props);
   }
 
+  //Change rendering via props to render via state
+  //https://stackoverflow.com/questions/30034265/trigger-child-re-rendering-in-react-js
+
   render(){
     let responseComponent;
     if(this.props.quiz.questions[this.props.quizIndex].type == "checkbox"){
