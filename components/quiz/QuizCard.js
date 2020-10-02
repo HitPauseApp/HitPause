@@ -8,6 +8,7 @@ import Response_Radio from './Response_Radio';
 import Response_Scale from './Response_Scale';
 import Response_Text from './Response_Text';
 import Response_TextArea from './Response_TextArea';
+import { RFValue } from "react-native-responsive-fontsize";
 
 
 
@@ -50,17 +51,41 @@ export default class QuizCard extends React.Component{
       responseComponent = <Response_TextArea></Response_TextArea>
     }
     return(
-      <View>
-        
+      <View style={styles.quizQuestion}>
         <QuizQuestion question={this.props.quiz.questions[this.props.quizIndex]}></QuizQuestion>
         <View>
 
         </View>
         {responseComponent}
-        <Button onPress={() => this.handleNextQuestion()} title="Next Question"></Button>
+        <Button style={styles.button} onPress={() => this.handleNextQuestion()} title="Next Question"></Button>
       </View>
     );
   }
 
 }
+
+const styles = StyleSheet.create({
+  text:{
+    color: 'black',
+    fontFamily: 'Poppins-Medium',
+    fontSize: 20,
+    marginTop: 5,
+    textAlign: 'center',
+  },
+  quizQuestion: {
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignSelf: 'center',
+    borderRadius: 10,
+    padding: 10,
+    bottom: 10,
+    marginTop: 100,
+    height: RFValue(300),
+    width: RFValue(250),
+  },
+  button: {
+    marginTop: 20
+  }
+});
 
