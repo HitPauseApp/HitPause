@@ -69,7 +69,8 @@ export default class Response_Radio extends React.Component {
 const styles = StyleSheet.create({
   text: {
     color: "#48484A",
-    textAlign: "center"
+    textAlign: "center",
+    color: "white"
   },
   checkItem: {
     flexDirection: "row",
@@ -77,5 +78,6 @@ const styles = StyleSheet.create({
   },
   checkText: {
     marginTop: 10,
+    color: "white"
   }
 });

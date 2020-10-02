@@ -10,8 +10,6 @@ import Response_Text from './Response_Text';
 import Response_TextArea from './Response_TextArea';
 import { RFValue } from "react-native-responsive-fontsize";
 
-
-
 export default class QuizCard extends React.Component{
   constructor(props){
     super(props);
