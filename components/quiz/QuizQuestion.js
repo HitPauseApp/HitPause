@@ -4,8 +4,8 @@ import { RFValue } from "react-native-responsive-fontsize";
 
 export default function QuizQuestion(props){
   return(
-    <View style={styles.quizQuestion}>
-      <Text style={styles.text}>{props.question.order}</Text>
+    <View>
+      <Text style={styles.text}>Question {props.question.order}</Text>
       <Text style={styles.text}>{props.question.text}</Text>
     </View>
   );
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     padding: 10,
     bottom: 10,
     marginTop: 100,
-    height: RFValue(200),
+    height: RFValue(300),
     width: RFValue(250),
   }
 });
