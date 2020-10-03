@@ -15,22 +15,25 @@ export default class QuizCard extends React.Component{
     super(props);
 
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
-    this.state={
-      quizIndex: 1
+    this.state = {
+      quizIndex: 0
     }
-    this.state.quizIndex = this.props.quizIndex;
   }
 
-  handleNextQuestion(){
-    let i = this.state.quizIndex;
-    i = i + 1;
-    this.setState({quizIndex: i});
-    console.log(this.state.quizIndex);
+  handleNextQuestion() {
+    if (Array.isArray(this.props.quiz.questions) &&
+    this.state.quizIndex < this.props.quiz.questions.length - 1) {
+      console.log("Before:", this.state.quizIndex);
+      this.setState({quizIndex: this.state.quizIndex + 1});
+    } else {
+      console.log("Reached end of quiz...")
+      console.log(this.state.quizIndex);
+    }
 }
   //Change rendering via props to render via state
   //https://stackoverflow.com/questions/30034265/trigger-child-re-rendering-in-react-js
 
-  render(){
+  render() {
     let responseComponent;
     if(this.props.quiz.questions[this.state.quizIndex].type == "checkbox"){
       responseComponent = <Response_Checkbox response={this.props.quiz.questions[this.state.quizIndex].responses}></Response_Checkbox>
@@ -39,18 +42,18 @@ export default class QuizCard extends React.Component{
     else if(this.props.quiz.questions[this.state.quizIndex].type == "radio"){
       responseComponent = <Response_Radio response={this.props.quiz.questions[this.state.quizIndex].responses}></Response_Radio>
     }
-    else if(this.props.quiz.questions[this.props.quizIndex].type == "scale"){
+    else if(this.props.quiz.questions[this.state.quizIndex].type == "scale"){
       responseComponent = <Response_Scale></Response_Scale>
     }
-    else if(this.props.quiz.questions[this.props.quizIndex].type == "text"){
+    else if(this.props.quiz.questions[this.state.quizIndex].type == "text"){
       responseComponent = <Response_Text></Response_Text>
     }
-    else if(this.props.quiz.questions[this.props.quizIndex].type == "textarea"){
+    else if(this.props.quiz.questions[this.state.quizIndex].type == "textarea"){
       responseComponent = <Response_TextArea></Response_TextArea>
     }
     return(
       <View style={styles.quizQuestion}>
-        <QuizQuestion question={this.props.quiz.questions[this.props.quizIndex]}></QuizQuestion>
+        <QuizQuestion question={this.props.quiz.questions[this.state.quizIndex]}></QuizQuestion>
         <View>
 
         </View>
