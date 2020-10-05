@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Text, View, StyleSheet, Button} from 'react-native';
+import firebase from '../../Firebase';
 
 import QuizQuestion from './QuizQuestion'
 
@@ -28,6 +29,11 @@ export default class QuizCard extends React.Component{
     } else {
       console.log("Reached end of quiz...")
       console.log(this.state.quizIndex);
+      // Temporary
+      firebase.database().ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/initialAssessment`)
+        .push({
+          taken: true
+        });
     }
 }
   //Change rendering via props to render via state
