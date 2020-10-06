@@ -22,27 +22,39 @@ export default class QuizCard extends React.Component {
     this.setState({ quizIndex: this.props.quizIndex });
   }
 
-  handleRadioScoreChange = (score) => {
+  // Callback function to capture radio button score
+  radioButtonCallback = (score) => {
     let newScore = score;
-    this.setState({questionScore : newScore});
+    this.setState({ questionScore: newScore });
+  }
+
+  // Callback function to capture the score of the checkboxes
+  checkboxCallback = (checked) =>{
+    let scores = [];
+    checked.forEach(element => {
+      if(element.checked){
+        scores = [...scores, element.score];
+      }
+      this.setState({questionScore: scores});
+    });
   }
 
   handleNextQuestion() {
     //increase quiz index
     let i = this.state.quizIndex;
     i = i + 1;
+    this.setState({ quizIndex: i });
 
-    //handle adding in a new question score
-    let prevScore = this.state.quizScore;
+    //Add the questionScore to the entire quizScore array only when the button is pushed
+    // * Push the question score into the quizScore array
+    // * Reset questionScore so it doesn't add duplicated values if a question is
+    //skipped (can probably be depreciated when all questions are required)
     let qScore = this.state.questionScore;
-    let newScore;
-
-    console.log(newScore);
-    this.setState({ quizIndex: i,
-    quizScore: newScore});
+    this.setState({
+      quizScore: [...this.state.quizScore, qScore],
+      questionScore: ''
+    });
   }
-  //Change rendering via props to render via state
-  //https://stackoverflow.com/questions/30034265/trigger-child-re-rendering-in-react-js
 
   render() {
     let responseComponent;
@@ -50,16 +62,16 @@ export default class QuizCard extends React.Component {
       responseComponent =
         <Response_Checkbox
           response={this.props.quiz.questions[this.state.quizIndex].responses}
-          // onScoreUpdate = {this.handleScoreChange}
-          >
+          onScoreUpdate = {this.checkboxCallback}
+        >
         </Response_Checkbox>
     }
     else if (this.props.quiz.questions[this.state.quizIndex].type == "radio") {
-      responseComponent = 
-      <Response_Radio 
-        response={this.props.quiz.questions[this.state.quizIndex].responses}
-        onScoreUpdate = {this.handleRadioScoreChange}>
-      </Response_Radio>
+      responseComponent =
+        <Response_Radio
+          response={this.props.quiz.questions[this.state.quizIndex].responses}
+          onScoreUpdate={this.radioButtonCallback}>
+        </Response_Radio>
     }
     else if (this.props.quiz.questions[this.props.quizIndex].type == "scale") {
       responseComponent = <Response_Scale></Response_Scale>
@@ -79,7 +91,7 @@ export default class QuizCard extends React.Component {
         </View>
         {responseComponent}
         <Button onPress={() => this.handleNextQuestion()} title="Next Question"></Button>
-        <Text style={{color: '#fff'}}>{this.state.quizScore}</Text>
+        <Text style={{ color: '#fff' }}>{this.state.quizScore}</Text>
       </View>
     );
   }

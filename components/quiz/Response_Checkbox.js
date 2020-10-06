@@ -41,8 +41,11 @@ export default class Response_Checkbox extends React.Component {
     let response = this.state.responses;
     let index = response.findIndex(x => x.score === score);
     response[index].checked = !response[index].checked;
+    //Another example of poor state management, should be refactored 
     this.setState(response);
-    // this.props.onScoreUpdate(score);
+
+    //Send the state array to the callback function to capture score 
+    this.props.onScoreUpdate(this.state.responses);
   }
 
   render() {
