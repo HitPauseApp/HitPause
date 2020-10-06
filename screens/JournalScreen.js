@@ -12,11 +12,11 @@ export default function JournalScreen(props) {
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <Text style={styles.header}>My Journal</Text>
 
-      <JournalCard> </JournalCard>
-
       <JournalCard></JournalCard>
 
       <JournalCard></JournalCard>
+
+      <JournalCard useFire="true"></JournalCard>
 
       <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text style={styles.addButton}>+</Text>

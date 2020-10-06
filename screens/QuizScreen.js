@@ -9,7 +9,6 @@ import Loading from './Loading';
 export default function QuizScreen(){
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [quiz, setQuiz] = React.useState({});
-  const [quizIndex, setQuizIndex] = React.useState({})
 
   let quizName = "initialAssessment";
 
@@ -18,7 +17,6 @@ export default function QuizScreen(){
       let quizData = s.val();
       let questionList = quizData.questions;
       if (!quizData.dynamic) {
-        setQuizIndex(0);
         let sortedQuestionList = Object.values(questionList).sort((a, b) => a.order - b.order);
         quizData.questions = sortedQuestionList.slice();
       }
@@ -27,21 +25,13 @@ export default function QuizScreen(){
     })
   }, []);
 
-  // React.useEffect(() => {
-  // }, [quiz])
-
-  // function handleNextQuestion(){
-  //     setQuizIndex(quizIndex + 1);
-  // }
-
-
   if (!isLoadingComplete) {
-    return <Loading></Loading>;
+    return <Loading message="Loading your quiz..."></Loading>;
   } else {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>Quiz Screen</Text>
-        <QuizCard quiz={quiz} quizIndex={quizIndex}></QuizCard>
+        <QuizCard quiz={quiz}></QuizCard>
         {/* <Button onPress={() => handleNextQuestion()}>Next Question</Button> */}
       </View>
     );
