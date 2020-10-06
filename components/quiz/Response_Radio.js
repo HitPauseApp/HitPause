@@ -6,15 +6,15 @@ export default class Response_Radio extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      responses: []
+      responses: [],
+      checked: ''
     };
 
     const responses = Object.values(props.response);
     this.state.responses = responses.map(function (obj) {
       return {
         score: obj.score,
-        text: obj.text,
-        checked: ''
+        text: obj.text
       };
     });
   }
@@ -26,8 +26,7 @@ export default class Response_Radio extends React.Component {
         responses: responses.map(function (obj) {
           return {
             score: obj.score,
-            text: obj.text,
-            checked: ''
+            text: obj.text
           };
         })
       });
@@ -35,11 +34,9 @@ export default class Response_Radio extends React.Component {
   }
 
   handleChecked(score){
-    const response = this.state.responses;
-    const index = response.findIndex(x => x.score === score);
-    response[index].checked = score;
-    this.setState(response);
-    console.log(response);
+    this.setState({checked: score});
+    this.props.onScoreUpdate(score);
+    console.log(score);
   }
 
   render() {
@@ -53,7 +50,7 @@ export default class Response_Radio extends React.Component {
               <Text style={styles.checkText}>{item.text}</Text>
               <RadioButton
                 value={key}
-                status={item.checked === item.score ? 'checked' : 'unchecked'}
+                status={this.state.checked === item.score ? 'checked' : 'unchecked'}
                 onPress={() => this.handleChecked(item.score)}
               />
 
