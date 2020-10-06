@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         bottom: 1,
         margin: 10,
         height: 150,
-        positions: 'absolute'
+        position: 'absolute'
     },
     header: {
         color: 'white',
