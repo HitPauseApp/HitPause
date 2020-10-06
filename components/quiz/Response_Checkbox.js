@@ -42,7 +42,7 @@ export default class Response_Checkbox extends React.Component {
     let index = response.findIndex(x => x.score === score);
     response[index].checked = !response[index].checked;
     this.setState(response);
-    console.log(this.state.responses);
+    // this.props.onScoreUpdate(score);
   }
 
   render() {
