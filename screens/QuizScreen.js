@@ -10,7 +10,7 @@ export default function QuizScreen(){
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [quiz, setQuiz] = React.useState({});
 
-  let quizName = "initialAssessment";
+  let quizName = "incidentQuestionnaire";
 
   React.useEffect(() => {
     firebase.database().ref(`hitpause/quizzes/${quizName}`).once('value').then(s => {
@@ -30,7 +30,7 @@ export default function QuizScreen(){
   } else {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>Quiz Screen</Text>
+        <Text style={styles.header}>Incidental Quiz</Text>
         <QuizCard quiz={quiz}></QuizCard>
         {/* <Button onPress={() => handleNextQuestion()}>Next Question</Button> */}
       </View>

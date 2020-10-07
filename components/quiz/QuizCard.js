@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import firebase from '../../Firebase';
 
 import QuizQuestion from './QuizQuestion'
@@ -16,6 +16,7 @@ export default class QuizCard extends React.Component {
     super(props);
 
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
+    this.handlePrevQuestion = this.handlePrevQuestion.bind(this);
     this.state = {
       quizIndex: 0,
       quizScore: [],
@@ -66,11 +67,29 @@ export default class QuizCard extends React.Component {
         });
     }
   }
+
+  handlePrevQuestion() {
+    if (Array.isArray(this.props.quiz.questions) &&
+    this.state.quizIndex < 0) {
+      console.log("Before:", this.state.quizIndex);
+      this.setState({quizIndex: this.state.quizIndex - 1});
+    }
+  }
+
+  handleButtonDisable(){
+    if(buttonDisabled == true){
+      this.setState({ buttonDisabled : false })
+    }else if(buttonDisabled == false){
+      this.setState({ buttonDisabled : false })
+    }
+
+  }
   //Change rendering via props to render via state
   //https://stackoverflow.com/questions/30034265/trigger-child-re-rendering-in-react-js
 
   render() {
     let responseComponent;
+    let buttonDisabled = true;
     if (this.props.quiz.questions[this.state.quizIndex].type == "checkbox") {
       responseComponent =
         <Response_Checkbox
@@ -88,21 +107,28 @@ export default class QuizCard extends React.Component {
     }
     else if (this.props.quiz.questions[this.state.quizIndex].type == "scale") {
       responseComponent = <Response_Scale></Response_Scale>
+      buttonDisabled = false;
     }
     else if (this.props.quiz.questions[this.state.quizIndex].type == "text") {
       responseComponent = <Response_Text></Response_Text>
+      buttonDisabled = false;
     }
     else if (this.props.quiz.questions[this.state.quizIndex].type == "textarea") {
       responseComponent = <Response_TextArea></Response_TextArea>
+      buttonDisabled = false;
     }
     return (
       <View style={styles.quizQuestion}>
         <QuizQuestion question={this.props.quiz.questions[this.state.quizIndex]}></QuizQuestion>
-        <View>
-
-        </View>
         {responseComponent}
-        <Button style={styles.button} onPress={() => this.handleNextQuestion()} title="Next Question"></Button>
+        <View style={styles.row}>
+          <TouchableOpacity style={styles.button} onPress={this.handlePrevQuestion}>
+            <Text style={styles.text1}>Previous</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={this.handleNextQuestion}>
+            <Text style={styles.text1}>Next</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -126,11 +152,31 @@ const styles = StyleSheet.create({
     padding: 10,
     bottom: 10,
     marginTop: 100,
-    height: RFValue(300),
+    height: 'auto',
     width: RFValue(250),
   },
-  button: {
-    marginTop: 20
+  button: { 
+    marginTop: 30,
+    borderWidth: 2,
+    borderColor: 'black',
+    borderRadius: 50,
+    overflow: 'hidden' ,
+    height: RFValue(30),
+    width: RFValue(100),
+    textAlign: 'center',
+    marginLeft: 15,
+    marginRight: 15,
+  },
+  text1: { 
+    fontSize: 20,
+    color: 'black',
+    fontFamily: 'Poppins-Medium'
+  },
+  row: {
+    flexDirection: 'row',
+    alignContent: 'center',
+    alignSelf: 'center',
+    
   }
 });
 

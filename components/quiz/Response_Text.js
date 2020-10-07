@@ -4,7 +4,6 @@ import {Text, View, StyleSheet} from 'react-native';
 export default function Response_Text(props){
   return(
     <View style={styles.quizQuestion}>
-      <Text style={styles.text}>I'm the Text</Text>
     </View>
   );
 }
