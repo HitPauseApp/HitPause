@@ -46,19 +46,13 @@ export default class Login extends React.Component {
         <TouchableOpacity style={styles.loginButton} onPress={this.handleLogin}>
           <Text style={styles.text1}>Login</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.forgotButton} onPress={() => this.props.navigation.navigate('ResetPassword')}>
+            <Text style={styles.text3}>Forgot your password?</Text>
+        </TouchableOpacity>
         <Text style={styles.text2}>Don't have an account?</Text>
         <TouchableOpacity style={styles.signupButton} onPress={() => this.props.navigation.navigate('SignUp')}>
           <Text style={styles.text1}>Sign Up</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity style={styles.forgotButton} onPress={() => this.props.navigation.navigate('ResetPassword')}>
-            <Text style={styles.text3}>Forgot your password?</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.skipButton} onPress={() => this.props.navigation.navigate('Root')}>
-            <Text style={styles.text1}>Skip Auth (Dev)</Text>
-        </TouchableOpacity>
-      
       </View>
     )
   }
@@ -85,10 +79,10 @@ const styles = StyleSheet.create({
     overflow: 'hidden' ,
     height: RFValue(30),
     width: RFValue(100),
-    textAlign: 'center',
+    // textAlign: 'center',
   },
   signupButton: { 
-    textAlign: 'center',
+    // textAlign: 'center',
     borderWidth: 2,
     borderColor: 'white' ,
     borderRadius: 50,
@@ -111,7 +105,8 @@ const styles = StyleSheet.create({
   text1: { 
     fontSize: 20,
     color: 'white',
-    fontFamily: 'Poppins-Medium'
+    fontFamily: 'Poppins-Medium',
+    textAlign: 'center'
   },
   text2: {
     marginTop: 15,

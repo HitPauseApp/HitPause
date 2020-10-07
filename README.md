@@ -29,3 +29,12 @@ To contribute to this repository, please follow these steps
 3. *Please* Create a pull request. As the title, put the name of the story associated with the feature you are pushing. Ex for a story named "Feature - Profile Page" title the PR "Feature - Profile Page" so we can keep the backlog and the code well tracked. 
 4. You can just merge the pull request yourself. 
 5. Make sure you refresh the master branch on your local machine often!
+
+## Reporting an Issue 🐛
+If you came across a bug, lets handle it this way. Even if you can fix the bug right then and there, lets still do this as documentation incase it happens again, as well as practicing using an important part of github! 
+1. Gather as much info as you can about what's wrong causing the bug.
+2. Open an issue on Github under the "issues" tab.
+3. Use this template to fill out the bug report. Please provide as much detail as possible so other people know what's going on. You can copy and paste screenshots right into the document 
+4. Label it. On the right column of the bug report window, click the cog wheel to add a label. If it is a bug (like it really messes with the app in some way) use the bug label. If you are just getting a warning message, use the warning label. Then choose an urgency label according to how bad the bug is and when it should be fixed (Low - can wait, moderate - should be addressed next sprint, high - needs to be fixed immediatly/this sprint).
+5. Post link to issue report in the Slack channel so we know what's going on.
+5. If you would like to fix the bug, you can create a story on pivotal tracker and then link to the issue (the url on the issue page) and you can get credit for it!

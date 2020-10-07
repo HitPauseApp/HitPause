@@ -11,22 +11,52 @@ import Response_Text from './Response_Text';
 import Response_TextArea from './Response_TextArea';
 import { RFValue } from "react-native-responsive-fontsize";
 
-export default class QuizCard extends React.Component{
-  constructor(props){
+export default class QuizCard extends React.Component {
+  constructor(props) {
     super(props);
 
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
     this.handlePrevQuestion = this.handlePrevQuestion.bind(this);
     this.state = {
-      quizIndex: 0
+      quizIndex: 0,
+      quizScore: [],
+      questionScore: ''
     }
+    this.setState({ quizIndex: this.props.quizIndex });
+  }
+
+  // Callback function to capture radio button score
+  radioButtonCallback = (score) => {
+    let newScore = score;
+    this.setState({ questionScore: newScore });
+  }
+
+  // Callback function to capture the score of the checkboxes
+  checkboxCallback = (checked) => {
+    let scores = [];
+    checked.forEach(element => {
+      if (element.checked) {
+        scores = [...scores, element.score];
+      }
+      this.setState({ questionScore: scores });
+    });
   }
 
   handleNextQuestion() {
     if (Array.isArray(this.props.quiz.questions) &&
-    this.state.quizIndex < this.props.quiz.questions.length - 1) {
+      this.state.quizIndex < this.props.quiz.questions.length - 1) {
       console.log("Before:", this.state.quizIndex);
-      this.setState({quizIndex: this.state.quizIndex + 1});
+      this.setState({ quizIndex: this.state.quizIndex + 1 });
+
+      //Add the questionScore to the entire quizScore array only when the button is pushed
+      // * Push the question score into the quizScore array
+      // * Reset questionScore so it doesn't add duplicated values if a question is
+      //skipped (can probably be depreciated when all questions are required)
+      let qScore = this.state.questionScore;
+      this.setState({
+        quizScore: [...this.state.quizScore, qScore],
+        questionScore: ''
+      });
     } else {
       console.log("Reached end of quiz...")
       console.log(this.state.quizIndex);
@@ -60,28 +90,34 @@ export default class QuizCard extends React.Component{
   render() {
     let responseComponent;
     let buttonDisabled = true;
-    if(this.props.quiz.questions[this.state.quizIndex].type == "checkbox"){
-      responseComponent = <Response_Checkbox response={this.props.quiz.questions[this.state.quizIndex].responses}></Response_Checkbox>
-      console.log(this.props.quiz.questions[this.state.quizIndex].responses);
-      buttonDisabled = false;
+    if (this.props.quiz.questions[this.state.quizIndex].type == "checkbox") {
+      responseComponent =
+        <Response_Checkbox
+          response={this.props.quiz.questions[this.state.quizIndex].responses}
+          onScoreUpdate={this.checkboxCallback}
+        >
+        </Response_Checkbox>
     }
-    else if(this.props.quiz.questions[this.state.quizIndex].type == "radio"){
-      responseComponent = <Response_Radio response={this.props.quiz.questions[this.state.quizIndex].responses}></Response_Radio>
-      buttonDisabled = false;
+    else if (this.props.quiz.questions[this.state.quizIndex].type == "radio") {
+      responseComponent =
+        <Response_Radio
+          response={this.props.quiz.questions[this.state.quizIndex].responses}
+          onScoreUpdate={this.radioButtonCallback}>
+        </Response_Radio>
     }
-    else if(this.props.quiz.questions[this.state.quizIndex].type == "scale"){
+    else if (this.props.quiz.questions[this.state.quizIndex].type == "scale") {
       responseComponent = <Response_Scale></Response_Scale>
       buttonDisabled = false;
     }
-    else if(this.props.quiz.questions[this.state.quizIndex].type == "text"){
+    else if (this.props.quiz.questions[this.state.quizIndex].type == "text") {
       responseComponent = <Response_Text></Response_Text>
       buttonDisabled = false;
     }
-    else if(this.props.quiz.questions[this.state.quizIndex].type == "textarea"){
+    else if (this.props.quiz.questions[this.state.quizIndex].type == "textarea") {
       responseComponent = <Response_TextArea></Response_TextArea>
       buttonDisabled = false;
     }
-    return(
+    return (
       <View style={styles.quizQuestion}>
         <QuizQuestion question={this.props.quiz.questions[this.state.quizIndex]}></QuizQuestion>
         {responseComponent}
@@ -100,7 +136,7 @@ export default class QuizCard extends React.Component{
 }
 
 const styles = StyleSheet.create({
-  text:{
+  text: {
     color: 'black',
     fontFamily: 'Poppins-Medium',
     fontSize: 20,
