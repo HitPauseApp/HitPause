@@ -48,7 +48,6 @@ export default class Response_Checkbox extends React.Component {
   render() {
     return (
       <View style={styles.quizQuestion}>
-        <Text style={styles.text}>I'm the Checkbox</Text>
 
         {
           this.state.responses.map((item, key) =>

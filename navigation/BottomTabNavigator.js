@@ -75,8 +75,6 @@ function getHeaderTitle(route) {
       return 'HitPause';
     case 'Journal':
       return 'My Journal';
-    case 'PauseQuiz':
-      return 'HitPause Quiz';
     case 'Likes':
       return 'My Liked Songs';
     case 'Account':
