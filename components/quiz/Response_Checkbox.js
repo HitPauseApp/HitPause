@@ -54,7 +54,7 @@ export default class Response_Checkbox extends React.Component {
 
         {
           this.state.responses.map((item, key) =>
-            <View style={styles.checkItem}>
+            <View style={styles.checkItem} key={key}>
               <Text style={styles.checkText}>{item.text}</Text>
               <Checkbox
                 key={key}

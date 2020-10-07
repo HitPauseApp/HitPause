@@ -42,10 +42,9 @@ export default class Response_Radio extends React.Component {
   render() {
     return (
       <View style={styles.quizQuestion}>
-
         {
           this.state.responses.map((item, key) =>
-            <View style={styles.checkItem}>
+            <View style={styles.checkItem} key={key}>
               <Text style={styles.checkText}>{item.text}</Text>
               <RadioButton
                 value={key}

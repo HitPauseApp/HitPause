@@ -22,7 +22,8 @@ export default class QuizCard extends React.Component {
       quizScore: [],
       questionScore: ''
     }
-    this.setState({ quizIndex: this.props.quizIndex });
+    // [TOS 10/7] This line causes an error: cannot set state on unmounted component
+    // this.setState({ quizIndex: this.props.quizIndex });
   }
 
   // Callback function to capture radio button score
@@ -163,20 +164,19 @@ const styles = StyleSheet.create({
     overflow: 'hidden' ,
     height: RFValue(30),
     width: RFValue(100),
-    textAlign: 'center',
     marginLeft: 15,
     marginRight: 15,
   },
   text1: { 
     fontSize: 20,
     color: 'black',
-    fontFamily: 'Poppins-Medium'
+    fontFamily: 'Poppins-Medium',
+    textAlign: 'center'
   },
   row: {
     flexDirection: 'row',
     alignContent: 'center',
     alignSelf: 'center',
-    
   }
 });
 
