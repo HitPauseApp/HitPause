@@ -38,35 +38,37 @@ export default class Response_Checkbox extends React.Component {
   }
 
   handleChecked(score) {
-    let response = this.state.responses;
-    let index = response.findIndex(x => x.score === score);
-    response[index].checked = !response[index].checked;
-    //Another example of poor state management, should be refactored 
-    this.setState(response);
+    let newValue = [];
+    // Handle "uncheck" case
+    if (Array.isArray(this.props.value) && this.props.value.indexOf(score) >= 0) {
+      let i = this.props.value.indexOf(score);
+      newValue = this.props.value.splice(i, 1);
+    }
+    // Handle "check" case
+    if (Array.isArray(this.props.value)) {
+      newValue = [...this.props.value, score];
+    } else {
+      newValue = [score];
+    }
 
-    //Send the state array to the callback function to capture score 
-    this.props.onScoreUpdate(this.state.responses);
+    this.props.onChange(newValue);
   }
 
   render() {
     return (
       <View style={styles.quizQuestion}>
-
         {
           this.state.responses.map((item, key) =>
             <View style={styles.checkItem} key={key}>
               <Text style={styles.checkText}>{item.text}</Text>
               <Checkbox
                 key={key}
-                status={item.checked ? 'checked' : 'unchecked'}
-                onPress={() => {
-                  this.handleChecked(item.score)
-                }}
+                status={Array.isArray(this.props.value) && this.props.value.indexOf(item.score) >= 0 ? 'checked' : 'unchecked'}
+                onPress={() => {this.handleChecked(item.score)}}
               />
             </View>
           )
         }
-
       </View>
     );
   }

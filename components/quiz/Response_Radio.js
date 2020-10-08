@@ -6,8 +6,7 @@ export default class Response_Radio extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      responses: [],
-      checked: ''
+      responses: []
     };
 
     const responses = Object.values(props.response);
@@ -33,29 +32,23 @@ export default class Response_Radio extends React.Component {
     }
   }
 
-  handleChecked(score){
-    this.setState({checked: score});
-    this.props.onScoreUpdate(score);
-    console.log(score);
-  }
-
   render() {
     return (
       <View style={styles.quizQuestion}>
-        {
-          this.state.responses.map((item, key) =>
-            <View style={styles.checkItem} key={key}>
-              <Text style={styles.checkText}>{item.text}</Text>
-              <RadioButton
-                value={key}
-                status={this.state.checked === item.score ? 'checked' : 'unchecked'}
-                onPress={() => this.handleChecked(item.score)}
-              />
-
-            </View>
-          )
-        }
-
+        <RadioButton.Group onValueChange={value => this.props.onChange(value)} value={this.props.value}>
+          {
+            // TODO: Use RadioButton.Item
+            this.state.responses.map((item, key) =>
+              <View style={styles.checkItem} key={key}>
+                <RadioButton
+                  value={item.score}
+                  status={this.props.value === item.score ? 'checked' : 'unchecked'}
+                />
+                <Text style={styles.checkText}>{item.text}</Text>
+              </View>
+            )
+          }
+        </RadioButton.Group>
       </View>
     );
   }
