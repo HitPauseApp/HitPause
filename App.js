@@ -10,6 +10,7 @@ import TabBarIcon from './components/TabBarIcon';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 import firebase from './Firebase';
+import { AuthContext } from './AuthContext.js';
 
 // TODO: Remove?
 import BottomTabNavigator from './navigation/BottomTabNavigator';
@@ -32,22 +33,9 @@ export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [isAuthenticating, setIsAuthenticating] = React.useState(false);
   const [initialNavigationState, setInitialNavigationState] = React.useState('Login');
-  const [userToken, setUserToken] = React.useState(null);
+  const [authUser, setAuthUser] = React.useState(null);
   const containerRef = React.useRef();
   // const { getInitialState } = useLinking(containerRef);
-
-  // Establish firebase authentication observer
-  // TODO: react-native-firebase auth state persistence
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      // There is a user
-      console.log(user);
-      setUserToken(true);
-      console.log("Logged in as:", user.email);
-    } else {
-      setUserToken(null);
-    }
-  });
 
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
@@ -77,6 +65,20 @@ export default function App(props) {
     }
 
     loadResourcesAndDataAsync();
+
+    // Establish firebase authentication observer
+    // TODO: react-native-firebase auth state persistence
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // There is a user
+        console.log("Logged in as:", user.email);
+        firebase.database().ref(`users/${user.uid}`).once('value').then(s => {
+          setAuthUser(s.val());
+        });
+      } else {
+        setAuthUser(null);
+      }
+    });
   }, []);
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
@@ -85,12 +87,13 @@ export default function App(props) {
     return <Loading></Loading>;
   } else {
     return (
+      <AuthContext.Provider value={authUser}>
         <PaperProvider>
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
             <NavigationContainer ref={containerRef}>
               {/* Display authentication screens or app screens based on userToken */}
-              { userToken == null ? (
+              { authUser == null ? (
                 <Stack.Navigator initialRouteName={initialNavigationState} headerMode="none">
                   <Stack.Screen name="Login" component={Login} />
                   <Stack.Screen name="SignUp" component={SignUp} />
@@ -147,6 +150,7 @@ export default function App(props) {
             </NavigationContainer>
           </View>
         </PaperProvider>
+      </AuthContext.Provider>
     );
   }
 }
