@@ -44,9 +44,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#00095e'
   },
   header:{
-    color: 'white',
     fontFamily: 'Poppins-Medium',
-    fontSize: 24,
-    textAlign: 'center'
+    color: 'white',
+    fontSize: 26,
+    fontWeight: 'bold',
+    paddingHorizontal:25,
+    paddingVertical: 30
   },
 });
