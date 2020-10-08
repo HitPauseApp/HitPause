@@ -14,9 +14,7 @@ export default function Account(props) {
   const [user, setUser] = React.useState({});
   
   function handleLogout() {
-    firebase.auth().signOut().then(() => {
-      props.navigation.navigate('Login');
-    }).catch((error) => {
+    firebase.auth().signOut().catch((error) => {
       console.error(error);
     });
   }
