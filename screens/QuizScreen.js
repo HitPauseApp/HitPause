@@ -31,7 +31,7 @@ export default function QuizScreen(){
     return (
       <View style={styles.container}>
         <Text style={styles.header}>Incidental Quiz</Text>
-        <QuizCard quiz={quiz}></QuizCard>
+        <QuizCard quiz={quiz} quizName={quizName}></QuizCard>
         {/* <Button onPress={() => handleNextQuestion()}>Next Question</Button> */}
       </View>
     );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import firebase from '../../Firebase';
 
 import QuizQuestion from './QuizQuestion'
@@ -19,73 +19,62 @@ export default class QuizCard extends React.Component {
     this.handlePrevQuestion = this.handlePrevQuestion.bind(this);
     this.state = {
       quizIndex: 0,
+      quizLength: Array.isArray(this.props.quiz.questions) ? this.props.quiz.questions.length : 0,
+      quizData: [],
       quizScore: [],
-      questionScore: ''
+      questionScore: '',
+      nextDisabled: false,
+      prevDisabled: true     // Start on first question by default
     }
-    this.setState({ quizIndex: this.props.quizIndex });
   }
 
-  // Callback function to capture radio button score
-  radioButtonCallback = (score) => {
-    let newScore = score;
-    this.setState({ questionScore: newScore });
-  }
-
-  // Callback function to capture the score of the checkboxes
-  checkboxCallback = (checked) => {
-    let scores = [];
-    checked.forEach(element => {
-      if (element.checked) {
-        scores = [...scores, element.score];
-      }
-      this.setState({ questionScore: scores });
+  // Updates data for quiz when a response is selected or changes
+  updateQuizData = (data) => {
+    this.setState((state) => {
+      let update = [...state.quizData]
+      update[state.quizIndex] = data;
+      console.log("update:", update)
+      return { quizData: update };
     });
   }
 
   handleNextQuestion() {
-    if (Array.isArray(this.props.quiz.questions) &&
-      this.state.quizIndex < this.props.quiz.questions.length - 1) {
-      console.log("Before:", this.state.quizIndex);
-      this.setState({ quizIndex: this.state.quizIndex + 1 });
-
-      //Add the questionScore to the entire quizScore array only when the button is pushed
-      // * Push the question score into the quizScore array
-      // * Reset questionScore so it doesn't add duplicated values if a question is
-      //skipped (can probably be depreciated when all questions are required)
-      let qScore = this.state.questionScore;
+    if (this.state.quizIndex < this.state.quizLength - 1) {
+      let newIndex = this.state.quizIndex + 1;
       this.setState({
-        quizScore: [...this.state.quizScore, qScore],
-        questionScore: ''
+        quizIndex: newIndex,
+        // Always re-enable previous button when moving forward
+        prevDisabled: false
       });
-    } else {
-      console.log("Reached end of quiz...")
-      console.log(this.state.quizIndex);
-      // Temporary
-      firebase.database().ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/initialAssessment`)
+    } else if (this.state.quizIndex == this.state.quizLength - 1) {
+      // Sanitize input data
+      for (const key in this.state.quizData) {
+        if (typeof this.state.quizData[key] === 'undefined') this.state.quizData[key] = '';
+      }
+      
+      firebase.database()
+        .ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/${this.props.quizName}`)
         .push({
-          taken: true
+          timestamp: Date.now(),
+          responses: this.state.quizData
         });
+      // TODO: Display summary screen
     }
   }
 
   handlePrevQuestion() {
-    if (Array.isArray(this.props.quiz.questions) &&
-    this.state.quizIndex < 0) {
-      console.log("Before:", this.state.quizIndex);
-      this.setState({quizIndex: this.state.quizIndex - 1});
-    }
+    let newIndex = this.state.quizIndex - 1;
+    this.setState({ quizIndex: newIndex });
+    if (newIndex == 0) this.setState({ prevDisabled: true })
   }
 
-  handleButtonDisable(){
-    if(buttonDisabled == true){
-      this.setState({ buttonDisabled : false })
-    }else if(buttonDisabled == false){
-      this.setState({ buttonDisabled : false })
+  handleButtonDisable() {
+    if (buttonDisabled == true) {
+      this.setState({ buttonDisabled: false })
+    } else if (buttonDisabled == false) {
+      this.setState({ buttonDisabled: false })
     }
-
   }
-  //Change rendering via props to render via state
-  //https://stackoverflow.com/questions/30034265/trigger-child-re-rendering-in-react-js
 
   render() {
     let responseComponent;
@@ -93,16 +82,19 @@ export default class QuizCard extends React.Component {
     if (this.props.quiz.questions[this.state.quizIndex].type == "checkbox") {
       responseComponent =
         <Response_Checkbox
-          response={this.props.quiz.questions[this.state.quizIndex].responses}
-          onScoreUpdate={this.checkboxCallback}
+          responses={this.props.quiz.questions[this.state.quizIndex].responses}
+          onChange={this.updateQuizData}
+          value={this.state.quizData[this.state.quizIndex]}
         >
         </Response_Checkbox>
     }
     else if (this.props.quiz.questions[this.state.quizIndex].type == "radio") {
       responseComponent =
         <Response_Radio
-          response={this.props.quiz.questions[this.state.quizIndex].responses}
-          onScoreUpdate={this.radioButtonCallback}>
+          responses={this.props.quiz.questions[this.state.quizIndex].responses}
+          onChange={this.updateQuizData}
+          value={this.state.quizData[this.state.quizIndex]}
+        >
         </Response_Radio>
     }
     else if (this.props.quiz.questions[this.state.quizIndex].type == "scale") {
@@ -122,11 +114,19 @@ export default class QuizCard extends React.Component {
         <QuizQuestion question={this.props.quiz.questions[this.state.quizIndex]}></QuizQuestion>
         {responseComponent}
         <View style={styles.row}>
-          <TouchableOpacity style={styles.button} onPress={this.handlePrevQuestion}>
-            <Text style={styles.text1}>Previous</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.handlePrevQuestion}
+            disabled={this.state.prevDisabled}
+          >
+            <Text style={styles.buttonText}>Previous</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={this.handleNextQuestion}>
-            <Text style={styles.text1}>Next</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.handleNextQuestion}
+            disabled={this.state.nextDisabled}
+          >
+            <Text style={styles.buttonText}>{this.state.quizIndex == this.state.quizLength - 1 ? 'Submit' : 'Next'}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -155,28 +155,27 @@ const styles = StyleSheet.create({
     height: 'auto',
     width: RFValue(250),
   },
-  button: { 
+  button: {
     marginTop: 30,
     borderWidth: 2,
     borderColor: 'black',
     borderRadius: 50,
-    overflow: 'hidden' ,
+    overflow: 'hidden',
     height: RFValue(30),
     width: RFValue(100),
-    textAlign: 'center',
     marginLeft: 15,
     marginRight: 15,
   },
-  text1: { 
+  buttonText: {
     fontSize: 20,
     color: 'black',
-    fontFamily: 'Poppins-Medium'
+    fontFamily: 'Poppins-Medium',
+    textAlign: 'center'
   },
   row: {
     flexDirection: 'row',
     alignContent: 'center',
     alignSelf: 'center',
-    
   }
 });
 
