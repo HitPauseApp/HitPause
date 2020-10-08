@@ -15,10 +15,6 @@ export default function JournalCard(props) {
     }
     return (
         <View style={styles.container}>
-            {/* <ImageBackground style={ styles.imgBackground }  
-                    source={require('../assets/images/shapeDesign1.png')}>
-            </ImageBackground> */}
-
             <Text style={styles.header}>{title}</Text>
             <Text style={styles.bodyText}>{body}</Text>
 
@@ -39,7 +35,7 @@ const styles = StyleSheet.create({
         bottom: 1,
         margin: 10,
         height: 150,
-        position: 'absolute'
+        //position: 'absolute'
     },
     header: {
         color: 'white',

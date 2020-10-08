@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity  } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ImageBackground} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import JournalCard from '../components/JournalCard';
 
@@ -9,38 +9,51 @@ import JournalCard from '../components/JournalCard';
 export default function JournalScreen(props) {
   const onPress = () => props.navigation.navigate("HomeScreen");
   return (
+
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <Text style={styles.header}>My Journal</Text>
 
-      <JournalCard></JournalCard>
+          {/* <Image style={ styles.imgBackground }  
+                  source={require('../assets/images/shapeDesign1.png')}>
+          </Image> */}
 
       <JournalCard></JournalCard>
+
+      <JournalCard></JournalCard> 
 
       <JournalCard useFire="true"></JournalCard>
 
-      <TouchableOpacity style={styles.button} onPress={onPress}>
-        <Text style={styles.addButton}>+</Text>
-      </TouchableOpacity>
-
-      {/* <OptionButton
-        icon="md-school"
-        label="Read the Expo documentation"
-        onPress={() => WebBrowser.openBrowserAsync('https://docs.expo.io')}
-      />
-
-      <OptionButton
-        icon="md-compass"
-        label="Read the React Navigation documentation"
-        onPress={() => WebBrowser.openBrowserAsync('https://reactnavigation.org')}
-      />
-
-      <OptionButton
-        icon="ios-chatboxes"
-        label="Ask a question on the forums"
-        onPress={() => WebBrowser.openBrowserAsync('https://forums.expo.io')}
-        isLastOption
-      /> */}
+      <View style={styles.buttonView}>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
+            <Image style={ styles.imgBackground }  
+                  source={require('../assets/images/pencilTip.png')}>
+          </Image>
+        </TouchableOpacity>
+      </View>
+     
     </ScrollView>
+
+   
+
+
+  // <OptionButton
+  //       icon="md-school"
+  //       label="Read the Expo documentation"
+  //       onPress={() => WebBrowser.openBrowserAsync('https://docs.expo.io')}
+  //     />
+
+  //     <OptionButton
+  //       icon="md-compass"
+  //       label="Read the React Navigation documentation"
+  //       onPress={() => WebBrowser.openBrowserAsync('https://reactnavigation.org')}
+  //     />
+
+  //     <OptionButton
+  //       icon="ios-chatboxes"
+  //       label="Ask a question on the forums"
+  //       onPress={() => WebBrowser.openBrowserAsync('https://forums.expo.io')}
+  //       isLastOption
+  //     /> 
   );
 }
 
@@ -62,7 +75,9 @@ function OptionButton({ icon, label, onPress, isLastOption }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#00095e',
+    //justifyContent: "center",
     flex: 1,
+    vertical: true
   },
   header: {
     fontFamily: 'Poppins-Medium',
@@ -72,6 +87,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10
   },
+  buttonView: {
+    flex: 1,
+    flexDirection: 'row-reverse',
+    right: 20,
+    bottom: -100
+    
+  },
   addButton: {
     color: 'white',
     fontSize: 25,
@@ -79,13 +101,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 13
   },
   button:{
-    backgroundColor: '#00095e',
-    bottom: -15,
-    alignSelf: 'center',
-    width: 44,
-    height: 44,
-    borderRadius: 44/2,
-    borderWidth: 2,
+    backgroundColor: 'white',
+    //bottom: -15,
+    //right: -40,
+    width: 55,
+    height: 55,
+    borderRadius: 55/2,
+    //borderWidth: 2,
+    flexBasis: 'column',
     borderColor: 'white'
   },
   contentContainer: {
@@ -101,6 +124,21 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderBottomWidth: 0,
     borderColor: '#ededed',
+  },
+  imgBackground: {
+    width: '70%',
+    height: '70%',
+    bottom: -7,
+    right: -7
+
+    //alignSelf: 'left',
+    //resizeMode: 'cover',
+    //position: 'center',
+    //top: 20,
+},
+  imageContainer: {
+    backgroundColor: '#00095e',
+    flex: 1,
   },
   lastOption: {
     borderBottomWidth: StyleSheet.hairlineWidth,
