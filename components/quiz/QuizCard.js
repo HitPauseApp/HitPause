@@ -109,7 +109,7 @@ export default class QuizCard extends React.Component {
     if (this.props.quiz.questions[this.state.quizIndex].type == "checkbox") {
       responseComponent =
         <Response_Checkbox
-          response={this.props.quiz.questions[this.state.quizIndex].responses}
+          responses={this.props.quiz.questions[this.state.quizIndex].responses}
           onScoreUpdate={this.checkboxCallback}
           onChange={this.updateQuizData}
           value={this.state.quizData[this.state.quizIndex]}
@@ -119,7 +119,7 @@ export default class QuizCard extends React.Component {
     else if (this.props.quiz.questions[this.state.quizIndex].type == "radio") {
       responseComponent =
         <Response_Radio
-          response={this.props.quiz.questions[this.state.quizIndex].responses}
+          responses={this.props.quiz.questions[this.state.quizIndex].responses}
           onScoreUpdate={this.radioButtonCallback}
           onChange={this.updateQuizData}
           value={this.state.quizData[this.state.quizIndex]}
