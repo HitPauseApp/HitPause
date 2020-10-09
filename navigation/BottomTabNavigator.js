@@ -5,7 +5,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import JournalScreen from '../screens/JournalScreen';
 import Login from '../screens/Login';
-import Account from '../screens/Account';
+import Account from '../screens/AccountScreen';
 import QuizScreen from '../screens/QuizScreen';
 import LikesScreen from '../screens/LikesScreen';
 

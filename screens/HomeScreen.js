@@ -1,12 +1,14 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, ImageBackground } from 'react-native';
+import { AuthContext } from '../AuthContext.js';
 
 import TipOTD from '../components/TipOTD';
 import WelcomeBanner from '../components/WelcomeBanner';
 import ablumImage from '../assets/images/album-placeholder.png';
 
 export default function HomeScreen(props) {
+  const user = React.useContext(AuthContext);
 
   const TOTD = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar pellentesque ex at maximus. Nam feugiat rhoncus accumsan. ';
   const onPress = () => props.navigation.navigate("QuizScreen");
@@ -14,7 +16,7 @@ export default function HomeScreen(props) {
     <ScrollView style={styles.container}>
       <ImageBackground style={ styles.imgBackground }  
           source={require('../assets/images/mountain.png')}>
-          <WelcomeBanner></WelcomeBanner>
+          <WelcomeBanner name={user.firstName}></WelcomeBanner>
       </ImageBackground>
       <Text style={styles.header}>Recently Played</Text>
       <View style={styles.recentTab}>
