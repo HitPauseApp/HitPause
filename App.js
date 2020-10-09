@@ -24,7 +24,7 @@ import Loading from './screens/Loading';
 import HomeScreen from './screens/HomeScreen';
 import JournalScreen from './screens/JournalScreen';
 import LikesScreen from './screens/LikesScreen';
-import Account from './screens/Account';
+import Account from './screens/AccountScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
