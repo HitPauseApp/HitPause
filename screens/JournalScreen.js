@@ -3,13 +3,14 @@ import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ImageBackground} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import { AuthContext } from '../AuthContext';
 import JournalCard from '../components/JournalCard';
 
-
 export default function JournalScreen(props) {
+  const user = React.useContext(AuthContext);
   const onPress = () => props.navigation.navigate("HomeScreen");
-  return (
 
+  return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <Text style={styles.header}>My Journal</Text>
 
@@ -17,11 +18,15 @@ export default function JournalScreen(props) {
                   source={require('../assets/images/shapeDesign1.png')}>
           </Image> */}
 
-      <JournalCard></JournalCard>
-
-      <JournalCard></JournalCard> 
-
-      <JournalCard useFire="true"></JournalCard>
+      {
+        !!user.journal && Object.values(user.journal).length > 0 ? (
+          Object.values(user.journal).map((item, key) =>
+            <JournalCard entry={item} key={key}></JournalCard>
+          )
+        ) : (
+          <Text>Nothing here yet. Add your first journal entry below!</Text>
+        )
+      }
 
       <View style={styles.buttonView}>
         <TouchableOpacity style={styles.button} onPress={onPress}>

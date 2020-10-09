@@ -15,8 +15,8 @@ export default function HomeScreen(props) {
   return (
     <ScrollView style={styles.container}>
       <ImageBackground style={ styles.imgBackground }  
-          source={require('../assets/images/mountain.png')}>
-          <WelcomeBanner name={user.firstName}></WelcomeBanner>
+        source={require('../assets/images/mountain.png')}>
+        <WelcomeBanner name={user.firstName}></WelcomeBanner>
       </ImageBackground>
       <Text style={styles.header}>Recently Played</Text>
       <View style={styles.recentTab}>
