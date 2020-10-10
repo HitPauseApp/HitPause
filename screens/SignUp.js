@@ -11,19 +11,17 @@ export default class SignUp extends React.Component {
   handleSignUp = () => {
     // TODO: More form validation
     if (this.confirmPassword()) {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then((res) => {
-          res.user.updateProfile({displayName: `${this.state.firstName} ${this.state.lastName}`});
-          firebase.database().ref(`/users/${res.user.uid}`).set({
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            email: this.state.email
-          });
-          this.props.navigation.navigate('Root');
-        })
-        .catch(error => this.setState({ errorMessage: error.message }));
+      firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then((res) => {
+        // TODO: this is probably broken... investigate?
+        // res.user.updateProfile({displayName: `${this.state.firstName} ${this.state.lastName}`});
+        firebase.database().ref(`/users/${res.user.uid}`).set({
+          firstName: this.state.firstName,
+          lastName: this.state.lastName,
+          email: this.state.email
+        });
+      })
+      .catch(error => this.setState({ errorMessage: error.message }));
     }
   }
   confirmPassword = () => {
@@ -47,7 +45,8 @@ export default class SignUp extends React.Component {
         {!!this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
-          </Text>}
+          </Text>
+        }
         <TextInput
           placeholder="First Name"
           placeholderTextColor="#ffffff"

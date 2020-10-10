@@ -6,14 +6,15 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import QuizCard from '../components/quiz/QuizCard';
 import Loading from './Loading';
 
-export default function QuizScreen(){
+export default function QuizScreen(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [quiz, setQuiz] = React.useState({});
 
-  let quizName = "incidentQuestionnaire";
+  // let quizName = "incidentQuestionnaire";
 
   React.useEffect(() => {
-    firebase.database().ref(`hitpause/quizzes/${quizName}`).once('value').then(s => {
+    console.log(props)
+    firebase.database().ref(`hitpause/quizzes/${props.route.params.quizName}`).once('value').then(s => {
       let quizData = s.val();
       let questionList = quizData.questions;
       if (!quizData.dynamic) {
@@ -30,8 +31,8 @@ export default function QuizScreen(){
   } else {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>Incidental Quiz</Text>
-        <QuizCard quiz={quiz} quizName={quizName}></QuizCard>
+        <Text style={styles.header}>{quiz.quizName}</Text>
+        <QuizCard quiz={quiz} quizName={props.route.params.quizName}></QuizCard>
         {/* <Button onPress={() => handleNextQuestion()}>Next Question</Button> */}
       </View>
     );
