@@ -32,7 +32,8 @@ const Tab = createBottomTabNavigator();
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [isAuthenticating, setIsAuthenticating] = React.useState(false);
-  const [initialNavigationState, setInitialNavigationState] = React.useState('Login');
+  const [preAuthNavState, setPreAuthNavState] = React.useState('Login');
+  const [authNavState, setAuthNavState] = React.useState('Home');
   const [authUser, setAuthUser] = React.useState(null);
   const containerRef = React.useRef();
   // const { getInitialState } = useLinking(containerRef);
@@ -44,7 +45,7 @@ export default function App(props) {
         SplashScreen.preventAutoHide();
 
         // Load our initial navigation state
-        // setInitialNavigationState(await getInitialState());
+        // setpreAuthNavState(await getInitialState());
 
         // Load fonts
         await Font.loadAsync({
@@ -75,6 +76,10 @@ export default function App(props) {
         console.log("Logged in as:", user.email);
         firebase.database().ref(`users/${user.uid}`).once('value').then(s => {
           setAuthUser(s.val());
+          // If user profile does not exist (new user)
+          if (!s.val().profile) {
+            setAuthNavState('InitialAssessment');
+          }
           setIsAuthenticating(false);
         });
       } else {
@@ -97,14 +102,14 @@ export default function App(props) {
             <NavigationContainer ref={containerRef}>
               {/* Display authentication screens or app screens based on userToken */}
               { authUser == null ? (
-                <Stack.Navigator initialRouteName={initialNavigationState} headerMode="none">
+                <Stack.Navigator initialRouteName={preAuthNavState} headerMode="none">
                   <Stack.Screen name="Login" component={Login} />
                   <Stack.Screen name="SignUp" component={SignUp} />
                   <Stack.Screen name="ResetPassword" component={ResetPassword} />
                 </Stack.Navigator>
               ) : (
                 <Tab.Navigator
-                  initialRouteName="Home"
+                  initialRouteName={authNavState}
                 >
                   <Tab.Screen
                     name="Home"
@@ -125,6 +130,7 @@ export default function App(props) {
                   <Tab.Screen
                     name="PauseQuiz"
                     component={QuizScreen}
+                    initialParams={{ quizName: 'incidentQuestionnaire' }}
                     options={{
                       title: 'HitPause Quiz',
                       tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-pause" />,
@@ -144,6 +150,15 @@ export default function App(props) {
                     options={{
                       title: 'Account',
                       tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-settings" />,
+                    }}
+                  />
+                  {/* Hidden tabs */}
+                  <Tab.Screen
+                    name='InitialAssessment'
+                    component={QuizScreen}
+                    initialParams={{ quizName: 'initialAssessment' }}
+                    options={{
+                      tabBarButton: () => null
                     }}
                   />
                 </Tab.Navigator>
