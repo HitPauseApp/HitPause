@@ -13,8 +13,8 @@ import firebase from './Firebase';
 import { AuthContext } from './AuthContext.js';
 
 // TODO: Remove?
-import BottomTabNavigator from './navigation/BottomTabNavigator';
-import useLinking from './navigation/useLinking';
+// import BottomTabNavigator from './navigation/BottomTabNavigator';
+// import useLinking from './navigation/useLinking';
 
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
@@ -69,14 +69,17 @@ export default function App(props) {
     // Establish firebase authentication observer
     // TODO: react-native-firebase auth state persistence
     firebase.auth().onAuthStateChanged((user) => {
+      setIsAuthenticating(true);
       if (user) {
         // There is a user
         console.log("Logged in as:", user.email);
         firebase.database().ref(`users/${user.uid}`).once('value').then(s => {
           setAuthUser(s.val());
+          setIsAuthenticating(false);
         });
       } else {
         setAuthUser(null);
+        setIsAuthenticating(false);
       }
     });
   }, []);
@@ -98,8 +101,6 @@ export default function App(props) {
                   <Stack.Screen name="Login" component={Login} />
                   <Stack.Screen name="SignUp" component={SignUp} />
                   <Stack.Screen name="ResetPassword" component={ResetPassword} />
-                  {/* <Stack.Screen name="Root" component={BottomTabNavigator} />
-                  <Stack.Screen name="QuizScreen" component={QuizScreen} /> */}
                 </Stack.Navigator>
               ) : (
                 <Tab.Navigator

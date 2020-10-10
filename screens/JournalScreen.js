@@ -24,6 +24,7 @@ export default function JournalScreen(props) {
             <JournalCard entry={item} key={key}></JournalCard>
           )
         ) : (
+          // TODO: This needs to be styled yet
           <Text>Nothing here yet. Add your first journal entry below!</Text>
         )
       }
@@ -82,7 +83,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#00095e',
     //justifyContent: "center",
     flex: 1,
-    vertical: true
+    // [TOS] This line below is throwing an error
+    // vertical: true
   },
   header: {
     fontFamily: 'Poppins-Medium',
