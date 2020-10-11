@@ -48,11 +48,11 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
         />
       <BottomTab.Screen
-        name="Likes"
+        name="History"
         component={LikesScreen}
         options={{
-          title: 'My Likes',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-heart" />,
+          title: 'History',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-bookmark" />,
         }}
         />
       <BottomTab.Screen
@@ -75,8 +75,8 @@ function getHeaderTitle(route) {
       return 'HitPause';
     case 'Journal':
       return 'My Journal';
-    case 'Likes':
-      return 'My Liked Songs';
+    case 'History':
+      return 'History';
     case 'Account':
       return 'Account';
 

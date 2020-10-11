@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     borderColor: 'white' ,
     borderRadius: 50,
     height: RFValue(40),
-    width: RFValue(120),
+    width: RFValue(150),
   },
   button2: { 
     marginTop: 30,
@@ -83,9 +83,9 @@ const styles = StyleSheet.create({
   text: { 
     paddingTop: 10,
     textAlign: 'center',
-    fontSize: 13,
+    fontSize: 15,
     color: 'white',
-    fontFamily: 'Poppins'
+    fontFamily: 'Poppins-bold'
 
   },
 })

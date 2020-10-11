@@ -54,6 +54,8 @@ export default function App(props) {
           'poppins-medium': require('./assets/fonts/Poppins-Medium.ttf'),
           'poppins-light': require('./assets/fonts/Poppins-Light.ttf'),
           'poppins-thin': require('./assets/fonts/Poppins-Thin.ttf'),
+          'poppins-extra-light': require('./assets/fonts/Poppins-ExtraLight.ttf'),
+
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service

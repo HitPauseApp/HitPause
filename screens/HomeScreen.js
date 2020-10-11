@@ -5,13 +5,13 @@ import { AuthContext } from '../AuthContext.js';
 
 import TipOTD from '../components/TipOTD';
 import WelcomeBanner from '../components/WelcomeBanner';
-import ablumImage from '../assets/images/album-placeholder.png';
+import albumImage from '../assets/images/album-placeholder.png';
 
 export default function HomeScreen(props) {
   const user = React.useContext(AuthContext);
 
   const TOTD = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar pellentesque ex at maximus. Nam feugiat rhoncus accumsan. ';
-  const onPress = () => props.navigation.navigate("QuizScreen");
+  const onPress = () => props.navigation.navigate('QuizScreen');
   return (
     <ScrollView style={styles.container}>
       <ImageBackground style={ styles.imgBackground }  
@@ -20,18 +20,16 @@ export default function HomeScreen(props) {
       </ImageBackground>
       <Text style={styles.header}>Recently Played</Text>
       <View style={styles.recentTab}>
-        <Image source={ablumImage} style={styles.albumImages}></Image>
-        <Image source={ablumImage} style={styles.albumImages}></Image>
-        <Image source={ablumImage} style={styles.albumImages}></Image>
+        <Image source={albumImage} style={styles.albumImages}></Image>
+        <Image source={albumImage} style={styles.albumImages}></Image>
+        <Image source={albumImage} style={styles.albumImages}></Image>
       </View>
       <Text style={styles.header}>Recently Liked</Text>
       <View style={styles.recentTab}>
-        <Image source={ablumImage} style={styles.albumImages}></Image>
-        <Image source={ablumImage} style={styles.albumImages}></Image>
-        <Image source={ablumImage} style={styles.albumImages}></Image>
+        <Image source={albumImage} style={styles.albumImages}></Image>
+        <Image source={albumImage} style={styles.albumImages}></Image>
+        <Image source={albumImage} style={styles.albumImages}></Image>
       </View>
-      <ScrollView>
-      </ScrollView>
       <Text style={styles.text2}>Need to adjust your assessment?</Text>
       <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text style={styles.text}>Retake Assessment</Text>
@@ -48,7 +46,7 @@ const styles = StyleSheet.create({
   },
   header:{
     padding: 15,
-    fontFamily: 'Poppins-Thin',
+    fontFamily: 'Poppins-Light',
     fontSize: 20,
     color: 'white'
   },
@@ -85,7 +83,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
     fontSize: 14,
-    fontFamily: 'Poppins-Thin'
+    fontFamily: 'Poppins-Light',
+    marginTop: 50,
+    marginBottom: 5,
   }
 
   
