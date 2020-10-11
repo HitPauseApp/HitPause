@@ -38,7 +38,7 @@ export default class QuizCard extends React.Component {
     });
   }
 
-  handleNextQuestion() {
+  handleNextQuestion = () => {
     if (this.state.quizIndex < this.state.quizLength - 1) {
       let newIndex = this.state.quizIndex + 1;
       this.setState({
@@ -58,7 +58,7 @@ export default class QuizCard extends React.Component {
           timestamp: Date.now(),
           responses: this.state.quizData
         });
-      // TODO: Display summary screen
+      // TODO: Display summary screen instead of redirecting
     }
   }
 

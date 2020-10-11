@@ -43,7 +43,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#00095e',
     //justifyContent: "center",
     flex: 1,
-    vertical: true
+    // [TOS] This line below is throwing an error
+    // vertical: true
   },
   header: {
     fontFamily: 'Poppins-Medium',
