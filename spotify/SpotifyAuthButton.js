@@ -26,33 +26,63 @@ export default function SpotifyAuthButton() {
     expirationTime: ''
   })
 
-  const [request, response, getAuthCode] = useAuthRequest(
-    {
-      clientId: creds.clientId,
-      scopes: ['user-read-email', 'playlist-modify-public'],
-      // In order to follow the "Authorization Code Flow" to fetch token after authorizationEndpoint
-      // this must be set to false
-      usePKCE: false,
-      // For usage in managed apps using the proxy
-      redirectUri: creds.redirectUri
-    },
-    discovery
-  );
+  // let userData = {
+  //   accessToken: '',
+  //   refreshToken: '',
+  //   expirationTime: ''
+  // }
 
-  const getTokens = async (code) => {
+  const [accessTokenAvailable, setTokenAvailble] = React.useState();
+
+  // const [request, response, getAuthCode] = useAuthRequest(
+  //   {
+  //     clientId: creds.clientId,
+  //     scopes: ['user-read-email', 'playlist-modify-public'],
+  //     // In order to follow the "Authorization Code Flow" to fetch token after authorizationEndpoint
+  //     // this must be set to false
+  //     usePKCE: false,
+  //     // For usage in managed apps using the proxy
+  //     redirectUri: creds.redirectUri
+
+  //   },
+  //   discovery
+  // );
+
+  const getAuthorizationCode = async () => {
     try {
-      const authorizationCode = code;
+      const credentials = creds //we wrote this function above
+      const redirectUrl = credentials.redirectUri //this will be something like https://auth.expo.io/@your-username/your-app-slug
+      const result = await AuthSession.startAsync({
+        authUrl:
+          'https://accounts.spotify.com/authorize' +
+          '?response_type=code' +
+          '&client_id=' +
+          credentials.clientId +
+          (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
+          '&redirect_uri=' +
+          encodeURIComponent(redirectUrl),
+      })
+    } catch (err) {
+      console.error(err)
+    }
+    return result.params.code;
+  }
+
+  const getTokens = async () => {
+    try {
+      const authResponse = await getAuthorizationCode();
+      const authorizationCode = authResponse.params.code;
       const credentials = creds;
       const credsB64 = btoa(`${credentials.clientId}:${credentials.clientSecret}`);
-      const response = await fetch('https://accounts.spotify.com/api/token', {
-        method: 'POST',
-        headers: {
-          Authorization: `Basic ${credsB64}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${credentials.redirectUri
-          }`,
-      });
+      // const response = await fetch('https://accounts.spotify.com/api/token', {
+      //   method: 'POST',
+      //   headers: {
+      //     Authorization: `Basic ${credsB64}`,
+      //     'Content-Type': 'application/x-www-form-urlencoded',
+      //   },
+      //   body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${credentials.redirectUri
+      //     }`,
+      // });
       // const responseJson = await response.json();
       // const {
       //   access_token: accessToken,
@@ -64,75 +94,76 @@ export default function SpotifyAuthButton() {
       // // userData.accessToken = accessToken;
       // // userData.refreshToken = refreshToken;
       // // userData.expirationTime = expirationTime;
-      // setUserData({accessToken: accessToken});
-      // setUserData({refreshToken: refreshToken});
-      // setUserData({expirationTime: expirationTime});
-      console.log(response);
+      // setUserData({ accessToken: accessToken });
+      // setUserData({ refreshToken: refreshToken });
+      // setUserData({ expirationTime: expirationTime });
+      console.log(authorizationCode);
     } catch (err) {
       console.error(err);
     }
   }
 
-  // const refreshTokens = async () => {
-  //   try {
-  //     const credentials = creds //we wrote this function above
-  //     const credsB64 = btoa(`${credentials.clientId}:${credentials.clientSecret}`);
-  //     // const refreshToken = await getUserData('refreshToken');
-  //     const refreshToken = userData.refreshToken;
-  //     console.log(refreshToken);
-  //     const response = await fetch('https://accounts.spotify.com/api/token', {
-  //       method: 'POST',
-  //       headers: {
-  //         Authorization: `Basic ${credsB64}`,
-  //         'Content-Type': 'application/x-www-form-urlencoded',
-  //       },
-  //       body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
-  //     });
-  //     const responseJson = await response.json();
-  //     if (responseJson.error) {
-  //       await getTokens();
-  //     } else {
-  //       const {
-  //         access_token: newAccessToken,
-  //         refresh_token: newRefreshToken,
-  //         expires_in: expiresIn,
-  //       } = responseJson;
 
-  //       const expirationTime = new Date().getTime() + expiresIn * 1000;
-  //       await setUserData({accessToken: newAccessToken});
-  //       // userData.accessToken = newAccessToken;
-  //       if (newRefreshToken) {
-  //         await setUserData({refreshToken: newRefreshToken});
-  //         // userData.refreshToken = newRefreshToken;
-  //       }
-  //       await setUserData({expirationTime: expirationTime});
-  //       // userData.expirationTime = expirationTime;
-  //     }
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }
+  const refreshTokens = async () => {
+    try {
+      const credentials = creds //we wrote this function above
+      const credsB64 = btoa(`${credentials.clientId}:${credentials.clientSecret}`);
+      // const refreshToken = await getUserData('refreshToken');
+      const refreshToken = userData.refreshToken;
+      console.log(refreshToken);
+      const response = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+          Authorization: `Basic ${credsB64}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
+      });
+      const responseJson = await response.json();
+      if (responseJson.error) {
+        await getTokens();
+      } else {
+        const {
+          access_token: newAccessToken,
+          refresh_token: newRefreshToken,
+          expires_in: expiresIn,
+        } = responseJson;
+
+        const expirationTime = new Date().getTime() + expiresIn * 1000;
+        await setUserData({ accessToken: newAccessToken });
+        // userData.accessToken = newAccessToken;
+        if (newRefreshToken) {
+          await setUserData({ refreshToken: newRefreshToken });
+          // userData.refreshToken = newRefreshToken;
+        }
+        await setUserData({ expirationTime: expirationTime });
+        // userData.expirationTime = expirationTime;
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   React.useEffect(() => {
-    if (response?.type === 'success') {
-      const { code } = response.params;
-      console.log(code);
-      getTokens(code);
+    const tokenUpdating = async () => {
+      const tokenExpirationTime = userData.expirationTime;
+
+      if (!tokenExpirationTime || new Date().getTime() > tokenExpirationTime) {
+        // refreshTokens();
+        getTokens();
+      } else {
+        setTokenAvailble(true);
+      }
     }
-    // const tokenExpirationTime = userData.expirationTime;
-    // if (!tokenExpirationTime || new Date().getTime() > tokenExpirationTime) {
-    //   refreshTokens();
-    // } else {
-    //   this.setState({ accessTokenAvailable: true });
-    // }
-  });
+    tokenUpdating();
+  }, []);
 
 
   return (
     <Button
       disabled={!request}
       title="Login"
-      onPress={() => { getAuthCode() }}
+      onPress={() => { getTokens() }}
     />
   );
 }
