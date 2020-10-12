@@ -34,14 +34,14 @@ export default function JournalScreen(props) {
       
 
    <View style={styles.buttonView}>
-     <TouchableOpacity style={styles.button} onPress={onPress}>
+     <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('JournalEntry')}>
           <Image style={ styles.imgBackground }  
             source={require('../assets/images/pencilTip.png')}>
          </Image>
       </TouchableOpacity>
     </View>
   </View>
-    
+ 
 
    
 
@@ -67,6 +67,7 @@ export default function JournalScreen(props) {
   );
 }
 
+
 function OptionButton({ icon, label, onPress, isLastOption }) {
   return (
     <RectButton style={[styles.option, isLastOption && styles.lastOption]} onPress={onPress}>
@@ -87,13 +88,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#00095e',
     //justifyContent: "center",
     flex: 1,
-<<<<<<< HEAD
-    right: 0,
-    vertical: true
-=======
     // [TOS] This line below is throwing an error
     // vertical: true
->>>>>>> d82f1a2cfb9c867bfaddc93eea0a04a56491156f
   },
   header: {
     fontFamily: 'Poppins-Medium',
