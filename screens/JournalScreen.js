@@ -25,6 +25,7 @@ export default function JournalScreen(props) {
           Object.values(user.journal).map((item, key) =>
             <JournalCard entry={item} key={key}></JournalCard>)
         ) : (
+          // TODO: This needs to be styled yet
           <Text>Nothing here yet. Add your first journal entry below!</Text>
         )
       }
@@ -86,8 +87,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#00095e',
     //justifyContent: "center",
     flex: 1,
+<<<<<<< HEAD
     right: 0,
     vertical: true
+=======
+    // [TOS] This line below is throwing an error
+    // vertical: true
+>>>>>>> d82f1a2cfb9c867bfaddc93eea0a04a56491156f
   },
   header: {
     fontFamily: 'Poppins-Medium',
