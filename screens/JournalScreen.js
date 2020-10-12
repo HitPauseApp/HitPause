@@ -11,8 +11,10 @@ export default function JournalScreen(props) {
   const onPress = () => props.navigation.navigate("HomeScreen");
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <Text style={styles.header}>My Journal</Text>
+  <View style={styles.container}>
+    <View style={styles.contentContainer}> 
+      <ScrollView>
+          <Text style={styles.header}>My Journal</Text>
 
           {/* <Image style={ styles.imgBackground }  
                   source={require('../assets/images/shapeDesign1.png')}>
@@ -21,22 +23,24 @@ export default function JournalScreen(props) {
       {
         !!user.journal && Object.values(user.journal).length > 0 ? (
           Object.values(user.journal).map((item, key) =>
-            <JournalCard entry={item} key={key}></JournalCard>
-          )
+            <JournalCard entry={item} key={key}></JournalCard>)
         ) : (
           <Text>Nothing here yet. Add your first journal entry below!</Text>
         )
       }
+      </ScrollView>
+    </View>
+      
 
-      <View style={styles.buttonView}>
-        <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Image style={ styles.imgBackground }  
-                  source={require('../assets/images/pencilTip.png')}>
-          </Image>
-        </TouchableOpacity>
-      </View>
-     
-    </ScrollView>
+   <View style={styles.buttonView}>
+     <TouchableOpacity style={styles.button} onPress={onPress}>
+          <Image style={ styles.imgBackground }  
+            source={require('../assets/images/pencilTip.png')}>
+         </Image>
+      </TouchableOpacity>
+    </View>
+  </View>
+    
 
    
 
@@ -82,6 +86,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#00095e',
     //justifyContent: "center",
     flex: 1,
+    right: 0,
     vertical: true
   },
   header: {
@@ -95,8 +100,9 @@ const styles = StyleSheet.create({
   buttonView: {
     flex: 1,
     flexDirection: 'row-reverse',
-    right: 20,
-    bottom: -100
+    right: '8%',
+    bottom: '3%',
+    position: 'absolute'
     
   },
   addButton: {
@@ -118,6 +124,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 15,
+    flex: 1
   },
   optionIconContainer: {
     marginRight: 12,
