@@ -4,8 +4,6 @@ import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react
 
 import WelcomeBanner from '../components/WelcomeBanner';
 
-import SpotifyAuthButton from '../spotify/SpotifyAuthButton';
-
 export default function LikesScreen() {
 
   const NAME = "My Likes"
@@ -13,7 +11,6 @@ export default function LikesScreen() {
   return (
     <View style={styles.container}>
         <WelcomeBanner NAME={NAME}></WelcomeBanner>
-        <SpotifyAuthButton></SpotifyAuthButton>
     </View>
   );
 }
