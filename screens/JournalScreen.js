@@ -26,7 +26,7 @@ export default function JournalScreen(props) {
             <JournalCard entry={item} key={key}></JournalCard>)
         ) : (
           // TODO: This needs to be styled yet
-          <Text>Nothing here yet. Add your first journal entry below!</Text>
+          <Text style = {styles.text}>Nothing here yet. Add your first journal entry below!</Text>
         )
       }
       </ScrollView>
@@ -98,6 +98,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingHorizontal: 20,
     paddingVertical: 10
+  },
+  text: {
+    color: 'white',
+    fontSize: 13,   
+    fontFamily: 'Poppins-Medium',
+    
   },
   buttonView: {
     flex: 1,
