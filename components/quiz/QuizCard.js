@@ -98,7 +98,13 @@ export default class QuizCard extends React.Component {
         </Response_Radio>
     }
     else if (this.props.quiz.questions[this.state.quizIndex].type == "scale") {
-      responseComponent = <Response_Scale></Response_Scale>
+      responseComponent =
+        <Response_Scale
+          scaleLow={this.props.quiz.questions[this.state.quizIndex].scaleLow}
+          scaleHigh={this.props.quiz.questions[this.state.quizIndex].scaleHigh}
+          onChange={this.updateQuizData}
+          value={this.state.quizData[this.state.quizIndex]}
+        ></Response_Scale>
       buttonDisabled = false;
     }
     else if (this.props.quiz.questions[this.state.quizIndex].type == "text") {
