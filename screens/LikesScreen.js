@@ -8,42 +8,50 @@ export default function LikesScreen() {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.header2}>My History</Text>
-      <Text style={styles.header}>Give these suggestions a review!</Text>
-      <View style={styles.recentTab}>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
+      <View style={styles.textContainer}>
+        <Text style={styles.header}>Give these suggestions a review!</Text>
+        <View style={styles.recentTab}>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+        </View>
+        <TouchableOpacity>
+          <Text style={styles.text}>View More</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity>
-        <Text style={styles.text}>View More</Text>
-      </TouchableOpacity>
-      <Text style={styles.header}>Recent Suggestions</Text>
-      <View style={styles.recentTab}>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
+      <View style={styles.textContainer}>
+        <Text style={styles.header}>Recent Suggestions</Text>
+        <View style={styles.recentTab}>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+        </View>
+        <TouchableOpacity>
+          <Text style={styles.text}>View More</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity>
-        <Text style={styles.text}>View More</Text>
-      </TouchableOpacity>
-      <Text style={styles.header}>Recently Liked Suggestions</Text>
-      <View style={styles.recentTab}>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
+      <View style={styles.textContainer}>
+        <Text style={styles.header}>Recently Liked Suggestions</Text>
+        <View style={styles.recentTab}>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+        </View>
+        <TouchableOpacity>
+          <Text style={styles.text}>View More</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity>
-        <Text style={styles.text}>View More</Text>
-      </TouchableOpacity>
-      <Text style={styles.header}>Most Frequent Suggestions</Text>
-      <View style={styles.recentTab}>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
+      <View style={styles.textContainer}>
+        <Text style={styles.header}>Most Frequent Suggestions</Text>
+        <View style={styles.recentTab}>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+        </View>
+        <TouchableOpacity>
+          <Text style={styles.text}>View More</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity>
-        <Text style={styles.text}>View More</Text>
-      </TouchableOpacity>
       
     </ScrollView>
   );
@@ -84,6 +92,10 @@ const styles = StyleSheet.create({
   buttonContainer:{
     margin: 10,
     padding: 10
+  },
+  textContainer: {
+    backgroundColor: '#132090',
+    marginBottom: 20,
   },
   button:{
     marginBottom: 20,

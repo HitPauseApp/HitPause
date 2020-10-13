@@ -8,6 +8,7 @@ import Login from '../screens/Login';
 import Account from '../screens/AccountScreen';
 import QuizScreen from '../screens/QuizScreen';
 import LikesScreen from '../screens/LikesScreen';
+import JournalEntry from '../screens/JournalEntry';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -20,9 +21,7 @@ export default function BottomTabNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <BottomTab.Navigator 
-      initialRouteName={INITIAL_ROUTE_NAME}
-    >
+    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
@@ -40,13 +39,20 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
+        name="JournalEntry"
+        component={JournalEntry}
+        options={{
+          tabBarVisible = false
+        }}
+      />
+      <BottomTab.Screen
         name="PauseQuiz"
         component={QuizScreen}
         options={{
           title: 'HitPause Quiz',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-pause" />,
         }}
-        />
+      />
       <BottomTab.Screen
         name="History"
         component={LikesScreen}
@@ -54,7 +60,7 @@ export default function BottomTabNavigator({ navigation, route }) {
           title: 'History',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-bookmark" />,
         }}
-        />
+      />
       <BottomTab.Screen
         name="Account"
         component={Account}
@@ -62,7 +68,7 @@ export default function BottomTabNavigator({ navigation, route }) {
           title: 'Account',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-settings" />,
         }}
-        />
+      />
     </BottomTab.Navigator>
   );
 }
