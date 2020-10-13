@@ -16,27 +16,24 @@ export default function JournalScreen(props) {
       {
         !!user.journal && Object.values(user.journal).length > 0 ? (
           Object.values(user.journal).map((item, key) =>
-            <JournalCard entry={item} key={key}></JournalCard>
-          )
+            <JournalCard entry={item} key={key}></JournalCard>)
         ) : (
           <View style={styles.textContainer}>
               <Text style={styles.text}>Nothing here yet. Add your first journal entry below!</Text>
           </View>
         )
       }
-
-      <TouchableOpacity style={styles.button} onPress={onPress}>
-        <AntDesign name="pluscircleo" size={40} color="white" />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={onPress}>
-        <FontAwesome name="trash-o" size={40} color="white" />
-      </TouchableOpacity>
-      
-     
+      <View style={styles.buttonView}>
+        <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('JournalEntry')}>
+          <AntDesign name="pluscircleo" size={40} color="white" /> 
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
+          <FontAwesome name="trash-o" size={40} color="white" />
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -77,6 +74,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 15,
+    flex: 1
   },
 
 });

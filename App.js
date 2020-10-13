@@ -25,9 +25,11 @@ import HomeScreen from './screens/HomeScreen';
 import JournalScreen from './screens/JournalScreen';
 import LikesScreen from './screens/LikesScreen';
 import Account from './screens/AccountScreen';
+import JournalEntry from './screens/JournalEntry';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const JournalStack = createStackNavigator();
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -36,8 +38,24 @@ export default function App(props) {
   const [authNavState, setAuthNavState] = React.useState('Home');
   const [authUser, setAuthUser] = React.useState(null);
   const containerRef = React.useRef();
+  
   // const { getInitialState } = useLinking(containerRef);
 
+  function JournalStackScreen() {
+    return (
+      <JournalStack.Navigator headerMode="none">
+        <JournalStack.Screen
+          name="JournalScreen"
+          component={JournalScreen}
+        />
+        <JournalStack.Screen
+          name="JournalEntry"
+          component={JournalEntry}
+        />
+      </JournalStack.Navigator>
+    );
+  }
+  
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
     async function loadResourcesAndDataAsync() {
@@ -108,6 +126,7 @@ export default function App(props) {
                   <Stack.Screen name="Login" component={Login} />
                   <Stack.Screen name="SignUp" component={SignUp} />
                   <Stack.Screen name="ResetPassword" component={ResetPassword} />
+                  <Stack.Screen name = "JournalEntry" component = {JournalEntry}/>
                 </Stack.Navigator>
               ) : (
                 <Tab.Navigator
@@ -123,7 +142,7 @@ export default function App(props) {
                   />
                   <Tab.Screen
                     name="Journal"
-                    component={JournalScreen}
+                    component={JournalStackScreen}
                     options={{
                       title: 'Journal',
                       tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
