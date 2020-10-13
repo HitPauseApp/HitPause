@@ -1,22 +1,28 @@
 import * as React from 'react';
 import * as WebBrowser from 'expo-web-browser';
+import { makeRedirectUri, useAuthRequest, exchangeCodeAsync, TokenResponse, refreshAsync } from 'expo-auth-session';
 import { Button } from 'react-native';
-import { useAuthRequest } from 'expo-auth-session';
-import { encode as btoa } from 'base-64';
 
-import utils from '../spotify/utils';
+WebBrowser.maybeCompleteAuthSession();
+
+// Endpoint
+const discovery = {
+  authorizationEndpoint: 'https://accounts.spotify.com/authorize',
+  tokenEndpoint: 'https://accounts.spotify.com/api/token',
+};
 
 export default function SpotifyAuthButton() {
 
-  // Endpoint
-  const discovery = {
-    authorizationEndpoint: 'https://accounts.spotify.com/authorize',
-    tokenEndpoint: 'https://accounts.spotify.com/api/token',
-  };
+  /*
+    Steps: 
+      1. Get Auth Code
+      2. Use auth code to get token
+      3. Check for token refresh timeout, get new token if needed
 
-  const creds = {
+  */
+
+  const config = {
     clientId: 'bc628be0b7a344a384e7acff4617a332',
-    clientSecret: '14da02bb95bc49e1992ba34891678519',
     redirectUri: 'http://localhost:19006/'
   }
 
@@ -24,146 +30,97 @@ export default function SpotifyAuthButton() {
     accessToken: '',
     refreshToken: '',
     expirationTime: ''
-  })
+  });
 
-  // let userData = {
-  //   accessToken: '',
-  //   refreshToken: '',
-  //   expirationTime: ''
-  // }
+  //Get Auth Code (Step 1)
+  const [request, response, getAuthCode] = useAuthRequest(
+    {
+      clientId: config.clientId,
+      scopes: ['user-read-email', 'playlist-modify-public'],
+      // In order to follow the "Authorization Code Flow" to fetch token after authorizationEndpoint
+      // this must be set to false
+      usePKCE: false,
+      // For usage in managed apps using the proxy
+      redirectUri: config.redirectUri,
+    },
+    discovery
+  );
 
-  const [accessTokenAvailable, setTokenAvailble] = React.useState();
-
-  // const [request, response, getAuthCode] = useAuthRequest(
-  //   {
-  //     clientId: creds.clientId,
-  //     scopes: ['user-read-email', 'playlist-modify-public'],
-  //     // In order to follow the "Authorization Code Flow" to fetch token after authorizationEndpoint
-  //     // this must be set to false
-  //     usePKCE: false,
-  //     // For usage in managed apps using the proxy
-  //     redirectUri: creds.redirectUri
-
-  //   },
-  //   discovery
-  // );
-
-  const getAuthorizationCode = async () => {
-    try {
-      const credentials = creds //we wrote this function above
-      const redirectUrl = credentials.redirectUri //this will be something like https://auth.expo.io/@your-username/your-app-slug
-      const result = await AuthSession.startAsync({
-        authUrl:
-          'https://accounts.spotify.com/authorize' +
-          '?response_type=code' +
-          '&client_id=' +
-          credentials.clientId +
-          (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
-          '&redirect_uri=' +
-          encodeURIComponent(redirectUrl),
-      })
-    } catch (err) {
-      console.error(err)
-    }
-    return result.params.code;
+  //Get our access token (Step 2)
+  let getToken = function (code) {
+    return exchangeCodeAsync(
+      {
+        clientId: config.clientId,
+        clientSecret: '14da02bb95bc49e1992ba34891678519',
+        scopes: ['user-read-email', 'playlist-modify-public'],
+        redirectUri: config.redirectUri,
+        code: code
+      },
+      discovery).then(token => { return token });
   }
 
-  const getTokens = async () => {
-    try {
-      const authResponse = await getAuthorizationCode();
-      const authorizationCode = authResponse.params.code;
-      const credentials = creds;
-      const credsB64 = btoa(`${credentials.clientId}:${credentials.clientSecret}`);
-      // const response = await fetch('https://accounts.spotify.com/api/token', {
-      //   method: 'POST',
-      //   headers: {
-      //     Authorization: `Basic ${credsB64}`,
-      //     'Content-Type': 'application/x-www-form-urlencoded',
-      //   },
-      //   body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${credentials.redirectUri
-      //     }`,
-      // });
-      // const responseJson = await response.json();
-      // const {
-      //   access_token: accessToken,
-      //   refresh_token: refreshToken,
-      //   expires_in: expiresIn,
-      // } = responseJson;
-
-      // const expirationTime = new Date().getTime + expiresIn * 1000;
-      // // userData.accessToken = accessToken;
-      // // userData.refreshToken = refreshToken;
-      // // userData.expirationTime = expirationTime;
-      // setUserData({ accessToken: accessToken });
-      // setUserData({ refreshToken: refreshToken });
-      // setUserData({ expirationTime: expirationTime });
-      console.log(authorizationCode);
-    } catch (err) {
-      console.error(err);
-    }
+  let getRefreshToken = function(code){
+    return refreshAsync(
+      {
+        clientId: config.clientId,
+        clientSecret: '14da02bb95bc49e1992ba34891678519',
+        scopes: ['user-read-email', 'playlist-modify-public'],
+        redirectUri: config.redirectUri,
+        code: code,
+        refreshToken: userData.refreshToken
+      },
+    discovery).then(token => {return token});
   }
 
 
-  const refreshTokens = async () => {
-    try {
-      const credentials = creds //we wrote this function above
-      const credsB64 = btoa(`${credentials.clientId}:${credentials.clientSecret}`);
-      // const refreshToken = await getUserData('refreshToken');
-      const refreshToken = userData.refreshToken;
-      console.log(refreshToken);
-      const response = await fetch('https://accounts.spotify.com/api/token', {
-        method: 'POST',
-        headers: {
-          Authorization: `Basic ${credsB64}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
-      });
-      const responseJson = await response.json();
-      if (responseJson.error) {
-        await getTokens();
-      } else {
-        const {
-          access_token: newAccessToken,
-          refresh_token: newRefreshToken,
-          expires_in: expiresIn,
-        } = responseJson;
-
-        const expirationTime = new Date().getTime() + expiresIn * 1000;
-        await setUserData({ accessToken: newAccessToken });
-        // userData.accessToken = newAccessToken;
-        if (newRefreshToken) {
-          await setUserData({ refreshToken: newRefreshToken });
-          // userData.refreshToken = newRefreshToken;
-        }
-        await setUserData({ expirationTime: expirationTime });
-        // userData.expirationTime = expirationTime;
-      }
-    } catch (err) {
-      console.error(err)
+  const checkForRefresh = function(){
+    if(new Date().getTime() > userData.expirationTime ){
+      // let updatedToken = getRefreshToken(code);
+      // updatedToken.then(function(result){
+      //   setUserData({accessToken: result.accessToken});
+      //   setUserData({refreshToken: result.refreshToken});
+      //   const expirationTime = new Date().getTime() + result.expiresIn * 1000;
+      //   setUserData({expirationTime: expirationTime});
+      // })
+      console.log("Need New Token!");
     }
   }
 
   React.useEffect(() => {
-    const tokenUpdating = async () => {
-      const tokenExpirationTime = userData.expirationTime;
+    if (response?.type === 'success') {
+      const { code } = response.params;
 
-      if (!tokenExpirationTime || new Date().getTime() > tokenExpirationTime) {
-        // refreshTokens();
-        getTokens();
-      } else {
-        setTokenAvailble(true);
-      }
+      let userToken = getToken(code);
+      userToken.then(function(result){
+       setUserData({accessToken: result.accessToken});
+       setUserData({refreshToken: result.refreshToken});
+       const expirationTime = new Date().getTime() + result.expiresIn * 1000;
+       setUserData({expirationTime: expirationTime});
+       TokenResponse.fromQueryParams(result);
+      });
+      console.log(TokenResponse.isTokenFresh);
     }
-    tokenUpdating();
-  }, []);
+
+    // if(new Date().getTime() > userData.expirationTime ){
+    //   let updatedToken = getRefreshToken(code);
+    //   updatedToken.then(function(result){
+    //     setUserData({accessToken: result.accessToken});
+    //     setUserData({refreshToken: result.refreshToken});
+    //     const expirationTime = new Date().getTime() + result.expiresIn * 1000;
+    //     setUserData({expirationTime: expirationTime});
+    //   })
+    // }
+  }, [response]);
+
 
 
   return (
     <Button
       disabled={!request}
       title="Login"
-      onPress={() => { getTokens() }}
+      onPress={() => {
+        getAuthCode();
+      }}
     />
   );
 }
