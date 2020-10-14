@@ -11,19 +11,17 @@ export default class SignUp extends React.Component {
   handleSignUp = () => {
     // TODO: More form validation
     if (this.confirmPassword()) {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then((res) => {
-          res.user.updateProfile({displayName: `${this.state.firstName} ${this.state.lastName}`});
-          firebase.database().ref(`/users/${res.user.uid}`).set({
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            email: this.state.email
-          });
-          this.props.navigation.navigate('Root');
-        })
-        .catch(error => this.setState({ errorMessage: error.message }));
+      firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then((res) => {
+        // TODO: this is probably broken... investigate?
+        // res.user.updateProfile({displayName: `${this.state.firstName} ${this.state.lastName}`});
+        firebase.database().ref(`/users/${res.user.uid}`).set({
+          firstName: this.state.firstName,
+          lastName: this.state.lastName,
+          email: this.state.email
+        });
+      })
+      .catch(error => this.setState({ errorMessage: error.message }));
     }
   }
   confirmPassword = () => {
@@ -38,16 +36,12 @@ export default class SignUp extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <LinearGradient
-          // Background Linear Gradient
-          colors={['#B905A2', '#6E00DD']}
-          style={styles.gradient}
-        />
         <Text style = {styles.header}>Sign Up</Text>
         {!!this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
-          </Text>}
+          </Text>
+        }
         <TextInput
           placeholder="First Name"
           placeholderTextColor="#ffffff"
@@ -94,9 +88,9 @@ export default class SignUp extends React.Component {
         <TouchableOpacity style={styles.SignUpButton} onPress={this.handleSignUp}>
             <Text style={styles.text}>Sign Up</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button1} onPress={() => this.props.navigation.navigate('Login')}>
-            <Text style={styles.text}>Already have an account? Login</Text>
+        <Text style={styles.text2}>Already have an account?</Text>
+        <TouchableOpacity style={styles.loginButton} onPress={() => this.props.navigation.navigate('Login')}>
+          <Text style={styles.text}>Login</Text>
         </TouchableOpacity>
 
       </View>
@@ -107,7 +101,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#00095e',
   },
   header:{
     fontSize: 40,
@@ -124,15 +119,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     zIndex: 3
   },
-  gradient: {
-    flex: 1,
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    zIndex: -1,
-  },
   SignUpButton: { 
     marginTop: 30,
     borderWidth: 2,
@@ -140,26 +126,28 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     padding: 8,
     overflow: 'hidden' ,
-    height: RFValue(20),
-    width: RFValue(70),
-    textAlign: 'center',
+    height: RFValue(40),
+    width: RFValue(100),
   },
-  button1: { 
-    marginTop: 30,
+  loginButton: { 
     borderWidth: 2,
     borderColor: 'white' ,
     borderRadius: 50,
-    paddingVertical: 8,
-    paddingHorizontal: 30,
-    height: RFValue(20),
+    height: RFValue(30),
     width: RFValue(150),
 
   },
   text: { 
-    fontSize: 13,
-    fontWeight: '600',
+    fontSize: 20,
     color: 'white',
-    fontFamily: 'Poppins'
+    fontFamily: 'Poppins-medium',
+    textAlign: 'center',
 
-  }
+  },
+  text2: {
+    marginTop: 15,
+    fontSize: 20,
+    color: 'white',
+    fontFamily: 'Poppins-light'
+  },
 })

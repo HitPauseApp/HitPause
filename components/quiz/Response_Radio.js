@@ -2,64 +2,35 @@ import * as React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 
-export default class Response_Radio extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      responses: [],
-      checked: ''
-    };
-
-    const responses = Object.values(props.response);
-    this.state.responses = responses.map(function (obj) {
-      return {
-        score: obj.score,
-        text: obj.text
-      };
-    });
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.response !== this.props.response) {
-      let responses = Object.values(this.props.response);
-      this.setState({
-        responses: responses.map(function (obj) {
-          return {
-            score: obj.score,
-            text: obj.text
-          };
-        })
-      });
+export default function Response_Radio(props) {
+  const onChange = (value) => {
+    let flags = {};
+    for (const key in props.responses) {
+      if (props.responses[key].score == value) {
+        flags = {...props.responses[key].flagChanges};
+        break;
+      }
     }
+    props.onChange(value, flags);
   }
-
-  handleChecked(score){
-    this.setState({checked: score});
-    this.props.onScoreUpdate(score);
-    console.log(score);
-  }
-
-  render() {
-    return (
-      <View style={styles.quizQuestion}>
-
+  return (
+    <View style={styles.quizQuestion}>
+      <RadioButton.Group onValueChange={value => onChange(value)} value={props.value}>
         {
-          this.state.responses.map((item, key) =>
-            <View style={styles.checkItem}>
-              <Text style={styles.checkText}>{item.text}</Text>
+          // TODO: Use RadioButton.Item
+          Object.values(props.responses).map((item, key) =>
+            <View style={styles.checkItem} key={key}>
               <RadioButton
-                value={key}
-                status={this.state.checked === item.score ? 'checked' : 'unchecked'}
-                onPress={() => this.handleChecked(item.score)}
+                value={item.score}
+                status={props.value === item.score ? 'checked' : 'unchecked'}
               />
-
+              <Text style={styles.checkText}>{item.text}</Text>
             </View>
           )
         }
-
-      </View>
-    );
-  }
+      </RadioButton.Group>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

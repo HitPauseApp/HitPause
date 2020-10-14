@@ -7,24 +7,30 @@ import NoFillButton from '../components/buttons/NoFillButton';
 import { RFValue } from "react-native-responsive-fontsize";
 
 export default class Login extends React.Component {
-  state = { email: '', password: '', errorMessage: null }
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      errorMessage: null 
+    }
+  }
   handleLogin = () => {
     // TODO: Firebase stuff...
     console.log('handleLogin');
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .catch(error => this.setState({ errorMessage: error.message }))
-      // User redirected to home after signIn
+    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+    .catch(error => this.setState({ errorMessage: error.message }));
   }
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>Login</Text>
-        {this.state.errorMessage &&
+        {/* Adding !! to try to fix issue #31... expected: login page does not crash */}
+        {!!this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
-          </Text>}
+          </Text>
+        }
         <TextInput
           style={styles.textInput}
           autoCapitalize="none"
@@ -79,10 +85,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden' ,
     height: RFValue(30),
     width: RFValue(100),
-    // textAlign: 'center',
   },
-  signupButton: { 
-    // textAlign: 'center',
+  signupButton: {
     borderWidth: 2,
     borderColor: 'white' ,
     borderRadius: 50,
@@ -112,12 +116,12 @@ const styles = StyleSheet.create({
     marginTop: 15,
     fontSize: 20,
     color: 'white',
-    fontFamily: 'Poppins-Thin'
+    fontFamily: 'Poppins-light'
   },
   text3: {
     marginTop: 5,
     fontSize: 15,
     color: 'white',
-    fontFamily: 'Poppins-Thin'
+    fontFamily: 'Poppins-extra-light'
   }
 })

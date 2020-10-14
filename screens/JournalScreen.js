@@ -1,68 +1,74 @@
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity  } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ImageBackground} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import { AuthContext } from '../AuthContext';
 import JournalCard from '../components/JournalCard';
 
-
 export default function JournalScreen(props) {
+  const user = React.useContext(AuthContext);
   const onPress = () => props.navigation.navigate("HomeScreen");
+
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <Text style={styles.header}>My Journal</Text>
 
-      <JournalCard></JournalCard>
-
-      <JournalCard></JournalCard>
-
-      <JournalCard useFire="true"></JournalCard>
-
-      <TouchableOpacity style={styles.button} onPress={onPress}>
-        <Text style={styles.addButton}>+</Text>
-      </TouchableOpacity>
-
-      {/* <OptionButton
-        icon="md-school"
-        label="Read the Expo documentation"
-        onPress={() => WebBrowser.openBrowserAsync('https://docs.expo.io')}
-      />
-
-      <OptionButton
-        icon="md-compass"
-        label="Read the React Navigation documentation"
-        onPress={() => WebBrowser.openBrowserAsync('https://reactnavigation.org')}
-      />
-
-      <OptionButton
-        icon="ios-chatboxes"
-        label="Ask a question on the forums"
-        onPress={() => WebBrowser.openBrowserAsync('https://forums.expo.io')}
-        isLastOption
-      /> */}
-    </ScrollView>
-  );
-}
-
-function OptionButton({ icon, label, onPress, isLastOption }) {
-  return (
-    <RectButton style={[styles.option, isLastOption && styles.lastOption]} onPress={onPress}>
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.optionIconContainer}>
-          <Ionicons name={icon} size={22} color="rgba(0,0,0,0.35)" />
-        </View>
-        <View style={styles.optionTextContainer}>
-          <Text style={styles.optionText}>{label}</Text>
-        </View>
+    <View style={styles.container}>
+      <View style={styles.contentContainer}> 
+         <ScrollView>
+              <Text style={styles.header}>My Journal</Text>
+      {
+        !!user.journal && Object.values(user.journal).length > 0 ? (
+          Object.values(user.journal).map((item, key) =>
+            <JournalCard entry={item} key={key}></JournalCard>)
+        ) : (
+          <View style={styles.textContainer}>
+              <Text style={styles.text}>Nothing here yet. Add your first journal entry below!</Text>
+          </View>
+        )
+      }
+          </ScrollView>
       </View>
-    </RectButton>
+      {/* <View style={styles.pic} >
+          <ImageBackground style={styles.img}  
+                source={require('../assets/images/shapeDesign2.png')} resizeMode="contain">
+          </ImageBackground>
+       </View> */}
+
+       {/* <View style={styles.pic2} >
+          <ImageBackground style={styles.img}  
+                source={require('../assets/images/shapeDesign3.png')} resizeMode="contain">
+          </ImageBackground>
+       </View> */}
+
+      
+        <View style={styles.buttonView}>
+           <TouchableOpacity style={styles.button1} onPress={() => props.navigation.navigate('JournalEntry')}>
+               <Image style={ styles.imgBackground }  
+                     source={require('../assets/images/pencilTip.png')}> 
+               </Image>
+           </TouchableOpacity>
+      </View>
+
+       <View style = {styles.buttonView2}>
+            <TouchableOpacity style={styles.button} onPress={onPress}>
+                 <FontAwesome name="trash-o" size={40} color="white" />
+            </TouchableOpacity>
+       </View>
+
+        
+      </View>
+    
+
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#00095e',
+    //justifyContent: "center",
     flex: 1,
+    // [TOS] This line below is throwing an error
+    // vertical: true
   },
   header: {
     fontFamily: 'Poppins-Medium',
@@ -72,42 +78,76 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10
   },
-  addButton: {
-    color: 'white',
-    fontSize: 25,
-    paddingVertical: 3,
-    paddingHorizontal: 13
+  pic: {
+    flex: 1,
+    flexDirection: 'row',
+    bottom: '30%',
   },
-  button:{
-    backgroundColor: '#00095e',
-    bottom: -15,
-    alignSelf: 'center',
-    width: 44,
-    height: 44,
-    borderRadius: 44/2,
-    borderWidth: 2,
-    borderColor: 'white'
+  pic2: {
+    flex: 1,
+    flexDirection: 'row-reverse',
   },
   contentContainer: {
     paddingTop: 15,
+    flex: 1
   },
-  optionIconContainer: {
-    marginRight: 12,
+  button1:{
+    backgroundColor: 'white',
+    width: 55,
+    height: 55,
+    borderRadius: 55/2,
+    flexBasis: 'column',
+    borderColor: 'white'
   },
-  option: {
-    backgroundColor: '#fdfdfd',
-    paddingHorizontal: 15,
-    paddingVertical: 15,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: 0,
-    borderColor: '#ededed',
+  button2: {
+    flexBasis: 'column'
+
   },
-  lastOption: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
+  textContainer: {
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignContent: 'center',
+    width: '80%',
+    alignSelf: 'center',
+    borderRadius: 10,
+    padding: 10,
+    bottom: 10,
+    marginTop: 20
   },
-  optionText: {
-    fontSize: 15,
-    alignSelf: 'flex-start',
-    marginTop: 1,
-  }
+  img: {
+    width: '50%',
+    height: '50%',
+  },
+  imgBackground: {
+    width: '70%',
+    height: '70%',
+    bottom: -7,
+    right: -7
+},
+buttonView: {
+  flex: 1,
+  flexDirection: 'row-reverse',
+  right: '8%',
+  bottom: '3%',
+  position: 'absolute'
+},
+buttonView2: {
+    flex: 1,
+    bottom: '4%',
+    left: '8%',
+    position: 'absolute',
+    //flexDirection: 'row'
+},
+  text: {
+    textAlign: 'center',
+    color: '#00095e',
+    fontFamily: 'Poppins-extra-light',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+  contentContainer: {
+    paddingTop: 15,
+    flex: 1
+  },
+
 });

@@ -2,75 +2,52 @@ import * as React from 'react';
 import { Text, View, StyleSheet, ImagePropTypes } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 
-export default class Response_Checkbox extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      responses: []
-    };
-
-    let responses = Object.values(props.response);
-    //setting state this way is not good practice and I have no idea how it's actually working
-    this.state.responses = responses.map(function (obj) {
-      return {
-        score: obj.score,
-        text: obj.text,
-        checked: false
-      };
-    });
-
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.response !== this.props.response) {
-      let responses = Object.values(this.props.response);
-      this.setState({
-        responses: responses.map(function (obj) {
-          return {
-            score: obj.score,
-            text: obj.text,
-            checked: false
-          };
-        })
-      });
+export default function Response_Checkbox(props) {
+  const onChange = (score) => {
+    let oldValue = Array.isArray(props.value) ? [...props.value] : [];
+    let newValue = [];
+    let flags = {};
+    // Handle "uncheck" case
+    if (oldValue.length > 0 && oldValue.indexOf(score) >= 0) {
+      oldValue.splice(oldValue.indexOf(score), 1);
+      newValue = oldValue.splice(0);
+    // Handle "check" case
+    } else {
+      newValue = [...oldValue, score];
     }
-  }
-
-  handleChecked(score) {
-    let response = this.state.responses;
-    let index = response.findIndex(x => x.score === score);
-    response[index].checked = !response[index].checked;
-    //Another example of poor state management, should be refactored 
-    this.setState(response);
-
-    //Send the state array to the callback function to capture score 
-    this.props.onScoreUpdate(this.state.responses);
-  }
-
-  render() {
-    return (
-      <View style={styles.quizQuestion}>
-
-        {
-          this.state.responses.map((item, key) =>
-            <View style={styles.checkItem}>
-              <Text style={styles.checkText}>{item.text}</Text>
-              <Checkbox
-                key={key}
-                status={item.checked ? 'checked' : 'unchecked'}
-                onPress={() => {
-                  this.handleChecked(item.score)
-                }}
-              />
-            </View>
-          )
+    // Get flag changes
+    for (const key in props.responses) {
+      if (newValue.includes(props.responses[key].score)) {
+        for (const flagKey in props.responses[key].flagChanges) {
+          // When flags compound within the same question
+          if (Object.keys(flags).includes(flagKey)) {
+            flags[flagKey] = parseFloat(flags[flagKey]) + parseFloat(props.responses[key].flagChanges[flagKey]);
+          // Otherwise, add normally
+          } else {
+            flags[flagKey] = parseFloat(props.responses[key].flagChanges[flagKey]);
+          }
         }
-
-      </View>
-    );
+      }
+    }
+    props.onChange(newValue, flags);
   }
 
+  return (
+    <View style={styles.quizQuestion}>
+      {
+        Object.values(props.responses).map((item, key) =>
+          <View style={styles.checkItem} key={key}>
+            <Text style={styles.checkText}>{item.text}</Text>
+            <Checkbox
+              key={key}
+              status={Array.isArray(props.value) && props.value.indexOf(item.score) >= 0 ? 'checked' : 'unchecked'}
+              onPress={() => onChange(item.score)}
+            />
+          </View>
+        )
+      }
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

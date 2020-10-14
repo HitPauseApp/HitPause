@@ -7,14 +7,15 @@ import QuizCard from '../components/quiz/QuizCard';
 import Loading from './Loading';
 import { Asset } from 'expo-asset';
 
-export default function QuizScreen(){
+export default function QuizScreen(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [quiz, setQuiz] = React.useState({});
 
-  let quizName = "incidentQuestionnaire";
+  // let quizName = "incidentQuestionnaire";
 
   React.useEffect(() => {
-    firebase.database().ref(`hitpause/quizzes/${quizName}`).once('value').then(s => {
+    console.log(props)
+    firebase.database().ref(`hitpause/quizzes/${props.route.params.quizName}`).once('value').then(s => {
       let quizData = s.val();
       let questionList = quizData.questions;
       if (!quizData.dynamic) {
@@ -74,9 +75,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#00095e'
   },
   header:{
-    color: 'white',
     fontFamily: 'Poppins-Medium',
-    fontSize: 24,
-    textAlign: 'center'
+    color: 'white',
+    fontSize: 26,
+    fontWeight: 'bold',
+    paddingHorizontal:20,
+    paddingVertical: 10
+  },
+  contentContainer: {
+    paddingTop: 15,
+    flex: 1
   },
 });

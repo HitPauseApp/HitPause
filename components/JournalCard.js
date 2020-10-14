@@ -4,25 +4,10 @@ import firebase from '../Firebase';
 import { StyleSheet, View, Text, Image, ImageBackground } from 'react-native';
 
 export default function JournalCard(props) {
-    const [title, setTitle] = React.useState("1st October 2020");
-    const [body, setBody] = React.useState("Lorem ipsum dolor sit amet, consectetur adipiscing elit");
-    if (props.useFire) {
-        firebase.database().ref(`users/${firebase.auth().currentUser.uid}/journal`).once('value').then(s => {
-            let entries = Object.values(s.val());
-            setTitle(entries[0].title);
-            setBody(entries[0].text);
-        })
-    }
     return (
         <View style={styles.container}>
-            {/* <ImageBackground style={ styles.imgBackground }  
-                    source={require('../assets/images/shapeDesign1.png')}>
-            </ImageBackground> */}
-
-            <Text style={styles.header}>{title}</Text>
-            <Text style={styles.bodyText}>{body}</Text>
-
-
+            <Text style={styles.header}>{props.entry.title}</Text>
+            <Text style={styles.bodyText}>{props.entry.text}</Text>
         </View>
     );
 }
@@ -39,7 +24,7 @@ const styles = StyleSheet.create({
         bottom: 1,
         margin: 10,
         height: 150,
-        position: 'absolute'
+        //position: 'absolute'
     },
     header: {
         color: 'white',

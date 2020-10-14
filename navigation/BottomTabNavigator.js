@@ -5,9 +5,10 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import JournalScreen from '../screens/JournalScreen';
 import Login from '../screens/Login';
-import Account from '../screens/Account';
+import Account from '../screens/AccountScreen';
 import QuizScreen from '../screens/QuizScreen';
 import LikesScreen from '../screens/LikesScreen';
+import JournalEntry from '../screens/JournalEntry';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -20,9 +21,7 @@ export default function BottomTabNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <BottomTab.Navigator 
-      initialRouteName={INITIAL_ROUTE_NAME}
-    >
+    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
@@ -40,21 +39,28 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
+        name="JournalEntry"
+        component={JournalEntry}
+        options={{
+          tabBarVisible = false
+        }}
+      />
+      <BottomTab.Screen
         name="PauseQuiz"
         component={QuizScreen}
         options={{
           title: 'HitPause Quiz',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-pause" />,
         }}
-        />
+      />
       <BottomTab.Screen
-        name="Likes"
+        name="History"
         component={LikesScreen}
         options={{
-          title: 'My Likes',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-heart" />,
+          title: 'History',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-bookmark" />,
         }}
-        />
+      />
       <BottomTab.Screen
         name="Account"
         component={Account}
@@ -62,7 +68,7 @@ export default function BottomTabNavigator({ navigation, route }) {
           title: 'Account',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-settings" />,
         }}
-        />
+      />
     </BottomTab.Navigator>
   );
 }
@@ -75,8 +81,8 @@ function getHeaderTitle(route) {
       return 'HitPause';
     case 'Journal':
       return 'My Journal';
-    case 'Likes':
-      return 'My Liked Songs';
+    case 'History':
+      return 'History';
     case 'Account':
       return 'Account';
 
