@@ -11,7 +11,6 @@ export default function HomeScreen(props) {
   const user = React.useContext(AuthContext);
 
   const TOTD = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar pellentesque ex at maximus. Nam feugiat rhoncus accumsan. ';
-  const onPress = () => props.navigation.navigate("QuizScreen");
   return (
     <ScrollView style={styles.container}>
       <ImageBackground style={ styles.imgBackground }  
@@ -33,7 +32,7 @@ export default function HomeScreen(props) {
       <ScrollView>
       </ScrollView>
       <Text style={styles.text2}>Need to adjust your assessment?</Text>
-      <TouchableOpacity style={styles.button} onPress={onPress}>
+      <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
         <Text style={styles.text}>Retake Assessment</Text>
       </TouchableOpacity>
       <TipOTD TOTD={TOTD}></TipOTD>

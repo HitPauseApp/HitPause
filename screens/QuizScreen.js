@@ -30,10 +30,16 @@ export default function QuizScreen(props) {
     return <Loading message="Loading your quiz..."></Loading>;
   } else {
     return (
-      <View style={styles.container}>
-        <Text style={styles.header}>{quiz.quizName}</Text>
-        <QuizCard quiz={quiz} quizName={props.route.params.quizName}></QuizCard>
-        {/* <Button onPress={() => handleNextQuestion()}>Next Question</Button> */}
+      <View style = {styles.container}> 
+         <View style={styles.contentContainer}>
+               <Text style={styles.header}>{quiz.quizName}</Text>
+               <QuizCard quiz={quiz} quizName={props.route.params.quizName}></QuizCard>
+              {/* <Button onPress={() => handleNextQuestion()}>Next Question</Button> */} 
+        {/* </View>
+
+        <View> */}
+              
+        </View> 
       </View>
     );
   }
@@ -49,7 +55,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 26,
     fontWeight: 'bold',
-    paddingHorizontal:25,
-    paddingVertical: 30
+    paddingHorizontal:20,
+    paddingVertical: 10
+  },
+  contentContainer: {
+    paddingTop: 15,
+    flex: 1
   },
 });

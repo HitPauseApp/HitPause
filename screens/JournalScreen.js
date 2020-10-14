@@ -11,8 +11,10 @@ export default function JournalScreen(props) {
   const onPress = () => props.navigation.navigate("HomeScreen");
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <Text style={styles.header}>My Journal</Text>
+  <View style={styles.container}>
+    <View style={styles.contentContainer}> 
+      <ScrollView>
+          <Text style={styles.header}>My Journal</Text>
 
           {/* <Image style={ styles.imgBackground }  
                   source={require('../assets/images/shapeDesign1.png')}>
@@ -21,23 +23,25 @@ export default function JournalScreen(props) {
       {
         !!user.journal && Object.values(user.journal).length > 0 ? (
           Object.values(user.journal).map((item, key) =>
-            <JournalCard entry={item} key={key}></JournalCard>
-          )
+            <JournalCard entry={item} key={key}></JournalCard>)
         ) : (
           // TODO: This needs to be styled yet
-          <Text>Nothing here yet. Add your first journal entry below!</Text>
+          <Text style = {styles.text}>Nothing here yet. Add your first journal entry below!</Text>
         )
       }
+      </ScrollView>
+    </View>
+      
 
-      <View style={styles.buttonView}>
-        <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Image style={ styles.imgBackground }  
-                  source={require('../assets/images/pencilTip.png')}>
-          </Image>
-        </TouchableOpacity>
-      </View>
-     
-    </ScrollView>
+   <View style={styles.buttonView}>
+     <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('JournalEntry')}>
+          <Image style={ styles.imgBackground }  
+            source={require('../assets/images/pencilTip.png')}>
+         </Image>
+      </TouchableOpacity>
+    </View>
+  </View>
+ 
 
    
 
@@ -62,6 +66,7 @@ export default function JournalScreen(props) {
   //     /> 
   );
 }
+
 
 function OptionButton({ icon, label, onPress, isLastOption }) {
   return (
@@ -94,11 +99,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10
   },
+  text: {
+    color: 'white',
+    fontSize: 13,   
+    fontFamily: 'Poppins-Medium',
+    
+  },
   buttonView: {
     flex: 1,
     flexDirection: 'row-reverse',
-    right: 20,
-    bottom: -100
+    right: '8%',
+    bottom: '3%',
+    position: 'absolute'
     
   },
   addButton: {
@@ -120,6 +132,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 15,
+    flex: 1
   },
   optionIconContainer: {
     marginRight: 12,
