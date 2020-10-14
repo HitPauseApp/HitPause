@@ -3,21 +3,33 @@ import { Text, View, StyleSheet, ImagePropTypes } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 
 export default function Response_Checkbox(props) {
-  let handleChecked = (score) => {
+  const onChange = (score) => {
+    let oldValue = Array.isArray(props.value) ? [...props.value] : [];
     let newValue = [];
+    let flags = {};
     // Handle "uncheck" case
-    if (Array.isArray(props.value) && props.value.indexOf(score) >= 0) {
-      let i = props.value.indexOf(score);
-      newValue = props.value.splice(i, 1);
-    }
+    if (oldValue.length > 0 && oldValue.indexOf(score) >= 0) {
+      oldValue.splice(oldValue.indexOf(score), 1);
+      newValue = oldValue.splice(0);
     // Handle "check" case
-    if (Array.isArray(props.value)) {
-      newValue = [...props.value, score];
     } else {
-      newValue = [score];
+      newValue = [...oldValue, score];
     }
-
-    props.onChange(newValue);
+    // Get flag changes
+    for (const key in props.responses) {
+      if (newValue.includes(props.responses[key].score)) {
+        for (const flagKey in props.responses[key].flagChanges) {
+          // When flags compound within the same question
+          if (Object.keys(flags).includes(flagKey)) {
+            flags[flagKey] = parseFloat(flags[flagKey]) + parseFloat(props.responses[key].flagChanges[flagKey]);
+          // Otherwise, add normally
+          } else {
+            flags[flagKey] = parseFloat(props.responses[key].flagChanges[flagKey]);
+          }
+        }
+      }
+    }
+    props.onChange(newValue, flags);
   }
 
   return (
@@ -29,7 +41,7 @@ export default function Response_Checkbox(props) {
             <Checkbox
               key={key}
               status={Array.isArray(props.value) && props.value.indexOf(item.score) >= 0 ? 'checked' : 'unchecked'}
-              onPress={() => {handleChecked(item.score)}}
+              onPress={() => onChange(item.score)}
             />
           </View>
         )

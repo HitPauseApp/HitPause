@@ -21,7 +21,7 @@ export default class QuizCard extends React.Component {
       quizIndex: 0,
       quizLength: Array.isArray(this.props.quiz.questions) ? this.props.quiz.questions.length : 0,
       quizData: [],
-      quizScore: [],
+      quizFlags: [],
       questionScore: '',
       nextDisabled: false,
       prevDisabled: true     // Start on first question by default
@@ -29,16 +29,19 @@ export default class QuizCard extends React.Component {
   }
 
   // Updates data for quiz when a response is selected or changes
-  updateQuizData = (data) => {
+  updateQuizData = (data, flags) => {
     this.setState((state) => {
-      let update = [...state.quizData]
-      update[state.quizIndex] = data;
-      console.log("update:", update)
-      return { quizData: update };
+      // TODO: Restrucutre to just use keys and not score
+      let dataUpdate = [...state.quizData];
+      let flagUpdate = [...state.quizFlags];
+      dataUpdate[state.quizIndex] = data;
+      flagUpdate[state.quizIndex] = flags;
+      return { quizData: dataUpdate, quizFlags: flagUpdate };
     });
   }
 
   handleNextQuestion = () => {
+    // If not at end of quiz
     if (this.state.quizIndex < this.state.quizLength - 1) {
       let newIndex = this.state.quizIndex + 1;
       this.setState({
@@ -46,20 +49,58 @@ export default class QuizCard extends React.Component {
         // Always re-enable previous button when moving forward
         prevDisabled: false
       });
+    // If at end of quiz ('next' button will submit)
     } else if (this.state.quizIndex == this.state.quizLength - 1) {
       // Sanitize input data
       for (const key in this.state.quizData) {
         if (typeof this.state.quizData[key] === 'undefined') this.state.quizData[key] = '';
       }
+
+      let outputFlags = this.tallyOutputFlags();
+      console.log('outputFlags:', outputFlags);
       
       firebase.database()
         .ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/${this.props.quizName}`)
         .push({
           timestamp: Date.now(),
-          responses: this.state.quizData
+          responses: this.state.quizData,
+          outputFlags: outputFlags
         });
       // TODO: Display summary screen instead of redirecting
     }
+  }
+
+  tallyOutputFlags() {
+    let flags = {};
+    let modifiers = [];
+    // Get flag changes
+    for (const key in this.state.quizFlags) {
+      for (const flagKey in this.state.quizFlags[key]) {
+        // Flag has a special behavior
+        if (flagKey.includes('_highest_')) {
+          let count = parseInt(flagKey.replace('_highest_', ''));
+          modifiers.push({type: 'high', count: count, amount: parseFloat(this.state.quizFlags[key][flagKey])});
+        } else if (flagKey.includes('_lowest_')) {
+          let count = parseInt(flagKey.replace('_lowest_', ''));
+          modifiers.push({type: 'low', count: count, amount: parseFloat(this.state.quizFlags[key][flagKey])});
+
+        // Flags of this type already exist, must compound
+        } else if (Object.keys(flags).includes(flagKey)) {
+          flags[flagKey] = parseFloat(flags[flagKey]) + parseFloat(this.state.quizFlags[key][flagKey]);
+        // Otherwise, add normally
+        } else {
+          flags[flagKey] = parseFloat(this.state.quizFlags[key][flagKey]);
+        }
+      }
+    }
+    for (const key in modifiers) {
+      if (modifiers[key].type == 'high') {
+        // TODO: implement
+      } else if (modifiers[key].type == 'low') {
+        // TODO: implement
+      }
+    }
+    return flags;
   }
 
   handlePrevQuestion() {
@@ -100,6 +141,7 @@ export default class QuizCard extends React.Component {
     else if (this.props.quiz.questions[this.state.quizIndex].type == "scale") {
       responseComponent =
         <Response_Scale
+          flagChanges={this.props.quiz.questions[this.state.quizIndex].flagChanges}
           scaleLow={this.props.quiz.questions[this.state.quizIndex].scaleLow}
           scaleHigh={this.props.quiz.questions[this.state.quizIndex].scaleHigh}
           onChange={this.updateQuizData}
