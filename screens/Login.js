@@ -19,13 +19,14 @@ export default class Login extends React.Component {
     // TODO: Firebase stuff...
     console.log('handleLogin');
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-    .catch(error => this.setState({ errorMessage: error.message }))
+    .catch(error => this.setState({ errorMessage: error.message }));
   }
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>Login</Text>
-        {this.state.errorMessage &&
+        {/* Adding !! to try to fix issue #31... expected: login page does not crash */}
+        {!!this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
           </Text>

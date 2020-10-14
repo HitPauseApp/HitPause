@@ -3,9 +3,19 @@ import { Text, View, StyleSheet } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 
 export default function Response_Radio(props) {
+  const onChange = (value) => {
+    let flags = {};
+    for (const key in props.responses) {
+      if (props.responses[key].score == value) {
+        flags = {...props.responses[key].flagChanges};
+        break;
+      }
+    }
+    props.onChange(value, flags);
+  }
   return (
     <View style={styles.quizQuestion}>
-      <RadioButton.Group onValueChange={value => props.onChange(value)} value={props.value}>
+      <RadioButton.Group onValueChange={value => onChange(value)} value={props.value}>
         {
           // TODO: Use RadioButton.Item
           Object.values(props.responses).map((item, key) =>
