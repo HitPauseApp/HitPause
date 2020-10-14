@@ -145,10 +145,6 @@ buttonView2: {
     fontWeight: 'bold',
     fontSize: 20,
   },
-  // button: {
-  //   alignSelf: 'center',
-  //   marginTop: 20,
-  // },
   contentContainer: {
     paddingTop: 15,
     flex: 1
