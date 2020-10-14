@@ -1,7 +1,7 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import firebase from '../Firebase.js'
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, AsyncStorage } from 'react-native';
 
 import QuizCard from '../components/quiz/QuizCard';
 import Loading from './Loading';
@@ -23,8 +23,24 @@ export default function QuizScreen(props) {
       }
       setQuiz(quizData);
       setLoadingComplete(true);
+      saveIncidentQuiz(quizData);
     })
   }, []);
+
+  let saveIncidentQuiz = async (quizData) => {
+    try{
+      await AsyncStorage.setItem('IncidentQuiz', JSON.stringify(quizData));
+    }catch (error){
+      console.log(error);
+    }
+  }
+
+  let getSavedQuiz = async () =>{
+       AsyncStorage.getItem('IncidentQuiz', (err, result) => {
+        return JSON.parse(result);
+       });
+      }
+  
 
   if (!isLoadingComplete) {
     return <Loading message="Loading your quiz..."></Loading>;
@@ -34,7 +50,7 @@ export default function QuizScreen(props) {
          <View style={styles.contentContainer}>
                <Text style={styles.header}>{quiz.quizName}</Text>
                <QuizCard quiz={quiz} quizName={props.route.params.quizName}></QuizCard>
-              {/* <Button onPress={() => handleNextQuestion()}>Next Question</Button> */} 
+              {/* <Button onPress={() => getSavedQuiz()} title="Print Ansyc Quiz"></Button>  */}
         {/* </View>
 
         <View> */}
