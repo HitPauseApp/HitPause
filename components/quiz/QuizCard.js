@@ -57,6 +57,7 @@ export default class QuizCard extends React.Component {
       }
 
       let outputFlags = this.tallyOutputFlags();
+      let topThree = this.getTopThree(outputFlags);
       console.log('outputFlags:', outputFlags);
       
       firebase.database()
@@ -66,11 +67,12 @@ export default class QuizCard extends React.Component {
           responses: this.state.quizData,
           outputFlags: outputFlags
         });
-      // TODO: Display summary screen instead of redirecting
+      // TODO: Display summary screen
     }
   }
 
   tallyOutputFlags() {
+    // TODO: Remove flags less than 1 and square?
     let flags = {};
     let modifiers = [];
     // Get flag changes
@@ -101,6 +103,15 @@ export default class QuizCard extends React.Component {
       }
     }
     return flags;
+  }
+
+  // TODO: Incomplete... will probably want to move this into summary screen
+  getTopThree(flags) {
+    let sortedFlags = Object.entries(flags).sort((a, b) => (a[1] < b[1]));
+    console.log('sortedFlags:', sortedFlags);
+    let topThree = sortedFlags.slice(0, 3);
+    console.log('topThree:', topThree);
+    return Object.fromEntries(topThree);
   }
 
   handlePrevQuestion() {
