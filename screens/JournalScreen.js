@@ -9,6 +9,9 @@ import JournalCard from '../components/JournalCard';
 export default function JournalScreen(props) {
   const user = React.useContext(AuthContext);
   const onPress = () => props.navigation.navigate("HomeScreen");
+  const openEntry = () => {
+    
+  }
 
   return (
 
@@ -19,7 +22,9 @@ export default function JournalScreen(props) {
       {
         !!user.journal && Object.values(user.journal).length > 0 ? (
           Object.values(user.journal).map((item, key) =>
-            <JournalCard entry={item} key={key}></JournalCard>)
+            <TouchableOpacity onPress={openEntry}>
+              <JournalCard entry={item} key={key}></JournalCard>
+            </TouchableOpacity>)
         ) : (
           <View style={styles.textContainer}>
               <Text style={styles.text}>Nothing here yet. Add your first journal entry below!</Text>
