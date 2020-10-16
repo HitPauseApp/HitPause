@@ -116,12 +116,12 @@ const styles = StyleSheet.create({
     marginTop: 15,
     fontSize: 20,
     color: 'white',
-    fontFamily: 'Poppins-light'
+    fontFamily: 'Poppins-Light'
   },
   text3: {
     marginTop: 5,
     fontSize: 15,
     color: 'white',
-    fontFamily: 'Poppins-extra-light'
+    fontFamily: 'Poppins-Extra-Light'
   }
 })
