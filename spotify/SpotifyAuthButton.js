@@ -1,4 +1,5 @@
 import * as React from 'react';
+import firebase from '../Firebase.js';
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, useAuthRequest, exchangeCodeAsync, refreshAsync } from 'expo-auth-session';
 import { Button } from 'react-native';
@@ -13,6 +14,12 @@ const discovery = {
 };
 
 export default function SpotifyAuthButton() {
+  const [config, setConfig] = React.useState({
+    clientId: 'bc628be0b7a344a384e7acff4617a332',
+    redirectUri: 'http://localhost:19006/',
+    clientSecret: null,
+    scopes: ['user-read-email', 'playlist-modify-public']
+  });
 
   const spotifyApi = new SpotifyWebAPI();
   /*
@@ -23,12 +30,20 @@ export default function SpotifyAuthButton() {
 
   */
 
-  const config = {
-    clientId: 'bc628be0b7a344a384e7acff4617a332',
-    redirectUri: 'http://localhost:19006/',
-    clientSecret: '14da02bb95bc49e1992ba34891678519', //THIS NEEDS TO BE MOVED TO A DATABASE CONNECTION!
-    scopes: ['user-read-email', 'playlist-modify-public']
-  }
+  React.useEffect(() => {
+    async function getConfig() {
+      firebase.database().ref('hitpause/integrations/spotify/cs').once('value').then(s => {
+        setConfig({
+          clientId: 'bc628be0b7a344a384e7acff4617a332',
+          redirectUri: 'http://localhost:19006/',
+          clientSecret: s.val(), //THIS NEEDS TO BE MOVED TO A DATABASE CONNECTION!
+          scopes: ['user-read-email', 'playlist-modify-public']
+        });
+      });
+    }
+
+    getConfig();
+  }, []);
 
   const [userData, setUserData] = React.useState({
     accessToken: '',
@@ -51,6 +66,7 @@ export default function SpotifyAuthButton() {
 
   //Get our access token (Step 2)
   let getToken = function (code) {
+
     return exchangeCodeAsync(
       {
         clientId: config.clientId,
