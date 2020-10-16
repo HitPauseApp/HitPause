@@ -6,21 +6,19 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { AuthContext } from '../AuthContext';
 import firebase from '../Firebase';
 
-export default function JournalEntry({ navigation: { goBack } }) {
+export default function JournalEntry({ navigation: { goBack }, ...props }) {
+  const user = React.useContext(AuthContext);
+  const [title, setTitle] = React.useState(props.route.params.title);
+  const [text, setText] = React.useState(props.route.params.text);
 
-  const updateEntry = (title, text) => {
-    if(title){
-      update = {
-        title: title,
-        dateModified: Date.now()};
-    }else {
-      update = {
-        text: text,
-        dateModified: Date.now()};
-    }
-    firebase.database().ref(`users/${firebase.auth().currentUser.uid}/journal/${props.JournalID}`).update(update)
-
-  }
+  React.useEffect(() => {
+    let update = {
+      title: title,
+      text: text,
+      dateModified: Date.now()
+    };
+    firebase.database().ref(`users/${firebase.auth().currentUser.uid}/journal/${props.route.params.entryId}`).update(update);
+  }, [title, text]);
 
   const getCurrentDate = () => {
     var date = new Date().getDate();
@@ -31,31 +29,29 @@ export default function JournalEntry({ navigation: { goBack } }) {
     return date + '-' + month + '-' + year;//format: dd-mm-yyyy;
   }
 
-  const currentDate = getCurrentDate();
-  const user = React.useContext(AuthContext);
-
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButton} onPress={() => goBack()}>
         <AntDesign name="arrowleft" size={30} color="white" />
       </TouchableOpacity>
-      <Text style={styles.header}>{currentDate}</Text>
+      <Text style={styles.header}>{getCurrentDate()}</Text>
       <View style={styles.textInputContainer}>
         <TextInput
           style={styles.inputTitleStyle}
           placeholder='Note Title...'
           placeholderTextColor='#aaa'
           returnKeyType='next'
-          onChangeText = {title => updateEntry(title, null)}
+          onChangeText={title => setTitle(title)}
+          value={title}
         />
-
         <TextInput
           style={styles.inputDescriptionStyle}
           multiline={true}
           placeholder='Note Description...'
           placeholderTextColor='#aaa'
           returnKeyType='done'
-          onChangeText = {text => updateEntry(null, text)}
+          onChangeText={text => setText(text)}
+          value={text}
         />
       </View>
     </View>
