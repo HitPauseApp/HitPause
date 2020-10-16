@@ -53,7 +53,7 @@ export default function JournalScreen(props) {
 
 
       <View style={styles.buttonView}>
-        <TouchableOpacity style={styles.button1} onPress={() => openEntry(null)}>
+        <TouchableOpacity style={styles.button1} onPress={() => openEntry(null, null, null)}>
           <Image style={styles.imgBackground}
             source={require('../assets/images/pencilTip.png')}>
           </Image>
