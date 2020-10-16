@@ -13,7 +13,7 @@ export default function QuizQuestion(props){
 
 const styles = StyleSheet.create({
   text:{
-    color: 'black',
+    color: '#00095e',
     fontFamily: 'Poppins-Medium',
     fontSize: 20,
     marginTop: 5,

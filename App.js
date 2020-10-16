@@ -127,7 +127,6 @@ export default function App(props) {
                   <Stack.Screen name="Login" component={Login} />
                   <Stack.Screen name="SignUp" component={SignUp} />
                   <Stack.Screen name="ResetPassword" component={ResetPassword} />
-                  <Stack.Screen name = "JournalEntry" component = {JournalEntry}/>
                 </Stack.Navigator>
               ) : (
                 <Tab.Navigator
