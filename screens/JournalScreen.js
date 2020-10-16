@@ -106,12 +106,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: 55,
     height: 55,
-    borderRadius: 55 / 2,
-    flexBasis: 'column',
+    borderRadius: 55/2,
+    // flexBasis: 'column',
     borderColor: 'white'
   },
   button2: {
-    flexBasis: 'column'
+    // flexBasis: 'column'
 
   },
   textContainer: {
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     color: '#00095e',
-    fontFamily: 'Poppins-extra-light',
+    fontFamily: 'Poppins-Extra-Light',
     fontWeight: 'bold',
     fontSize: 20,
   },

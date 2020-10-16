@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     },
     bodyText:{
         color: 'white',
-        fontFamily: 'Poppins-extra-light',
+        fontFamily: 'Poppins-Extra-Light',
         marginTop: 5,
         textAlign: 'center',
     },

@@ -24,13 +24,13 @@ const styles = StyleSheet.create({
         overflow: 'hidden'
     },
     text: {
-        fontFamily: 'Poppins-extra-light',
+        fontFamily: 'Poppins-Extra-Light',
         color: 'white',
         fontSize: 18,
         fontWeight: 'bold',
     },
     header: {
-        fontFamily: 'Poppins-light',
+        fontFamily: 'Poppins-Light',
         color: 'white',
         fontSize: 24,
         fontWeight: 'bold',
