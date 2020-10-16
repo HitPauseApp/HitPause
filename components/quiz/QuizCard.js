@@ -10,6 +10,7 @@ import Response_Scale from './Response_Scale';
 import Response_Text from './Response_Text';
 import Response_TextArea from './Response_TextArea';
 import { RFValue } from "react-native-responsive-fontsize";
+import { ScrollView } from 'react-native';
 
 export default class QuizCard extends React.Component {
   constructor(props) {
@@ -169,9 +170,16 @@ export default class QuizCard extends React.Component {
       buttonDisabled = false;
     }
     return (
-      <View style={styles.quizQuestion}>
-        <QuizQuestion question={this.props.quiz.questions[this.state.quizIndex]}></QuizQuestion>
-        {responseComponent}
+      <View style = {styles.container}> 
+       
+        <View style={styles.quizQuestion}>
+              <QuizQuestion question={this.props.quiz.questions[this.state.quizIndex]}></QuizQuestion>
+          </View>
+
+       <ScrollView style = {styles.scrollView}>
+           {responseComponent}
+        </ScrollView>
+
         <View style={styles.row}>
           <TouchableOpacity
             style={styles.button}
@@ -189,18 +197,26 @@ export default class QuizCard extends React.Component {
           </TouchableOpacity>
         </View>
       </View>
+        
+     
     );
   }
 
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex:1 
+  },
   text: {
-    color: 'black',
+    color: 'white',
     fontFamily: 'Poppins-Medium',
     fontSize: 20,
     marginTop: 5,
     textAlign: 'center',
+  },
+  scrollView: {
+
   },
   quizQuestion: {
     backgroundColor: 'white',
@@ -210,24 +226,24 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     bottom: 10,
-    marginTop: 100,
+    marginTop: 40,
     height: 'auto',
     width: RFValue(250),
   },
   button: {
     marginTop: 30,
     borderWidth: 2,
-    borderColor: 'black',
+    borderColor: 'white',
     borderRadius: 50,
     overflow: 'hidden',
     height: RFValue(30),
-    width: RFValue(100),
-    marginLeft: 15,
-    marginRight: 15,
+    width: RFValue(120),
+    marginLeft: 20,
+    marginRight: 20,
   },
   buttonText: {
     fontSize: 20,
-    color: 'black',
+    color: 'white',
     fontFamily: 'Poppins-Medium',
     textAlign: 'center'
   },
@@ -235,6 +251,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'center',
     alignSelf: 'center',
+    bottom: '4%',
+    position: 'absolute',
+    flex:1 
   }
 });
 
