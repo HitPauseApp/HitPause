@@ -7,7 +7,7 @@ import { AuthContext } from '../AuthContext.js';
 import MatIcons from '../components/MatIcons';
 import FillButton from '../components/buttons/FillButton';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
-import Loading from './Loading';
+import SpotifyAuthButton from '../spotify/SpotifyAuthButton';
 import userImg from '../assets/images/user.png';
 
 
@@ -41,7 +41,8 @@ export default function Account(props) {
       <View style={styles.category}>
         <FontAwesome name="spotify" size={30} color="white" />
         {/* This is bad data, only using as placeholder */}
-        <Text style={styles.text}>{user ? 'Connected' : 'Not Connected'}</Text>
+        {/* <Text style={styles.text}>{user ? 'Connected' : 'Not Connected'}</Text> */}
+        <SpotifyAuthButton></SpotifyAuthButton>
       </View>
 
       <View style={styles.separator}></View>

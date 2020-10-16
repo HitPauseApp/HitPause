@@ -26,6 +26,7 @@ import JournalScreen from './screens/JournalScreen';
 import LikesScreen from './screens/LikesScreen';
 import Account from './screens/AccountScreen';
 import JournalEntry from './screens/JournalEntry';
+import { AsyncStorage } from 'react-native';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -96,6 +97,8 @@ export default function App(props) {
         console.log("Logged in as:", user.email);
         firebase.database().ref(`users/${user.uid}`).once('value').then(s => {
           setAuthUser(s.val());
+          // TODO: Finalize this
+          AsyncStorage.setItem('authUser', JSON.stringify(s.val()));
           // If user profile does not exist (new user)
           if (!s.val().profile) {
             setAuthNavState('InitialAssessment');
