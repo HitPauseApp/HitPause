@@ -1,6 +1,7 @@
 import * as React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import { RadioButton } from 'react-native-paper';
+import { RFValue } from "react-native-responsive-fontsize";
 
 export default function Response_Scale(props){
   // TODO: The following is a temporary solution, eventually we'll want to use an actual scale element
@@ -27,6 +28,9 @@ export default function Response_Scale(props){
         {
           // TODO: Use RadioButton.Item
           options.map((item, key) =>
+          <TouchableOpacity 
+          style = {styles.checkBoxDesign}
+          onPress={value => onChange(item)}>
             <View style={styles.checkItem} key={key}>
               <RadioButton
                 value={item}
@@ -34,6 +38,7 @@ export default function Response_Scale(props){
               />
               <Text style={styles.checkText}>{item}</Text>
             </View>
+          </TouchableOpacity>
           )
         }
       </RadioButton.Group>
@@ -47,10 +52,24 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   checkItem: {
+    marginTop: '2%',
     flexDirection: "row",
-    alignSelf: "center"
+    alignSelf: "center",
+    color: 'black',
   },
   checkText: {
-    marginTop: 10
-  }
+    marginTop: 10,
+    color: 'black'
+  },
+  checkBoxDesign: {
+    marginTop: 15,
+    borderWidth: 2,
+    alignSelf: "center",
+    borderColor: 'white',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    overflow: 'hidden',
+    height: RFValue(40),
+    width: RFValue(260), //260
+  },
 });
