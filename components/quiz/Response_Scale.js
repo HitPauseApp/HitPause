@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   checkItem: {
-    marginTop: '2%',
+    marginTop: '1.2%',
     flexDirection: "row",
     alignSelf: "center",
     color: 'black',
