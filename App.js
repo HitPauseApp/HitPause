@@ -35,6 +35,7 @@ const JournalStack = createStackNavigator();
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [isAuthenticating, setIsAuthenticating] = React.useState(false);
+  const [isAppConnected, setIsAppConnected] = React.useState(false);
   const [preAuthNavState, setPreAuthNavState] = React.useState('Login');
   const [authNavState, setAuthNavState] = React.useState('Home');
   const [authUser, setAuthUser] = React.useState(null);
@@ -89,28 +90,60 @@ export default function App(props) {
     loadResourcesAndDataAsync();
 
     // Establish firebase authentication observer
-    // TODO: react-native-firebase auth state persistence
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(async (user) => {
       setIsAuthenticating(true);
       if (user) {
-        // There is a user
         console.log("Logged in as:", user.email);
-        firebase.database().ref(`users/${user.uid}`).once('value').then(s => {
-          setAuthUser(s.val());
-          // TODO: Finalize this
-          AsyncStorage.setItem('authUser', JSON.stringify(s.val()));
-          // If user profile does not exist (new user)
-          if (!s.val().profile) {
-            setAuthNavState('InitialAssessment');
-          }
-          setIsAuthenticating(false);
-        });
+        await updateAuthContext(user.uid, isAppConnected);
+        // If user profile does not exist (new user)
+        // TODO: Fix this
+        // if (authUser.newUser) {
+        //   setAuthNavState('InitialAssessment');
+        // }
+        setIsAuthenticating(false);
       } else {
         setAuthUser(null);
         setIsAuthenticating(false);
       }
     });
+
+    firebase.database().ref('.info/connected').on('value', s => {
+      if (s.val() === true) {
+        setIsAppConnected(true);
+        // Update AuthContext using firebase
+        updateAuthContext(firebase.auth().currentUser.uid, true);
+      } else {
+        setIsAppConnected(false);
+      }
+    });
   }, []);
+
+  async function updateAuthContext(uid, useFirebase) {
+    let userData = {};
+    if (useFirebase) {
+      // Get data from firebase
+      let data = await firebase.database().ref(`users/${uid}`).once('value').then(s => s.val());
+      userData = {
+        uid: uid,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email
+      };
+      // Store firebase data locally
+      AsyncStorage.setItem('userData', JSON.stringify(userData));
+    } else {
+      // Get data from local storage
+      userData = JSON.parse(await AsyncStorage.getItem('userData'));
+      // If no 'userData' object exists
+      if (userData == null) {
+        // Try one more time to load data from firebase
+        console.log('Local userData was null... trying to load from Firebase');
+        setTimeout(await updateAuthContext(uid, true), 3000);
+        return;
+      }
+    }
+    setAuthUser(userData);
+  }
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return null;
@@ -131,9 +164,7 @@ export default function App(props) {
                   <Stack.Screen name="ResetPassword" component={ResetPassword} />
                 </Stack.Navigator>
               ) : (
-                <Tab.Navigator
-                  initialRouteName={authNavState}
-                >
+                <Tab.Navigator initialRouteName={authNavState}>
                   <Tab.Screen
                     name="Home"
                     component={HomeScreen}
