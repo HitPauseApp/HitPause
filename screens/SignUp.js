@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   text: { 
     fontSize: 20,
     color: 'white',
-    fontFamily: 'Poppins-medium',
+    fontFamily: 'Poppins-Medium',
     textAlign: 'center',
 
   },
@@ -148,6 +148,6 @@ const styles = StyleSheet.create({
     marginTop: 15,
     fontSize: 20,
     color: 'white',
-    fontFamily: 'Poppins-light'
+    fontFamily: 'Poppins-Light'
   },
 })

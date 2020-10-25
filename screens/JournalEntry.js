@@ -61,43 +61,44 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
 
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 15,
-    backgroundColor: '#00095e',
-    flex: 1,
-  },
-  header: {
-    fontFamily: 'Poppins-Medium',
-    color: 'white',
-    fontSize: 26,
-    fontWeight: 'bold',
-    paddingHorizontal: 20,
-    paddingVertical: 10
-  },
-  backButton: {
-    paddingLeft: 5,
-  },
-  textInputContainer: {
-    flex: 1
-  },
-  inputTitleStyle: {
-    color: 'white',
-    height: 60,
-    paddingTop: 5,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 0,
-    fontFamily: 'Poppins-Medium',
-    fontSize: 20
-  },
-  inputDescriptionStyle: {
-    color: 'white',
-    flex: 1,
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginBottom: 60,
-    fontFamily: 'Poppins-light',
-    fontSize: 16,
-    textAlignVertical: 'top'
-  }
-});
+    container: {
+      paddingTop: 15,
+      backgroundColor: '#00095e',
+      flex: 1,
+    },
+    header: {
+      fontFamily: 'Poppins-Medium',
+      color: 'white',
+      fontSize: 26,
+      fontWeight: 'bold',
+      paddingHorizontal: 20,
+      paddingVertical: 10
+    },
+    backButton: {
+      paddingLeft: 5,
+    },
+    textInputContainer: {
+      flex: 1
+    },
+    inputTitleStyle: {
+      color: 'white',
+      height: 60,
+      paddingTop: 5,
+      paddingLeft: 20,
+      paddingRight: 20,
+      paddingBottom: 0,
+      fontFamily: 'Poppins-Medium',
+      fontSize: 20
+    },
+    inputDescriptionStyle: {
+      color: 'white',
+      flex: 1,
+      paddingLeft: 20,
+      paddingRight: 20,
+      marginBottom: 60,
+      fontFamily: 'Poppins-Light',
+      fontSize: 16,
+      textAlignVertical: 'top'
+    }
+  });
+  

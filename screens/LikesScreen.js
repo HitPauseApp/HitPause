@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   header:{
     padding: 15,
-    fontFamily: 'Poppins-extra-light',
+    fontFamily: 'Poppins-Extra-Light',
     fontSize: 20,
     color: 'white'
   },
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     fontSize: 16,   
-    fontFamily: 'Poppins-extra-light',
+    fontFamily: 'Poppins-Extra-Light',
     padding: 15
   },
   

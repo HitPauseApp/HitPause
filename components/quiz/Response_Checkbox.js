@@ -1,6 +1,8 @@
 import * as React from 'react';
+import { TouchableOpacity } from 'react-native';
 import { Text, View, StyleSheet, ImagePropTypes } from 'react-native';
 import { Checkbox } from 'react-native-paper';
+import { RFValue } from "react-native-responsive-fontsize";
 
 export default function Response_Checkbox(props) {
   const onChange = (score) => {
@@ -33,17 +35,25 @@ export default function Response_Checkbox(props) {
   }
 
   return (
-    <View style={styles.quizQuestion}>
+    <View>
       {
         Object.values(props.responses).map((item, key) =>
-          <View style={styles.checkItem} key={key}>
-            <Text style={styles.checkText}>{item.text}</Text>
+          
+            
+            <TouchableOpacity 
+              style = {styles.checkBoxDesign}
+              onPress={() => onChange(item.score)}>
+              <View style={styles.checkItem} key={key}>
             <Checkbox
+              style = {styles.checkBox}
               key={key}
               status={Array.isArray(props.value) && props.value.indexOf(item.score) >= 0 ? 'checked' : 'unchecked'}
               onPress={() => onChange(item.score)}
             />
-          </View>
+            <Text style={styles.checkText}>{item.text}</Text>
+            </View>
+            </TouchableOpacity>
+          
         )
       }
     </View>
@@ -56,10 +66,33 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   checkItem: {
+    marginTop: '1.2%',
     flexDirection: "row",
-    alignSelf: "center"
+    alignSelf: "center",
+    color: 'black',
+   
+  },
+  checkBox: {
+    flex: 1,
+    flexDirection: 'row',
+    position: 'absolute',
   },
   checkText: {
-    marginTop: 10,
-  }
+    marginTop: 7,
+    color: '#00095e',
+    fontFamily: 'Poppins-Medium',
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  checkBoxDesign: {
+    marginTop: 15,
+    borderWidth: 2,
+    alignSelf: "center",
+    borderColor: 'white',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    overflow: 'hidden',
+    height: RFValue(40),
+    width: RFValue(260), //260
+  },
 });

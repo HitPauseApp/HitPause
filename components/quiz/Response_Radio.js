@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { RadioButton } from 'react-native-paper';
+import { RFValue } from "react-native-responsive-fontsize";
 
 export default function Response_Radio(props) {
   const onChange = (value) => {
@@ -19,13 +20,18 @@ export default function Response_Radio(props) {
         {
           // TODO: Use RadioButton.Item
           Object.values(props.responses).map((item, key) =>
+          <TouchableOpacity 
+              style = {styles.checkBoxDesign}
+              onPress={value => onChange(item.score)}>
             <View style={styles.checkItem} key={key}>
-              <RadioButton
-                value={item.score}
-                status={props.value === item.score ? 'checked' : 'unchecked'}
-              />
-              <Text style={styles.checkText}>{item.text}</Text>
+                <RadioButton
+                    value={item.score}
+                    status={props.value === item.score ? 'checked' : 'unchecked'}
+                />
+                <Text style={styles.checkText}>{item.text}</Text>
             </View>
+
+            </TouchableOpacity>
           )
         }
       </RadioButton.Group>
@@ -39,10 +45,24 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   checkItem: {
+    marginTop: '1.2%',
     flexDirection: "row",
-    alignSelf: "center"
+    alignSelf: "center",
+    color: 'black',
   },
   checkText: {
-    marginTop: 10
-  }
+    marginTop: 10,
+    color: '#00095e'
+  },
+  checkBoxDesign: {
+    marginTop: 15,
+    borderWidth: 2,
+    alignSelf: "center",
+    borderColor: 'white',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    overflow: 'hidden',
+    height: RFValue(40),
+    width: RFValue(260), //260
+  },
 });

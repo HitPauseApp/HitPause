@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import * as React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { SplashScreen } from 'expo';
@@ -71,11 +72,11 @@ export default function App(props) {
         await Font.loadAsync({
           ...Ionicons.font,
           'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-          'poppins-bold': require('./assets/fonts/Poppins-Bold.ttf'),
-          'poppins-medium': require('./assets/fonts/Poppins-Medium.ttf'),
-          'poppins-light': require('./assets/fonts/Poppins-Light.ttf'),
-          'poppins-thin': require('./assets/fonts/Poppins-Thin.ttf'),
-          'poppins-extra-light': require('./assets/fonts/Poppins-ExtraLight.ttf'),
+          'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+          'Poppins-Medium': require('./assets/fonts/Poppins-Medium.ttf'),
+          'Poppins-Light': require('./assets/fonts/Poppins-Light.ttf'),
+          'Poppins-Thin': require('./assets/fonts/Poppins-Thin.ttf'),
+          'Poppins-Extra-Light': require('./assets/fonts/Poppins-ExtraLight.ttf'),
 
         });
       } catch (e) {

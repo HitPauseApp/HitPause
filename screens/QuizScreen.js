@@ -53,8 +53,7 @@ export default function QuizScreen(props) {
               {/* <Button onPress={() => getSavedQuiz()} title="Print Ansyc Quiz"></Button>  */}
         {/* </View>
 
-        <View> */}
-              
+        <View> */}    
         </View> 
       </View>
     );

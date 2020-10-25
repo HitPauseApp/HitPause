@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     imgBackground: {
         width: '50%',
         height: '50%',
-        alignSelf: 'left',
+        alignSelf: 'flex-start',
         position: 'absolute',
         top: 20
     },
