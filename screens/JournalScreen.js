@@ -9,6 +9,15 @@ import JournalCard from '../components/JournalCard';
 
 export default function JournalScreen(props) {
   const user = React.useContext(AuthContext);
+  const [entries, setEntries] = React.useState(null);
+
+  React.useEffect(() => {
+    // TODO: Get and store these locally
+    firebase.database().ref(`users/${user.uid}/journal`).on('value', (s) => {
+      setEntries(s.val());
+    });
+  }, []);
+
   const onPress = () => props.navigation.navigate("HomeScreen");
 
   const openEntry = (entryId, title, text) => {
@@ -25,8 +34,8 @@ export default function JournalScreen(props) {
           <Text style={styles.header}>My Journal</Text>
           {
             // TODO: Does not load new data, need to trigger update
-            !!user.journal && Object.entries(user.journal).length > 0 ? (
-              Object.entries(user.journal).map((item, key) =>
+            !!entries && Object.entries(entries).length > 0 ? (
+              Object.entries(entries).map((item, key) =>
                 <TouchableOpacity key={key} onPress={() => openEntry(item[0], item[1].title, item[1].text)}>
                   <JournalCard entry={item[1]} id={item[0]}></JournalCard>
                 </TouchableOpacity>)
@@ -53,7 +62,7 @@ export default function JournalScreen(props) {
 
 
       <View style={styles.buttonView}>
-        <TouchableOpacity style={styles.button1} onPress={() => openEntry(null, null, null)}>
+        <TouchableOpacity style={styles.button1} onPress={() => openEntry(null, '', '')}>
           <Image style={styles.imgBackground}
             source={require('../assets/images/pencilTip.png')}>
           </Image>

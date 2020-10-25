@@ -8,8 +8,8 @@ import firebase from '../Firebase';
 
 export default function JournalEntry({ navigation: { goBack }, ...props }) {
   const user = React.useContext(AuthContext);
-  const [title, setTitle] = React.useState(props.route.params.title);
-  const [text, setText] = React.useState(props.route.params.text);
+  const [title, setTitle] = React.useState(props.route.params.title || '');
+  const [text, setText] = React.useState(props.route.params.text || '');
 
   React.useEffect(() => {
     let update = {
@@ -17,16 +17,17 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
       text: text,
       dateModified: Date.now()
     };
-    firebase.database().ref(`users/${firebase.auth().currentUser.uid}/journal/${props.route.params.entryId}`).update(update);
+    // Only update if title and text have values
+    if (update.title || update.text) {
+      firebase.database().ref(`users/${firebase.auth().currentUser.uid}/journal/${props.route.params.entryId}`).update(update);
+    }
   }, [title, text]);
 
   const getCurrentDate = () => {
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
-    //Alert.alert(date + '-' + month + '-' + year);
-    // You can turn it in to your desired format
-    return date + '-' + month + '-' + year;//format: dd-mm-yyyy;
+    return date + '-' + month + '-' + year; // format: dd-mm-yyyy;
   }
 
   return (
