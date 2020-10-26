@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Text, Image, Button } from 'react-native';
+import { View, StyleSheet, Text, Image, Button, AsyncStorage } from 'react-native';
 import firebase from '../Firebase.js';
 import { AuthContext } from '../AuthContext.js';
 
@@ -58,6 +58,12 @@ export default function Account(props) {
         onPress={() => handleLogout()}
       >Sign Out</Text>
       </View>
+      <Text
+        style={styles.deleteData}
+        onPress={() => {
+          AsyncStorage.removeItem('userData');
+        }}
+      >Delete Local Account Data</Text>
     </View>
   );
 }
@@ -97,5 +103,10 @@ const styles = StyleSheet.create({
   signOut: {
     color: 'white',
     alignSelf: 'center',
+  },
+  deleteData: {
+    color: 'white',
+    alignSelf: 'center',
+    marginTop: 20
   }
 });
