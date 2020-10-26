@@ -23,6 +23,7 @@ export default function Account(props) {
   
   return (
     <View style={styles.container}>
+      <View style={styles.contentContainer}> 
       <Image source={userImg} style={styles.avatar}></Image>
       <View style={styles.category}>
         <MatIcons name="person"></MatIcons>
@@ -56,6 +57,7 @@ export default function Account(props) {
         style={styles.signOut}
         onPress={() => handleLogout()}
       >Sign Out</Text>
+      </View>
     </View>
   );
 }
@@ -70,6 +72,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     marginLeft: 30
+  },
+  contentContainer: {
+    flex: 1,
+    paddingTop: '15%'
   },
   separator: {
     borderBottomColor: '#fff',
