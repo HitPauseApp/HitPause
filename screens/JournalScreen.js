@@ -29,9 +29,9 @@ export default function JournalScreen(props) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.contentContainer}>
+    <View style={styles.contentContainer}>
+      <Text style={styles.header}>My Journal</Text>
         <ScrollView>
-          <Text style={styles.header}>My Journal</Text>
           {
             // TODO: Does not load new data, need to trigger update
             !!entries && Object.entries(entries).length > 0 ? (
@@ -90,13 +90,18 @@ const styles = StyleSheet.create({
     // [TOS] This line below is throwing an error
     // vertical: true
   },
+  container2: {
+    backgroundColor: '#00095e',
+    flex: 1,
+    marginTop: '0%'
+  },
   header: {
     fontFamily: 'Poppins-Medium',
     color: 'white',
     fontSize: 26,
     fontWeight: 'bold',
     paddingHorizontal: 20,
-    paddingVertical: 10
+    paddingVertical: '9%',
   },
   pic: {
     flex: 1,
@@ -108,7 +113,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
   },
   contentContainer: {
-    paddingTop: 15,
     flex: 1
   },
   button1: {

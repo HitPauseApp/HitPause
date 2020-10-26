@@ -48,7 +48,7 @@ export default function QuizScreen(props) {
     return (
       <View style = {styles.container}> 
          <View style={styles.contentContainer}>
-               <Text style={styles.header}>{quiz.quizName}</Text>
+              <Text style={styles.header}>{quiz.quizName}</Text>
                <QuizCard quiz={quiz} quizName={props.route.params.quizName}></QuizCard>
               {/* <Button onPress={() => getSavedQuiz()} title="Print Ansyc Quiz"></Button>  */}
         {/* </View>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: 'bold',
     paddingHorizontal:20,
-    paddingVertical: 10
+    paddingVertical: '9%'
   },
   contentContainer: {
     paddingTop: 15,

@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     bottom: 10,
-    marginTop: 40,
+    marginTop: '5%',
     height: 'auto',
     width: RFValue(250),
   },
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'center',
     alignSelf: 'center',
-    bottom: '4%',
+    bottom: '7%',
     position: 'absolute',
     flex:1 
   }

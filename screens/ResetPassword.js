@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: 'bold',
     color: 'white',
-    fontFamily: 'Poppins'
+    fontFamily: 'Poppins-Medium'
   },
   textInput: {
     height: 40,
