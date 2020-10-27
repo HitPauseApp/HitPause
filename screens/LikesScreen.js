@@ -14,61 +14,65 @@ export default function LikesScreen(props) {
 
 
   return (
-  <View style={styles.container}>
-    <Text style={styles.header2}>My History</Text>
-    <ScrollView>
-      <View style={styles.textContainer}>
-        <Text style={styles.header}>Give these suggestions a review!</Text>
-        <View style={styles.recentTab}>
-          <TouchableOpacity onPress={() => props.navigation.navigate('ReviewScreen')}>
-            <Image source={albumImage} style={styles.albumImages}></Image>
+    <View style={styles.container}>
+      <Text style={styles.header2}>My History</Text>
+      <ScrollView>
+        <View style={styles.textContainer}>
+          <Text style={styles.header}>Give these suggestions a review!</Text>
+          <View style={styles.recentTab}>
+            <Portal>
+              <Modal visible={visible} onDismiss={hideModal}>
+                <Text>Example Modal</Text>
+              </Modal>
+              <TouchableOpacity onPress={showModal}>
+                <Image source={albumImage} style={styles.albumImages}></Image>
+              </TouchableOpacity>
+            </Portal>
+            <TouchableOpacity onPress={() => props.navigation.navigate('ReviewScreen')}>
+              <Image source={albumImage} style={styles.albumImages}></Image>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => props.navigation.navigate('ReviewScreen')}>
+              <Image source={albumImage} style={styles.albumImages}></Image>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity>
+            <Text style={styles.text}>View More</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => props.navigation.navigate('ReviewScreen')}>
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.header}>Recent Suggestions</Text>
+          <View style={styles.recentTab}>
             <Image source={albumImage} style={styles.albumImages}></Image>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => props.navigation.navigate('ReviewScreen')}>
             <Image source={albumImage} style={styles.albumImages}></Image>
+            <Image source={albumImage} style={styles.albumImages}></Image>
+          </View>
+          <TouchableOpacity>
+            <Text style={styles.text}>View More</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity>
-          <Text style={styles.text}>View More</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.header}>Recent Suggestions</Text>
-        <View style={styles.recentTab}>
-          <Image source={albumImage} style={styles.albumImages}></Image>
-          <Image source={albumImage} style={styles.albumImages}></Image>
-          <Image source={albumImage} style={styles.albumImages}></Image>
+        <View style={styles.textContainer}>
+          <Text style={styles.header}>Recently Liked Suggestions</Text>
+          <View style={styles.recentTab}>
+            <Image source={albumImage} style={styles.albumImages}></Image>
+            <Image source={albumImage} style={styles.albumImages}></Image>
+            <Image source={albumImage} style={styles.albumImages}></Image>
+          </View>
+          <TouchableOpacity>
+            <Text style={styles.text}>View More</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity>
-          <Text style={styles.text}>View More</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.header}>Recently Liked Suggestions</Text>
-        <View style={styles.recentTab}>
-          <Image source={albumImage} style={styles.albumImages}></Image>
-          <Image source={albumImage} style={styles.albumImages}></Image>
-          <Image source={albumImage} style={styles.albumImages}></Image>
-        </View>
-        <TouchableOpacity>
-          <Text style={styles.text}>View More</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.header}>Most Frequent Suggestions</Text>
-        <View style={styles.recentTab}>
-          <Image source={albumImage} style={styles.albumImages}></Image>
-          <Image source={albumImage} style={styles.albumImages}></Image>
-          <Image source={albumImage} style={styles.albumImages}></Image>
-        </View>
-        <TouchableOpacity>
-          <Text style={styles.text}>View More</Text>
-        </TouchableOpacity>
-      </View>
-      
-    </ScrollView>
+        <View style={styles.textContainer}>
+          <Text style={styles.header}>Most Frequent Suggestions</Text>
+          <View style={styles.recentTab}>
+            <Image source={albumImage} style={styles.albumImages}></Image>
+            <Image source={albumImage} style={styles.albumImages}></Image>
+            <Image source={albumImage} style={styles.albumImages}></Image>
+          </View>
+          <TouchableOpacity>
+            <Text style={styles.text}>View More</Text>
+          </TouchableOpacity>
+        </View> 
+      </ScrollView>
     </View>
   );
 }
