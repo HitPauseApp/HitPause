@@ -60,6 +60,10 @@ export default class QuizCard extends React.Component {
       let outputFlags = this.tallyOutputFlags();
       let topThree = this.getTopThree(outputFlags);
       console.log('outputFlags:', outputFlags);
+      console.log('topThree:', topThree);
+
+      let suggestion = this.getRandomizedSuggestion(topThree);
+      console.log(suggestion);
       
       firebase.database()
         .ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/${this.props.quizName}`)
@@ -109,10 +113,22 @@ export default class QuizCard extends React.Component {
   // TODO: Incomplete... will probably want to move this into summary screen
   getTopThree(flags) {
     let sortedFlags = Object.entries(flags).sort((a, b) => (a[1] < b[1]));
-    console.log('sortedFlags:', sortedFlags);
     let topThree = sortedFlags.slice(0, 3);
-    console.log('topThree:', topThree);
     return Object.fromEntries(topThree);
+  }
+
+  getRandomizedSuggestion(flags) {
+    let n = 0;
+    for (const key in flags) {
+      let squaredDoubleFlag = (flags[key] * 2) ** 2;
+      flags[key] = squaredDoubleFlag + n;
+      n = squaredDoubleFlag + n;
+    }
+    let randomInt = Math.floor(Math.random() * n);
+    for (const key in flags) {
+      if (flags[key] > randomInt) return key;
+    }
+    return null;
   }
 
   handlePrevQuestion() {
