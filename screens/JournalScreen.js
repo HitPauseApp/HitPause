@@ -108,13 +108,18 @@ const styles = StyleSheet.create({
     // [TOS] This line below is throwing an error
     // vertical: true
   },
+  container2: {
+    backgroundColor: '#00095e',
+    flex: 1,
+    marginTop: '0%'
+  },
   header: {
     fontFamily: 'Poppins-Medium',
     color: 'white',
     fontSize: 26,
     fontWeight: 'bold',
     paddingHorizontal: 20,
-    paddingVertical: 10
+    paddingVertical: '9%',
   },
   pic: {
     flex: 1,
@@ -126,7 +131,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
   },
   contentContainer: {
-    paddingTop: 15,
     flex: 1
   },
   button1: {

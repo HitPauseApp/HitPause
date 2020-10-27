@@ -12,11 +12,13 @@ export default function HomeScreen(props) {
 
   const TOTD = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar pellentesque ex at maximus. Nam feugiat rhoncus accumsan. ';
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
+    <ScrollView>
       <ImageBackground style={ styles.imgBackground }  
         source={require('../assets/images/mountain.png')}>
         <WelcomeBanner name={user.firstName}></WelcomeBanner>
       </ImageBackground>
+      <View style = {styles.contentContainer}>
       <Text style={styles.header}>Recently Played</Text>
       <View style={styles.recentTab}>
         <Image source={albumImage} style={styles.albumImages}></Image>
@@ -34,7 +36,9 @@ export default function HomeScreen(props) {
         <Text style={styles.text}>Retake Assessment</Text>
       </TouchableOpacity>
       <TipOTD TOTD={TOTD}></TipOTD>
+      </View>
     </ScrollView>
+    </View>
   );
 }
 
@@ -44,14 +48,19 @@ const styles = StyleSheet.create({
     flex: 1
   },
   header:{
-    padding: 15,
+    paddingVertical: '5%',
+    paddingHorizontal: '2%',
     fontFamily: 'Poppins-Light',
     fontSize: 20,
     color: 'white'
   },
   imgBackground: {
     width: '100%',
-    height: '20%'
+    height: '55%',
+  },
+  contentContainer: {
+    flex: 1,
+    bottom:'23%'
   },
   recentTab:{
     flexDirection: 'row',
