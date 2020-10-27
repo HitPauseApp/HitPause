@@ -9,6 +9,15 @@ import JournalCard from '../components/JournalCard';
 
 export default function JournalScreen(props) {
   const user = React.useContext(AuthContext);
+  const [entries, setEntries] = React.useState(null);
+
+  React.useEffect(() => {
+    // TODO: Get and store these locally
+    firebase.database().ref(`users/${user.uid}/journal`).on('value', (s) => {
+      setEntries(s.val());
+    });
+  }, []);
+
   const onPress = () => props.navigation.navigate("HomeScreen");
 
   const openEntry = (entryId, title, text) => {
@@ -20,13 +29,13 @@ export default function JournalScreen(props) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.contentContainer}>
+    <View style={styles.contentContainer}>
+      <Text style={styles.header}>My Journal</Text>
         <ScrollView>
-          <Text style={styles.header}>My Journal</Text>
           {
             // TODO: Does not load new data, need to trigger update
-            !!user.journal && Object.entries(user.journal).length > 0 ? (
-              Object.entries(user.journal).map((item, key) =>
+            !!entries && Object.entries(entries).length > 0 ? (
+              Object.entries(entries).map((item, key) =>
                 <TouchableOpacity key={key} onPress={() => openEntry(item[0], item[1].title, item[1].text)}>
                   <JournalCard entry={item[1]} id={item[0]}></JournalCard>
                 </TouchableOpacity>)
@@ -40,7 +49,7 @@ export default function JournalScreen(props) {
         </ScrollView>
       </View>
       <View style={styles.buttonView}>
-        <TouchableOpacity style={styles.button1} onPress={() => openEntry(null, null, null)}>
+        <TouchableOpacity style={styles.button1} onPress={() => openEntry(null, '', '')}>
           <Image style={styles.imgBackground}
             source={require('../assets/images/pencilTip.png')}>
           </Image>
@@ -68,13 +77,18 @@ const styles = StyleSheet.create({
     // [TOS] This line below is throwing an error
     // vertical: true
   },
+  container2: {
+    backgroundColor: '#00095e',
+    flex: 1,
+    marginTop: '0%'
+  },
   header: {
     fontFamily: 'Poppins-Medium',
     color: 'white',
     fontSize: 26,
     fontWeight: 'bold',
     paddingHorizontal: 20,
-    paddingVertical: 10
+    paddingVertical: '9%',
   },
   pic: {
     flex: 1,
@@ -86,7 +100,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
   },
   contentContainer: {
-    paddingTop: 15,
     flex: 1
   },
   button1: {

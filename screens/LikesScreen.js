@@ -14,8 +14,9 @@ export default function LikesScreen(props) {
 
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.header2}>My History</Text>
+  <View style={styles.container}>
+    <Text style={styles.header2}>My History</Text>
+    <ScrollView>
       <View style={styles.textContainer}>
         <Text style={styles.header}>Give these suggestions a review!</Text>
         <View style={styles.recentTab}>
@@ -68,6 +69,7 @@ export default function LikesScreen(props) {
       </View>
       
     </ScrollView>
+    </View>
   );
 }
 
@@ -81,8 +83,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 26,
     fontWeight: 'bold',
-    paddingHorizontal:25,
-    paddingVertical: 30
+    paddingHorizontal:20,
+    paddingVertical: '5%',
+    marginTop: '7.8%'
   },
   header:{
     padding: 15,

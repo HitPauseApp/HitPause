@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Text, Image, Button } from 'react-native';
+import { View, StyleSheet, Text, Image, Button, AsyncStorage } from 'react-native';
 import firebase from '../Firebase.js';
 import { AuthContext } from '../AuthContext.js';
 
@@ -7,7 +7,7 @@ import { AuthContext } from '../AuthContext.js';
 import MatIcons from '../components/MatIcons';
 import FillButton from '../components/buttons/FillButton';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
-import Loading from './Loading';
+import SpotifyAuthButton from '../spotify/SpotifyAuthButton';
 import userImg from '../assets/images/user.png';
 
 
@@ -23,6 +23,7 @@ export default function Account(props) {
   
   return (
     <View style={styles.container}>
+      <View style={styles.contentContainer}> 
       <Image source={userImg} style={styles.avatar}></Image>
       <View style={styles.category}>
         <MatIcons name="person"></MatIcons>
@@ -41,7 +42,8 @@ export default function Account(props) {
       <View style={styles.category}>
         <FontAwesome name="spotify" size={30} color="white" />
         {/* This is bad data, only using as placeholder */}
-        <Text style={styles.text}>{user ? 'Connected' : 'Not Connected'}</Text>
+        {/* <Text style={styles.text}>{user ? 'Connected' : 'Not Connected'}</Text> */}
+        <SpotifyAuthButton></SpotifyAuthButton>
       </View>
 
       <View style={styles.separator}></View>
@@ -55,6 +57,13 @@ export default function Account(props) {
         style={styles.signOut}
         onPress={() => handleLogout()}
       >Sign Out</Text>
+      </View>
+      <Text
+        style={styles.deleteData}
+        onPress={() => {
+          AsyncStorage.removeItem('userData');
+        }}
+      >Delete Local Account Data</Text>
     </View>
   );
 }
@@ -69,6 +78,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     marginLeft: 30
+  },
+  contentContainer: {
+    flex: 1,
+    paddingTop: '15%'
   },
   separator: {
     borderBottomColor: '#fff',
@@ -90,5 +103,10 @@ const styles = StyleSheet.create({
   signOut: {
     color: 'white',
     alignSelf: 'center',
+  },
+  deleteData: {
+    color: 'white',
+    alignSelf: 'center',
+    marginTop: 20
   }
 });
