@@ -39,19 +39,6 @@ export default function JournalScreen(props) {
           }
         </ScrollView>
       </View>
-      {/* <View style={styles.pic} >
-          <ImageBackground style={styles.img}  
-                source={require('../assets/images/shapeDesign2.png')} resizeMode="contain">
-          </ImageBackground>
-       </View> */}
-
-      {/* <View style={styles.pic2} >
-          <ImageBackground style={styles.img}  
-                source={require('../assets/images/shapeDesign3.png')} resizeMode="contain">
-          </ImageBackground>
-       </View> */}
-
-
       <View style={styles.buttonView}>
         <TouchableOpacity style={styles.button1} onPress={() => openEntry(null, null, null)}>
           <Image style={styles.imgBackground}

@@ -2,7 +2,7 @@ import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View , ScrollView} from 'react-native';
 import albumImage from '../assets/images/album-placeholder.png';
-import { Modal, Portal, Button, Provider } from 'react-native-paper';
+import { Modal, Portal, Provider } from 'react-native-paper';
 
 export default function LikesScreen(props) {
 
@@ -19,9 +19,18 @@ export default function LikesScreen(props) {
       <View style={styles.textContainer}>
         <Text style={styles.header}>Give these suggestions a review!</Text>
         <View style={styles.recentTab}>
-          <TouchableOpacity onPress={() => props.navigation.navigate('ReviewScreen')}>
-            <Image source={albumImage} style={styles.albumImages}></Image>
-          </TouchableOpacity>
+        <Provider>
+          <Portal>
+            <Modal visible={visible} onDismiss={hideModal}>
+              <Text>Example Modal</Text>
+            </Modal>
+            <TouchableOpacity onPress={showModal}>
+              <Image source={albumImage} style={styles.albumImages}></Image>
+            </TouchableOpacity>
+          </Portal>
+        </Provider>
+
+          
           <TouchableOpacity onPress={() => props.navigation.navigate('ReviewScreen')}>
             <Image source={albumImage} style={styles.albumImages}></Image>
           </TouchableOpacity>

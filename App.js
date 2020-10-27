@@ -27,6 +27,7 @@ import JournalScreen from './screens/JournalScreen';
 import LikesScreen from './screens/LikesScreen';
 import Account from './screens/AccountScreen';
 import JournalEntry from './screens/JournalEntry';
+import ReviewScreen from './screens/ReviewScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -178,6 +179,14 @@ export default function App(props) {
                     name='InitialAssessment'
                     component={QuizScreen}
                     initialParams={{ quizName: 'initialAssessment' }}
+                    options={{
+                      tabBarButton: () => null
+                    }}
+                  />
+                  {/* Hidden tabs */}
+                  <Tab.Screen
+                    name='ReviewScreen'
+                    component={ReviewScreen}
                     options={{
                       tabBarButton: () => null
                     }}
