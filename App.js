@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { SplashScreen } from 'expo';
 import * as Font from 'expo-font';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -24,7 +24,7 @@ import ResetPassword from './screens/ResetPassword';
 import Loading from './screens/Loading';
 import HomeScreen from './screens/HomeScreen';
 import JournalScreen from './screens/JournalScreen';
-import LikesScreen from './screens/LikesScreen';
+import HistoryScreen from './screens/HistoryScreen';
 import Account from './screens/AccountScreen';
 import JournalEntry from './screens/JournalEntry';
 import { AsyncStorage } from 'react-native';
@@ -71,6 +71,7 @@ export default function App(props) {
         // Load fonts
         await Font.loadAsync({
           ...Ionicons.font,
+          ...FontAwesome5.font,
           'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
           'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
           'Poppins-Medium': require('./assets/fonts/Poppins-Medium.ttf'),
@@ -192,10 +193,10 @@ export default function App(props) {
                     }}
                   />
                   <Tab.Screen
-                    name="Likes"
-                    component={LikesScreen}
+                    name="History"
+                    component={HistoryScreen}
                     options={{
-                      title: 'My Likes',
+                      title: 'History',
                       tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-heart" />,
                     }}
                   />

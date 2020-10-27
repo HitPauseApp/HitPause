@@ -1,18 +1,50 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
+import firebase from '../Firebase';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View , ScrollView} from 'react-native';
 import albumImage from '../assets/images/album-placeholder.png';
 import WelcomeBanner from '../components/WelcomeBanner';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { AuthContext } from '../AuthContext';
 
-export default function LikesScreen() {
+export default function HistoryScreen() {
+  const user = React.useContext(AuthContext);
+  const [suggestions, setSuggestions] = React.useState(null);
+
+  React.useEffect(() => {
+    firebase.database().ref(`users/${user.uid}/profile/quizHistory/incidentQuestionnaire`).on('value', (s) => {
+      setSuggestions(s.val());
+      // setDisplayEntries(s.val());
+    });
+  }, []);
+
+  // TODO: move to utility class
+  function getDateAndTime(epoch) {
+    let date = new Date(epoch);
+    let dateString = `${date.getMonth()}/${date.getDate()}/${String(date.getFullYear()).substr(2)}`;
+    let timeString = `${(date.getHours() % 12) + 1}:${String(date.getMinutes()).padStart(2, '0')}`;
+    let amPmString = date.getHours() < 12 ? 'AM' : 'PM';
+    return `${dateString} ${timeString} ${amPmString}`;
+  }
+
+  function getSuggestionIcon() {
+    return <FontAwesome5 name="500px" size={24} color="black" />
+  }
+
   return (
   <View style={styles.container}>
-    <Text style={styles.header2}>My History</Text>
+    <Text style={styles.header2}>History</Text>
     <ScrollView>
       <View style={styles.textContainer}>
         <Text style={styles.header}>Give these suggestions a review!</Text>
         <View style={styles.recentTab}>
-          <Image source={albumImage} style={styles.albumImages}></Image>
+          {
+            !!suggestions && Object.entries(suggestions).map((item, key) => 
+              <TouchableOpacity style={styles.suggestionBlock} key={key} onPress={() => reviewSuggestion(item[0])}>
+                <Text style={styles.smallText}>{getDateAndTime(item[1].timestamp)}</Text>
+              </TouchableOpacity>
+            )
+          }
           <Image source={albumImage} style={styles.albumImages}></Image>
           <Image source={albumImage} style={styles.albumImages}></Image>
         </View>
@@ -113,5 +145,16 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Extra-Light',
     padding: 15
   },
+  suggestionBlock: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+    backgroundColor: '#fff'
+  },
+  smallText: {
+    fontSize: 10,
+    color: '#333',
+    alignSelf: 'center'
+  }
   
 });

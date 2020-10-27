@@ -58,7 +58,7 @@ export default class QuizCard extends React.Component {
       }
 
       let outputFlags = this.tallyOutputFlags();
-      let topThree = this.getTopThree(outputFlags);
+      let topThree = this.getHighsAndLows(outputFlags, 3, 0)[0];
       console.log('outputFlags:', outputFlags);
       console.log('topThree:', topThree);
 
@@ -77,7 +77,6 @@ export default class QuizCard extends React.Component {
   }
 
   tallyOutputFlags() {
-    // TODO: Remove flags less than 1 and square?
     let flags = {};
     let modifiers = [];
     // Get flag changes
@@ -91,7 +90,7 @@ export default class QuizCard extends React.Component {
           let count = parseInt(flagKey.replace('_lowest_', ''));
           modifiers.push({type: 'low', count: count, amount: parseFloat(this.state.quizFlags[key][flagKey])});
 
-        // Flags of this type already exist, must compound
+        // Flags of this type already exist, will sum
         } else if (Object.keys(flags).includes(flagKey)) {
           flags[flagKey] = parseFloat(flags[flagKey]) + parseFloat(this.state.quizFlags[key][flagKey]);
         // Otherwise, add normally
@@ -100,21 +99,37 @@ export default class QuizCard extends React.Component {
         }
       }
     }
+
+    // For all of our special cases
     for (const key in modifiers) {
+      let modifiedFlags = {};
+      // Depending on type of case, grab relevant flags
       if (modifiers[key].type == 'high') {
-        // TODO: implement
+        modifiedFlags = this.getHighsAndLows(flags, modifiers[key].count, 0)[0];
       } else if (modifiers[key].type == 'low') {
-        // TODO: implement
+        modifiedFlags = this.getHighsAndLows(flags, 0, modifiers[key].count)[1];
       }
+      // Apply changes to those flags
+      for (const flagKey in modifiedFlags) {
+        modifiedFlags[flagKey] = modifiedFlags[flagKey] + modifiers[key].amount;
+      }
+      flags = {...flags, ...modifiedFlags};
     }
     return flags;
   }
 
   // TODO: Incomplete... will probably want to move this into summary screen
-  getTopThree(flags) {
+  // TODO: Ties are unfair, as lower keys will always be chosen... need a way to randomly select when there are ties
+  getHighsAndLows(flags, numHighs, numLows) {
+    let highValues = [], lowValues = [];
     let sortedFlags = Object.entries(flags).sort((a, b) => (a[1] < b[1]));
-    let topThree = sortedFlags.slice(0, 3);
-    return Object.fromEntries(topThree);
+    if (numHighs > 0) {
+      highValues = sortedFlags.slice(0, numHighs);
+    }
+    if (numLows > 0) {
+      lowValues = sortedFlags.slice(sortedFlags - 1 - numLows, sortedFlags.length - 1);
+    }
+    return [Object.fromEntries(highValues), Object.fromEntries(lowValues)];
   }
 
   getRandomizedSuggestion(flags) {
