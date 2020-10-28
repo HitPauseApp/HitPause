@@ -2,10 +2,11 @@ import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import firebase from '../Firebase';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ImageBackground } from 'react-native';
-import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, Image, TouchableOpacity, PanResponsder, ImageBackground } from 'react-native';
+import { PanGestureHandler, RectButton, ScrollView,  } from 'react-native-gesture-handler';
 import { AuthContext } from '../AuthContext';
 import JournalCard from '../components/JournalCard';
+
 
 export default function JournalScreen(props) {
   const user = React.useContext(AuthContext);
@@ -36,9 +37,11 @@ export default function JournalScreen(props) {
             // TODO: Does not load new data, need to trigger update
             !!entries && Object.entries(entries).length > 0 ? (
               Object.entries(entries).map((item, key) =>
-                <TouchableOpacity key={key} onPress={() => openEntry(item[0], item[1].title, item[1].text)}>
-                  <JournalCard entry={item[1]} id={item[0]}></JournalCard>
-                </TouchableOpacity>)
+                    <TouchableOpacity key={key} onPress={() => openEntry(item[0], item[1].title, item[1].text)}>
+                      <JournalCard entry={item[1]} id={item[0]}></JournalCard>
+                    </TouchableOpacity>
+                )
+ 
             ) : (
               // TODO: This needs to be styled
                 <View style={styles.textContainer}>
@@ -48,18 +51,6 @@ export default function JournalScreen(props) {
           }
         </ScrollView>
       </View>
-      {/* <View style={styles.pic} >
-          <ImageBackground style={styles.img}  
-                source={require('../assets/images/shapeDesign2.png')} resizeMode="contain">
-          </ImageBackground>
-       </View> */}
-
-      {/* <View style={styles.pic2} >
-          <ImageBackground style={styles.img}  
-                source={require('../assets/images/shapeDesign3.png')} resizeMode="contain">
-          </ImageBackground>
-       </View> */}
-
 
       <View style={styles.buttonView}>
         <TouchableOpacity style={styles.button1} onPress={() => openEntry(null, '', '')}>

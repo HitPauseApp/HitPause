@@ -19,24 +19,24 @@ export default function HomeScreen(props) {
         <WelcomeBanner name={user.firstName}></WelcomeBanner>
       </ImageBackground>
       <View style = {styles.contentContainer}>
-      <Text style={styles.header}>Recently Played</Text>
-      <View style={styles.recentTab}>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-      </View>
-      <Text style={styles.header}>Recently Liked</Text>
-      <View style={styles.recentTab}>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-      </View>
-      <Text style={styles.text2}>Need to adjust your assessment?</Text>
-      <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
-        <Text style={styles.text}>Retake Assessment</Text>
-      </TouchableOpacity>
-      <TipOTD TOTD={TOTD}></TipOTD>
-      </View>
+         <Text style={styles.header}>Recently Played</Text>
+         <View style={styles.recentTab}>
+           <Image source={albumImage} style={styles.albumImages}></Image>
+           <Image source={albumImage} style={styles.albumImages}></Image>
+           <Image source={albumImage} style={styles.albumImages}></Image>
+         </View>
+         <Text style={styles.header}>Recently Liked</Text>
+         <View style={styles.recentTab}>
+           <Image source={albumImage} style={styles.albumImages}></Image>
+           <Image source={albumImage} style={styles.albumImages}></Image>
+           <Image source={albumImage} style={styles.albumImages}></Image>
+         </View>
+         <Text style={styles.text2}>Need to adjust your assessment?</Text>
+         <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
+           <Text style={styles.text}>Retake Assessment</Text>
+         </TouchableOpacity>
+         <TipOTD TOTD={TOTD}></TipOTD>
+        </View>
     </ScrollView>
     </View>
   );
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    bottom:'23%'
+    bottom: '23%'
   },
   recentTab:{
     flexDirection: 'row',
