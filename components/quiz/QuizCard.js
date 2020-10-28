@@ -68,6 +68,7 @@ export default class QuizCard extends React.Component {
       firebase.database()
         .ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/${this.props.quizName}`)
         .push({
+          suggestion: suggestion,
           timestamp: Date.now(),
           responses: this.state.quizData,
           outputFlags: outputFlags
