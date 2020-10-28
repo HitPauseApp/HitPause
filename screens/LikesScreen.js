@@ -4,6 +4,7 @@ import { Image, Platform, StyleSheet, Text, TouchableOpacity, View , ScrollView}
 import albumImage from '../assets/images/album-placeholder.png';
 import { Modal, Portal, Button, Provider } from 'react-native-paper';
 
+
 export default function LikesScreen(props) {
 
   const [visible, setVisible] = React.useState(false);
@@ -12,26 +13,32 @@ export default function LikesScreen(props) {
 
   const hideModal = () => setVisible(false);
 
-
   return (
     <View style={styles.container}>
-      <Text style={styles.header2}>My History</Text>
+      <Text style={styles.header}>My History</Text>
       <ScrollView>
         <View style={styles.textContainer}>
-          <Text style={styles.header}>Give these suggestions a review!</Text>
+          <Text style={styles.header2}>Give these suggestions a review!</Text>
           <View style={styles.recentTab}>
             <Portal>
-              <Modal visible={visible} onDismiss={hideModal}>
-                <Text>Example Modal</Text>
+              <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.reviewModal}>
+                <Image source={albumImage} style={styles.modalImage}></Image>
+                <Text style={styles.modalText}>Leave a review!</Text>
+                <StarRating
+                  disabled={false}
+                  maxStars={5}
+                  rating={this.state.starCount}
+                  selectedStar={(rating) => this.onStarRatingPress(rating)}
+                />
               </Modal>
-              <TouchableOpacity onPress={showModal}>
-                <Image source={albumImage} style={styles.albumImages}></Image>
-              </TouchableOpacity>
             </Portal>
-            <TouchableOpacity onPress={() => props.navigation.navigate('ReviewScreen')}>
+            <TouchableOpacity onPress={showModal}>
               <Image source={albumImage} style={styles.albumImages}></Image>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => props.navigation.navigate('ReviewScreen')}>
+            <TouchableOpacity onPress={showModal}>
+              <Image source={albumImage} style={styles.albumImages}></Image>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={showModal}>
               <Image source={albumImage} style={styles.albumImages}></Image>
             </TouchableOpacity>
           </View>
@@ -40,7 +47,7 @@ export default function LikesScreen(props) {
           </TouchableOpacity>
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.header}>Recent Suggestions</Text>
+          <Text style={styles.header2}>Recent Suggestions</Text>
           <View style={styles.recentTab}>
             <Image source={albumImage} style={styles.albumImages}></Image>
             <Image source={albumImage} style={styles.albumImages}></Image>
@@ -51,7 +58,7 @@ export default function LikesScreen(props) {
           </TouchableOpacity>
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.header}>Recently Liked Suggestions</Text>
+          <Text style={styles.header2}>Recently Liked Suggestions</Text>
           <View style={styles.recentTab}>
             <Image source={albumImage} style={styles.albumImages}></Image>
             <Image source={albumImage} style={styles.albumImages}></Image>
@@ -62,7 +69,7 @@ export default function LikesScreen(props) {
           </TouchableOpacity>
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.header}>Most Frequent Suggestions</Text>
+          <Text style={styles.header2}>Most Frequent Suggestions</Text>
           <View style={styles.recentTab}>
             <Image source={albumImage} style={styles.albumImages}></Image>
             <Image source={albumImage} style={styles.albumImages}></Image>
@@ -82,7 +89,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#00095e',
     flex: 1
   },
-  header2:{
+  header:{
     fontFamily: 'Poppins-Medium',
     color: 'white',
     fontSize: 26,
@@ -91,11 +98,18 @@ const styles = StyleSheet.create({
     paddingVertical: '5%',
     marginTop: '7.8%'
   },
-  header:{
+  header2:{
     padding: 15,
     fontFamily: 'Poppins-Extra-Light',
     fontSize: 20,
     color: 'white'
+  },
+  modalText:{
+    padding: 15,
+    fontFamily: 'Poppins-Extra-Light',
+    fontSize: 20,
+    color: 'white',
+    textAlign: 'center',
   },
   imgBackground: {
     width: '100%',
@@ -105,10 +119,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around'
   },
+  reviewModal:{
+    backgroundColor: '#132090',
+    justifyContent: 'center',
+    alignContent: 'center',
+    width: '80%',
+    alignSelf: 'center',
+    borderRadius: 10,
+    padding: 10,
+    bottom: 10,
+    margin: 30,
+  },
   albumImages: {
     borderRadius: 8,
     width: 100,
     height: 100,
+  },
+  modalImage: {
+    marginTop: 30,
+    alignSelf: 'center',
+    width: 200,
+    height: 200,
+    borderRadius: 8,
   },
   buttonContainer:{
     margin: 10,
