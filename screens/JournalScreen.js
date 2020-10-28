@@ -65,7 +65,7 @@ export default function JournalScreen(props) {
             ) : (
               <View style={styles.textContainer}>
                 <Text style={styles.text}>No journal entries here...</Text>
-              </View>
+              </View> // commit test
             )
           }
         </ScrollView>
