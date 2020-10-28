@@ -9,11 +9,14 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { AuthContext } from '../AuthContext';
 import { render } from 'react-dom';
 import { AppContext } from '../AppContext';
+import StarRating from 'react-native-star-rating';
 
 export default function HistoryScreen(props) {
   const user = React.useContext(AuthContext);
   const hitpause = React.useContext(AppContext);
   const [userSuggestions, setUserSuggestions] = React.useState(null);
+  const [currentReview, setCurrentReview] = React.useState(null);
+  const [starRating, setStarRating] = React.useState(null);
 
   React.useEffect(() => {
     firebase.database().ref(`users/${user.uid}/profile/quizHistory/incidentQuestionnaire`).on('value', (s) => {
@@ -42,7 +45,23 @@ export default function HistoryScreen(props) {
 
   function reviewSuggestion(id) {
     // TODO: Implement
+    let review = {};
+    for (const key in userSuggestions) {
+      if (userSuggestions[key].id == id) {
+        review = userSuggestions[key];
+        break;
+      }
+    }
+    console.log('review 1:', review);
+    review.fullSuggestion = hitpause.suggestions[review.suggestion];
+    console.log('review 2:', review);
+    setCurrentReview(review);
+    setVisible(true);
+    // React.useEffect(() => {
+    // }, [currentReview]);
   }
+
+  
 
   function renderSuggestion({ item }) {
     let suggestion = hitpause.suggestions[item.suggestion] || {};
@@ -74,14 +93,6 @@ export default function HistoryScreen(props) {
         <View style={styles.textContainer}>
           <Text style={styles.header}>Recent Suggestions</Text>
           <View style={styles.recentTab}>
-            <Portal>
-              <Modal visible={visible} onDismiss={hideModal}>
-                <Text>Example Modal</Text>
-              </Modal>
-            </Portal>
-            <TouchableOpacity onPress={showModal}>
-              <Image source={albumImage} style={styles.albumImages}></Image>
-            </TouchableOpacity>
             <Image source={albumImage} style={styles.albumImages}></Image>
             <Image source={albumImage} style={styles.albumImages}></Image>
             <Image source={albumImage} style={styles.albumImages}></Image>
@@ -114,7 +125,23 @@ export default function HistoryScreen(props) {
         </View>
 
       </ScrollView>
+      <Portal>
+        <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.reviewModal}>
+          <Text style={styles.modalText}>{!!currentReview && !!currentReview.fullSuggestion ? currentReview.fullSuggestion.text : ''}</Text>
+          <Text style={styles.modalText}>Leave a review!</Text>
+          <StarRating
+            disabled={false}
+            maxStars={5}
+            rating={starRating}
+            selectedStar={(rating) => setStarRating(rating)}
+            fullStarColor={'white'}
+            starStyle={styles.starRating}
+            starSize={30}
+          />
+        </Modal>
+      </Portal>
     </View>
+    
   );
 }
 
@@ -145,6 +172,24 @@ const styles = StyleSheet.create({
   recentTab: {
     flexDirection: 'row',
     justifyContent: 'space-around'
+  },
+  reviewModal:{
+    backgroundColor: '#132090',
+    justifyContent: 'center',
+    alignContent: 'center',
+    width: '80%',
+    alignSelf: 'center',
+    borderRadius: 10,
+    padding: 10,
+    bottom: 10,
+    margin: 30,
+  },
+  modalText:{
+    padding: 15,
+    fontFamily: 'Poppins-Extra-Light',
+    fontSize: 20,
+    color: 'white',
+    textAlign: 'center',
   },
   albumImages: {
     borderRadius: 8,
@@ -185,6 +230,10 @@ const styles = StyleSheet.create({
     color: '#333',
     alignSelf: 'center',
     textAlign: 'center'
-  }
+  },
+  starRating: {
+    margin: 10,
+    width: '50%'
+  },
 
 });
