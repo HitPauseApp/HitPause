@@ -17,23 +17,25 @@ export default function HomeScreen(props) {
         source={require('../assets/images/mountain.png')}>
         <WelcomeBanner name={user.firstName}></WelcomeBanner>
       </ImageBackground>
-      <Text style={styles.header}>Recently Played</Text>
-      <View style={styles.recentTab}>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-      </View>
-      <Text style={styles.header}>Recently Liked</Text>
-      <View style={styles.recentTab}>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-      </View>
-      <Text style={styles.text2}>Need to adjust your assessment?</Text>
-      <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
-        <Text style={styles.text}>Retake Assessment</Text>
-      </TouchableOpacity>
-      <TipOTD TOTD={TOTD}></TipOTD>
+      <View style = {styles.contentContainer}>
+         <Text style={styles.header}>Recently Played</Text>
+         <View style={styles.recentTab}>
+           <Image source={albumImage} style={styles.albumImages}></Image>
+           <Image source={albumImage} style={styles.albumImages}></Image>
+           <Image source={albumImage} style={styles.albumImages}></Image>
+         </View>
+         <Text style={styles.header}>Recently Liked</Text>
+         <View style={styles.recentTab}>
+           <Image source={albumImage} style={styles.albumImages}></Image>
+           <Image source={albumImage} style={styles.albumImages}></Image>
+           <Image source={albumImage} style={styles.albumImages}></Image>
+         </View>
+         <Text style={styles.text2}>Need to adjust your assessment?</Text>
+         <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
+           <Text style={styles.text}>Retake Assessment</Text>
+         </TouchableOpacity>
+         <TipOTD TOTD={TOTD}></TipOTD>
+        </View>
     </ScrollView>
   );
 }
@@ -51,7 +53,11 @@ const styles = StyleSheet.create({
   },
   imgBackground: {
     width: '100%',
-    height: '20%',
+    height: '55%',
+  },
+  contentContainer: {
+    flex: 1,
+    bottom: '23%'
   },
   recentTab:{
     flexDirection: 'row',

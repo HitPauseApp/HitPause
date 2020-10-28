@@ -2,11 +2,12 @@ import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import firebase from '../Firebase';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ImageBackground } from 'react-native';
-import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, Image, TouchableOpacity, PanResponsder, ImageBackground } from 'react-native';
+import { PanGestureHandler, RectButton, ScrollView,  } from 'react-native-gesture-handler';
 import { AuthContext } from '../AuthContext';
 import JournalCard from '../components/JournalCard';
 import { TextInput } from 'react-native';
+
 
 export default function JournalScreen(props) {
   const user = React.useContext(AuthContext);
@@ -66,6 +67,7 @@ export default function JournalScreen(props) {
           }
         </ScrollView>
       </View>
+     
       <View style={styles.buttonView}>
         <TouchableOpacity style={styles.button1} onPress={() => openEntry(null, '', '')}>
           <Image style={styles.imgBackground}
@@ -73,17 +75,12 @@ export default function JournalScreen(props) {
           </Image>
         </TouchableOpacity>
       </View>
-
       <View style={styles.buttonView2}>
         <TouchableOpacity style={styles.button} onPress={onPress}>
           <FontAwesome name="trash-o" size={40} color="white" />
         </TouchableOpacity>
       </View>
-
-
     </View>
-
-
   );
 }
 

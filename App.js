@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { SplashScreen } from 'expo';
 import * as Font from 'expo-font';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -12,6 +12,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 
 import firebase from './Firebase';
 import { AuthContext } from './AuthContext.js';
+import { AppContext } from './AppContext';
 
 // TODO: Remove?
 // import BottomTabNavigator from './navigation/BottomTabNavigator';
@@ -24,7 +25,7 @@ import ResetPassword from './screens/ResetPassword';
 import Loading from './screens/Loading';
 import HomeScreen from './screens/HomeScreen';
 import JournalScreen from './screens/JournalScreen';
-import LikesScreen from './screens/LikesScreen';
+import HistoryScreen from './screens/HistoryScreen';
 import Account from './screens/AccountScreen';
 import JournalEntry from './screens/JournalEntry';
 import ReviewScreen from './screens/ReviewScreen';
@@ -36,14 +37,13 @@ const JournalStack = createStackNavigator();
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-  const [isAuthenticating, setIsAuthenticating] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [isAppConnected, setIsAppConnected] = React.useState(false);
   const [preAuthNavState, setPreAuthNavState] = React.useState('Login');
   const [authNavState, setAuthNavState] = React.useState('Home');
+  // TODO: There's probably a better way to pass these without using state...?
   const [authUser, setAuthUser] = React.useState(null);
-  const containerRef = React.useRef();
-  
-  // const { getInitialState } = useLinking(containerRef);
+  const [hitpause, setHitpause] = React.useState(null);
 
   function JournalStackScreen() {
     return (
@@ -72,6 +72,7 @@ export default function App(props) {
         // Load fonts
         await Font.loadAsync({
           ...Ionicons.font,
+          ...FontAwesome5.font,
           'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
           'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
           'Poppins-Medium': require('./assets/fonts/Poppins-Medium.ttf'),
@@ -93,7 +94,7 @@ export default function App(props) {
 
     // Establish firebase authentication observer
     firebase.auth().onAuthStateChanged(async (user) => {
-      setIsAuthenticating(true);
+      setIsLoading(true);
       if (user) {
         console.log("Logged in as:", user.email);
         await updateAuthContext(user.uid, isAppConnected);
@@ -102,10 +103,11 @@ export default function App(props) {
         // if (authUser.newUser) {
         //   setAuthNavState('InitialAssessment');
         // }
-        setIsAuthenticating(false);
+        setHitpause(await getAppData());
+        setIsLoading(false);
       } else {
         setAuthUser(null);
-        setIsAuthenticating(false);
+        setIsLoading(false);
       }
     });
 
@@ -147,9 +149,17 @@ export default function App(props) {
     setAuthUser(userData);
   }
 
+  // Loads data used by the app (non-account-specific)
+  async function getAppData() {
+    let suggestions = await firebase.database().ref('hitpause/suggestions').once('value').then(s => s.val());
+    return {suggestions: suggestions};
+  }
+
+  // TODO: A lot of this structure probably ought to be broken out into separate files
+  //       Doing so might fix the 'state change on unmounted componente' error
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return null;
-  } else if (isAuthenticating) {
+  } else if (isLoading) {
     return <Loading></Loading>;
   } else {
     return (
@@ -157,77 +167,73 @@ export default function App(props) {
         <PaperProvider>
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-            <NavigationContainer ref={containerRef}>
-              {/* Display authentication screens or app screens based on userToken */}
-              { authUser == null ? (
+            {/* Display authentication screens or app screens based on userToken */}
+            { authUser == null ? (
+              <NavigationContainer>
                 <Stack.Navigator initialRouteName={preAuthNavState} headerMode="none">
                   <Stack.Screen name="Login" component={Login} />
                   <Stack.Screen name="SignUp" component={SignUp} />
                   <Stack.Screen name="ResetPassword" component={ResetPassword} />
                 </Stack.Navigator>
-              ) : (
-                <Tab.Navigator initialRouteName={authNavState}>
-                  <Tab.Screen
-                    name="Home"
-                    component={HomeScreen}
-                    options={{
-                      title: 'Home',
-                      tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />,
-                    }}
-                  />
-                  <Tab.Screen
-                    name="Journal"
-                    component={JournalStackScreen}
-                    options={{
-                      title: 'Journal',
-                      tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
-                    }}
-                  />
-                  <Tab.Screen
-                    name="PauseQuiz"
-                    component={QuizScreen}
-                    initialParams={{ quizName: 'incidentQuestionnaire' }}
-                    options={{
-                      title: 'HitPause Quiz',
-                      tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-pause" />,
-                    }}
-                  />
-                  <Tab.Screen
-                    name="Likes"
-                    component={LikesScreen}
-                    options={{
-                      title: 'My Likes',
-                      tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-heart" />,
-                    }}
-                  />
-                  <Tab.Screen
-                    name="Account"
-                    component={Account}
-                    options={{
-                      title: 'Account',
-                      tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-settings" />,
-                    }}
-                  />
-                  {/* Hidden tabs */}
-                  <Tab.Screen
-                    name='InitialAssessment'
-                    component={QuizScreen}
-                    initialParams={{ quizName: 'initialAssessment' }}
-                    options={{
-                      tabBarButton: () => null
-                    }}
-                  />
-                  {/* Hidden tabs */}
-                  <Tab.Screen
-                    name='ReviewScreen'
-                    component={ReviewScreen}
-                    options={{
-                      tabBarButton: () => null
-                    }}
-                  />
-                </Tab.Navigator>
-              )}
-            </NavigationContainer>
+              </NavigationContainer>
+            ) : (
+              <AppContext.Provider value={hitpause}>
+                <NavigationContainer>
+                  <Tab.Navigator initialRouteName={authNavState}>
+                    <Tab.Screen
+                      name="Home"
+                      component={HomeScreen}
+                      options={{
+                        title: 'Home',
+                        tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />,
+                      }}
+                    />
+                    <Tab.Screen
+                      name="Journal"
+                      component={JournalStackScreen}
+                      options={{
+                        title: 'Journal',
+                        tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+                      }}
+                    />
+                    <Tab.Screen
+                      name="PauseQuiz"
+                      component={QuizScreen}
+                      initialParams={{ quizName: 'incidentQuestionnaire' }}
+                      options={{
+                        title: 'HitPause Quiz',
+                        tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-pause" />,
+                      }}
+                    />
+                    <Tab.Screen
+                      name="History"
+                      component={HistoryScreen}
+                      options={{
+                        title: 'History',
+                        tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-heart" />,
+                      }}
+                    />
+                    <Tab.Screen
+                      name="Account"
+                      component={Account}
+                      options={{
+                        title: 'Account',
+                        tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-settings" />,
+                      }}
+                    />
+                    {/* Hidden tabs */}
+                    <Tab.Screen
+                      name='InitialAssessment'
+                      component={QuizScreen}
+                      initialParams={{ quizName: 'initialAssessment' }}
+                      options={{
+                        tabBarButton: () => null
+                      }}
+                    />
+                  </Tab.Navigator>
+                </NavigationContainer>
+              </AppContext.Provider>
+            )}
           </View>
         </PaperProvider>
       </AuthContext.Provider>
