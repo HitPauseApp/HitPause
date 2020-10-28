@@ -1,11 +1,29 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native';
+import firebase from '../Firebase';
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, ScrollView, FlatList } from 'react-native';
+import { Portal, Modal } from 'react-native-paper';
 import albumImage from '../assets/images/album-placeholder.png';
 import WelcomeBanner from '../components/WelcomeBanner';
-import {Portal, Modal} from 'react-native-paper';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { AuthContext } from '../AuthContext';
+import { render } from 'react-dom';
+import { AppContext } from '../AppContext';
 
-export default function LikesScreen() {
+export default function HistoryScreen(props) {
+  const user = React.useContext(AuthContext);
+  const hitpause = React.useContext(AppContext);
+  const [userSuggestions, setUserSuggestions] = React.useState(null);
+
+  React.useEffect(() => {
+    firebase.database().ref(`users/${user.uid}/profile/quizHistory/incidentQuestionnaire`).on('value', (s) => {
+      let allUserSuggestions = s.val()
+      for (const key in allUserSuggestions) {
+        allUserSuggestions[key].id = key;
+      }
+      setUserSuggestions(Object.values(allUserSuggestions));
+    });
+  }, []);
 
   const [visible, setVisible] = React.useState(false);
 
@@ -13,17 +31,42 @@ export default function LikesScreen() {
 
   const hideModal = () => setVisible(false);
 
+  // TODO: move to utility class
+  function getDateAndTime(epoch) {
+    let date = new Date(epoch);
+    let dateString = `${date.getMonth()}/${date.getDate()}/${String(date.getFullYear()).substr(2)}`;
+    let timeString = `${(date.getHours() % 12) + 1}:${String(date.getMinutes()).padStart(2, '0')}`;
+    let amPmString = date.getHours() < 12 ? 'AM' : 'PM';
+    return `${dateString}\n${timeString} ${amPmString}`;
+  }
+
+  function reviewSuggestion(id) {
+    // TODO: Implement
+  }
+
+  function renderSuggestion({ item }) {
+    let suggestion = hitpause.suggestions[item.suggestion] || {};
+    return (
+      <TouchableOpacity style={styles.suggestionBlock} onPress={() => reviewSuggestion(item.id)}>
+        <Text style={styles.smallText}>{suggestion.text}</Text>
+        {!!suggestion.iconName && <FontAwesome5 name={suggestion.iconName} size={36} color="black" />}
+        <Text style={styles.smallText}>{getDateAndTime(item.timestamp)}</Text>
+      </TouchableOpacity>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.header2}>My History</Text>
+      <Text style={styles.header2}>History</Text>
       <ScrollView>
         <View style={styles.textContainer}>
           <Text style={styles.header}>Give these suggestions a review!</Text>
-          <View style={styles.recentTab}>
-            <Image source={albumImage} style={styles.albumImages}></Image>
-            <Image source={albumImage} style={styles.albumImages}></Image>
-            <Image source={albumImage} style={styles.albumImages}></Image>
-          </View>
+          <FlatList
+            data={userSuggestions}
+            renderItem={renderSuggestion}
+            horizontal={true}
+            keyExtractor={item => item.id}
+          />
           <TouchableOpacity>
             <Text style={styles.text}>View More</Text>
           </TouchableOpacity>
@@ -37,8 +80,8 @@ export default function LikesScreen() {
               </Modal>
             </Portal>
             <TouchableOpacity onPress={showModal}>
-                <Image source={albumImage} style={styles.albumImages}></Image>
-              </TouchableOpacity>
+              <Image source={albumImage} style={styles.albumImages}></Image>
+            </TouchableOpacity>
             <Image source={albumImage} style={styles.albumImages}></Image>
             <Image source={albumImage} style={styles.albumImages}></Image>
             <Image source={albumImage} style={styles.albumImages}></Image>
@@ -129,5 +172,19 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Extra-Light',
     padding: 15
   },
+  suggestionBlock: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    padding: 10,
+    margin: 10
+  },
+  smallText: {
+    fontSize: 10,
+    color: '#333',
+    alignSelf: 'center',
+    textAlign: 'center'
+  }
 
 });

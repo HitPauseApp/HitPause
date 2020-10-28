@@ -57,7 +57,8 @@ export default function JournalScreen(props) {
               Object.entries(displayEntries).map((item, key) =>
                 <TouchableOpacity key={key} onPress={() => openEntry(item[0], item[1].title, item[1].text)}>
                   <JournalCard entry={item[1]} id={item[0]}></JournalCard>
-                </TouchableOpacity>)
+                </TouchableOpacity>
+                )
             ) : (
               <View style={styles.textContainer}>
                 <Text style={styles.text}>No journal entries here...</Text>
