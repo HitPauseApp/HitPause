@@ -29,9 +29,11 @@ export default function Response_Scale(props){
           // TODO: Use RadioButton.Item
           options.map((item, key) =>
           <TouchableOpacity 
-          style = {styles.checkBoxDesign}
-          onPress={value => onChange(item)}>
-            <View style={styles.checkItem} key={key}>
+            style = {styles.checkBoxDesign}
+            onPress={value => onChange(item)}
+            key={key}
+          >
+            <View style={styles.checkItem}>
               <RadioButton
                 value={item}
                 status={props.value === item ? 'checked' : 'unchecked'}
@@ -54,8 +56,7 @@ const styles = StyleSheet.create({
   checkItem: {
     marginTop: '1.2%',
     flexDirection: "row",
-    alignSelf: "center",
-    color: 'black',
+    alignSelf: "center"
   },
   checkText: {
     marginTop: 10,

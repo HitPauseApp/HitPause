@@ -6,16 +6,19 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, PanResponsder, ImageBa
 import { PanGestureHandler, RectButton, ScrollView,  } from 'react-native-gesture-handler';
 import { AuthContext } from '../AuthContext';
 import JournalCard from '../components/JournalCard';
+import { TextInput } from 'react-native';
 
 
 export default function JournalScreen(props) {
   const user = React.useContext(AuthContext);
   const [entries, setEntries] = React.useState(null);
+  const [displayEntries, setDisplayEntries] = React.useState(null)
 
   React.useEffect(() => {
     // TODO: Get and store these locally
     firebase.database().ref(`users/${user.uid}/journal`).on('value', (s) => {
       setEntries(s.val());
+      setDisplayEntries(s.val());
     });
   }, []);
 
@@ -28,12 +31,30 @@ export default function JournalScreen(props) {
     props.navigation.navigate('JournalEntry', { entryId: entryId, title: title, text: text });
   }
 
+  const searchEntries = (searchText) => {
+    if (searchText != '') {
+      let filteredEntries = Object.values(entries)
+      .filter((entry) => (entry.title + entry.text).toLowerCase().indexOf(searchText.toLowerCase()) >= 0);
+      setDisplayEntries(filteredEntries);
+    } else {
+      setDisplayEntries(entries);
+    }
+  }
+
   return (
     <View style={styles.container}>
-    <View style={styles.contentContainer}>
-      <Text style={styles.header}>My Journal</Text>
+      <View style={styles.contentContainer}>
+        <Text style={styles.header}>My Journal</Text>
+        <TextInput
+          placeholder="Search"
+          placeholderTextColor="#ffffff"
+          autoCapitalize="none"
+          style={styles.textInput}
+          onChangeText={text => searchEntries(text)}
+        />
         <ScrollView>
           {
+
             // TODO: Does not load new data, need to trigger update
             !!entries && Object.entries(entries).length > 0 ? (
               Object.entries(entries).map((item, key) =>
@@ -42,12 +63,19 @@ export default function JournalScreen(props) {
                     </TouchableOpacity>
                 )
  
+
+            !!displayEntries && Object.entries(displayEntries).length > 0 ? (
+              Object.entries(displayEntries).map((item, key) =>
+                <TouchableOpacity key={key} onPress={() => openEntry(item[0], item[1].title, item[1].text)}>
+                  <JournalCard entry={item[1]} id={item[0]}></JournalCard>
+                </TouchableOpacity>
+                )
+
             ) : (
-              // TODO: This needs to be styled
-                <View style={styles.textContainer}>
-                  <Text style={styles.text}>Nothing here yet. Add your first journal entry below!</Text>
-                </View>
-              )
+              <View style={styles.textContainer}>
+                <Text style={styles.text}>No journal entries here...</Text>
+              </View>
+            )
           }
         </ScrollView>
       </View>
@@ -163,6 +191,16 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 15,
     flex: 1
+  },
+  textInput: {
+    height: 40,
+    width: '80%',
+    borderColor: 'white',
+    color: 'white',
+    borderBottomWidth: 1,
+    marginTop: 20,
+    zIndex: 3,
+    alignSelf: 'center',
   },
 
 });

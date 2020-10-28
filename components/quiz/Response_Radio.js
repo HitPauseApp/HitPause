@@ -8,7 +8,7 @@ export default function Response_Radio(props) {
     let flags = {};
     for (const key in props.responses) {
       if (props.responses[key].score == value) {
-        flags = {...props.responses[key].flagChanges};
+        flags = { ...props.responses[key].flagChanges };
         break;
       }
     }
@@ -20,16 +20,18 @@ export default function Response_Radio(props) {
         {
           // TODO: Use RadioButton.Item
           Object.values(props.responses).map((item, key) =>
-          <TouchableOpacity 
-              style = {styles.checkBoxDesign}
-              onPress={value => onChange(item.score)}>
-            <View style={styles.checkItem} key={key}>
+            <TouchableOpacity
+              style={styles.checkBoxDesign}
+              onPress={value => onChange(item.score)}
+              key={key}
+            >
+              <View style={styles.checkItem}>
                 <RadioButton
-                    value={item.score}
-                    status={props.value === item.score ? 'checked' : 'unchecked'}
+                  value={item.score}
+                  status={props.value === item.score ? 'checked' : 'unchecked'}
                 />
                 <Text style={styles.checkText}>{item.text}</Text>
-            </View>
+              </View>
 
             </TouchableOpacity>
           )
@@ -47,8 +49,7 @@ const styles = StyleSheet.create({
   checkItem: {
     marginTop: '1.2%',
     flexDirection: "row",
-    alignSelf: "center",
-    color: 'black',
+    alignSelf: "center"
   },
   checkText: {
     marginTop: 10,

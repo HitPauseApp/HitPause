@@ -13,7 +13,7 @@ export default function Response_Checkbox(props) {
     if (oldValue.length > 0 && oldValue.indexOf(score) >= 0) {
       oldValue.splice(oldValue.indexOf(score), 1);
       newValue = oldValue.splice(0);
-    // Handle "check" case
+      // Handle "check" case
     } else {
       newValue = [...oldValue, score];
     }
@@ -24,7 +24,7 @@ export default function Response_Checkbox(props) {
           // When flags compound within the same question
           if (Object.keys(flags).includes(flagKey)) {
             flags[flagKey] = parseFloat(flags[flagKey]) + parseFloat(props.responses[key].flagChanges[flagKey]);
-          // Otherwise, add normally
+            // Otherwise, add normally
           } else {
             flags[flagKey] = parseFloat(props.responses[key].flagChanges[flagKey]);
           }
@@ -38,22 +38,21 @@ export default function Response_Checkbox(props) {
     <View>
       {
         Object.values(props.responses).map((item, key) =>
-          
-            
-            <TouchableOpacity 
-              style = {styles.checkBoxDesign}
-              onPress={() => onChange(item.score)}>
-              <View style={styles.checkItem} key={key}>
-            <Checkbox
-              style = {styles.checkBox}
-              key={key}
-              status={Array.isArray(props.value) && props.value.indexOf(item.score) >= 0 ? 'checked' : 'unchecked'}
-              onPress={() => onChange(item.score)}
-            />
-            <Text style={styles.checkText}>{item.text}</Text>
+          <TouchableOpacity
+            style={styles.checkBoxDesign}
+            onPress={() => onChange(item.score)}
+            key={key}
+          >
+            <View style={styles.checkItem}>
+              <Checkbox
+                style={styles.checkBox}
+                key={key}
+                status={Array.isArray(props.value) && props.value.indexOf(item.score) >= 0 ? 'checked' : 'unchecked'}
+                onPress={() => onChange(item.score)}
+              />
+              <Text style={styles.checkText}>{item.text}</Text>
             </View>
-            </TouchableOpacity>
-          
+          </TouchableOpacity>
         )
       }
     </View>
@@ -68,9 +67,7 @@ const styles = StyleSheet.create({
   checkItem: {
     marginTop: '1.2%',
     flexDirection: "row",
-    alignSelf: "center",
-    color: 'black',
-   
+    alignSelf: "center"
   },
   checkBox: {
     flex: 1,
