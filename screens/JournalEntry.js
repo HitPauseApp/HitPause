@@ -62,20 +62,20 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
 
 const styles = StyleSheet.create({
     container: {
-      paddingTop: 15,
+      paddingTop: '15%',
       backgroundColor: '#00095e',
       flex: 1,
     },
     header: {
       fontFamily: 'Poppins-Medium',
       color: 'white',
-      fontSize: 26,
+      fontSize: 30,
       fontWeight: 'bold',
-      paddingHorizontal: 20,
-      paddingVertical: 10
+      paddingHorizontal: '5%',
+      paddingVertical: '5%'
     },
     backButton: {
-      paddingLeft: 5,
+      paddingLeft: '3%',
     },
     textInputContainer: {
       flex: 1
