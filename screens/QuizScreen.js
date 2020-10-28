@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
   modalContent:{
     backgroundColor: 'white',
-    height: '70vh',
+    height: 70,
     margin: 10,
     borderRadius: 10,
     textAlign: "center"
