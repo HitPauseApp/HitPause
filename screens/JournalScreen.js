@@ -54,23 +54,20 @@ export default function JournalScreen(props) {
         />
         <ScrollView>
           {
-
-            // TODO: Does not load new data, need to trigger update
-            !!entries && Object.entries(entries).length > 0 ? (
-              Object.entries(entries).map((item, key) =>
-                    <TouchableOpacity key={key} onPress={() => openEntry(item[0], item[1].title, item[1].text)}>
-                      <JournalCard entry={item[1]} id={item[0]}></JournalCard>
-                    </TouchableOpacity>
-                )
+            !!displayEntries && Object.entries(displayEntries).length > 0 ? (
+              Object.entries(displayEntries).map((item, key) =>
+                <TouchableOpacity key={key} onPress={() => openEntry(item[0], item[1].title, item[1].text)}>
+                  <JournalCard entry={item[1]} id={item[0]}></JournalCard>
+                </TouchableOpacity>)
             ) : (
               <View style={styles.textContainer}>
                 <Text style={styles.text}>No journal entries here...</Text>
-              </View> 
+              </View>
             )
           }
         </ScrollView>
       </View>
-
+     
       <View style={styles.buttonView}>
         <TouchableOpacity style={styles.button1} onPress={() => openEntry(null, '', '')}>
           <Image style={styles.imgBackground}
@@ -78,17 +75,12 @@ export default function JournalScreen(props) {
           </Image>
         </TouchableOpacity>
       </View>
-
       <View style={styles.buttonView2}>
         <TouchableOpacity style={styles.button} onPress={onPress}>
           <FontAwesome name="trash-o" size={40} color="white" />
         </TouchableOpacity>
       </View>
-
-
     </View>
-
-
   );
 }
 
