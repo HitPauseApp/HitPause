@@ -232,7 +232,6 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   starRating: {
-    margin: 10,
     width: '50%'
   },
 
