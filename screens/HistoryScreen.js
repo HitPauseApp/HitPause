@@ -14,6 +14,7 @@ export default function HistoryScreen(props) {
   const user = React.useContext(AuthContext);
   const hitpause = React.useContext(AppContext);
   const [userSuggestions, setUserSuggestions] = React.useState(null);
+  const [visible, setVisible] = React.useState(false);
 
   React.useEffect(() => {
     firebase.database().ref(`users/${user.uid}/profile/quizHistory/incidentQuestionnaire`).on('value', (s) => {
@@ -25,7 +26,6 @@ export default function HistoryScreen(props) {
     });
   }, []);
 
-  const [visible, setVisible] = React.useState(false);
 
   const showModal = () => setVisible(true);
 
@@ -34,8 +34,8 @@ export default function HistoryScreen(props) {
   // TODO: move to utility class
   function getDateAndTime(epoch) {
     let date = new Date(epoch);
-    let dateString = `${date.getMonth()}/${date.getDate()}/${String(date.getFullYear()).substr(2)}`;
-    let timeString = `${(date.getHours() % 12) + 1}:${String(date.getMinutes()).padStart(2, '0')}`;
+    let dateString = `${date.getMonth() + 1}/${date.getDate()}/${String(date.getFullYear()).substr(2)}`;
+    let timeString = `${date.getHours() == 0 ? '12' : (date.getHours() % 12)}:${String(date.getMinutes()).padStart(2, '0')}`;
     let amPmString = date.getHours() < 12 ? 'AM' : 'PM';
     return `${dateString}\n${timeString} ${amPmString}`;
   }
