@@ -28,6 +28,7 @@ import JournalScreen from './screens/JournalScreen';
 import HistoryScreen from './screens/HistoryScreen';
 import Account from './screens/AccountScreen';
 import JournalEntry from './screens/JournalEntry';
+import ReviewScreen from './screens/ReviewScreen';
 import { AsyncStorage } from 'react-native';
 
 const Stack = createStackNavigator();

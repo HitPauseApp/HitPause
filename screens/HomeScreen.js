@@ -12,33 +12,31 @@ export default function HomeScreen(props) {
 
   const TOTD = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar pellentesque ex at maximus. Nam feugiat rhoncus accumsan. ';
   return (
-    <View style={styles.container}>
-    <ScrollView>
+    <ScrollView style={styles.container}>
       <ImageBackground style={ styles.imgBackground }  
         source={require('../assets/images/mountain.png')}>
         <WelcomeBanner name={user.firstName}></WelcomeBanner>
       </ImageBackground>
-      <View style = {styles.contentContainer}>
-         <Text style={styles.header}>Recently Played</Text>
-         <View style={styles.recentTab}>
-           <Image source={albumImage} style={styles.albumImages}></Image>
-           <Image source={albumImage} style={styles.albumImages}></Image>
-           <Image source={albumImage} style={styles.albumImages}></Image>
-         </View>
-         <Text style={styles.header}>Recently Liked</Text>
-         <View style={styles.recentTab}>
-           <Image source={albumImage} style={styles.albumImages}></Image>
-           <Image source={albumImage} style={styles.albumImages}></Image>
-           <Image source={albumImage} style={styles.albumImages}></Image>
-         </View>
-         <Text style={styles.text2}>Need to adjust your assessment?</Text>
-         <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
-           <Text style={styles.text}>Retake Assessment</Text>
-         </TouchableOpacity>
-         <TipOTD TOTD={TOTD}></TipOTD>
-        </View>
+      
+      <Text style={styles.header}>Recently Played</Text>
+      <View style={styles.recentTab}>
+        <Image source={albumImage} style={styles.albumImages}></Image>
+        <Image source={albumImage} style={styles.albumImages}></Image>
+        <Image source={albumImage} style={styles.albumImages}></Image>
+      </View>
+      <Text style={styles.header}>Recently Liked</Text>
+      <View style={styles.recentTab}>
+        <Image source={albumImage} style={styles.albumImages}></Image>
+        <Image source={albumImage} style={styles.albumImages}></Image>
+        <Image source={albumImage} style={styles.albumImages}></Image>
+      </View>
+      <Text style={styles.text2}>Need to adjust your assessment?</Text>
+      <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
+        <Text style={styles.text}>Retake Assessment</Text>
+      </TouchableOpacity>
+      <TipOTD TOTD={TOTD}></TipOTD>
+        
     </ScrollView>
-    </View>
   );
 }
 
@@ -48,20 +46,16 @@ const styles = StyleSheet.create({
     flex: 1
   },
   header:{
-    paddingVertical: '5%',
-    paddingHorizontal: '2%',
+    padding: 15,
     fontFamily: 'Poppins-Light',
     fontSize: 20,
     color: 'white'
   },
   imgBackground: {
     width: '100%',
-    height: '55%',
+    height: '20%',
   },
-  contentContainer: {
-    flex: 1,
-    bottom: '23%'
-  },
+  
   recentTab:{
     flexDirection: 'row',
     justifyContent: 'space-around'
