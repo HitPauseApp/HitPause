@@ -47,7 +47,7 @@ export default function App(props) {
 
   function JournalStackScreen() {
     return (
-      <JournalStack.Navigator headerMode="none">
+       <JournalStack.Navigator headerMode="none">
         <JournalStack.Screen
           name="JournalScreen"
           component={JournalScreen}

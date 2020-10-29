@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         width: '80%',
         paddingLeft: 10,
         position: 'absolute',
-        bottom: 10,
+        marginTop: '23%',
         overflow: 'hidden'
     },
     text: {

@@ -3,16 +3,21 @@ import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import firebase from '../Firebase';
 import { StyleSheet, Text, View, Image, TouchableOpacity, PanResponsder, ImageBackground } from 'react-native';
-import { PanGestureHandler, RectButton, ScrollView,  } from 'react-native-gesture-handler';
+import { PanGestureHandler, RectButton, ScrollView} from 'react-native-gesture-handler';
 import { AuthContext } from '../AuthContext';
 import JournalCard from '../components/JournalCard';
 import { TextInput } from 'react-native';
+import Animated from 'react-native-reanimated';
+//import Swipeout from 'react-native-swipeout';
+
+
 
 
 export default function JournalScreen(props) {
   const user = React.useContext(AuthContext);
   const [entries, setEntries] = React.useState(null);
   const [displayEntries, setDisplayEntries] = React.useState(null)
+
 
   React.useEffect(() => {
     // TODO: Get and store these locally
@@ -41,6 +46,7 @@ export default function JournalScreen(props) {
     }
   }
 
+
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
@@ -58,7 +64,8 @@ export default function JournalScreen(props) {
               Object.entries(displayEntries).map((item, key) =>
                 <TouchableOpacity key={key} onPress={() => openEntry(item[0], item[1].title, item[1].text)}>
                   <JournalCard entry={item[1]} id={item[0]}></JournalCard>
-                </TouchableOpacity>)
+                </TouchableOpacity>    
+                )
             ) : (
               <View style={styles.textContainer}>
                 <Text style={styles.text}>No journal entries here...</Text>
@@ -83,6 +90,7 @@ export default function JournalScreen(props) {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
