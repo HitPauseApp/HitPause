@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
   checkItem: {
     marginTop: '1.2%',
     flexDirection: "row",
-    alignSelf: "center"
+    alignSelf: "center",
+    right: '28%'
   },
   checkText: {
     marginTop: 10,

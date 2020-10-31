@@ -17,7 +17,8 @@ export default function HomeScreen(props) {
         source={require('../assets/images/mountain.png')}>
         <WelcomeBanner name={user.firstName}></WelcomeBanner>
       </ImageBackground>
-      
+
+      <View style={styles.contentContainer}>
       <Text style={styles.header}>Recently Played</Text>
       <View style={styles.recentTab}>
         <Image source={albumImage} style={styles.albumImages}></Image>
@@ -35,6 +36,7 @@ export default function HomeScreen(props) {
         <Text style={styles.text}>Retake Assessment</Text>
       </TouchableOpacity>
       <TipOTD TOTD={TOTD}></TipOTD>
+      </View>
         
     </ScrollView>
   );
@@ -45,6 +47,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#00095e',
     flex: 1
   },
+  contentContainer: {
+    flex: 1,
+    bottom:'21%'
+    
+  },
   header:{
     padding: 15,
     fontFamily: 'Poppins-Light',
@@ -53,7 +60,7 @@ const styles = StyleSheet.create({
   },
   imgBackground: {
     width: '100%',
-    height: '20%',
+    height: '55%',
   },
   
   recentTab:{

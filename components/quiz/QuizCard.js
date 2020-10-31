@@ -263,7 +263,6 @@ const styles = StyleSheet.create({
     width: RFValue(250),
   },
   button: {
-    marginTop: 30,
     borderWidth: 2,
     borderColor: 'white',
     borderRadius: 50,
