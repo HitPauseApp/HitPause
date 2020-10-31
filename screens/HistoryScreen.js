@@ -29,11 +29,6 @@ export default function HistoryScreen(props) {
     });
   }, []);
 
-
-  const showModal = () => setVisible(true);
-
-  const hideModal = () => setVisible(false);
-
   // TODO: move to utility class
   function getDateAndTime(epoch) {
     let date = new Date(epoch);
@@ -52,16 +47,10 @@ export default function HistoryScreen(props) {
         break;
       }
     }
-    console.log('review 1:', review);
     review.fullSuggestion = hitpause.suggestions[review.suggestion];
-    console.log('review 2:', review);
     setCurrentReview(review);
     setVisible(true);
-    // React.useEffect(() => {
-    // }, [currentReview]);
   }
-
-  
 
   function renderSuggestion({ item }) {
     let suggestion = hitpause.suggestions[item.suggestion] || {};
@@ -126,7 +115,7 @@ export default function HistoryScreen(props) {
 
       </ScrollView>
       <Portal>
-        <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.reviewModal}>
+        <Modal visible={visible} onDismiss={() => setVisible(false)} contentContainerStyle={styles.reviewModal}>
           <Text style={styles.modalText}>{!!currentReview && !!currentReview.fullSuggestion ? currentReview.fullSuggestion.text : ''}</Text>
           <Text style={styles.modalText}>Leave a review!</Text>
           <StarRating
