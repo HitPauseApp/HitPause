@@ -28,7 +28,7 @@ import JournalScreen from './screens/JournalScreen';
 import HistoryScreen from './screens/HistoryScreen';
 import Account from './screens/AccountScreen';
 import JournalEntry from './screens/JournalEntry';
-import ReviewScreen from './screens/ReviewScreen';
+
 import { AsyncStorage } from 'react-native';
 
 const Stack = createStackNavigator();
@@ -210,7 +210,7 @@ export default function App(props) {
                       component={HistoryScreen}
                       options={{
                         title: 'History',
-                        tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-heart" />,
+                        tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-bookmark" />,
                       }}
                     />
                     <Tab.Screen
