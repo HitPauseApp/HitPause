@@ -4,7 +4,6 @@ import firebase from '../Firebase';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, ScrollView, FlatList } from 'react-native';
 import { Portal, Modal } from 'react-native-paper';
 import albumImage from '../assets/images/album-placeholder.png';
-import WelcomeBanner from '../components/WelcomeBanner';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AuthContext } from '../AuthContext';
 import { render } from 'react-dom';
@@ -232,7 +231,6 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   starRating: {
-    margin: 10,
     width: '50%'
   },
 
