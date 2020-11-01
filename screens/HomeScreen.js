@@ -14,12 +14,36 @@ export default function HomeScreen(props) {
   const user = React.useContext(AuthContext);
 
   const [visible, setVisible] = React.useState(false);
+  const [count, setCount] = React.useState(0);
+  const [screenText, setScreenText] = React.useState([
+    "Our goal is to provide each and every user with their own tips and tricks on how to better deal with their anxiety. Click next to take the virtual tour and get started",
+    "The journal page is designed to help relieve stress through writing. Hit the pen and paper to start a new entry, or swipe left to delete a previously existing entry",
+    "The quiz is 10 questions long and uses an algorithm, along with your answers from the initial assessment to give you some suggestions that are unique to you in the moment",
+    "The history page allows you to look back on, and even rate, some of your past suggestions and playlists. Our rating system is designed to get to know what you enjoy, so it can be more accurate in the future"
+  ]);
+  const [screenHead, setScreenHead] = React.useState([
+    "Welcome to the HitPause Family!",
+    "Journal Screen",
+    "Take the Quiz!",
+    "History"
+  ]);
 
   const showModal = () => setVisible(true);
 
   const hideModal = () => setVisible(false);
 
-  const date = new Date().toDateString()
+  const date = new Date().toDateString();
+
+
+
+  let nextScreen = () =>{
+    if(count < screenText.length - 1){
+      setCount(count + 1);
+    }
+    else{
+      setCount(0);
+    }
+  }
 
   const TOTD = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar pellentesque ex at maximus. Nam feugiat rhoncus accumsan. ';
   return (
@@ -30,12 +54,21 @@ export default function HomeScreen(props) {
       </ImageBackground>
       
       <View style={styles.contentContainer}>
-        <CalendarStrip
-          dateNameStyle={styles.calendarText}
-          dateNumberStyle= {styles.calendarText}
-          calendarHeaderStyle = {styles.calendarText}
+        <Text style={styles.header}>Recently Played</Text>
+        <View style={styles.recentTab}>
+          <TouchableOpacity onPress={showModal}>
+            <Image source={albumImage} style={styles.albumImages}></Image>
+          </TouchableOpacity>
           
-        />
+          <Image source={albumImage} style={styles.albumImages}></Image>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+        </View>
+        <Text style={styles.header}>Recently Liked</Text>
+        <View style={styles.recentTab}>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+          <Image source={albumImage} style={styles.albumImages}></Image>
+        </View>
         <Text style={styles.text2}>Need to adjust your assessment?</Text>
         <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
           <Text style={styles.text}>Retake Assessment</Text>
@@ -44,14 +77,13 @@ export default function HomeScreen(props) {
       </View>
       <Portal>
         <Modal visible={visible} dismissable={false} contentContainerStyle={styles.tourModal}>
-          <Text style={styles.modalHeader}>Welcome to the HitPause family!</Text>
-          <Text style={styles.modalText}>Our goal is to provide each and every user with their own tips and tricks on how to 
-          better deal with their anxiety. Click next to take the virtual tour and get started!</Text>
+          <Text style={styles.modalHeader}>{screenHead[count]}</Text>
+          <Text style={styles.modalText}>{screenText[count]}</Text>
           <View style={styles.recentTab}>
             <TouchableOpacity style={styles.modalButton} onPress={hideModal}>
               <Text style={styles.modalText}>Close</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.modalButton} onPress={hideModal}>
+            <TouchableOpacity style={styles.modalButton} onPress={nextScreen}>
               <Text style={styles.modalText}>Next</Text>
             </TouchableOpacity>
           </View>
