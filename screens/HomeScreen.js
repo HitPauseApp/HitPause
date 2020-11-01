@@ -7,8 +7,8 @@ import TipOTD from '../components/TipOTD';
 import WelcomeBanner from '../components/WelcomeBanner';
 import albumImage from '../assets/images/album-placeholder.png';
 import { RFValue } from "react-native-responsive-fontsize";
-import Slider from 'react-slick';
-import MagicSliderDots from 'react-magic-slider-dots';
+import CalendarStrip from "react-native-calendar-strip";
+
 
 export default function HomeScreen(props) {
   const user = React.useContext(AuthContext);
@@ -19,6 +19,8 @@ export default function HomeScreen(props) {
 
   const hideModal = () => setVisible(false);
 
+  const date = new Date().toDateString()
+
   const TOTD = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar pellentesque ex at maximus. Nam feugiat rhoncus accumsan. ';
   return (
     <ScrollView style={styles.container}>
@@ -26,28 +28,19 @@ export default function HomeScreen(props) {
         source={require('../assets/images/mountain.png')}>
         <WelcomeBanner name={user.firstName}></WelcomeBanner>
       </ImageBackground>
-
+      
       <View style={styles.contentContainer}>
-      <Text style={styles.header}>Recently Played</Text>
-      <View style={styles.recentTab}>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-      </View>
-      <Text style={styles.header}>Recently Liked</Text>
-      <View style={styles.recentTab}>
-        <TouchableOpacity onPress={showModal}>
-          <Image source={albumImage} style={styles.albumImages}></Image>
+        <CalendarStrip
+          dateNameStyle={styles.calendarText}
+          dateNumberStyle= {styles.calendarText}
+          calendarHeaderStyle = {styles.calendarText}
+          
+        />
+        <Text style={styles.text2}>Need to adjust your assessment?</Text>
+        <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
+          <Text style={styles.text}>Retake Assessment</Text>
         </TouchableOpacity>
-        
-        <Image source={albumImage} style={styles.albumImages}></Image>
-        <Image source={albumImage} style={styles.albumImages}></Image>
-      </View>
-      <Text style={styles.text2}>Need to adjust your assessment?</Text>
-      <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
-        <Text style={styles.text}>Retake Assessment</Text>
-      </TouchableOpacity>
-      <TipOTD TOTD={TOTD}></TipOTD>
+        <TipOTD TOTD={TOTD}></TipOTD>
       </View>
       <Portal>
         <Modal visible={visible} dismissable={false} contentContainerStyle={styles.tourModal}>
@@ -62,7 +55,7 @@ export default function HomeScreen(props) {
               <Text style={styles.modalText}>Next</Text>
             </TouchableOpacity>
           </View>
-          <MagicSliderDots dots={true} numDotsToShow={4} dotWidth={30} />;
+          
         </Modal>
       </Portal>  
     </ScrollView>
@@ -76,7 +69,8 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    bottom:'21%'
+    bottom:'21%',
+    
     
   },
   header:{
@@ -88,6 +82,11 @@ const styles = StyleSheet.create({
   imgBackground: {
     width: '100%',
     height: '55%',
+  },
+  calendarText: {
+    fontFamily: 'Poppins-Light',
+    fontSize: 15,
+    color: 'white'
   },
   tourModal:{
     backgroundColor: '#132090',
