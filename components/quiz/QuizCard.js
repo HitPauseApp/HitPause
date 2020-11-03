@@ -9,12 +9,15 @@ import Response_Radio from './Response_Radio';
 import Response_Scale from './Response_Scale';
 import Response_Text from './Response_Text';
 import Response_TextArea from './Response_TextArea';
+import { Portal, Modal } from 'react-native-paper';
 import { RFValue } from "react-native-responsive-fontsize";
 import { ScrollView } from 'react-native';
 
 export default class QuizCard extends React.Component {
+  
   constructor(props) {
     super(props);
+    
 
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
     this.handlePrevQuestion = this.handlePrevQuestion.bind(this);
@@ -25,10 +28,13 @@ export default class QuizCard extends React.Component {
       quizFlags: [],
       questionScore: '',
       nextDisabled: false,
-      prevDisabled: true     // Start on first question by default
+      prevDisabled: true,   // Start on first question by default
+      modalVisible: false
     }
   }
 
+  
+  
   // Updates data for quiz when a response is selected or changes
   updateQuizData = (data, flags) => {
     this.setState((state) => {
@@ -41,6 +47,8 @@ export default class QuizCard extends React.Component {
     });
   }
 
+  
+
   handleNextQuestion = () => {
     // If not at end of quiz
     if (this.state.quizIndex < this.state.quizLength - 1) {
@@ -52,6 +60,7 @@ export default class QuizCard extends React.Component {
       });
     // If at end of quiz ('next' button will submit)
     } else if (this.state.quizIndex == this.state.quizLength - 1) {
+      this.setState({ modalVisible: true });
       // Sanitize input data
       for (const key in this.state.quizData) {
         if (typeof this.state.quizData[key] === 'undefined') this.state.quizData[key] = '';
@@ -64,6 +73,7 @@ export default class QuizCard extends React.Component {
 
       let suggestion = this.getRandomizedSuggestion(topThree);
       console.log(suggestion);
+      
       
       firebase.database()
         .ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/${this.props.quizName}`)
@@ -228,6 +238,17 @@ export default class QuizCard extends React.Component {
             <Text style={styles.buttonText}>{this.state.quizIndex == this.state.quizLength - 1 ? 'Submit' : 'Next'}</Text>
           </TouchableOpacity>
         </View>
+        <Portal>
+          <Modal visible={this.state.modalVisible} dismissible={true} contentContainerStyle={styles.resultsModal}>
+            <Text style={styles.modalHeader}>Results</Text>
+            <Text style={styles.modalText}></Text>
+            <View style={styles.modalRow}>
+              <TouchableOpacity style={styles.modalButton} onPress={() => this.setState({ modalVisible: false })}>
+                <Text style={styles.modalText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        </Portal> 
       </View>
         
      
@@ -249,6 +270,40 @@ const styles = StyleSheet.create({
   },
   scrollView: {
 
+  },
+  resultsModal:{
+    backgroundColor: '#132090',
+    justifyContent: 'center',
+    alignContent: 'center',
+    width: '80%',
+    alignSelf: 'center',
+    borderRadius: 10,
+    padding: 10,
+    bottom: 10,
+    margin: 30,
+  },
+  modalHeader:{
+    textAlign: 'center',
+    padding: 10,
+    fontFamily: 'Poppins-Light',
+    fontSize: 25,
+    color: 'white'
+  },
+  modalText:{
+    padding: 15,
+    fontFamily: 'Poppins-Extra-Light',
+    fontSize: 15,
+    color: 'white',
+    textAlign: 'center',
+  },
+  modalRow:{
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  modalButton:{
+    backgroundColor: '#00095e',
+    borderRadius: 8,
+    width: RFValue(80),
   },
   quizQuestion: {
     backgroundColor: 'white',

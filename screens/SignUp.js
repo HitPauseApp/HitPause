@@ -84,6 +84,7 @@ export default class SignUp extends React.Component {
           onChangeText={repeatedPassword => this.setState({ repeatedPassword })}
           value={this.state.repeatedPassword}
         />
+        
 
         <TouchableOpacity style={styles.SignUpButton} onPress={this.handleSignUp}>
             <Text style={styles.text}>Sign Up</Text>
