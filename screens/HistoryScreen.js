@@ -14,12 +14,13 @@ export default function HistoryScreen(props) {
   const user = React.useContext(AuthContext);
   const hitpause = React.useContext(AppContext);
   const [userSuggestions, setUserSuggestions] = React.useState(null);
+  const [visible, setVisible] = React.useState(false);
   const [currentReview, setCurrentReview] = React.useState(null);
   const [starRating, setStarRating] = React.useState(null);
 
   React.useEffect(() => {
     firebase.database().ref(`users/${user.uid}/profile/quizHistory/incidentQuestionnaire`).on('value', (s) => {
-      let allUserSuggestions = s.val()
+      let allUserSuggestions = s.val() || {};
       for (const key in allUserSuggestions) {
         allUserSuggestions[key].id = key;
       }
@@ -27,17 +28,11 @@ export default function HistoryScreen(props) {
     });
   }, []);
 
-  const [visible, setVisible] = React.useState(false);
-
-  const showModal = () => setVisible(true);
-
-  const hideModal = () => setVisible(false);
-
   // TODO: move to utility class
   function getDateAndTime(epoch) {
     let date = new Date(epoch);
-    let dateString = `${date.getMonth()}/${date.getDate()}/${String(date.getFullYear()).substr(2)}`;
-    let timeString = `${(date.getHours() % 12) + 1}:${String(date.getMinutes()).padStart(2, '0')}`;
+    let dateString = `${date.getMonth() + 1}/${date.getDate()}/${String(date.getFullYear()).substr(2)}`;
+    let timeString = `${date.getHours() == 0 ? '12' : (date.getHours() % 12)}:${String(date.getMinutes()).padStart(2, '0')}`;
     let amPmString = date.getHours() < 12 ? 'AM' : 'PM';
     return `${dateString}\n${timeString} ${amPmString}`;
   }
@@ -51,16 +46,10 @@ export default function HistoryScreen(props) {
         break;
       }
     }
-    console.log('review 1:', review);
     review.fullSuggestion = hitpause.suggestions[review.suggestion];
-    console.log('review 2:', review);
     setCurrentReview(review);
     setVisible(true);
-    // React.useEffect(() => {
-    // }, [currentReview]);
   }
-
-  
 
   function renderSuggestion({ item }) {
     let suggestion = hitpause.suggestions[item.suggestion] || {};
@@ -125,7 +114,7 @@ export default function HistoryScreen(props) {
 
       </ScrollView>
       <Portal>
-        <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.reviewModal}>
+        <Modal visible={visible} onDismiss={() => setVisible(false)} contentContainerStyle={styles.reviewModal}>
           <Text style={styles.modalText}>{!!currentReview && !!currentReview.fullSuggestion ? currentReview.fullSuggestion.text : ''}</Text>
           <Text style={styles.modalText}>Leave a review!</Text>
           <StarRating
