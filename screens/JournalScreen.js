@@ -8,7 +8,9 @@ import { AuthContext } from '../AuthContext';
 import JournalCard from '../components/JournalCard';
 import { TextInput } from 'react-native';
 import Animated from 'react-native-reanimated';
-//import Swipeout from 'react-native-swipeout';
+import Swipeout from 'react-native-swipeout';
+
+// import {SwipeableGesture} from './SwipeGesture';
 
 
 
@@ -28,12 +30,17 @@ export default function JournalScreen(props) {
   }, []);
 
   const onPress = () => props.navigation.navigate("HomeScreen");
+  
 
   const openEntry = (entryId, title, text) => {
     // If there is no entryId (we are creating a new entry) get a new push ID from Firebase
     if (!entryId) entryId = firebase.database().ref().push().key;
     // Pass the existing (or new) entryId to JournalEntry as a parameter and navigate there
     props.navigation.navigate('JournalEntry', { entryId: entryId, title: title, text: text });
+  }
+
+  const deleteEntry = (entryId) => {
+    firebase.database().ref('users/' + user.uid +'/journal/').child(entryId).remove()
   }
 
   const searchEntries = (searchText) => {
@@ -62,9 +69,15 @@ export default function JournalScreen(props) {
           {
             !!displayEntries && Object.entries(displayEntries).length > 0 ? (
               Object.entries(displayEntries).map((item, key) =>
-                <TouchableOpacity key={key} onPress={() => openEntry(item[0], item[1].title, item[1].text)}>
-                  <JournalCard entry={item[1]} id={item[0]}></JournalCard>
-                </TouchableOpacity>    
+                // <TouchableOpacity key={key} onPress={() => openEntry(item[0], item[1].title, item[1].text)}>  
+                    <JournalCard 
+                        key={key} 
+                        deleteEntry = {() =>deleteEntry(item[0])} 
+                        openEntry={() => openEntry(item[0], item[1].title, item[1].text)} 
+                        entry={item[1]} id={item[0]}>
+
+                    </JournalCard>  
+                // </TouchableOpacity>    
                 )
             ) : (
               <View style={styles.textContainer}>
@@ -80,11 +93,11 @@ export default function JournalScreen(props) {
           <FontAwesome name="pencil-square-o" size={40} color="white" />
         </TouchableOpacity>
       </View>
-      <View style={styles.buttonView2}>
+      {/* <View style={styles.buttonView2}>
         <TouchableOpacity style={styles.button} onPress={onPress}>
           <FontAwesome name="trash-o" size={40} color="white" />
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 }
