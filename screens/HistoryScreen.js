@@ -20,7 +20,7 @@ export default function HistoryScreen(props) {
 
   React.useEffect(() => {
     firebase.database().ref(`users/${user.uid}/profile/quizHistory/incidentQuestionnaire`).on('value', (s) => {
-      let allUserSuggestions = s.val()
+      let allUserSuggestions = s.val() || {};
       for (const key in allUserSuggestions) {
         allUserSuggestions[key].id = key;
       }
