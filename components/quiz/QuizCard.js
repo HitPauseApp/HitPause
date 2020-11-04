@@ -9,12 +9,16 @@ import Response_Radio from './Response_Radio';
 import Response_Scale from './Response_Scale';
 import Response_Text from './Response_Text';
 import Response_TextArea from './Response_TextArea';
+import { Portal, Modal } from 'react-native-paper';
 import { RFValue } from "react-native-responsive-fontsize";
 import { ScrollView } from 'react-native';
+import { AppContext } from '../../AppContext';
 
 export default class QuizCard extends React.Component {
+  
   constructor(props) {
     super(props);
+    
 
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
     this.handlePrevQuestion = this.handlePrevQuestion.bind(this);
@@ -25,10 +29,13 @@ export default class QuizCard extends React.Component {
       quizFlags: [],
       questionScore: '',
       nextDisabled: false,
-      prevDisabled: true     // Start on first question by default
+      prevDisabled: true,   // Start on first question by default
+      modalVisible: false
     }
   }
 
+  
+  
   // Updates data for quiz when a response is selected or changes
   updateQuizData = (data, flags) => {
     this.setState((state) => {
@@ -40,6 +47,7 @@ export default class QuizCard extends React.Component {
       return { quizData: dataUpdate, quizFlags: flagUpdate };
     });
   }
+
 
   handleNextQuestion = () => {
     // If not at end of quiz
@@ -56,14 +64,17 @@ export default class QuizCard extends React.Component {
       for (const key in this.state.quizData) {
         if (typeof this.state.quizData[key] === 'undefined') this.state.quizData[key] = '';
       }
-
+      
       let outputFlags = this.tallyOutputFlags();
       let topThree = this.getHighsAndLows(outputFlags, 3, 0)[0];
       console.log('outputFlags:', outputFlags);
       console.log('topThree:', topThree);
-
+      
       let suggestion = this.getRandomizedSuggestion(topThree);
       console.log(suggestion);
+      this.setState({ outputSuggestion: this.context.suggestions[suggestion] });
+      this.setState({ modalVisible: true });
+      
       
       firebase.database()
         .ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/${this.props.quizName}`)
@@ -228,6 +239,19 @@ export default class QuizCard extends React.Component {
             <Text style={styles.buttonText}>{this.state.quizIndex == this.state.quizLength - 1 ? 'Submit' : 'Next'}</Text>
           </TouchableOpacity>
         </View>
+        <Portal>
+          <Modal visible={this.state.modalVisible} dismissible={false} contentContainerStyle={styles.resultsModal}>
+            <Text style={styles.modalHeader}>Results</Text>
+            <Text style={styles.modalText}>{!!this.state.outputSuggestion ? this.state.outputSuggestion.text : ""}</Text>
+            <View style={styles.modalRow}>
+              <TouchableOpacity style={styles.modalButton} onPress={() => {
+                this.setState({modalVisible: false});
+                this.props.navigation.navigate('Home');}}>
+                <Text style={styles.modalText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        </Portal> 
       </View>
         
      
@@ -235,6 +259,8 @@ export default class QuizCard extends React.Component {
   }
 
 }
+
+QuizCard.contextType = AppContext;
 
 const styles = StyleSheet.create({
   container: {
@@ -249,6 +275,40 @@ const styles = StyleSheet.create({
   },
   scrollView: {
 
+  },
+  resultsModal:{
+    backgroundColor: '#132090',
+    justifyContent: 'center',
+    alignContent: 'center',
+    width: '80%',
+    alignSelf: 'center',
+    borderRadius: 10,
+    padding: 10,
+    bottom: 10,
+    margin: 30,
+  },
+  modalHeader:{
+    textAlign: 'center',
+    padding: 10,
+    fontFamily: 'Poppins-Light',
+    fontSize: 25,
+    color: 'white'
+  },
+  modalText:{
+    padding: 15,
+    fontFamily: 'Poppins-Extra-Light',
+    fontSize: 15,
+    color: 'white',
+    textAlign: 'center',
+  },
+  modalRow:{
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  modalButton:{
+    backgroundColor: '#00095e',
+    borderRadius: 8,
+    width: RFValue(80),
   },
   quizQuestion: {
     backgroundColor: 'white',

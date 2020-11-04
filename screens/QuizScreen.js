@@ -61,7 +61,7 @@ export default function QuizScreen(props) {
         </Portal>
         <View style={styles.contentContainer}>
           <Text style={styles.header}>{quiz.quizName}</Text>
-          <QuizCard quiz={quiz} quizName={props.route.params.quizName}></QuizCard>
+          <QuizCard quiz={quiz} quizName={props.route.params.quizName} navigation={props.navigation}></QuizCard>
         </View>
       </View>
     );
