@@ -4,9 +4,8 @@ import firebase from '../Firebase.js';
 import { AuthContext } from '../AuthContext.js';
 
 
-import MatIcons from '../components/MatIcons';
+import AppIcons from '../components/AppIcons';
 import FillButton from '../components/buttons/FillButton';
-import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import SpotifyAuthButton from '../spotify/SpotifyAuthButton';
 import userImg from '../assets/images/user.png';
 
@@ -26,21 +25,21 @@ export default function Account(props) {
       <View style={styles.contentContainer}> 
       <Image source={userImg} style={styles.avatar}></Image>
       <View style={styles.category}>
-        <MatIcons name="person"></MatIcons>
+        <AppIcons name="materialicons:person"></AppIcons>
         <Text style={styles.text}>{user.firstName} {user.lastName}</Text>
       </View>
 
       <View style={styles.separator}></View>
 
       <View style={styles.category}>
-        <MatIcons name="email"></MatIcons>
+        <AppIcons name="materialicons:email"></AppIcons>
         <Text style={styles.text}>{user.email}</Text>
       </View>
 
       <View style={styles.separator}></View>
 
       <View style={styles.category}>
-        <FontAwesome name="spotify" size={30} color="white" />
+        <AppIcons name="fontawesome5:spotify" size={30} color="white" />
         {/* This is bad data, only using as placeholder */}
         {/* <Text style={styles.text}>{user ? 'Connected' : 'Not Connected'}</Text> */}
         <SpotifyAuthButton></SpotifyAuthButton>
@@ -49,7 +48,7 @@ export default function Account(props) {
       <View style={styles.separator}></View>
 
       <View style={styles.category}>
-        <MaterialCommunityIcons name="textbox-password" size={30} color="white" />
+        <AppIcons name="materialcommunityicons:textbox-password" size={30} color="white" />
         <Text style={styles.text}>*******</Text>
       </View>
       <FillButton text="EDIT DETAILS"></FillButton>
