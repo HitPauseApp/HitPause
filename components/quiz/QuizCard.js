@@ -12,6 +12,7 @@ import Response_TextArea from './Response_TextArea';
 import { Portal, Modal } from 'react-native-paper';
 import { RFValue } from "react-native-responsive-fontsize";
 import { ScrollView } from 'react-native';
+import { AppContext } from '../../AppContext';
 
 export default class QuizCard extends React.Component {
   
@@ -47,7 +48,6 @@ export default class QuizCard extends React.Component {
     });
   }
 
-  
 
   handleNextQuestion = () => {
     // If not at end of quiz
@@ -60,19 +60,20 @@ export default class QuizCard extends React.Component {
       });
     // If at end of quiz ('next' button will submit)
     } else if (this.state.quizIndex == this.state.quizLength - 1) {
-      this.setState({ modalVisible: true });
       // Sanitize input data
       for (const key in this.state.quizData) {
         if (typeof this.state.quizData[key] === 'undefined') this.state.quizData[key] = '';
       }
-
+      
       let outputFlags = this.tallyOutputFlags();
       let topThree = this.getHighsAndLows(outputFlags, 3, 0)[0];
       console.log('outputFlags:', outputFlags);
       console.log('topThree:', topThree);
-
+      
       let suggestion = this.getRandomizedSuggestion(topThree);
       console.log(suggestion);
+      this.setState({ outputSuggestion: this.context.suggestions[suggestion] });
+      this.setState({ modalVisible: true });
       
       
       firebase.database()
@@ -239,11 +240,13 @@ export default class QuizCard extends React.Component {
           </TouchableOpacity>
         </View>
         <Portal>
-          <Modal visible={this.state.modalVisible} dismissible={true} contentContainerStyle={styles.resultsModal}>
+          <Modal visible={this.state.modalVisible} dismissible={false} contentContainerStyle={styles.resultsModal}>
             <Text style={styles.modalHeader}>Results</Text>
-            <Text style={styles.modalText}></Text>
+            <Text style={styles.modalText}>{!!this.state.outputSuggestion ? this.state.outputSuggestion.text : ""}</Text>
             <View style={styles.modalRow}>
-              <TouchableOpacity style={styles.modalButton} onPress={() => this.setState({ modalVisible: false })}>
+              <TouchableOpacity style={styles.modalButton} onPress={() => {
+                this.setState({modalVisible: false});
+                this.props.navigation.navigate('Home');}}>
                 <Text style={styles.modalText}>Close</Text>
               </TouchableOpacity>
             </View>
@@ -256,6 +259,8 @@ export default class QuizCard extends React.Component {
   }
 
 }
+
+QuizCard.contextType = AppContext;
 
 const styles = StyleSheet.create({
   container: {
