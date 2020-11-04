@@ -56,7 +56,7 @@ export default function QuizScreen(props) {
       <View style={styles.container}>
         <Portal>
           <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContent}>
-            <Text>Weclome To the HitPause Quiz</Text>
+            <Text>Welcome To the HitPause Quiz</Text>
           </Modal>
         </Portal>
         <View style={styles.contentContainer}>
