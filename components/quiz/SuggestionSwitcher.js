@@ -35,7 +35,7 @@ export default class SuggestionSwitcher extends React.Component {
             </View>;
           break;
         case "Suggest a calm book or a relaxing place to read":
-          suggestionComponent = <Text>No Spotify Suggestions</Text>;
+          suggestionComponent = <Text style={styles.noSuggestion}>No Spotify Suggestions</Text>;
           break;
         case "Find them resources to practice Yoga":
           suggestionComponent = 
@@ -53,19 +53,19 @@ export default class SuggestionSwitcher extends React.Component {
           </View>;
           break;
         case 'Suggest watching a Youtube video':
-          suggestionComponent = <Text>No Spotify Suggestions</Text>;
+          suggestionComponent = <Text style={styles.noSuggestion}>No Spotify Suggestions</Text>;
           break;
         case 'Give them tips to declutter':
-          suggestionComponent = <Text>No Spotify Suggestions</Text>;
+          suggestionComponent = <Text style={styles.noSuggestion}>No Spotify Suggestions</Text>;
           break;
         case "https://www.healthline.com/health/breathing-exercises-for-anxiety":
-          suggestionComponent = <Text>No Spotify Suggestions</Text>;
+          suggestionComponent = <Text style={styles.noSuggestion}>No Spotify Suggestions</Text>;
           break;
         case "Provide healthy nap strategies":
-          suggestionComponent = <Text>No Spotify Suggestions</Text>;
+          suggestionComponent = <Text style={styles.noSuggestion}>No Spotify Suggestions</Text>;
           break;
         case "Give them small changes in their diet":
-          suggestionComponent = <Text>No Spotify Suggestions</Text>;
+          suggestionComponent = <Text style={styles.noSuggestion}>No Spotify Suggestions</Text>;
           break;
         case 'Help them identify relaxing places to go to':
           suggestionComponent = 
@@ -80,10 +80,10 @@ export default class SuggestionSwitcher extends React.Component {
           </View>;
           break;
         case 'Provide facts':
-          suggestionComponent = <Text>No Spotify Suggestion</Text>;
+          suggestionComponent = <Text style={styles.noSuggestion}>No Spotify Suggestion</Text>;
           break;
         case 'Give them healthy sleep tips':
-          suggestionComponent = <Text>No Spotify Suggestion</Text>;
+          suggestionComponent = <Text style={styles.noSuggestion}>No Spotify Suggestion</Text>;
           break;
         case 'Provide facts - Fresh Air':
           suggestionComponent = 
@@ -105,18 +105,18 @@ export default class SuggestionSwitcher extends React.Component {
           </View>;
           break;
         case 'Provide Facts - Socialize':
-          suggestionComponent = <Text>No Spotify Suggestion</Text>;
+          suggestionComponent = <Text style={styles.noSuggestion}>No Spotify Suggestion</Text>;
           break;
         case 'Give advice - Goals':
-          suggestionComponent = <Text>No Spotify Suggestion</Text>;
+          suggestionComponent = <Text style={styles.noSuggestion}>No Spotify Suggestion</Text>;
           break;
         case 'Give advice - Productivity':
-          suggestionComponent = <Text>No Spotify Suggestion</Text>;
+          suggestionComponent = <Text style={styles.noSuggestion}>No Spotify Suggestion</Text>;
           break;
       }
     }
     else {
-      suggestionComponent = <Text>No Suggestion Availible</Text>
+      suggestionComponent = <Text style={styles.noSuggestion}>No Suggestion Availible</Text>
     }
     return (
       <View>
@@ -125,3 +125,10 @@ export default class SuggestionSwitcher extends React.Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  noSuggestion: {
+    color: 'white',
+    alignSelf: "center"
+  }
+})
