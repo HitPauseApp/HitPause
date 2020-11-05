@@ -61,7 +61,7 @@ export default class AppleStyleSwipeGesture extends Component {
                     
                     <TouchableOpacity key={this.props.key} onPress={() => this.props.openEntry()}>  
                     <View style={{height:150}}>
-                        <Text style = {styles.bodyText}>{this.props.entry.title}</Text>
+                        <Text style = {styles.titleText}>{this.props.entry.title}</Text>
                         <Text style = {styles.bodyText}>{this.props.entry.text}</Text>
                     </View>
                     </TouchableOpacity>  
@@ -98,11 +98,18 @@ const styles = StyleSheet.create({
     bodyText: {
         color: 'white',
         fontFamily: 'Poppins-Medium',
-        marginTop: 5,
+        marginTop: '5%',
         fontSize: 12,
         textAlign: 'left',
-        paddingHorizontal: 20,
+        left: '5%',
         flex:1,
         //height: 150
    },     
+   titleText: {
+       color: 'white',
+       fontFamily:'Poppins-Medium',
+       fontSize: 18,
+       marginTop: '5%',
+       left: '5%'
+   }
   });

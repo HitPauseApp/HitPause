@@ -56,7 +56,7 @@ export default function QuizScreen(props) {
       <View style={styles.container}>
         <Portal>
           <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContent}>
-            <Text>Welcome To the HitPause Quiz</Text>
+            <Text style={styles.modalText}>Welcome To the HitPause Quiz</Text>
           </Modal>
         </Portal>
         <View style={styles.contentContainer}>
@@ -90,6 +90,12 @@ const styles = StyleSheet.create({
     height: 70,
     margin: 10,
     borderRadius: 10,
-    textAlign: "center"
+  },
+  modalText: {
+    textAlign:'center',
+    fontFamily: 'Poppins-Medium',
+    color: 'black',
+    fontSize:17
+
   }
 });

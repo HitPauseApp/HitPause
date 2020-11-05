@@ -56,6 +56,10 @@ export default function JournalScreen(props) {
 
   return (
     <View style={styles.container}>
+       {/* <ImageBackground
+          style={ styles.imgBackground }  
+          source={require('../assets/images/wallpaper3.png')}> */}
+        
       <View style={styles.contentContainer}>
         <Text style={styles.header}>My Journal</Text>
         <TextInput
@@ -69,15 +73,14 @@ export default function JournalScreen(props) {
           {
             !!displayEntries && Object.entries(displayEntries).length > 0 ? (
               Object.entries(displayEntries).map((item, key) =>
-                // <TouchableOpacity key={key} onPress={() => openEntry(item[0], item[1].title, item[1].text)}>  
+                 //<TouchableOpacity key={key} onPress={() => openEntry(item[0], item[1].title, item[1].text)}>  
                     <JournalCard 
                         key={key} 
                         deleteEntry = {() =>deleteEntry(item[0])} 
                         openEntry={() => openEntry(item[0], item[1].title, item[1].text)} 
                         entry={item[1]} id={item[0]}>
-
                     </JournalCard>  
-                // </TouchableOpacity>    
+                  //</TouchableOpacity>    
                 )
             ) : (
               <View style={styles.textContainer}>
@@ -98,6 +101,7 @@ export default function JournalScreen(props) {
           <FontAwesome name="trash-o" size={40} color="white" />
         </TouchableOpacity>
       </View> */}
+      {/* </ImageBackground> */}
     </View>
   );
 }
@@ -149,7 +153,7 @@ const styles = StyleSheet.create({
 
   },
   textContainer: {
-    backgroundColor: 'white',
+    backgroundColor: '#132090',
     justifyContent: 'center',
     alignContent: 'center',
     width: '80%',
@@ -157,17 +161,20 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     bottom: 10,
-    marginTop: 20
+    marginTop: 20,
+    height: 150
   },
   img: {
     width: '50%',
     height: '50%',
   },
   imgBackground: {
-    width: '70%',
-    height: '70%',
-    bottom: -7,
-    right: -7
+    width: '100%',
+    height: '100%',
+    // bottom: -7,
+    // right: -7,
+    resizeMode: "cover",
+    flex:1
   },
   buttonView: {
     flex: 1,
@@ -185,8 +192,8 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    color: '#00095e',
-    fontFamily: 'Poppins-Extra-Light',
+    color: 'white',
+    fontFamily: 'Poppins-Medium',
     fontWeight: 'bold',
     fontSize: 20,
   },
