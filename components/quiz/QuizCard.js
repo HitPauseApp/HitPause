@@ -13,12 +13,13 @@ import { Portal, Modal } from 'react-native-paper';
 import { RFValue } from "react-native-responsive-fontsize";
 import { ScrollView } from 'react-native';
 import { AppContext } from '../../AppContext';
+import SuggestionSwitcher from './SuggestionSwitcher';
 
 export default class QuizCard extends React.Component {
-  
+
   constructor(props) {
     super(props);
-    
+
 
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
     this.handlePrevQuestion = this.handlePrevQuestion.bind(this);
@@ -34,8 +35,8 @@ export default class QuizCard extends React.Component {
     }
   }
 
-  
-  
+
+
   // Updates data for quiz when a response is selected or changes
   updateQuizData = (data, flags) => {
     this.setState((state) => {
@@ -58,24 +59,24 @@ export default class QuizCard extends React.Component {
         // Always re-enable previous button when moving forward
         prevDisabled: false
       });
-    // If at end of quiz ('next' button will submit)
+      // If at end of quiz ('next' button will submit)
     } else if (this.state.quizIndex == this.state.quizLength - 1) {
       // Sanitize input data
       for (const key in this.state.quizData) {
         if (typeof this.state.quizData[key] === 'undefined') this.state.quizData[key] = '';
       }
-      
+
       let outputFlags = this.tallyOutputFlags();
       let topThree = this.getHighsAndLows(outputFlags, 3, 0)[0];
       console.log('outputFlags:', outputFlags);
       console.log('topThree:', topThree);
-      
+
       let suggestion = this.getRandomizedSuggestion(topThree);
       console.log(suggestion);
       this.setState({ outputSuggestion: this.context.suggestions[suggestion] });
       this.setState({ modalVisible: true });
-      
-      
+
+
       firebase.database()
         .ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/${this.props.quizName}`)
         .push({
@@ -97,15 +98,15 @@ export default class QuizCard extends React.Component {
         // Flag has a special behavior
         if (flagKey.includes('_highest_')) {
           let count = parseInt(flagKey.replace('_highest_', ''));
-          modifiers.push({type: 'high', count: count, amount: parseFloat(this.state.quizFlags[key][flagKey])});
+          modifiers.push({ type: 'high', count: count, amount: parseFloat(this.state.quizFlags[key][flagKey]) });
         } else if (flagKey.includes('_lowest_')) {
           let count = parseInt(flagKey.replace('_lowest_', ''));
-          modifiers.push({type: 'low', count: count, amount: parseFloat(this.state.quizFlags[key][flagKey])});
+          modifiers.push({ type: 'low', count: count, amount: parseFloat(this.state.quizFlags[key][flagKey]) });
 
-        // Flags of this type already exist, will sum
+          // Flags of this type already exist, will sum
         } else if (Object.keys(flags).includes(flagKey)) {
           flags[flagKey] = parseFloat(flags[flagKey]) + parseFloat(this.state.quizFlags[key][flagKey]);
-        // Otherwise, add normally
+          // Otherwise, add normally
         } else {
           flags[flagKey] = parseFloat(this.state.quizFlags[key][flagKey]);
         }
@@ -125,7 +126,7 @@ export default class QuizCard extends React.Component {
       for (const flagKey in modifiedFlags) {
         modifiedFlags[flagKey] = modifiedFlags[flagKey] + modifiers[key].amount;
       }
-      flags = {...flags, ...modifiedFlags};
+      flags = { ...flags, ...modifiedFlags };
     }
     return flags;
   }
@@ -213,14 +214,14 @@ export default class QuizCard extends React.Component {
       buttonDisabled = false;
     }
     return (
-      <View style = {styles.container}> 
-       
-        <View style={styles.quizQuestion}>
-              <QuizQuestion question={this.props.quiz.questions[this.state.quizIndex]}></QuizQuestion>
-          </View>
+      <View style={styles.container}>
 
-       <ScrollView style = {styles.scrollView}>
-           {responseComponent}
+        <View style={styles.quizQuestion}>
+          <QuizQuestion question={this.props.quiz.questions[this.state.quizIndex]}></QuizQuestion>
+        </View>
+
+        <ScrollView style={styles.scrollView}>
+          {responseComponent}
         </ScrollView>
 
         <View style={styles.row}>
@@ -243,28 +244,28 @@ export default class QuizCard extends React.Component {
           <Modal visible={this.state.modalVisible} dismissible={false} contentContainerStyle={styles.resultsModal}>
             <Text style={styles.modalHeader}>Results</Text>
             <Text style={styles.modalText}>{!!this.state.outputSuggestion ? this.state.outputSuggestion.text : ""}</Text>
+            <SuggestionSwitcher suggestionId={this.state.outputSuggestion}></SuggestionSwitcher>
+            {/* <SpotifySuggestions></SpotifySuggestions> */}
             <View style={styles.modalRow}>
               <TouchableOpacity style={styles.modalButton} onPress={() => {
-                this.setState({modalVisible: false});
-                this.props.navigation.navigate('Home');}}>
+                this.setState({ modalVisible: false });
+                this.props.navigation.navigate('Home');
+              }}>
                 <Text style={styles.modalText}>Close</Text>
               </TouchableOpacity>
             </View>
           </Modal>
-        </Portal> 
+        </Portal>
       </View>
-        
-     
     );
   }
-
 }
 
 QuizCard.contextType = AppContext;
 
 const styles = StyleSheet.create({
   container: {
-    flex:1 
+    flex: 1
   },
   text: {
     color: 'white',
@@ -276,7 +277,7 @@ const styles = StyleSheet.create({
   scrollView: {
 
   },
-  resultsModal:{
+  resultsModal: {
     backgroundColor: '#132090',
     justifyContent: 'center',
     alignContent: 'center',
@@ -287,25 +288,25 @@ const styles = StyleSheet.create({
     bottom: 10,
     margin: 30,
   },
-  modalHeader:{
+  modalHeader: {
     textAlign: 'center',
     padding: 10,
     fontFamily: 'Poppins-Light',
     fontSize: 25,
     color: 'white'
   },
-  modalText:{
+  modalText: {
     padding: 15,
     fontFamily: 'Poppins-Extra-Light',
     fontSize: 15,
     color: 'white',
     textAlign: 'center',
   },
-  modalRow:{
+  modalRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
-  modalButton:{
+  modalButton: {
     backgroundColor: '#00095e',
     borderRadius: 8,
     width: RFValue(80),
@@ -344,7 +345,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     bottom: '7%',
     position: 'absolute',
-    flex:1 
+    flex: 1
   }
 });
 
