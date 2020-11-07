@@ -145,7 +145,9 @@ export default function App(props) {
       if (s.val() === true) {
         setIsAppConnected(true);
         // Update AuthContext using firebase
-        updateAuthContext(firebase.auth().currentUser.uid, true);
+        if (firebase.auth().currentUser && firebase.auth().currentUser.uid) { // <-- NEW
+          updateAuthContext(firebase.auth().currentUser.uid, true);
+        }                                                                     // <-- New
       } else {
         setIsAppConnected(false);
       }
