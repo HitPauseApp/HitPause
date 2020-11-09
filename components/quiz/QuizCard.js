@@ -19,8 +19,6 @@ export default class QuizCard extends React.Component {
 
   constructor(props) {
     super(props);
-
-
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
     this.handlePrevQuestion = this.handlePrevQuestion.bind(this);
     this.state = {
@@ -35,8 +33,6 @@ export default class QuizCard extends React.Component {
     }
   }
 
-
-
   // Updates data for quiz when a response is selected or changes
   updateQuizData = (data, flags) => {
     this.setState((state) => {
@@ -48,7 +44,6 @@ export default class QuizCard extends React.Component {
       return { quizData: dataUpdate, quizFlags: flagUpdate };
     });
   }
-
 
   handleNextQuestion = () => {
     // If not at end of quiz
@@ -76,7 +71,6 @@ export default class QuizCard extends React.Component {
       this.setState({ outputSuggestion: this.context.suggestions[suggestion] });
       this.setState({ modalVisible: true });
 
-
       firebase.database()
         .ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/${this.props.quizName}`)
         .push({
@@ -85,7 +79,6 @@ export default class QuizCard extends React.Component {
           responses: this.state.quizData,
           outputFlags: outputFlags
         });
-      // TODO: Display summary screen
     }
   }
 
@@ -244,6 +237,7 @@ export default class QuizCard extends React.Component {
           <Modal visible={this.state.modalVisible} dismissible={false} contentContainerStyle={styles.resultsModal}>
             <Text style={styles.modalHeader}>Results</Text>
             <Text style={styles.modalText}>{!!this.state.outputSuggestion ? this.state.outputSuggestion.text : ""}</Text>
+            <Text style={styles.modalText}>{!!this.state.outputSuggestion ? this.state.outputSuggestion.body : ""}</Text>
             <SuggestionSwitcher suggestionId={this.state.outputSuggestion}></SuggestionSwitcher>
             {/* <SpotifySuggestions></SpotifySuggestions> */}
             <View style={styles.modalRow}>
