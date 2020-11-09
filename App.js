@@ -7,8 +7,10 @@ import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import TabBarIcon from './components/TabBarIcon';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import firebase from './Firebase';
 import { AuthContext } from './AuthContext.js';
@@ -32,8 +34,9 @@ import JournalEntry from './screens/JournalEntry';
 import { AsyncStorage } from 'react-native';
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 const JournalStack = createStackNavigator();
+const homeStack = createStackNavigator();
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -45,7 +48,14 @@ export default function App(props) {
   const [authUser, setAuthUser] = React.useState(null);
   const [hitpause, setHitpause] = React.useState(null);
 
-  function JournalStackScreen() {
+  function JournalStackScreen(navigation, route) {
+
+    // if (route.state && route.state.index > 0) {
+    //   navigation.setOptions= {options:{tabBarVisible:false}}
+    // }
+    // else {
+    //   navigation.setOptions= {options:{tabBarVisible:true}}
+    // }
     return (
        <JournalStack.Navigator headerMode="none">
         <JournalStack.Screen
@@ -55,9 +65,29 @@ export default function App(props) {
         <JournalStack.Screen
           name="JournalEntry"
           component={JournalEntry}
+          options={{
+            tabBarVisible:false
+          }}
         />
       </JournalStack.Navigator>
     );
+  }
+
+  function homeStackScreen () {
+    return (
+      <homeStack.Navigator headerMode="none">
+        <homeStack.Screen
+          name="Home"
+          component={HomeScreen}
+        />
+        <homeStack.Screen
+          name="InitialAssessment"
+          component={QuizScreen}
+          initialParams={{ quizName: 'initialAssessment' }}
+        />
+        
+      </homeStack.Navigator>
+    )
   }
   
   // Load any resources or data that we need prior to rendering the app
@@ -115,7 +145,9 @@ export default function App(props) {
       if (s.val() === true) {
         setIsAppConnected(true);
         // Update AuthContext using firebase
-        updateAuthContext(firebase.auth().currentUser.uid, true);
+        if (firebase.auth().currentUser && firebase.auth().currentUser.uid) { // <-- NEW
+          updateAuthContext(firebase.auth().currentUser.uid, true);
+        }                                                                     // <-- New
       } else {
         setIsAppConnected(false);
       }
@@ -178,14 +210,24 @@ export default function App(props) {
               </NavigationContainer>
             ) : (
               <AppContext.Provider value={hitpause}>
+
                 <NavigationContainer>
-                  <Tab.Navigator initialRouteName={authNavState}>
+                  <Tab.Navigator 
+                  initialRouteName={authNavState} 
+                  activeColor='#6050DC'
+                  inactiveColor='black'
+                  barStyle={{ backgroundColor: 'white' }}
+                  >
                     <Tab.Screen
                       name="Home"
-                      component={HomeScreen}
+                      component={homeStackScreen}
                       options={{
                         title: 'Home',
-                        tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />,
+                        tabBarLabel: false,
+                        tabBarIcon: ({ color}) => (
+                          <MaterialCommunityIcons name="home" color={color} size={26} />
+                        ),
+                        // <TabBarIcon focused={focused} name="md-home" />,
                       }}
                     />
                     <Tab.Screen
@@ -193,7 +235,11 @@ export default function App(props) {
                       component={JournalStackScreen}
                       options={{
                         title: 'Journal',
-                        tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+                        tabBarLabel: false,
+                        tabBarIcon: ({ color }) => (
+                         <MaterialCommunityIcons name="book" color={color} size={26} />
+                        ),
+                        // <TabBarIcon focused={focused} name="md-book" />,
                       }}
                     />
                     <Tab.Screen
@@ -202,7 +248,11 @@ export default function App(props) {
                       initialParams={{ quizName: 'incidentQuestionnaire' }}
                       options={{
                         title: 'HitPause Quiz',
-                        tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-pause" />,
+                        tabBarLabel: false,
+                        tabBarIcon: ({ color }) => (
+                          <MaterialCommunityIcons name="pause" color={color} size={26} />
+                        ),
+                        // <TabBarIcon focused={focused} name="md-pause" />,
                       }}
                     />
                     <Tab.Screen
@@ -210,7 +260,11 @@ export default function App(props) {
                       component={HistoryScreen}
                       options={{
                         title: 'History',
-                        tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-bookmark" />,
+                        tabBarLabel: false,
+                        tabBarIcon: ({ color }) => (
+                          <MaterialCommunityIcons name="bookmark" color={color} size={26} />
+                        ),
+                        // <TabBarIcon focused={focused} name="md-bookmark" />,
                       }}
                     />
                     <Tab.Screen
@@ -218,18 +272,31 @@ export default function App(props) {
                       component={Account}
                       options={{
                         title: 'Account',
-                        tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-settings" />,
+                        tabBarLabel: false,
+                        tabBarIcon: ({ color }) =>(
+                          <MaterialCommunityIcons name="settings" color={color} size={26} />
+                        ),
+                        //  <TabBarIcon focused={focused} name="md-settings" />,
                       }}
                     />
                     {/* Hidden tabs */}
-                    <Tab.Screen
+                    {/* <Tab.Screen
                       name='InitialAssessment'
                       component={QuizScreen}
                       initialParams={{ quizName: 'initialAssessment' }}
+                      // screenOptions={{tabBarButton:() => any}}
+                      // options={{
+                      //   tabBarButton: () => null,
+                      // }}
+                    /> */}
+                    {/* <Tab.Screen
+                      name='JournalEntry'
+                      component={JournalEntry}
                       options={{
+                        tabBarVisible: false,
                         tabBarButton: () => null
                       }}
-                    />
+                    /> */}
                   </Tab.Navigator>
                 </NavigationContainer>
               </AppContext.Provider>
@@ -240,6 +307,7 @@ export default function App(props) {
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {
