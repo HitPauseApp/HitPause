@@ -63,7 +63,9 @@ export default function HistoryScreen(props) {
     return (
       <TouchableOpacity style={styles.suggestionBlock} onPress={() => reviewSuggestion(item.id)}>
         <Text style={styles.smallText}>{suggestion.text}</Text>
-        {!!suggestion.icon && <AppIcons name={suggestion.icon} size={36} color="black" />}
+        <Text style={{textAlign: 'center'}}>
+          {!!suggestion.icon && <AppIcons name={suggestion.icon} size={36} color="black" />}
+        </Text>
         <Text style={styles.smallText}>{getDateAndTime(item.timestamp)}</Text>
       </TouchableOpacity>
     );
