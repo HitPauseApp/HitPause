@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         left: '5%',
         flex:1,
+        padding: 10 
         //height: 150
    },     
    titleText: {

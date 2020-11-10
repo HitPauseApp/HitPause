@@ -54,17 +54,20 @@ export default function QuizScreen(props) {
   } else {
     return (
       <View style={styles.container}>
-        <FontAwesome name="info-circle" size={24} color="white" style={styles.info} onPress={showModal} />
+
         <Portal>
           <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContent}>
             <Text style={styles.modalHeadingText}>Welcome To the HitPause Quiz</Text>
-            <Text style={styles.modalText}>This quiz will ask 10 questions regarding your current experience with anxiety. 
+            <Text style={styles.modalText}>This quiz will ask 10 questions regarding your current experience with anxiety.
             Once the quiz has been completed, our custom designed suggestion algorithm, The Pause Algorithm, will calculate your results and provide
             a recommendation to help relieve your anxiety.</Text>
           </Modal>
         </Portal>
         <View style={styles.contentContainer}>
+          <View style={styles.headingCont}>
           <Text style={styles.header}>{quiz.quizName}</Text>
+            <FontAwesome name="info-circle" size={24} color="white" style={styles.info} onPress={showModal} /> 
+          </View>
           <QuizCard quiz={quiz} quizName={props.route.params.quizName} navigation={props.navigation}></QuizCard>
         </View>
       </View>
@@ -83,30 +86,35 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: 'bold',
     paddingHorizontal: 20,
-    paddingVertical: '9%'
+    paddingVertical: '9%',
+
+  },
+  headingCont:{
+    flexDirection: "row",
+    alignItems: "center"
   },
   contentContainer: {
     paddingTop: 15,
     flex: 1
   },
-  modalContent:{
+  modalContent: {
     backgroundColor: 'white',
     height: 400,
     margin: 10,
     borderRadius: 10,
   },
-  modalHeadingText:{
+  modalHeadingText: {
     fontSize: 24,
     textAlign: "center",
     marginBottom: 24
   },
   modalText: {
-    textAlign:'center',
+    textAlign: 'center',
     fontFamily: 'Poppins-Medium',
     color: 'black',
     fontSize: 17
   },
   info: {
-    margin: 10,
+    
   }
 });

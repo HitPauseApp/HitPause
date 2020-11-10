@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     padding: 10,
-    marginBottom: '20px',
+    marginBottom: 20,
     width: '80%',
   },
   button: {
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'center',
     alignSelf: 'center',
-    margin: '20px'
+    margin: 20
   },
   questionText:{
     color: '#00095e',
@@ -351,8 +351,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#fff',
     backgroundColor: '#00095e',
-    borderRadius: '100px',
-    paddingHorizontal: '4px',
+    borderRadius: 100,
+    paddingHorizontal: 4,
     fontWeight: 'bold'
   }
 });
