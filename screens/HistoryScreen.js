@@ -9,6 +9,7 @@ import { AuthContext } from '../AuthContext';
 import { render } from 'react-dom';
 import { AppContext } from '../AppContext';
 import StarRating from 'react-native-star-rating';
+import AppIcons from '../components/AppIcons';
 
 export default function HistoryScreen(props) {
   const user = React.useContext(AuthContext);
@@ -16,7 +17,6 @@ export default function HistoryScreen(props) {
   const [userSuggestions, setUserSuggestions] = React.useState(null);
   const [visible, setVisible] = React.useState(false);
   const [currentReview, setCurrentReview] = React.useState(null);
-  const [starRating, setStarRating] = React.useState(null);
 
   React.useEffect(() => {
     firebase.database().ref(`users/${user.uid}/profile/quizHistory/incidentQuestionnaire`).on('value', (s) => {
@@ -28,6 +28,13 @@ export default function HistoryScreen(props) {
     });
   }, []);
 
+  function handleRatingChanged(id, rating) {
+    firebase.database().ref(`users/${user.uid}/profile/quizHistory/incidentQuestionnaire/${id}`).update({
+      starRating: rating
+    });
+    setCurrentReview({...currentReview, starRating: rating});
+  }
+
   // TODO: move to utility class
   function getDateAndTime(epoch) {
     let date = new Date(epoch);
@@ -38,7 +45,6 @@ export default function HistoryScreen(props) {
   }
 
   function reviewSuggestion(id) {
-    // TODO: Implement
     let review = {};
     for (const key in userSuggestions) {
       if (userSuggestions[key].id == id) {
@@ -47,6 +53,7 @@ export default function HistoryScreen(props) {
       }
     }
     review.fullSuggestion = hitpause.suggestions[review.suggestion];
+    review.id = id;
     setCurrentReview(review);
     setVisible(true);
   }
@@ -56,7 +63,9 @@ export default function HistoryScreen(props) {
     return (
       <TouchableOpacity style={styles.suggestionBlock} onPress={() => reviewSuggestion(item.id)}>
         <Text style={styles.smallText}>{suggestion.text}</Text>
-        {!!suggestion.iconName && <FontAwesome5 name={suggestion.iconName} size={36} color="black" />}
+        <Text style={{textAlign: 'center'}}>
+          {!!suggestion.icon && <AppIcons name={suggestion.icon} size={36} color="black" />}
+        </Text>
         <Text style={styles.smallText}>{getDateAndTime(item.timestamp)}</Text>
       </TouchableOpacity>
     );
@@ -114,19 +123,22 @@ export default function HistoryScreen(props) {
 
       </ScrollView>
       <Portal>
-        <Modal visible={visible} onDismiss={() => setVisible(false)} contentContainerStyle={styles.reviewModal}>
-          <Text style={styles.modalText}>{!!currentReview && !!currentReview.fullSuggestion ? currentReview.fullSuggestion.text : ''}</Text>
-          <Text style={styles.modalText}>Leave a review!</Text>
-          <StarRating
-            disabled={false}
-            maxStars={5}
-            rating={starRating}
-            selectedStar={(rating) => setStarRating(rating)}
-            fullStarColor={'white'}
-            starStyle={styles.starRating}
-            starSize={30}
-          />
-        </Modal>
+        {
+          !!currentReview &&
+          <Modal visible={visible} onDismiss={() => setVisible(false)} contentContainerStyle={styles.reviewModal}>
+            <Text style={styles.modalText}>{currentReview.fullSuggestion.text}</Text>
+            <Text style={styles.modalText}>Leave a review!</Text>
+            <StarRating
+              disabled={false}
+              maxStars={5}
+              rating={currentReview.starRating}
+              selectedStar={(rating) => handleRatingChanged(currentReview.id, rating)}
+              fullStarColor={'white'}
+              starStyle={styles.starRating}
+              starSize={30}
+            />
+          </Modal>
+        }
       </Portal>
     </View>
     

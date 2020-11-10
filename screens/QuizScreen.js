@@ -2,7 +2,7 @@ import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import firebase from '../Firebase.js'
 import { StyleSheet, Text, View, Button, AsyncStorage } from 'react-native';
-
+import { FontAwesome } from '@expo/vector-icons';
 import QuizCard from '../components/quiz/QuizCard';
 import Loading from './Loading';
 import { Portal, Modal } from 'react-native-paper';
@@ -54,9 +54,13 @@ export default function QuizScreen(props) {
   } else {
     return (
       <View style={styles.container}>
+        <FontAwesome name="info-circle" size={24} color="white" style={styles.info} onPress={showModal} />
         <Portal>
           <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContent}>
-            <Text style={styles.modalText}>Welcome To the HitPause Quiz</Text>
+            <Text style={styles.modalHeadingText}>Welcome To the HitPause Quiz</Text>
+            <Text style={styles.modalText}>This quiz will ask 10 questions regarding your current experience with anxiety. 
+            Once the quiz has been completed, our custom designed suggestion algorithm, The Pause Algorithm, will calculate your results and provide
+            a recommendation to help relieve your anxiety.</Text>
           </Modal>
         </Portal>
         <View style={styles.contentContainer}>
@@ -87,15 +91,22 @@ const styles = StyleSheet.create({
   },
   modalContent:{
     backgroundColor: 'white',
-    height: 70,
+    height: 400,
     margin: 10,
     borderRadius: 10,
+  },
+  modalHeadingText:{
+    fontSize: 24,
+    textAlign: "center",
+    marginBottom: 24
   },
   modalText: {
     textAlign:'center',
     fontFamily: 'Poppins-Medium',
     color: 'black',
-    fontSize:17
-
+    fontSize: 17
+  },
+  info: {
+    margin: 10,
   }
 });

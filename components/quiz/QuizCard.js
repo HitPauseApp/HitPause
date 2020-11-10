@@ -2,8 +2,6 @@ import * as React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import firebase from '../../Firebase';
 
-import QuizQuestion from './QuizQuestion'
-
 import Response_Checkbox from './Response_Checkbox';
 import Response_Radio from './Response_Radio';
 import Response_Scale from './Response_Scale';
@@ -14,13 +12,12 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { ScrollView } from 'react-native';
 import { AppContext } from '../../AppContext';
 import SuggestionSwitcher from './SuggestionSwitcher';
+import AppIcons from '../AppIcons';
 
 export default class QuizCard extends React.Component {
 
   constructor(props) {
     super(props);
-
-
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
     this.handlePrevQuestion = this.handlePrevQuestion.bind(this);
     this.state = {
@@ -35,8 +32,6 @@ export default class QuizCard extends React.Component {
     }
   }
 
-
-
   // Updates data for quiz when a response is selected or changes
   updateQuizData = (data, flags) => {
     this.setState((state) => {
@@ -48,7 +43,6 @@ export default class QuizCard extends React.Component {
       return { quizData: dataUpdate, quizFlags: flagUpdate };
     });
   }
-
 
   handleNextQuestion = () => {
     // If not at end of quiz
@@ -76,7 +70,6 @@ export default class QuizCard extends React.Component {
       this.setState({ outputSuggestion: this.context.suggestions[suggestion] });
       this.setState({ modalVisible: true });
 
-
       firebase.database()
         .ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/${this.props.quizName}`)
         .push({
@@ -85,7 +78,6 @@ export default class QuizCard extends React.Component {
           responses: this.state.quizData,
           outputFlags: outputFlags
         });
-      // TODO: Display summary screen
     }
   }
 
@@ -182,8 +174,7 @@ export default class QuizCard extends React.Component {
           responses={this.props.quiz.questions[this.state.quizIndex].responses}
           onChange={this.updateQuizData}
           value={this.state.quizData[this.state.quizIndex]}
-        >
-        </Response_Checkbox>
+        ></Response_Checkbox>
     }
     else if (this.props.quiz.questions[this.state.quizIndex].type == "radio") {
       responseComponent =
@@ -191,8 +182,7 @@ export default class QuizCard extends React.Component {
           responses={this.props.quiz.questions[this.state.quizIndex].responses}
           onChange={this.updateQuizData}
           value={this.state.quizData[this.state.quizIndex]}
-        >
-        </Response_Radio>
+        ></Response_Radio>
     }
     else if (this.props.quiz.questions[this.state.quizIndex].type == "scale") {
       responseComponent =
@@ -217,14 +207,15 @@ export default class QuizCard extends React.Component {
       <View style={styles.container}>
 
         <View style={styles.quizQuestion}>
-          <QuizQuestion question={this.props.quiz.questions[this.state.quizIndex]}></QuizQuestion>
+          <Text style={styles.questionNumber}>{this.props.quiz.questions[this.state.quizIndex].order}</Text>
+          <Text style={styles.questionText}>{this.props.quiz.questions[this.state.quizIndex].text}</Text>
         </View>
 
-        <ScrollView style={styles.scrollView}>
+        <ScrollView style={{flexGrow: 1}}>
           {responseComponent}
         </ScrollView>
 
-        <View style={styles.row}>
+        <View style={styles.controlButtons}>
           <TouchableOpacity
             style={styles.button}
             onPress={this.handlePrevQuestion}
@@ -244,6 +235,10 @@ export default class QuizCard extends React.Component {
           <Modal visible={this.state.modalVisible} dismissible={false} contentContainerStyle={styles.resultsModal}>
             <Text style={styles.modalHeader}>Results</Text>
             <Text style={styles.modalText}>{!!this.state.outputSuggestion ? this.state.outputSuggestion.text : ""}</Text>
+            <Text style={{ textAlign: 'center' }}>
+              {!!this.state.outputSuggestion && <AppIcons name={this.state.outputSuggestion.icon} />}
+            </Text>
+            <Text style={styles.modalText}>{!!this.state.outputSuggestion ? this.state.outputSuggestion.body : ""}</Text>
             <SuggestionSwitcher suggestionId={this.state.outputSuggestion}></SuggestionSwitcher>
             {/* <SpotifySuggestions></SpotifySuggestions> */}
             <View style={styles.modalRow}>
@@ -265,6 +260,7 @@ QuizCard.contextType = AppContext;
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'column',
     flex: 1
   },
   text: {
@@ -312,16 +308,15 @@ const styles = StyleSheet.create({
     width: RFValue(80),
   },
   quizQuestion: {
+    flexDirection: 'column',
     backgroundColor: 'white',
     justifyContent: 'center',
-    alignContent: 'center',
+    alignItems: 'center',
     alignSelf: 'center',
     borderRadius: 10,
     padding: 10,
-    bottom: 10,
-    marginTop: '5%',
-    height: 'auto',
-    width: RFValue(250),
+    marginBottom: '20px',
+    width: '80%',
   },
   button: {
     borderWidth: 2,
@@ -339,13 +334,26 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
     textAlign: 'center'
   },
-  row: {
+  controlButtons: {
     flexDirection: 'row',
     alignContent: 'center',
     alignSelf: 'center',
-    bottom: '7%',
-    position: 'absolute',
-    flex: 1
+    margin: '20px'
+  },
+  questionText:{
+    color: '#00095e',
+    fontFamily: 'Poppins-Medium',
+    fontSize: 16,
+    marginTop: 5,
+    textAlign: 'center',
+  },
+  questionNumber: {
+    textAlign: 'center',
+    color: '#fff',
+    backgroundColor: '#00095e',
+    borderRadius: '100px',
+    paddingHorizontal: '4px',
+    fontWeight: 'bold'
   }
 });
 
