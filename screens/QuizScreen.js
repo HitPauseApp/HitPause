@@ -90,21 +90,29 @@ const styles = StyleSheet.create({
     flex: 1
   },
   modalContent:{
-    backgroundColor: 'white',
-    height: 400,
-    margin: 10,
+    backgroundColor: '#132090',
+    justifyContent: 'center',
+    alignContent: 'center',
+    width: '80%',
+    alignSelf: 'center',
     borderRadius: 10,
+    padding: 10,
+    bottom: 10,
+    margin: 30,
   },
   modalHeadingText:{
-    fontSize: 24,
-    textAlign: "center",
-    marginBottom: 24
+    textAlign: 'center',
+    padding: 10,
+    fontFamily: 'Poppins-Light',
+    fontSize: 25,
+    color: 'white'
   },
   modalText: {
-    textAlign:'center',
-    fontFamily: 'Poppins-Medium',
-    color: 'black',
-    fontSize: 17
+    padding: 15,
+    fontFamily: 'Poppins-Extra-Light',
+    fontSize: 15,
+    color: 'white',
+    textAlign: 'center',
   },
   info: {
     margin: 10,
