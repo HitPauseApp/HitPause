@@ -35,9 +35,9 @@ export default function Response_Radio(props) {
 
 const styles = StyleSheet.create({
   radioButton: {
-    marginBottom: '10px',
+    marginBottom: 10,
     backgroundColor: 'white',
-    borderRadius: '10px',
+    borderRadius: 10,
     alignSelf: 'center',
     width: '80%'
   },

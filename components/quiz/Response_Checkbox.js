@@ -54,9 +54,9 @@ export default function Response_Checkbox(props) {
 
 const styles = StyleSheet.create({
   checkBox: {
-    marginBottom: '10px',
+    marginBottom: 10,
     backgroundColor: 'white',
-    borderRadius: '10px',
+    borderRadius: 10,
     alignSelf: 'center',
     width: '80%'
   }
