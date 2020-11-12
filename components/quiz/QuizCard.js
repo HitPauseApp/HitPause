@@ -42,6 +42,7 @@ export default class QuizCard extends React.Component {
       flagUpdate[state.quizIndex] = flags;
       return { quizData: dataUpdate, quizFlags: flagUpdate };
     });
+    console.log(data, flags);
   }
 
   handleNextQuestion = () => {

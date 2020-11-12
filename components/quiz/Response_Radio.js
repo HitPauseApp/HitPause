@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { RadioButton } from 'react-native-paper';
-import { RFValue } from "react-native-responsive-fontsize";
 
 export default function Response_Radio(props) {
   const onChange = (value) => {
     let flags = {};
     for (const key in props.responses) {
-      if (props.responses[key].score == value) {
+      if (props.responses[key].id == value) {
         flags = { ...props.responses[key].flagChanges };
         break;
       }
@@ -15,25 +14,18 @@ export default function Response_Radio(props) {
     props.onChange(value, flags);
   }
   return (
-    <View style={styles.quizQuestion}>
+    <View>
       <RadioButton.Group onValueChange={value => onChange(value)} value={props.value}>
         {
-          // TODO: Use RadioButton.Item
           Object.values(props.responses).map((item, key) =>
-            <TouchableOpacity
-              style={styles.checkBoxDesign}
-              onPress={value => onChange(item.score)}
+            <RadioButton.Item
+              label={item.text}
+              labelStyle={{color: '#00095e'}}
+              style={styles.radioButton}
+              color="#00095e"
+              value={item.id}
               key={key}
-            >
-              <View style={styles.checkItem}>
-                <RadioButton
-                  value={item.score}
-                  status={props.value === item.score ? 'checked' : 'unchecked'}
-                />
-                <Text style={styles.checkText}>{item.text}</Text>
-              </View>
-
-            </TouchableOpacity>
+            />
           )
         }
       </RadioButton.Group>
@@ -42,29 +34,11 @@ export default function Response_Radio(props) {
 }
 
 const styles = StyleSheet.create({
-  text: {
-    color: "#48484A",
-    textAlign: "center"
-  },
-  checkItem: {
-    marginTop: '1.2%',
-    flexDirection: "row",
-    alignSelf: "center",
-    right: '28%'
-  },
-  checkText: {
-    marginTop: 10,
-    color: '#00095e'
-  },
-  checkBoxDesign: {
-    marginTop: 15,
-    borderWidth: 2,
-    alignSelf: "center",
-    borderColor: 'white',
+  radioButton: {
+    marginBottom: '10px',
     backgroundColor: 'white',
-    borderRadius: 20,
-    overflow: 'hidden',
-    height: RFValue(40),
-    width: RFValue(260), //260
+    borderRadius: '10px',
+    alignSelf: 'center',
+    width: '80%'
   },
 });

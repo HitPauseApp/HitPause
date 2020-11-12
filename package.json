@@ -49,7 +49,7 @@
     "react-native-gesture-handler": "~1.6.0",
     "react-native-material-cards": "^1.0.15",
     "react-native-modern-header": "^0.1.0",
-    "react-native-paper": "^3.8.0",
+    "react-native-paper": "^3.12.0",
     "react-native-reanimated": "~1.9.0",
     "react-native-redash": "^15.11.1",
     "react-native-responsive-fontsize": "^0.4.3",
