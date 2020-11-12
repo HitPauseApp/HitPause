@@ -1,25 +1,23 @@
 import * as React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { Text, View, StyleSheet, ImagePropTypes } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { Checkbox } from 'react-native-paper';
-import { RFValue } from "react-native-responsive-fontsize";
 
 export default function Response_Checkbox(props) {
-  const onChange = (score) => {
+  const onChange = (id) => {
     let oldValue = Array.isArray(props.value) ? [...props.value] : [];
     let newValue = [];
     let flags = {};
     // Handle "uncheck" case
-    if (oldValue.length > 0 && oldValue.indexOf(score) >= 0) {
-      oldValue.splice(oldValue.indexOf(score), 1);
+    if (oldValue.length > 0 && oldValue.indexOf(id) >= 0) {
+      oldValue.splice(oldValue.indexOf(id), 1);
       newValue = oldValue.splice(0);
       // Handle "check" case
     } else {
-      newValue = [...oldValue, score];
+      newValue = [...oldValue, id];
     }
     // Get flag changes
     for (const key in props.responses) {
-      if (newValue.includes(props.responses[key].score)) {
+      if (newValue.includes(props.responses[key].id)) {
         for (const flagKey in props.responses[key].flagChanges) {
           // When flags compound within the same question
           if (Object.keys(flags).includes(flagKey)) {
@@ -38,21 +36,16 @@ export default function Response_Checkbox(props) {
     <View>
       {
         Object.values(props.responses).map((item, key) =>
-          <TouchableOpacity
-            style={styles.checkBoxDesign}
-            onPress={() => onChange(item.score)}
+          <Checkbox.Item
+            label={item.text}
+            // TODO: This is not working at the moment... look for an update eventually
+            labelStyle={{color: '#00095e'}}
+            style={styles.checkBox}
+            color="#00095e"
             key={key}
-          >
-            <View style={styles.checkItem}>
-              <Checkbox
-                style={styles.checkBox}
-                key={key}
-                status={Array.isArray(props.value) && props.value.indexOf(item.score) >= 0 ? 'checked' : 'unchecked'}
-                onPress={() => onChange(item.score)}
-              />
-              <Text style={styles.checkText}>{item.text}</Text>
-            </View>
-          </TouchableOpacity>
+            status={Array.isArray(props.value) && props.value.indexOf(item.id) >= 0 ? 'checked' : 'unchecked'}
+            onPress={() => onChange(item.id)}
+          />
         )
       }
     </View>
@@ -60,37 +53,11 @@ export default function Response_Checkbox(props) {
 }
 
 const styles = StyleSheet.create({
-  text: {
-    color: "#48484A",
-    textAlign: "center"
-  },
-  checkItem: {
-    marginTop: '1.2%',
-    flexDirection: "row",
-    alignSelf: "center",
-    right: '28%'
-  },
   checkBox: {
-    flex: 1,
-    flexDirection: 'row',
-    position: 'absolute',
-  },
-  checkText: {
-    marginTop: 7,
-    color: '#00095e',
-    fontFamily: 'Poppins-Medium',
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
-  checkBoxDesign: {
-    marginTop: 15,
-    borderWidth: 2,
-    alignSelf: "center",
-    borderColor: 'white',
+    marginBottom: 10,
     backgroundColor: 'white',
-    borderRadius: 20,
-    overflow: 'hidden',
-    height: RFValue(40),
-    width: RFValue(260), //260
-  },
+    borderRadius: 10,
+    alignSelf: 'center',
+    width: '80%'
+  }
 });

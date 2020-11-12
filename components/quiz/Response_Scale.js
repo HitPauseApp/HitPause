@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { RadioButton } from 'react-native-paper';
-import { RFValue } from "react-native-responsive-fontsize";
 
 export default function Response_Scale(props){
   // TODO: The following is a temporary solution, eventually we'll want to use an actual scale element
@@ -26,21 +25,15 @@ export default function Response_Scale(props){
     <View style={styles.quizQuestion}>
       <RadioButton.Group onValueChange={value => onChange(value)} value={props.value}>
         {
-          // TODO: Use RadioButton.Item
           options.map((item, key) =>
-          <TouchableOpacity 
-            style = {styles.checkBoxDesign}
-            onPress={value => onChange(item)}
-            key={key}
-          >
-            <View style={styles.checkItem}>
-              <RadioButton
-                value={item}
-                status={props.value === item ? 'checked' : 'unchecked'}
-              />
-              <Text style={styles.checkText}>{item}</Text>
-            </View>
-          </TouchableOpacity>
+            <RadioButton.Item
+              label={item}
+              labelStyle={{color: '#00095e'}}
+              style={styles.radioButton}
+              color="#00095e"
+              value={item}
+              key={key}
+            />
           )
         }
       </RadioButton.Group>
@@ -49,29 +42,11 @@ export default function Response_Scale(props){
 }
 
 const styles = StyleSheet.create({
-  text: {
-    color: "#48484A",
-    textAlign: "center"
-  },
-  checkItem: {
-    marginTop: '1.2%',
-    flexDirection: "row",
-    alignSelf: "center",
-    right: '28%%'
-  },
-  checkText: {
-    marginTop: 10,
-    color: 'black',
-  },
-  checkBoxDesign: {
-    marginTop: 15,
-    borderWidth: 2,
-    alignSelf: "center",
-    borderColor: 'white',
+  radioButton: {
+    marginBottom: 10,
     backgroundColor: 'white',
-    borderRadius: 20,
-    overflow: 'hidden',
-    height: RFValue(40),
-    width: RFValue(260), //260
+    borderRadius: 10,
+    alignSelf: 'center',
+    width: '80%'
   },
 });
