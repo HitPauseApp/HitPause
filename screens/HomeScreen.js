@@ -47,34 +47,38 @@ export default function HomeScreen(props) {
 
   const TOTD = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar pellentesque ex at maximus. Nam feugiat rhoncus accumsan. ';
   return (
-    <ScrollView style={styles.container}>
-      <ImageBackground style={ styles.imgBackground }  
-        source={require('../assets/images/mountain.png')}>
-        <WelcomeBanner name={user.firstName}></WelcomeBanner>
-      </ImageBackground>
-      
-      <View style={styles.contentContainer}>
-        <Text style={styles.header}>Recently Played</Text>
-        <View style={styles.recentTab}>
-          <TouchableOpacity onPress={showModal}>
-            <Image source={albumImage} style={styles.albumImages}></Image>
-          </TouchableOpacity>
-          
-          <Image source={albumImage} style={styles.albumImages}></Image>
-          <Image source={albumImage} style={styles.albumImages}></Image>
-        </View>
-        <Text style={styles.header}>Recently Liked</Text>
-        <View style={styles.recentTab}>
-          <Image source={albumImage} style={styles.albumImages}></Image>
-          <Image source={albumImage} style={styles.albumImages}></Image>
-          <Image source={albumImage} style={styles.albumImages}></Image>
-        </View>
-        <Text style={styles.text2}>Need to adjust your assessment?</Text>
-        <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
-          <Text style={styles.text}>Retake Assessment</Text>
-        </TouchableOpacity>
-        <TipOTD TOTD={TOTD}></TipOTD>
+    <View style={styles.container}>
+      <View style={styles.imageContainer}>
+        <ImageBackground style={ styles.image }  
+          source={require('../assets/images/homepage.jpg')}>
+          <WelcomeBanner name={user.firstName}></WelcomeBanner>
+        </ImageBackground>
       </View>
+
+      <View style={styles.dailyTrackerContainer}>
+        <Text style={styles.dailyTrackerText}>Week of November 8th</Text>
+        <View style={styles.weekView}>
+          <Text>Test</Text>
+          <Text>Test</Text>
+          <Text>Test</Text>
+          <Text>Test</Text>
+          <Text>Test</Text>
+          <Text>Test</Text>
+          <Text>Test</Text>
+        </View>
+      </View>
+      <Text style={styles.text2}>Need to adjust your assessment?</Text>
+      <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
+        <Text style={styles.text}>Retake Assessment</Text>
+      </TouchableOpacity>
+      <TipOTD TOTD={TOTD}></TipOTD>
+  
+      
+      
+      
+      
+    
+      
       <Portal>
         <Modal visible={visible} dismissable={false} contentContainerStyle={styles.tourModal}>
           <Text style={styles.modalHeader}>{screenHead[count]}</Text>
@@ -85,12 +89,13 @@ export default function HomeScreen(props) {
             </TouchableOpacity>
             <TouchableOpacity style={styles.modalButton} onPress={nextScreen}>
               <Text style={styles.modalText}>Next</Text>
+
             </TouchableOpacity>
           </View>
           
         </Modal>
       </Portal>  
-    </ScrollView>
+    </View>
   );
 }
 
@@ -99,27 +104,43 @@ const styles = StyleSheet.create({
     backgroundColor: '#00095e',
     flex: 1
   },
-  contentContainer: {
-    flex: 1,
-    bottom:'21%',
-    
+  imageContainer: {
     
   },
+  
   header:{
     padding: 15,
     fontFamily: 'Poppins-Medium',
     fontSize: 20,
     color: 'white'
   },
-  imgBackground: {
-    width: '100%',
-    height: '55%',
+  image: {
+    height: RFValue(180),
   },
-  calendarText: {
-    fontFamily: 'Poppins-Light',
-    fontSize: 15,
-    color: 'white'
+
+  dailyTrackerContainer: {
+    marginTop: 20,
+    alignSelf: 'center',
+    borderRadius: 30,
+    height: RFValue(200),
+    width: '95%',
+    backgroundColor: '#132090',
+    padding: 10,
+    paddingLeft: 20
   },
+
+  dailyTrackerText: {
+    color: 'white',
+    fontFamily: 'Poppins-Medium',
+    fontSize: 20,
+    paddingRight: 10,
+    
+  },
+
+  weekView: {
+    flexDirection: 'row',
+  },
+  
   tourModal:{
     backgroundColor: '#132090',
     justifyContent: 'center',
@@ -180,7 +201,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 14,
     fontFamily: 'Poppins-Light',
-    marginTop: 50,
+    marginTop: 30,
     marginBottom: 5,
   }
 
