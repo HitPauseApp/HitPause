@@ -1,9 +1,27 @@
+/*
+
+
+This file is likely to be depreciated. Please don't put this component anywhere! Thank you
+
+Signed, 
+Drew Weaver - 11/16/2020
+
+
+
+*/
+
+
+
+
 import * as React from 'react';
 import firebase from '../Firebase.js';
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, useAuthRequest, exchangeCodeAsync, refreshAsync } from 'expo-auth-session';
-import { Button } from 'react-native';
+import { Button, AsyncStorage } from 'react-native';
 import SpotifyWebAPI from 'spotify-web-api-js';
+
+import * as AuthSession from 'expo-auth-session';
+
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -14,6 +32,7 @@ const discovery = {
 };
 
 export default function SpotifyAuthButton() {
+
   const [config, setConfig] = React.useState({
     clientId: 'bc628be0b7a344a384e7acff4617a332',
     redirectUri: 'http://localhost:19006/',
@@ -21,7 +40,6 @@ export default function SpotifyAuthButton() {
     scopes: ['user-read-email', 'playlist-modify-public']
   });
 
-  const spotifyApi = new SpotifyWebAPI();
   /*
     Steps: 
       1. Get Auth Code
@@ -43,6 +61,8 @@ export default function SpotifyAuthButton() {
     }
 
     getConfig();
+    // getAuthCode();
+    // handleLogin();
   }, []);
 
   const [userData, setUserData] = React.useState({
@@ -75,7 +95,14 @@ export default function SpotifyAuthButton() {
         redirectUri: config.redirectUri,
         code: code
       },
-      discovery).then(token => { return token });
+      discovery).then(token => {
+        setUserData({ accessToken: token.accessToken });
+        setUserData({ refreshToken: token.refreshToken });
+        const expirationTime = new Date().getTime() + token.expiresIn * 1000;
+        setUserData({ expirationTime: expirationTime });
+        saveSpotifyToken(token.accessToken);
+        console.log(token.accessToken);
+      });
   }
 
   //Get a new token if it needs to be refreshed (Step 3)
@@ -96,53 +123,50 @@ export default function SpotifyAuthButton() {
     return new Date(expirationTime) < new Date();
   }
 
-  function getUserPlaylists() {
-    spotifyApi
-      .getUserPlaylists()
-      .then(
-        function (data) {
-          console.log('User playlists', data);
-        },
-        function (err) {
-          console.error(err);
-        }
-      );
+  let saveSpotifyToken = async (token) => {
+    try {
+      await AsyncStorage.setItem('SpotifyToken', token);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   React.useEffect(() => {
-    let code;
-    if (response?.type === 'success') {
-      code = response.params.code;
-      let userToken = getToken(code);
-      userToken.then(function (result) {
+  let code;
+  if (response?.type === 'success') {
+    code = response.params.code;
+    // let userToken = getToken(code);
+    // userToken.then(function (result) {
+    //   setUserData({ accessToken: result.accessToken });
+    //   setUserData({ refreshToken: result.refreshToken });
+    //   const expirationTime = new Date().getTime() + result.expiresIn * 1000;
+    //   setUserData({ expirationTime: expirationTime });
+    //   saveSpotifyToken(result.accessToken);
+    //   console.log(result.accessToken);
+    // });
+  }
+  (async () => {
+    let tokenExpired = await checkIfTokenExpired(userData.expirationTime);
+    if (tokenExpired) {
+      let newToken = getRefreshToken(code);
+      newToken.then(function (result) {
         setUserData({ accessToken: result.accessToken });
         setUserData({ refreshToken: result.refreshToken });
         const expirationTime = new Date().getTime() + result.expiresIn * 1000;
         setUserData({ expirationTime: expirationTime });
-        spotifyApi.setAccessToken(result.accessToken);
-        getUserPlaylists();
-      });
+      })
     }
-    (async () => {
-      let tokenExpired = await checkIfTokenExpired(userData.expirationTime);
-      if (tokenExpired) {
-        let newToken = getRefreshToken(code);
-        newToken.then(function (result) {
-          setUserData({ accessToken: result.accessToken });
-          setUserData({ refreshToken: result.refreshToken });
-          const expirationTime = new Date().getTime() + result.expiresIn * 1000;
-          setUserData({ expirationTime: expirationTime });
-        })
-      }
-    })();
+  })();
   }, [response]);
 
+
+
+  // This component doesn't need to render anything.
   return (
     <Button
       title="Login To Spotify"
       onPress={() => {
         getAuthCode();
       }}
-    />
-  );
+    />)
 }
