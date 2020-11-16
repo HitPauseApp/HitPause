@@ -1,3 +1,18 @@
+/*
+
+
+This file is likely to be depreciated. Please don't put this component anywhere! Thank you
+
+Signed, 
+Drew Weaver - 11/16/2020
+
+
+
+*/
+
+
+
+
 import * as React from 'react';
 import firebase from '../Firebase.js';
 import * as WebBrowser from 'expo-web-browser';

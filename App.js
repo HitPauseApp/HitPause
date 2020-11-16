@@ -11,7 +11,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import TabBarIcon from './components/TabBarIcon';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAuthRequest } from 'expo-auth-session';
+import * as AuthSession from 'expo-auth-session';
 
 import firebase from './Firebase';
 import { AuthContext } from './AuthContext.js';
@@ -33,7 +33,6 @@ import Account from './screens/AccountScreen';
 import JournalEntry from './screens/JournalEntry';
 
 import { AsyncStorage } from 'react-native';
-import SpotifyAuthButton from './spotify/SpotifyAuthButton';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -57,9 +56,9 @@ export default function App(props) {
   const [config, setConfig] = React.useState({
     clientId: 'bc628be0b7a344a384e7acff4617a332',
     redirectUri: 'http://localhost:19006/',
-    clientSecret: null,
     scopes: ['user-read-email', 'playlist-modify-public']
   });
+
 
   function JournalStackScreen(navigation, route) {
 
@@ -103,31 +102,29 @@ export default function App(props) {
     )
   }
 
-  const [request, response, getAuthCode] = useAuthRequest(
-    {
-      clientId: config.clientId,
-      scopes: config.scopes,
-      // In order to follow the "Authorization Code Flow" to fetch token after authorizationEndpoint
-      // this must be set to false
-      usePKCE: false,
-      redirectUri: config.redirectUri,
-    },
-    discovery
-  );
+  let handleSpotifyLogin = async () => {
+    // let redirectUrl = AuthSession.getRedirectUrl();
+    let results = await AuthSession.startAsync({
+      authUrl:
+      `https://accounts.spotify.com/authorize?client_id=${config.clientId}&redirect_uri=${config.redirectUri}&scope=user-read-email&response_type=token`,
+      returnUrl: config.redirectUri
+    });
+    //return the auth code
+    // getToken(results.params.access_token);
+    // console.log(results);
+    saveSpotifyToken(results.params.access_token);
+  };
+
+  let saveSpotifyToken = async (token) => {
+    try {
+      await AsyncStorage.setItem('SpotifyToken', token);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
-    async function getConfig() {
-      firebase.database().ref('hitpause/integrations/spotify/cs').once('value').then(s => {
-        setConfig({
-          clientId: 'bc628be0b7a344a384e7acff4617a332',
-          redirectUri: 'http://localhost:19006/',
-          clientSecret: s.val(), //THIS NEEDS TO BE MOVED TO A DATABASE CONNECTION!
-          scopes: ['user-read-email', 'playlist-modify-public']
-        });
-      });
-    }
-    getConfig();
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
@@ -170,7 +167,8 @@ export default function App(props) {
         // if (authUser.newUser) {
         //   setAuthNavState('InitialAssessment');
         // }
-        getAuthCode();
+        handleSpotifyLogin();
+        console.log(config.clientSecret);
         setHitpause(await getAppData());
         setIsLoading(false);
       } else {
@@ -178,7 +176,6 @@ export default function App(props) {
         setIsLoading(false);
       }
     });
-
     
     firebase.database().ref('.info/connected').on('value', s => {
       if (s.val() === true) {
@@ -192,6 +189,7 @@ export default function App(props) {
       }
     });
   }, []);
+
 
   async function updateAuthContext(uid, useFirebase) {
     let userData = {};
