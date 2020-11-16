@@ -3,8 +3,6 @@ import { View, StyleSheet, Text, Image, Button, AsyncStorage } from 'react-nativ
 import firebase from '../Firebase.js';
 import { AuthContext } from '../AuthContext.js';
 
-import SpotifyPlaylist from '../components/Spotify/SpotifyPlaylist';
-
 
 import AppIcons from '../components/AppIcons';
 import FillButton from '../components/buttons/FillButton';
@@ -44,7 +42,7 @@ export default function Account(props) {
         <AppIcons name="fontawesome5:spotify" size={30} color="white" />
         {/* This is bad data, only using as placeholder */}
         {/* <Text style={styles.text}>{user ? 'Connected' : 'Not Connected'}</Text> */}
-        {/* <SpotifyAuthButton></SpotifyAuthButton> */}
+        <SpotifyAuthButton></SpotifyAuthButton>
       </View>
 
       <View style={styles.separator}></View>
@@ -59,7 +57,6 @@ export default function Account(props) {
         onPress={() => handleLogout()}
       >Sign Out</Text>
       </View>
-      <SpotifyPlaylist></SpotifyPlaylist>
       <Text
         style={styles.deleteData}
         onPress={() => {

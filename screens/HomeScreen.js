@@ -9,8 +9,6 @@ import albumImage from '../assets/images/album-placeholder.png';
 import { RFValue } from "react-native-responsive-fontsize";
 import CalendarStrip from "react-native-calendar-strip";
 
-import SpotifyAuthButton from '../spotify/SpotifyAuthButton';
-
 
 export default function HomeScreen(props) {
   const user = React.useContext(AuthContext);
@@ -97,7 +95,6 @@ export default function HomeScreen(props) {
           
         </Modal>
       </Portal>  
-      {/* <SpotifyAuthButton></SpotifyAuthButton> */}
     </View>
   );
 }
