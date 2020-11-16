@@ -60,7 +60,13 @@ export default function HomeScreen(props) {
       <View style={styles.dailyTrackerContainer}>
         <Text style={styles.dailyTrackerText}>Week of November 8th</Text>
         <View style={styles.weekView}>
-
+          <Text>Test</Text>
+          <Text>Test</Text>
+          <Text>Test</Text>
+          <Text>Test</Text>
+          <Text>Test</Text>
+          <Text>Test</Text>
+          <Text>Test</Text>
         </View>
       </View>
       <Text style={styles.text2}>Need to adjust your assessment?</Text>
