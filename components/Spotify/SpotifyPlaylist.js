@@ -1,23 +1,27 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, AsyncStorage, Button } from 'react-native';
+import { StyleSheet, View, Text, AsyncStorage} from 'react-native';
 
 import SpotifyWebAPI from 'spotify-web-api-js';
-
 export default function SpotifyPlaylist(){
+
+  const [playlistData, setPlaylistData] = React.useState('Awaiting Authorization');
 
   const spotifyApi = new SpotifyWebAPI();
 
   let getAccessToken = async () => {
     AsyncStorage.getItem('SpotifyToken', (err, result) => {
       // console.log(result);
-      spotifyApi.setAccessToken(result);
-      getPlaylist();
+      if(result){
+        spotifyApi.setAccessToken(result);
+        getPlaylist();
+      }
     });
   }
 
   function getPlaylist() {
     spotifyApi.getPlaylist('37i9dQZF1DX3rxVfibe1L0').then(
       function (data) {
+        setPlaylistData(data.description);
         console.log('Albums information', data);
       },
       function (err) {
@@ -27,14 +31,13 @@ export default function SpotifyPlaylist(){
   }
 
   React.useEffect(() => {
-    // getAccessToken();
-    // getPlaylist();
+    getAccessToken();
   });
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Spotify Playlist</Text>
-      <Button onPress={getAccessToken} title="Load Playlist"></Button>
+      <Text style={styles.bodyText}>{playlistData}</Text>
     </View>
   );
 }
