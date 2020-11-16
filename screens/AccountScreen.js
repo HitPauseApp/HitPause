@@ -3,6 +3,8 @@ import { View, StyleSheet, Text, Image, Button, AsyncStorage } from 'react-nativ
 import firebase from '../Firebase.js';
 import { AuthContext } from '../AuthContext.js';
 
+import SpotifyPlaylist from '../components/Spotify/SpotifyPlaylist';
+
 
 import AppIcons from '../components/AppIcons';
 import FillButton from '../components/buttons/FillButton';
@@ -57,6 +59,7 @@ export default function Account(props) {
         onPress={() => handleLogout()}
       >Sign Out</Text>
       </View>
+      <SpotifyPlaylist></SpotifyPlaylist>
       <Text
         style={styles.deleteData}
         onPress={() => {

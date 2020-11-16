@@ -2,7 +2,7 @@ import * as React from 'react';
 import firebase from '../Firebase.js';
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, useAuthRequest, exchangeCodeAsync, refreshAsync } from 'expo-auth-session';
-import { Button } from 'react-native';
+import { Button, AsyncStorage } from 'react-native';
 import SpotifyWebAPI from 'spotify-web-api-js';
 
 WebBrowser.maybeCompleteAuthSession();
@@ -96,17 +96,12 @@ export default function SpotifyAuthButton() {
     return new Date(expirationTime) < new Date();
   }
 
-  function getUserPlaylists() {
-    spotifyApi
-      .getUserPlaylists()
-      .then(
-        function (data) {
-          console.log('User playlists', data);
-        },
-        function (err) {
-          console.error(err);
-        }
-      );
+  let saveSpotifyToken = async (token) => {
+    try {
+      await AsyncStorage.setItem('SpotifyToken', token);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   React.useEffect(() => {
@@ -119,8 +114,7 @@ export default function SpotifyAuthButton() {
         setUserData({ refreshToken: result.refreshToken });
         const expirationTime = new Date().getTime() + result.expiresIn * 1000;
         setUserData({ expirationTime: expirationTime });
-        spotifyApi.setAccessToken(result.accessToken);
-        getUserPlaylists();
+        saveSpotifyToken(result.accessToken);
       });
     }
     (async () => {
