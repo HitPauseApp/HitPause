@@ -9,9 +9,9 @@ export default class SuggestionSwitcher extends React.Component {
 
   /*
     TODO
-    - Change from description to id of suggestion (001, 002 etc)
-    - Make buttons integrated and open in Spotify App (big big undetaking)
-    - Add in other suggestion things
+    [ ]Change from description to id of suggestion (001, 002 etc)
+    [ ] Make buttons integrated and open in Spotify App (big big undetaking)
+    [ ] Add in other suggestion things
   */
   render() {
     let suggestionComponent;

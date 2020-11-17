@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, AsyncStorage} from 'react-native';
+import { StyleSheet, View, Text, AsyncStorage, Image } from 'react-native';
 
 import SpotifyWebAPI from 'spotify-web-api-js';
-export default function SpotifyPlaylist(){
+
+export default function SpotifyPlaylist() {
 
   const [playlistData, setPlaylistData] = React.useState('Awaiting Authorization');
 
@@ -11,18 +12,21 @@ export default function SpotifyPlaylist(){
   let getAccessToken = async () => {
     AsyncStorage.getItem('SpotifyToken', (err, result) => {
       // console.log(result);
-      if(result){
+      if (result) {
         spotifyApi.setAccessToken(result);
-        getPlaylist();
       }
     });
   }
 
-  function getPlaylist() {
+  let getPlaylist = () => {
     spotifyApi.getPlaylist('37i9dQZF1DX3rxVfibe1L0').then(
       function (data) {
-        setPlaylistData(data.description);
-        console.log('Albums information', data);
+        setPlaylistData({
+          title: data.name,
+          author: data.owner.display_name,
+          image: data.images[0].url
+        });
+        // console.log('Albums information', data);
       },
       function (err) {
         console.error(err);
@@ -32,12 +36,23 @@ export default function SpotifyPlaylist(){
 
   React.useEffect(() => {
     getAccessToken();
-  });
+    getPlaylist();
+  }, [playlistData.title]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Spotify Playlist</Text>
-      <Text style={styles.bodyText}>{playlistData}</Text>
+      <View>
+        <Image
+        style={styles.spotifyImage}
+        source={{
+          uri: `${playlistData.image}`,
+        }}
+      />
+      </View>
+      <View style={styles.textContainer}>
+        <Text style={styles.header}>{playlistData.title}</Text>
+        <Text style={styles.bodyText}>Created By: {playlistData.author}</Text>
+      </View>
     </View>
   );
 }
@@ -45,14 +60,15 @@ export default function SpotifyPlaylist(){
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#132090',
-    justifyContent: 'center',
-    alignContent: 'center',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
     width: '80%',
     alignSelf: 'center',
     borderRadius: 10,
     padding: 10,
     bottom: 10,
-    margin: 10
+    margin: 10,
+    flexDirection: "row"
   },
   header: {
     color: 'white',
@@ -66,4 +82,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
     textAlign: 'center',
   },
+  spotifyImage: {
+    width: 100,
+    height: 100,
+  },
+  textContainer: {
+    alignItems: "center"
+  }
 });

@@ -102,6 +102,7 @@ export default function App(props) {
     )
   }
 
+  //Sign in with Implicit Grant flow. NO USER DATA IS ACCESSIBLE HERE
   let handleSpotifyLogin = async () => {
     // let redirectUrl = AuthSession.getRedirectUrl();
     let results = await AuthSession.startAsync({
@@ -109,10 +110,11 @@ export default function App(props) {
       `https://accounts.spotify.com/authorize?client_id=${config.clientId}&redirect_uri=${config.redirectUri}&scope=user-read-email&response_type=token`,
       returnUrl: config.redirectUri
     });
-    //return the auth code
-    // getToken(results.params.access_token);
+    //return the access token
     // console.log(results);
-    saveSpotifyToken(results.params.access_token);
+    if(results.type === 'success'){
+      saveSpotifyToken(results.params.access_token);
+    }
   };
 
   let saveSpotifyToken = async (token) => {
@@ -168,7 +170,6 @@ export default function App(props) {
         //   setAuthNavState('InitialAssessment');
         // }
         handleSpotifyLogin();
-        console.log(config.clientSecret);
         setHitpause(await getAppData());
         setIsLoading(false);
       } else {
