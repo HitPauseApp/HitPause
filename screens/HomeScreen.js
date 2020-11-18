@@ -56,16 +56,15 @@ export default function HomeScreen(props) {
       </View>
 
       <View style={styles.dailyTrackerContainer}>
-        <Text style={styles.dailyTrackerText}>Week of November 8th</Text>
+        <Text style={styles.dailyTrackerText}>Current Streak</Text>
+        <Text style={styles.dailyTrackerText}>1</Text>
         <View style={styles.weekView}>
-          <Text>Test</Text>
-          <Text>Test</Text>
-          <Text>Test</Text>
-          <Text>Test</Text>
-          <Text>Test</Text>
-          <Text>Test</Text>
-          <Text>Test</Text>
+          <Text style={styles.dailyTrackerText2}>Best Streak: 20</Text>
+          <Text style={styles.dailyTrackerText2}>Perfect Weeks: 2</Text>
         </View>
+       
+        
+        
       </View>
       <Text style={styles.text2}>Need to adjust your assessment?</Text>
       <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
@@ -94,6 +93,7 @@ export default function HomeScreen(props) {
           </View>
           
         </Modal>
+
       </Portal>  
     </View>
   );
@@ -104,10 +104,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#00095e',
     flex: 1
   },
-  imageContainer: {
-    
-  },
-  
+
   header:{
     padding: 15,
     fontFamily: 'Poppins-Medium',
@@ -126,19 +123,47 @@ const styles = StyleSheet.create({
     width: '95%',
     backgroundColor: '#132090',
     padding: 10,
-    paddingLeft: 20
+    paddingLeft: 20,
+    paddingRight: 20,
+    
   },
 
   dailyTrackerText: {
     color: 'white',
     fontFamily: 'Poppins-Medium',
     fontSize: 20,
-    paddingRight: 10,
-    
+    textAlign: 'center',
+  },
+
+  dailyTrackerText2: {
+    color: 'white',
+    fontFamily: 'Poppins-Medium',
+    fontSize: 15,
+    textAlign: 'center',
+    marginTop: 80
+
+  },
+
+  weekDayText: {
+    color: 'white',
+    fontFamily: 'Poppins-Light',
+    fontSize: 15,
+    textAlign: 'center',
+    paddingTop: 10,
+  },
+
+  checkView: {
+    borderWidth: 2,
+    borderColor: '#FFFFFF',
+    borderRadius: 50,
+    overflow: 'hidden' ,
+    height: RFValue(100),
+    width: RFValue(50),
   },
 
   weekView: {
     flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   
   tourModal:{
