@@ -18,14 +18,11 @@ export default class QuizCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.handleNextQuestion = this.handleNextQuestion.bind(this);
-    this.handlePrevQuestion = this.handlePrevQuestion.bind(this);
     this.state = {
       quizIndex: 0,
       quizLength: Array.isArray(this.props.quiz.questions) ? this.props.quiz.questions.length : 0,
       quizData: [],
       quizFlags: [],
-      questionScore: '',
       nextDisabled: false,
       prevDisabled: true,   // Start on first question by default
       modalVisible: false
@@ -35,7 +32,6 @@ export default class QuizCard extends React.Component {
   // Updates data for quiz when a response is selected or changes
   updateQuizData = (data, flags) => {
     this.setState((state) => {
-      // TODO: Restrucutre to just use keys and not score
       let dataUpdate = [...state.quizData];
       let flagUpdate = [...state.quizFlags];
       dataUpdate[state.quizIndex] = data;
@@ -45,41 +41,30 @@ export default class QuizCard extends React.Component {
     console.log(data, flags);
   }
 
-  handleNextQuestion = () => {
-    // If not at end of quiz
-    if (this.state.quizIndex < this.state.quizLength - 1) {
-      let newIndex = this.state.quizIndex + 1;
-      this.setState({
-        quizIndex: newIndex,
-        // Always re-enable previous button when moving forward
-        prevDisabled: false
-      });
-      // If at end of quiz ('next' button will submit)
-    } else if (this.state.quizIndex == this.state.quizLength - 1) {
-      // Sanitize input data
-      for (const key in this.state.quizData) {
-        if (typeof this.state.quizData[key] === 'undefined') this.state.quizData[key] = '';
-      }
-
-      let outputFlags = this.tallyOutputFlags();
-      let topThree = this.getHighsAndLows(outputFlags, 3, 0)[0];
-      console.log('outputFlags:', outputFlags);
-      console.log('topThree:', topThree);
-
-      let suggestion = this.getRandomizedSuggestion(topThree);
-      console.log(suggestion);
-      this.setState({ outputSuggestion: this.context.suggestions[suggestion] });
-      this.setState({ modalVisible: true });
-
-      firebase.database()
-        .ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/${this.props.quizName}`)
-        .push({
-          suggestion: suggestion,
-          timestamp: Date.now(),
-          responses: this.state.quizData,
-          outputFlags: outputFlags
-        });
+  handleSubmission() {
+    // Sanitize input data
+    for (const key in this.state.quizData) {
+      if (typeof this.state.quizData[key] === 'undefined') this.state.quizData[key] = '';
     }
+
+    let outputFlags = this.tallyOutputFlags();
+    let topThree = this.getHighsAndLows(outputFlags, 3, 0)[0];
+    console.log('outputFlags:', outputFlags);
+    console.log('topThree:', topThree);
+
+    let suggestion = this.getRandomizedSuggestion(topThree);
+    console.log(suggestion);
+    this.setState({ outputSuggestion: this.context.suggestions[suggestion] });
+    this.setState({ modalVisible: true });
+
+    firebase.database()
+      .ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/${this.props.quizName}`)
+      .push({
+        suggestion: suggestion,
+        timestamp: Date.now(),
+        responses: this.state.quizData,
+        outputFlags: outputFlags
+      });
   }
 
   tallyOutputFlags() {
@@ -152,6 +137,15 @@ export default class QuizCard extends React.Component {
     return null;
   }
 
+  handleNextQuestion() {
+    let newIndex = this.state.quizIndex + 1;
+    this.setState({
+      quizIndex: newIndex,
+      // Always re-enable previous button when moving forward
+      prevDisabled: false
+    });
+  }
+
   handlePrevQuestion() {
     let newIndex = this.state.quizIndex - 1;
     this.setState({ quizIndex: newIndex });
@@ -219,18 +213,30 @@ export default class QuizCard extends React.Component {
         <View style={styles.controlButtons}>
           <TouchableOpacity
             style={styles.button}
-            onPress={this.handlePrevQuestion}
+            onPress={() => this.handlePrevQuestion()}
             disabled={this.state.prevDisabled}
           >
             <Text style={styles.buttonText}>Previous</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={this.handleNextQuestion}
-            disabled={this.state.nextDisabled}
-          >
-            <Text style={styles.buttonText}>{this.state.quizIndex == this.state.quizLength - 1 ? 'Submit' : 'Next'}</Text>
-          </TouchableOpacity>
+          {
+            this.state.quizIndex == this.state.quizLength - 1 ? (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => this.handleSubmission()}
+              disabled={this.state.nextDisabled}
+            >
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
+            ) : (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => this.handleNextQuestion()}
+              disabled={this.state.nextDisabled}
+            >
+              <Text style={styles.buttonText}>Next</Text>
+            </TouchableOpacity>
+            )
+          }
         </View>
         <Portal>
           <Modal visible={this.state.modalVisible} dismissible={false} contentContainerStyle={styles.resultsModal}>
