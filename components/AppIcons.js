@@ -38,5 +38,6 @@ export default function AppIcons(props) {
     );
   } else {
     console.error('Attempted to use unspecified icon type:', icon[0]);
+    return null;
   }
 }
