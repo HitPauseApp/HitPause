@@ -14,79 +14,74 @@ import { AppContext } from '../../AppContext';
 import SuggestionSwitcher from './SuggestionSwitcher';
 import AppIcons from '../AppIcons';
 
-export default class QuizCard extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      quizIndex: 0,
-      quizLength: Array.isArray(this.props.quiz.questions) ? this.props.quiz.questions.length : 0,
-      quizData: [],
-      quizFlags: [],
-      nextDisabled: false,
-      prevDisabled: true,   // Start on first question by default
-      modalVisible: false
-    }
-  }
+export default function QuizCard(props) {
+  const hitpause = React.useContext(AppContext);
+  const [quizIndex, setQuizIndex] = React.useState(0);
+  const [quizLength, setQuizLength] = React.useState(Array.isArray(props.quiz.questions) ? props.quiz.questions.length : 0);
+  const [quizData, setQuizData] = React.useState([]);
+  const [quizFlags, setQuizFlags] = React.useState([]);
+  const [nextDisabled, setNextDisabled] = React.useState(false);
+  const [prevDisabled, setPrevDisabled] = React.useState(true);
+  const [modalVisible, setModalVisible] = React.useState(false);
+  const [outputSuggestions, setOutputSuggestions] = React.useState(null);
 
   // Updates data for quiz when a response is selected or changes
-  updateQuizData = (data, flags) => {
-    this.setState((state) => {
-      let dataUpdate = [...state.quizData];
-      let flagUpdate = [...state.quizFlags];
-      dataUpdate[state.quizIndex] = data;
-      flagUpdate[state.quizIndex] = flags;
-      return { quizData: dataUpdate, quizFlags: flagUpdate };
-    });
+  function updateQuizData(data, flags) {
+    let dataUpdate = [...quizData];
+    let flagUpdate = [...quizFlags];
+    dataUpdate[quizIndex] = data;
+    flagUpdate[quizIndex] = flags;
+    setQuizData(dataUpdate);
+    setQuizFlags(flagUpdate);
     console.log(data, flags);
   }
 
-  handleSubmission() {
+  function handleSubmission() {
     // Sanitize input data
-    for (const key in this.state.quizData) {
-      if (typeof this.state.quizData[key] === 'undefined') this.state.quizData[key] = '';
+    for (const key in quizData) {
+      if (typeof quizData[key] === 'undefined') quizData[key] = '';
     }
 
-    let outputFlags = this.tallyOutputFlags();
-    let topThree = this.getHighsAndLows(outputFlags, 3, 0)[0];
+    let outputFlags = tallyOutputFlags();
+    let topThree = getHighsAndLows(outputFlags, 3, 0)[0];
     console.log('outputFlags:', outputFlags);
     console.log('topThree:', topThree);
 
-    let suggestion = this.getRandomizedSuggestion(topThree);
+    let suggestion = getRandomizedSuggestion(topThree);
     console.log(suggestion);
-    this.setState({ outputSuggestion: this.context.suggestions[suggestion] });
-    this.setState({ modalVisible: true });
+    setOutputSuggestions(hitpause.suggestions[suggestion]);
+    setModalVisible(true);
 
     firebase.database()
-      .ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/${this.props.quizName}`)
+      .ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/${props.quizName}`)
       .push({
         suggestion: suggestion,
         timestamp: Date.now(),
-        responses: this.state.quizData,
+        responses: quizData,
         outputFlags: outputFlags
       });
   }
 
-  tallyOutputFlags() {
+  function tallyOutputFlags() {
     let flags = {};
     let modifiers = [];
     // Get flag changes
-    for (const key in this.state.quizFlags) {
-      for (const flagKey in this.state.quizFlags[key]) {
+    for (const key in quizFlags) {
+      for (const flagKey in quizFlags[key]) {
         // Flag has a special behavior
         if (flagKey.includes('_highest_')) {
           let count = parseInt(flagKey.replace('_highest_', ''));
-          modifiers.push({ type: 'high', count: count, amount: parseFloat(this.state.quizFlags[key][flagKey]) });
+          modifiers.push({ type: 'high', count: count, amount: parseFloat(quizFlags[key][flagKey]) });
         } else if (flagKey.includes('_lowest_')) {
           let count = parseInt(flagKey.replace('_lowest_', ''));
-          modifiers.push({ type: 'low', count: count, amount: parseFloat(this.state.quizFlags[key][flagKey]) });
+          modifiers.push({ type: 'low', count: count, amount: parseFloat(quizFlags[key][flagKey]) });
 
           // Flags of this type already exist, will sum
         } else if (Object.keys(flags).includes(flagKey)) {
-          flags[flagKey] = parseFloat(flags[flagKey]) + parseFloat(this.state.quizFlags[key][flagKey]);
+          flags[flagKey] = parseFloat(flags[flagKey]) + parseFloat(quizFlags[key][flagKey]);
           // Otherwise, add normally
         } else {
-          flags[flagKey] = parseFloat(this.state.quizFlags[key][flagKey]);
+          flags[flagKey] = parseFloat(quizFlags[key][flagKey]);
         }
       }
     }
@@ -96,9 +91,9 @@ export default class QuizCard extends React.Component {
       let modifiedFlags = {};
       // Depending on type of case, grab relevant flags
       if (modifiers[key].type == 'high') {
-        modifiedFlags = this.getHighsAndLows(flags, modifiers[key].count, 0)[0];
+        modifiedFlags = getHighsAndLows(flags, modifiers[key].count, 0)[0];
       } else if (modifiers[key].type == 'low') {
-        modifiedFlags = this.getHighsAndLows(flags, 0, modifiers[key].count)[1];
+        modifiedFlags = getHighsAndLows(flags, 0, modifiers[key].count)[1];
       }
       // Apply changes to those flags
       for (const flagKey in modifiedFlags) {
@@ -111,7 +106,7 @@ export default class QuizCard extends React.Component {
 
   // TODO: Incomplete... will probably want to move this into summary screen
   // TODO: Ties are unfair, as lower keys will always be chosen... need a way to randomly select when there are ties
-  getHighsAndLows(flags, numHighs, numLows) {
+  function getHighsAndLows(flags, numHighs, numLows) {
     let highValues = [], lowValues = [];
     let sortedFlags = Object.entries(flags).sort((a, b) => (a[1] < b[1]));
     if (numHighs > 0) {
@@ -123,7 +118,7 @@ export default class QuizCard extends React.Component {
     return [Object.fromEntries(highValues), Object.fromEntries(lowValues)];
   }
 
-  getRandomizedSuggestion(flags) {
+  function getRandomizedSuggestion(flags) {
     let n = 0;
     for (const key in flags) {
       let squaredDoubleFlag = (flags[key] * 2) ** 2;
@@ -137,133 +132,118 @@ export default class QuizCard extends React.Component {
     return null;
   }
 
-  handleNextQuestion() {
-    let newIndex = this.state.quizIndex + 1;
-    this.setState({
-      quizIndex: newIndex,
-      // Always re-enable previous button when moving forward
-      prevDisabled: false
-    });
+  function handleNextQuestion() {
+    setQuizIndex(quizIndex + 1);
+    // Always re-enable previous button when moving forward
+    setPrevDisabled(false);
   }
 
-  handlePrevQuestion() {
-    let newIndex = this.state.quizIndex - 1;
-    this.setState({ quizIndex: newIndex });
-    if (newIndex == 0) this.setState({ prevDisabled: true })
+  function handlePrevQuestion() {
+    let newIndex = quizIndex - 1;
+    setQuizIndex(newIndex);
+    if (newIndex == 0) setPrevDisabled(true);
   }
 
-  handleButtonDisable() {
-    if (buttonDisabled == true) {
-      this.setState({ buttonDisabled: false })
-    } else if (buttonDisabled == false) {
-      this.setState({ buttonDisabled: false })
-    }
-  }
-
-  render() {
+  function getResponseComponent() {
     let responseComponent;
-    let buttonDisabled = true;
-    if (this.props.quiz.questions[this.state.quizIndex].type == "checkbox") {
+    if (props.quiz.questions[quizIndex].type == "checkbox") {
       responseComponent =
         <Response_Checkbox
-          responses={this.props.quiz.questions[this.state.quizIndex].responses}
-          onChange={this.updateQuizData}
-          value={this.state.quizData[this.state.quizIndex]}
+          responses={props.quiz.questions[quizIndex].responses}
+          onChange={updateQuizData}
+          value={quizData[quizIndex]}
         ></Response_Checkbox>
     }
-    else if (this.props.quiz.questions[this.state.quizIndex].type == "radio") {
+    else if (props.quiz.questions[quizIndex].type == "radio") {
       responseComponent =
         <Response_Radio
-          responses={this.props.quiz.questions[this.state.quizIndex].responses}
-          onChange={this.updateQuizData}
-          value={this.state.quizData[this.state.quizIndex]}
+          responses={props.quiz.questions[quizIndex].responses}
+          onChange={updateQuizData}
+          value={quizData[quizIndex]}
         ></Response_Radio>
     }
-    else if (this.props.quiz.questions[this.state.quizIndex].type == "scale") {
+    else if (props.quiz.questions[quizIndex].type == "scale") {
       responseComponent =
         <Response_Scale
-          flagChanges={this.props.quiz.questions[this.state.quizIndex].flagChanges}
-          scaleLow={this.props.quiz.questions[this.state.quizIndex].scaleLow}
-          scaleHigh={this.props.quiz.questions[this.state.quizIndex].scaleHigh}
-          onChange={this.updateQuizData}
-          value={this.state.quizData[this.state.quizIndex]}
+          flagChanges={props.quiz.questions[quizIndex].flagChanges}
+          scaleLow={props.quiz.questions[quizIndex].scaleLow}
+          scaleHigh={props.quiz.questions[quizIndex].scaleHigh}
+          onChange={updateQuizData}
+          value={quizData[quizIndex]}
         ></Response_Scale>
-      buttonDisabled = false;
     }
-    else if (this.props.quiz.questions[this.state.quizIndex].type == "text") {
+    else if (props.quiz.questions[quizIndex].type == "text") {
       responseComponent = <Response_Text></Response_Text>
-      buttonDisabled = false;
     }
-    else if (this.props.quiz.questions[this.state.quizIndex].type == "textarea") {
+    else if (props.quiz.questions[quizIndex].type == "textarea") {
       responseComponent = <Response_TextArea></Response_TextArea>
-      buttonDisabled = false;
     }
-    return (
-      <View style={styles.container}>
+    return responseComponent;
+  }
 
-        <View style={styles.quizQuestion}>
-          <Text style={styles.questionNumber}>{this.props.quiz.questions[this.state.quizIndex].order}</Text>
-          <Text style={styles.questionText}>{this.props.quiz.questions[this.state.quizIndex].text}</Text>
-        </View>
+  return (
+    <View style={styles.container}>
 
-        <ScrollView style={{flexGrow: 1}}>
-          {responseComponent}
-        </ScrollView>
+      <View style={styles.quizQuestion}>
+        <Text style={styles.questionNumber}>{props.quiz.questions[quizIndex].order}</Text>
+        <Text style={styles.questionText}>{props.quiz.questions[quizIndex].text}</Text>
+      </View>
 
-        <View style={styles.controlButtons}>
+      <ScrollView style={{flexGrow: 1}}>
+        {getResponseComponent(quizIndex)}
+      </ScrollView>
+
+      <View style={styles.controlButtons}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => handlePrevQuestion()}
+          disabled={prevDisabled}
+        >
+          <Text style={styles.buttonText}>Previous</Text>
+        </TouchableOpacity>
+        {
+          quizIndex == quizLength - 1 ? (
           <TouchableOpacity
             style={styles.button}
-            onPress={() => this.handlePrevQuestion()}
-            disabled={this.state.prevDisabled}
+            onPress={() => handleSubmission()}
+            disabled={nextDisabled}
           >
-            <Text style={styles.buttonText}>Previous</Text>
+            <Text style={styles.buttonText}>Submit</Text>
           </TouchableOpacity>
-          {
-            this.state.quizIndex == this.state.quizLength - 1 ? (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.handleSubmission()}
-              disabled={this.state.nextDisabled}
-            >
-              <Text style={styles.buttonText}>Submit</Text>
-            </TouchableOpacity>
-            ) : (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.handleNextQuestion()}
-              disabled={this.state.nextDisabled}
-            >
-              <Text style={styles.buttonText}>Next</Text>
-            </TouchableOpacity>
-            )
-          }
-        </View>
-        <Portal>
-          <Modal visible={this.state.modalVisible} dismissible={false} contentContainerStyle={styles.resultsModal}>
-            <Text style={styles.modalHeader}>Results</Text>
-            <Text style={styles.modalText}>{!!this.state.outputSuggestion ? this.state.outputSuggestion.text : ""}</Text>
-            <Text style={{ textAlign: 'center' }}>
-              {!!this.state.outputSuggestion && <AppIcons name={this.state.outputSuggestion.icon} />}
-            </Text>
-            <Text style={styles.modalText}>{!!this.state.outputSuggestion ? this.state.outputSuggestion.body : ""}</Text>
-            <SuggestionSwitcher suggestionId={this.state.outputSuggestion}></SuggestionSwitcher>
-            {/* <SpotifySuggestions></SpotifySuggestions> */}
-            <View style={styles.modalRow}>
-              <TouchableOpacity style={styles.modalButton} onPress={() => {
-                this.setState({ modalVisible: false });
-                this.props.navigation.navigate('Home');
-              }}>
-                <Text style={styles.modalText}>Close</Text>
-              </TouchableOpacity>
-            </View>
-          </Modal>
-        </Portal>
+          ) : (
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleNextQuestion()}
+            disabled={nextDisabled}
+          >
+            <Text style={styles.buttonText}>Next</Text>
+          </TouchableOpacity>
+          )
+        }
       </View>
-    );
-  }
+      <Portal>
+        <Modal visible={modalVisible} dismissible={false} contentContainerStyle={styles.resultsModal}>
+          <Text style={styles.modalHeader}>Results</Text>
+          <Text style={styles.modalText}>{!!outputSuggestions ? outputSuggestions.text : ""}</Text>
+          <Text style={{ textAlign: 'center' }}>
+            {!!outputSuggestions && <AppIcons name={outputSuggestions.icon} />}
+          </Text>
+          <Text style={styles.modalText}>{!!outputSuggestions ? outputSuggestions.body : ""}</Text>
+          <SuggestionSwitcher suggestionId={outputSuggestions}></SuggestionSwitcher>
+          {/* <SpotifySuggestions></SpotifySuggestions> */}
+          <View style={styles.modalRow}>
+            <TouchableOpacity style={styles.modalButton} onPress={() => {
+              setModalVisible(false);
+              props.navigation.navigate('Home');
+            }}>
+              <Text style={styles.modalText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      </Portal>
+    </View>
+  );
 }
-
-QuizCard.contextType = AppContext;
 
 const styles = StyleSheet.create({
   container: {
