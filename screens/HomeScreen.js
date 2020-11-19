@@ -5,9 +5,8 @@ import { AuthContext } from '../AuthContext.js';
 import { Portal, Modal } from 'react-native-paper';
 import TipOTD from '../components/TipOTD';
 import WelcomeBanner from '../components/WelcomeBanner';
-import albumImage from '../assets/images/album-placeholder.png';
 import { RFValue } from "react-native-responsive-fontsize";
-import CalendarStrip from "react-native-calendar-strip";
+
 
 
 export default function HomeScreen(props) {
@@ -32,7 +31,6 @@ export default function HomeScreen(props) {
 
   const hideModal = () => setVisible(false);
 
-  const date = new Date().toDateString();
 
 
 
@@ -56,14 +54,11 @@ export default function HomeScreen(props) {
       </View>
 
       <View style={styles.dailyTrackerContainer}>
-        <Text style={styles.dailyTrackerText}>Current Streak</Text>
-        <Text style={styles.dailyTrackerText}>1</Text>
-        <View style={styles.weekView}>
-          <Text style={styles.dailyTrackerText2}>Best Streak: 20</Text>
-          <Text style={styles.dailyTrackerText2}>Perfect Weeks: 2</Text>
+        <View style = {styles.weekView}>
+          <Text style={styles.dailyTrackerText}>Streak: 1</Text>
+          <Text style={styles.dailyTrackerText}>|</Text>
+          <Text style={styles.dailyTrackerText}>Weeks: 1</Text>
         </View>
-       
-        
         
       </View>
       <Text style={styles.text2}>Need to adjust your assessment?</Text>
@@ -118,8 +113,9 @@ const styles = StyleSheet.create({
   dailyTrackerContainer: {
     marginTop: 20,
     alignSelf: 'center',
+    justifyContent: 'center',
     borderRadius: 30,
-    height: RFValue(200),
+    height: RFValue(70),
     width: '95%',
     backgroundColor: '#132090',
     padding: 10,
@@ -135,35 +131,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  dailyTrackerText2: {
-    color: 'white',
-    fontFamily: 'Poppins-Medium',
-    fontSize: 15,
-    textAlign: 'center',
-    marginTop: 80
-
-  },
-
-  weekDayText: {
-    color: 'white',
-    fontFamily: 'Poppins-Light',
-    fontSize: 15,
-    textAlign: 'center',
-    paddingTop: 10,
-  },
-
-  checkView: {
-    borderWidth: 2,
-    borderColor: '#FFFFFF',
-    borderRadius: 50,
-    overflow: 'hidden' ,
-    height: RFValue(100),
-    width: RFValue(50),
-  },
-
   weekView: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-evenly'
   },
   
   tourModal:{

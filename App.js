@@ -133,6 +133,7 @@ export default function App(props) {
         // if (authUser.newUser) {
         //   setAuthNavState('InitialAssessment');
         // }
+        
         setHitpause(await getAppData());
         setIsLoading(false);
       } else {
