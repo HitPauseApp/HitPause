@@ -72,13 +72,6 @@ export default function HomeScreen(props) {
         <Text style={styles.text}>Retake Assessment</Text>
       </TouchableOpacity>
       <TipOTD TOTD={TOTD}></TipOTD>
-  
-      
-      
-      
-      
-    
-      
       <Portal>
         <Modal visible={visible} dismissable={false} contentContainerStyle={styles.tourModal}>
           <Text style={styles.modalHeader}>{screenHead[count]}</Text>
