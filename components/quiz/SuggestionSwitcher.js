@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import SpotifyButton from './SpotifyForQuiz/SpotifyButton';
+import SpotifyButton from '../Spotify/SpotifyButton';
 export default class SuggestionSwitcher extends React.Component {
   constructor(props) {
     super(props);

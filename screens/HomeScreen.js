@@ -9,8 +9,6 @@ import albumImage from '../assets/images/album-placeholder.png';
 import { RFValue } from "react-native-responsive-fontsize";
 import CalendarStrip from "react-native-calendar-strip";
 
-import SpotifyAuthButton from '../spotify/SpotifyAuthButton';
-
 
 export default function HomeScreen(props) {
   const user = React.useContext(AuthContext);
@@ -74,13 +72,6 @@ export default function HomeScreen(props) {
         <Text style={styles.text}>Retake Assessment</Text>
       </TouchableOpacity>
       <TipOTD TOTD={TOTD}></TipOTD>
-  
-      
-      
-      
-      
-    
-      
       <Portal>
         <Modal visible={visible} dismissable={false} contentContainerStyle={styles.tourModal}>
           <Text style={styles.modalHeader}>{screenHead[count]}</Text>
@@ -97,7 +88,6 @@ export default function HomeScreen(props) {
           
         </Modal>
       </Portal>  
-      {/* <SpotifyAuthButton></SpotifyAuthButton> */}
     </View>
   );
 }

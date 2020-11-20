@@ -1,11 +1,22 @@
+/*
+
+ Contains the Spotify Playlist display component. 
+
+  Last edited 11/19 by Drew Weaver
+*/
+
 import * as React from 'react';
 import { StyleSheet, View, Text, AsyncStorage, Image } from 'react-native';
 
 import SpotifyWebAPI from 'spotify-web-api-js';
 
-export default function SpotifyPlaylist() {
+export default function SpotifyPlaylist(props) {
 
-  const [playlistData, setPlaylistData] = React.useState('Awaiting Authorization');
+  const [playlistData, setPlaylistData] = React.useState({
+    title: 'Awaiting Authorization',
+    auther: 'Awaiting Authorization',
+    image: null
+  });
 
   const spotifyApi = new SpotifyWebAPI();
 
@@ -18,8 +29,14 @@ export default function SpotifyPlaylist() {
     });
   }
 
+  let playlistURI = () =>{
+    let url = props.href;
+    let uri = url.split("/").pop();
+    return uri;
+  }
+
   let getPlaylist = () => {
-    spotifyApi.getPlaylist('37i9dQZF1DX3rxVfibe1L0').then(
+    spotifyApi.getPlaylist(playlistURI()).then(
       function (data) {
         setPlaylistData({
           title: data.name,
