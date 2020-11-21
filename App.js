@@ -89,7 +89,30 @@ export default function App(props) {
       </homeStack.Navigator>
     )
   }
-  
+
+  //Sign in with Implicit Grant flow. NO USER DATA IS ACCESSIBLE HERE
+  let handleSpotifyLogin = async () => {
+    // let redirectUrl = AuthSession.getRedirectUrl();
+    let results = await AuthSession.startAsync({
+      authUrl:
+      `https://accounts.spotify.com/authorize?client_id=${config.clientId}&redirect_uri=${config.redirectUri}&scope=user-read-email&response_type=token`,
+      returnUrl: config.redirectUri
+    });
+    //return the access token
+    // console.log(results);
+    if(results.type === 'success'){
+      saveSpotifyToken(results.params.access_token);
+    }
+  };
+
+  let saveSpotifyToken = async (token) => {
+    try {
+      await AsyncStorage.setItem('SpotifyToken', token);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
     async function loadResourcesAndDataAsync() {
@@ -133,6 +156,7 @@ export default function App(props) {
         // if (authUser.newUser) {
         //   setAuthNavState('InitialAssessment');
         // }
+        handleSpotifyLogin();
         setHitpause(await getAppData());
         setIsLoading(false);
       } else {
