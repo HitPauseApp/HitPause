@@ -11,6 +11,8 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import TabBarIcon from './components/TabBarIcon';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as AuthSession from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
 
 import firebase from './Firebase';
 import { AuthContext } from './AuthContext.js';
@@ -47,6 +49,15 @@ export default function App(props) {
   // TODO: There's probably a better way to pass these without using state...?
   const [authUser, setAuthUser] = React.useState(null);
   const [hitpause, setHitpause] = React.useState(null);
+  const [config, setConfig] = React.useState({
+    clientId: 'bc628be0b7a344a384e7acff4617a332',
+    redirectUri: 'http://localhost:19006/',
+    scopes: ['user-read-email', 'playlist-modify-public']
+  });
+
+  if (Platform.OS === 'web') {
+    WebBrowser.maybeCompleteAuthSession();
+  }
 
   function JournalStackScreen(navigation, route) {
 
@@ -99,9 +110,15 @@ export default function App(props) {
       returnUrl: config.redirectUri
     });
     //return the access token
-    // console.log(results);
-    if(results.type === 'success'){
+    console.log(results);
+    if(results.type === 'success' && !!results.params.access_token){
       saveSpotifyToken(results.params.access_token);
+    }else if (results.type === 'dismiss'){
+      console.error("Spotify Signin & Token Generation Failed (App.js -> handleSpotifyLogin). Results were 'dismissed' (signin window closed)");
+    }else if (results.type === 'error'){
+      console.error("Spotify Signin & Token Generation Failed (App.js -> handleSpotifyLogin). Results returned an error (probably a 404/401 to Spotify)")
+    }else{
+      console.error("Unkown Failure... Spotify Signin & Token Generation Failed (App.js -> handleSpotifyLogin)");
     }
   };
 
