@@ -13,6 +13,7 @@ import { ScrollView } from 'react-native';
 import { AppContext } from '../../AppContext';
 import SuggestionSwitcher from './SuggestionSwitcher';
 import AppIcons from '../AppIcons';
+import Swiper from 'react-native-swiper';
 
 export default class QuizCard extends React.Component {
 
@@ -66,9 +67,11 @@ export default class QuizCard extends React.Component {
       console.log('outputFlags:', outputFlags);
       console.log('topThree:', topThree);
 
-      let suggestion = this.getRandomizedSuggestion(topThree);
+      let suggestion = this.randomizeSuggestions(topThree);
       console.log(suggestion);
-      this.setState({ outputSuggestion: this.context.suggestions[suggestion] });
+      this.setState({ outputSuggestion1: this.context.suggestions[suggestion[0]] });
+      this.setState({ outputSuggestion2: this.context.suggestions[suggestion[1]] });
+      this.setState({ outputSuggestion3: this.context.suggestions[suggestion[2]] });
       this.setState({ modalVisible: true });
 
       firebase.database()
@@ -138,7 +141,21 @@ export default class QuizCard extends React.Component {
     return [Object.fromEntries(highValues), Object.fromEntries(lowValues)];
   }
 
-  getRandomizedSuggestion(flags) {
+  // getRandomizedSuggestion(flags) {
+  //   let n = 0;
+  //   for (const key in flags) {
+  //     let squaredDoubleFlag = (flags[key] * 2) ** 2;
+  //     flags[key] = squaredDoubleFlag + n;
+  //     n = squaredDoubleFlag + n;
+  //   }
+  //   let randomInt = Math.floor(Math.random() * n);
+  //   for (const key in flags) {
+  //     if (flags[key] > randomInt) return key;
+  //   }
+  //   return null;
+  // }
+
+  randomizeSuggestions(flags) {
     let n = 0;
     for (const key in flags) {
       let squaredDoubleFlag = (flags[key] * 2) ** 2;
@@ -147,7 +164,12 @@ export default class QuizCard extends React.Component {
     }
     let randomInt = Math.floor(Math.random() * n);
     for (const key in flags) {
-      if (flags[key] > randomInt) return key;
+      if (flags[key] > randomInt) {
+        delete flags[key];
+        // TODO: Verify this actually works correctly
+        let remainingKeys = Object.keys(flags).length > 0 ? this.randomizeSuggestions(flags) : [];
+        return [key, ...remainingKeys];
+      };
     }
     return null;
   }
@@ -233,14 +255,19 @@ export default class QuizCard extends React.Component {
           </TouchableOpacity>
         </View>
         <Portal>
-          <Modal visible={this.state.modalVisible} dismissible={false} contentContainerStyle={styles.resultsModal}>
+          <Modal visible={this.state.modalVisible} 
+                 dismissible={false} 
+                 contentContainerStyle={styles.resultsModal}
+                 >
+          <Swiper style={styles.wrapper} showsButtons loop={false}>
+            <View testID="Suggestion1" style={styles.slide1}> 
             <Text style={styles.modalHeader}>Results</Text>
-            <Text style={styles.modalText}>{!!this.state.outputSuggestion ? this.state.outputSuggestion.text : ""}</Text>
+            <Text style={styles.modalText}>{!!this.state.outputSuggestion1 ? this.state.outputSuggestion1.text : ""}</Text>
             <Text style={{ textAlign: 'center' }}>
-              {!!this.state.outputSuggestion && <AppIcons name={this.state.outputSuggestion.icon} />}
+              {!!this.state.outputSuggestion1 && <AppIcons name={this.state.outputSuggestion1.icon} />}
             </Text>
-            <Text style={styles.modalText}>{!!this.state.outputSuggestion ? this.state.outputSuggestion.body : ""}</Text>
-            <SuggestionSwitcher suggestionId={this.state.outputSuggestion}></SuggestionSwitcher>
+            <Text style={styles.modalText}>{!!this.state.outputSuggestion1 ? this.state.outputSuggestion1.body : ""}</Text>
+            <SuggestionSwitcher suggestionId={this.state.outputSuggestion1}></SuggestionSwitcher>
             {/* <SpotifySuggestions></SpotifySuggestions> */}
             <View style={styles.modalRow}>
               <TouchableOpacity style={styles.modalButton} onPress={() => {
@@ -250,6 +277,46 @@ export default class QuizCard extends React.Component {
                 <Text style={styles.modalText}>Close</Text>
               </TouchableOpacity>
             </View>
+            </View>
+
+            <View testID="Suggestion2" style={styles.slide2}> 
+            <Text style={styles.modalHeader}>Results</Text>
+            <Text style={styles.modalText}>{!!this.state.outputSuggestion2 ? this.state.outputSuggestion2.text : ""}</Text>
+            <Text style={{ textAlign: 'center' }}>
+              {!!this.state.outputSuggestion2 && <AppIcons name={this.state.outputSuggestion2.icon} />}
+            </Text>
+            <Text style={styles.modalText}>{!!this.state.outputSuggestion2 ? this.state.outputSuggestion2.body : ""}</Text>
+            <SuggestionSwitcher suggestionId={this.state.outputSuggestion2}></SuggestionSwitcher>
+            {/* <SpotifySuggestions></SpotifySuggestions> */}
+            <View style={styles.modalRow}>
+              <TouchableOpacity style={styles.modalButton} onPress={() => {
+                this.setState({ modalVisible: false });
+                this.props.navigation.navigate('Home');
+              }}>
+                <Text style={styles.modalText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+            </View>
+
+            <View testID="Suggestion3" style={styles.slide3}> 
+            <Text style={styles.modalHeader}>Results</Text>
+            <Text style={styles.modalText}>{!!this.state.outputSuggestion3 ? this.state.outputSuggestion3.text : ""}</Text>
+            <Text style={{ textAlign: 'center' }}>
+              {!!this.state.outputSuggestion3 && <AppIcons name={this.state.outputSuggestion3.icon} />}
+            </Text>
+            <Text style={styles.modalText}>{!!this.state.outputSuggestion3 ? this.state.outputSuggestion3.body : ""}</Text>
+            <SuggestionSwitcher suggestionId={this.state.outputSuggestion3}></SuggestionSwitcher>
+            {/* <SpotifySuggestions></SpotifySuggestions> */}
+            <View style={styles.modalRow}>
+              <TouchableOpacity style={styles.modalButton} onPress={() => {
+                this.setState({ modalVisible: false });
+                this.props.navigation.navigate('Home');
+              }}>
+                <Text style={styles.modalText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+            </View>
+            </Swiper>  
           </Modal>
         </Portal>
       </View>
@@ -284,6 +351,7 @@ const styles = StyleSheet.create({
     padding: 10,
     bottom: 10,
     margin: 30,
+    flex:1
   },
   modalHeader: {
     textAlign: 'center',
@@ -355,6 +423,32 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     paddingHorizontal: 4,
     fontWeight: 'bold'
-  }
+  },
+  wrapper: {
+  },
+  slide1: {
+    flex: 1,
+    width:'80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#132090',
+    left:'10%'
+  },
+  slide2: {
+    flex: 1,
+    width:'80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#132090',
+    left:'10%'
+  },
+  slide3: {
+    flex: 1,
+    width:'80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#132090',
+    left:'10%'
+  },
 });
 
