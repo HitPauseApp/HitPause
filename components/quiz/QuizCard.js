@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import firebase from '../../Firebase';
 
 import Response_Checkbox from './Response_Checkbox';
@@ -9,7 +9,6 @@ import Response_Text from './Response_Text';
 import Response_TextArea from './Response_TextArea';
 import { Portal, Modal } from 'react-native-paper';
 import { RFValue } from "react-native-responsive-fontsize";
-import { ScrollView } from 'react-native';
 import { AppContext } from '../../AppContext';
 import SuggestionSwitcher from './SuggestionSwitcher';
 import AppIcons from '../AppIcons';
@@ -185,7 +184,7 @@ export default function QuizCard(props) {
     <View style={styles.container}>
 
       <View style={styles.quizQuestion}>
-        <Text style={styles.questionNumber}>{props.quiz.questions[quizIndex].order}</Text>
+        <Text style={styles.questionNumber}>{quizIndex + 1}</Text>
         <Text style={styles.questionText}>{props.quiz.questions[quizIndex].text}</Text>
       </View>
 
