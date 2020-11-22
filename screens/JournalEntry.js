@@ -30,9 +30,16 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
     return date + '-' + month + '-' + year; // format: dd-mm-yyyy;
   }
 
+  // const getCurrentTime = () => {
+  //   var hours = new Date().getHours();
+  //   var minutes = new Date().getMinutes();
+  //   var seconds = new Date().getSeconds();
+  //   return hours + ':' + minutes + ':' + seconds // format: hours:minutes:seconds;
+  // }
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => goBack()}>
+      <TouchableOpacity style={styles.backButton} onPress={() => {goBack()}}>
         <AntDesign name="arrowleft" size={30} color="white" />
       </TouchableOpacity>
       <Text style={styles.header}>{getCurrentDate()}</Text>

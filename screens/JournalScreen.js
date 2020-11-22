@@ -19,19 +19,26 @@ export default function JournalScreen(props) {
   const user = React.useContext(AuthContext);
   const [entries, setEntries] = React.useState(null);
   const [displayEntries, setDisplayEntries] = React.useState(null)
+  //const [sort, sortEntries] = React.useState(null)
+  //const [date, setDate] = React.useState(null)
+  //const sortedEntries = displayEntries.sort((a,b) => b.timeModified - a.timeModified)
 
 
   React.useEffect(() => {
     // TODO: Get and store these locally
-    firebase.database().ref(`users/${user.uid}/journal`).on('value', (s) => {
-      setEntries(s.val());
-      setDisplayEntries(s.val());
+    firebase.database().ref(`users/${user.uid}/journal`).on('value',(s) => {
+       setEntries(s.val());
+       setDisplayEntries(s.val());
+      //setEntries (Object.entries(s.val()).sort((a, b) => a[1].dateModified - b[1].dateModified));
+      //setDisplayEntries(Object.entries(s.val()).sort((a, b) => a[1].dateModified - b[1].dateModified));
     });
   }, []);
 
-  const onPress = () => props.navigation.navigate("HomeScreen");
-  
+  // React.useEffect(() => {
+  //  setEntries (Object.entries(s.val()).sort((a,b) => a[1].dateModified - b[1].dateModified));
+  // });
 
+  const onPress = () => props.navigation.navigate("HomeScreen");
   const openEntry = (entryId, title, text) => {
     // If there is no entryId (we are creating a new entry) get a new push ID from Firebase
     if (!entryId) entryId = firebase.database().ref().push().key;
@@ -39,7 +46,7 @@ export default function JournalScreen(props) {
     props.navigation.navigate('JournalEntry', { entryId: entryId, title: title, text: text });
   }
 
-  const deleteEntry = (entryId) => {
+  const deleteEntry = (entryId) => { 
     firebase.database().ref('users/' + user.uid +'/journal/').child(entryId).remove()
   }
 
@@ -52,6 +59,16 @@ export default function JournalScreen(props) {
       setDisplayEntries(entries);
     }
   }
+
+//  const sortEntries = () => {
+//     let sortedEntries = Object.values(entries)
+//     .sort((a,b) => new Date(...b.dateModified.split('-').reverse()) -
+//                    new Date(...a.dateModified.split('-').reverse()) ||
+//                    new Date(...b.timeModified.split(':')) -
+//                    new Date(...a.timeModified.split(':'))  
+//                   );
+//     setDisplayEntries(sortedEntries);
+//   }
 
 
   return (
@@ -68,10 +85,10 @@ export default function JournalScreen(props) {
           autoCapitalize="none"
           style={styles.textInput}
           onChangeText={text => searchEntries(text)}
-        />
+        /> 
         <ScrollView>
           {
-            !!displayEntries && Object.entries(displayEntries).length > 0 ? (
+            !!displayEntries && Object.entries(displayEntries).length > 0 ? ( 
               Object.entries(displayEntries).map((item, key) =>
                  //<TouchableOpacity key={key} onPress={() => openEntry(item[0], item[1].title, item[1].text)}>  
                     <JournalCard 
@@ -97,7 +114,7 @@ export default function JournalScreen(props) {
         </TouchableOpacity>
       </View>
       {/* <View style={styles.buttonView2}>
-        <TouchableOpacity style={styles.button} onPress={onPress}>
+        <TouchableOpacity style={styles.button} onPress={() => sortEntries()}>
           <FontAwesome name="trash-o" size={40} color="white" />
         </TouchableOpacity>
       </View> */}
