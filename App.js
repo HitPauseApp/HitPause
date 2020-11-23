@@ -34,6 +34,7 @@ import Account from './screens/AccountScreen';
 import JournalEntry from './screens/JournalEntry';
 
 import { AsyncStorage } from 'react-native';
+import { InputGroup } from 'native-base';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -178,6 +179,7 @@ export default function App(props) {
           
           let loginData = s.val;
           let newStreak = 1;
+          let perfectWeek = 0;
           if(loginData){
             let lastLogin = new Date(loginData.lastLogin);
             let today = new Date();
@@ -186,10 +188,14 @@ export default function App(props) {
             if(lastLogin.getDate() == yesterday.getDate() && lastLogin.getMonth() == yesterday.getMonth() && lastLogin.getFullYear() == yesterday.getFullYear()){
               newStreak = loginData.streak + 1;
             }
+            if(newStreak % 7 == 0){
+              perfectWeek = loginData.week + 1;
+            }
           }
           firebase.database().ref('users/' + user.uid + '/logins/').update({
             streak: newStreak,
             lastLogin: currentDate,
+            week: perfectWeek,
           });
         });
         handleSpotifyLogin();
