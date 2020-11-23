@@ -57,6 +57,7 @@
     "react-native-screens": "~2.9.0",
     "react-native-star-rating": "^1.1.0",
     "react-native-swipeout": "^2.3.6",
+    "react-native-swiper": "^1.6.0-rc.3",
     "react-native-web": "~0.11.7",
     "react-slick": "^0.27.12",
     "redash": "^0.23.0",

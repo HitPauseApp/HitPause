@@ -1,12 +1,10 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import firebase from '../Firebase';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, ScrollView, FlatList } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView, FlatList } from 'react-native';
 import { Portal, Modal } from 'react-native-paper';
 import albumImage from '../assets/images/album-placeholder.png';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { AuthContext } from '../AuthContext';
-import { render } from 'react-dom';
 import { AppContext } from '../AppContext';
 import StarRating from 'react-native-star-rating';
 import AppIcons from '../components/AppIcons';
