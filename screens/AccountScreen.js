@@ -4,6 +4,7 @@ import firebase from '../Firebase.js';
 import { AuthContext } from '../AuthContext.js';
 
 import SpotifyButton from '../components/Spotify/SpotifyButton';
+import SpotifyAuthButton from '../spotify/SpotifyAuthButton';
 
 import AppIcons from '../components/AppIcons';
 import FillButton from '../components/buttons/FillButton';
