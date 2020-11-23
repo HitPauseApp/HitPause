@@ -3,7 +3,7 @@ import firebase from '../Firebase';
 import Swipeout from 'react-native-swipeout';
 //import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
-import * as GestureHandler from 'react-native-gesture-handler';
+import * as GestureHandler from 'react-native-gesture-handler'; 
 
 import { StyleSheet, View, Text, TouchableOpacity, Animated, I18nManager } from 'react-native';
 
@@ -14,7 +14,14 @@ const {Swipeable} = GestureHandler;
 
 export default class AppleStyleSwipeGesture extends Component { 
 
-   
+  getDateAndTime(epoch) {
+    let date = new Date(epoch);
+    let dateString = `${date.getMonth() + 1}/${date.getDate()}/${String(date.getFullYear()).substr(2)}`;
+    let timeString = `${date.getHours() == 0 ? '12' : (date.getHours() % 12)}:${String(date.getMinutes()).padStart(2, '0')}`;
+    let amPmString = date.getHours() < 12 ? 'AM' : 'PM';
+    return `${dateString}\n${timeString} ${amPmString}`;
+  }
+
     renderRightAction = (text, color, progress) => {
         const trans = progress.interpolate({
           inputRange: [-100, 0],
@@ -36,6 +43,7 @@ export default class AppleStyleSwipeGesture extends Component {
           </Animated.View>
         );
       };
+
       renderRightActions = progress => (
         <View>
           {this.renderRightAction('Delete', '#dd2c00',progress)}
@@ -49,6 +57,7 @@ export default class AppleStyleSwipeGesture extends Component {
       };
       render() {
         const { children } = this.props;
+        //let date = {thigetDateAndTime()}
         return ( 
             <View style = {styles.container}>
                 <Swipeable
@@ -63,6 +72,7 @@ export default class AppleStyleSwipeGesture extends Component {
                     <View style={{height:150}}>
                         <Text style = {styles.titleText}>{this.props.entry.title}</Text>
                         <Text style = {styles.bodyText}>{this.props.entry.text}</Text>
+                        <Text style = {styles.dateText}>{this.getDateAndTime(this.props.entry.dateModified)}</Text>
                     </View>
                     </TouchableOpacity>  
                 </Swipeable>
@@ -106,6 +116,17 @@ const styles = StyleSheet.create({
         padding: 10 
         //height: 150
    },     
+   dateText: {
+    color: 'white',
+    fontFamily: 'Poppins-Medium',
+    marginTop: '5%',
+    fontSize: 12,
+    textAlign: 'right',
+    right: '5%',
+    flex:1,
+    padding: 10 
+    
+   },
    titleText: {
        color: 'white',
        fontFamily:'Poppins-Medium',

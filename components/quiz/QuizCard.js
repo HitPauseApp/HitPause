@@ -13,6 +13,7 @@ import { AppContext } from '../../AppContext';
 import SuggestionSwitcher from './SuggestionSwitcher';
 import AppIcons from '../AppIcons';
 import { AuthContext } from '../../AuthContext';
+import Swiper from 'react-native-swiper/src'
 
 export default function QuizCard(props) {
   const user = React.useContext(AuthContext);
@@ -55,18 +56,31 @@ export default function QuizCard(props) {
         }
       }
       firebase.database().ref(`users/${user.uid}/profile/traits`).set(data);
+    }
     // Incident Questionnaire submitted
-    } else {
+    else {
+      // let suggestion = this.randomizeSuggestions(topThree);
+      // console.log(suggestion);
+      // this.setState({ outputSuggestion1: this.context.suggestions[suggestion[0]] });
+      // this.setState({ outputSuggestion2: this.context.suggestions[suggestion[1]] });
+      // this.setState({ outputSuggestion3: this.context.suggestions[suggestion[2]] });
+      // this.setState({ modalVisible: true });
+
       let outputFlags = tallyOutputFlags(quizEffects);
       let topThree = getHighsAndLows(outputFlags, 3, 0)[0];
-      let suggestion = getRandomizedSuggestion(topThree);
-      setOutputSuggestions(hitpause.suggestions[suggestion]);
+      let suggestions = randomizeSuggestions(topThree);
+      setOutputSuggestions({
+        suggestion_1: hitpause.suggestions[suggestions[0]],
+        suggestion_2: hitpause.suggestions[suggestions[1]],
+        suggestion_3: hitpause.suggestions[suggestions[2]]
+      });
       firebase.database().ref(`users/${user.uid}/profile/quizHistory/incidentQuestionnaire`).push({
-        suggestion: suggestion,
+        // TODO: Make work with multiple suggestions
+        suggestion: suggestions[0],
         timestamp: Date.now(),
         responses: quizData,
         outputFlags: outputFlags
-      }); 
+      });
       setModalVisible(true);
     }
   }
@@ -128,7 +142,7 @@ export default function QuizCard(props) {
     return [Object.fromEntries(highValues), Object.fromEntries(lowValues)];
   }
 
-  function getRandomizedSuggestion(flags) {
+  function randomizeSuggestions(flags) {
     let n = 0;
     for (const key in flags) {
       let squaredDoubleFlag = (flags[key] * 2) ** 2;
@@ -137,7 +151,12 @@ export default function QuizCard(props) {
     }
     let randomInt = Math.floor(Math.random() * n);
     for (const key in flags) {
-      if (flags[key] > randomInt) return key;
+      if (flags[key] > randomInt) {
+        delete flags[key];
+        // TODO: Verify this actually works correctly
+        let remainingKeys = Object.keys(flags).length > 0 ? randomizeSuggestions(flags) : [];
+        return [key, ...remainingKeys];
+      };
     }
     return null;
   }
@@ -201,7 +220,7 @@ export default function QuizCard(props) {
         <Text style={styles.questionText}>{props.quiz.questions[quizIndex].text}</Text>
       </View>
 
-      <ScrollView style={{flexGrow: 1}}>
+      <ScrollView style={{ flexGrow: 1 }}>
         {getResponseComponent(props.quiz.questions[quizIndex])}
       </ScrollView>
 
@@ -215,26 +234,96 @@ export default function QuizCard(props) {
         </TouchableOpacity>
         {
           quizIndex == quizLength - 1 ? (
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => handleSubmission()}
-            disabled={nextDisabled}
-          >
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => handleSubmission()}
+              disabled={nextDisabled}
+            >
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
           ) : (
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => handleNextQuestion()}
-            disabled={nextDisabled}
-          >
-            <Text style={styles.buttonText}>Next</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => handleNextQuestion()}
+              disabled={nextDisabled}
+            >
+              <Text style={styles.buttonText}>Next</Text>
+            </TouchableOpacity>
           )
         }
       </View>
       <Portal>
-        <Modal visible={modalVisible} dismissible={false} contentContainerStyle={styles.resultsModal}>
+        {
+          !!outputSuggestions &&
+          <Modal
+            visible={modalVisible}
+            dismissible={false}
+            contentContainerStyle={styles.resultsModal}
+          >
+            <Swiper style={styles.wrapper} showsButtons loop={false}>
+              <View testID="Suggestion1" style={styles.slide1}>
+                <Text style={styles.modalHeader}>Results</Text>
+                <Text style={styles.modalText}>{outputSuggestions.suggestion_1.text}</Text>
+                <Text style={{ textAlign: 'center' }}>
+                  <AppIcons name={outputSuggestions.suggestion_1.icon} />
+                </Text>
+                <Text style={styles.modalText}>{outputSuggestions.suggestion_1.body}</Text>
+                <SuggestionSwitcher suggestionId={outputSuggestions.suggestion_1}></SuggestionSwitcher>
+                {/* <SpotifySuggestions></SpotifySuggestions> */}
+                <View style={styles.modalRow}>
+                  <TouchableOpacity style={styles.modalButton} onPress={() => {
+                    setModalVisible(false);
+                    props.navigation.navigate('Home');
+                  }}>
+                    <Text style={styles.modalText}>Close</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View testID="Suggestion2" style={styles.slide2}>
+                <Text style={styles.modalHeader}>Results</Text>
+                <Text style={styles.modalText}>{outputSuggestions.suggestion_2.text}</Text>
+                <Text style={{ textAlign: 'center' }}>
+                  <AppIcons name={outputSuggestions.suggestion_2.icon} />
+                </Text>
+                <Text style={styles.modalText}>{outputSuggestions.suggestion_2.body}</Text>
+                <SuggestionSwitcher suggestionId={outputSuggestions.suggestion_2}></SuggestionSwitcher>
+                {/* <SpotifySuggestions></SpotifySuggestions> */}
+                <View style={styles.modalRow}>
+                  <TouchableOpacity style={styles.modalButton} onPress={() => {
+                    setModalVisible(false);
+                    props.navigation.navigate('Home');
+                  }}>
+                    <Text style={styles.modalText}>Close</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View testID="Suggestion3" style={styles.slide3}>
+                <Text style={styles.modalHeader}>Results</Text>
+                <Text style={styles.modalText}>{outputSuggestions.suggestion_3.text}</Text>
+                <Text style={{ textAlign: 'center' }}>
+                  <AppIcons name={outputSuggestions.suggestion_3.icon} />
+                </Text>
+                <Text style={styles.modalText}>{outputSuggestions.suggestion_3.body}</Text>
+                <SuggestionSwitcher suggestionId={outputSuggestions.suggestion_3}></SuggestionSwitcher>
+                {/* <SpotifySuggestions></SpotifySuggestions> */}
+                <View style={styles.modalRow}>
+                  <TouchableOpacity style={styles.modalButton} onPress={() => {
+                    setModalVisible(false);
+                    props.navigation.navigate('Home');
+                  }}>
+                    <Text style={styles.modalText}>Close</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Swiper>
+          </Modal>
+        }
+      </Portal>
+      <Portal>
+        {/* <Modal visible={modalVisible} dismissible={false} contentContainerStyle={styles.resultsModal}> */}
+        <Modal visible={false} dismissible={false} contentContainerStyle={styles.resultsModal}>
           <Text style={styles.modalHeader}>Results</Text>
           <Text style={styles.modalText}>{!!outputSuggestions ? outputSuggestions.text : ""}</Text>
           <Text style={{ textAlign: 'center' }}>
@@ -253,7 +342,7 @@ export default function QuizCard(props) {
           </View>
         </Modal>
       </Portal>
-    </View>
+    </View >
   );
 }
 
@@ -272,6 +361,7 @@ const styles = StyleSheet.create({
     padding: 10,
     bottom: 10,
     margin: 30,
+    flex: 1
   },
   modalHeader: {
     textAlign: 'center',
@@ -329,7 +419,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     margin: 20
   },
-  questionText:{
+  questionText: {
     color: '#00095e',
     fontFamily: 'Poppins-Medium',
     fontSize: 16,
@@ -343,6 +433,32 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     paddingHorizontal: 4,
     fontWeight: 'bold'
-  }
+  },
+  wrapper: {
+  },
+  slide1: {
+    flex: 1,
+    width: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#132090',
+    left: '10%'
+  },
+  slide2: {
+    flex: 1,
+    width: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#132090',
+    left: '10%'
+  },
+  slide3: {
+    flex: 1,
+    width: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#132090',
+    left: '10%'
+  },
 });
 
