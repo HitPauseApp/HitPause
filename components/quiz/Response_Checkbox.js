@@ -11,20 +11,23 @@ export default function Response_Checkbox(props) {
     if (oldValue.length > 0 && oldValue.indexOf(id) >= 0) {
       oldValue.splice(oldValue.indexOf(id), 1);
       newValue = oldValue.splice(0);
-      // Handle "check" case
+    // Handle "check" case
     } else {
       newValue = [...oldValue, id];
     }
     // Get flag changes
     for (const key in props.responses) {
-      if (newValue.includes(props.responses[key].id)) {
-        for (const flagKey in props.responses[key].flagChanges) {
+      if (newValue.includes(key)) {
+        let effects = props.responses[key].effects;
+        for (const flagKey in effects) {
           // When flags compound within the same question
           if (Object.keys(flags).includes(flagKey)) {
-            flags[flagKey] = parseFloat(flags[flagKey]) + parseFloat(props.responses[key].flagChanges[flagKey]);
-            // Otherwise, add normally
+            flags[flagKey] = parseFloat(flags[flagKey]) + parseFloat(effects[flagKey]);
+          // Otherwise, add normally, depending on type
+          } else if (typeof effects[flagKey] == 'boolean') {
+            flags[flagKey] = effects[flagKey];
           } else {
-            flags[flagKey] = parseFloat(props.responses[key].flagChanges[flagKey]);
+            flags[flagKey] = parseFloat(effects[flagKey]);
           }
         }
       }
@@ -42,9 +45,9 @@ export default function Response_Checkbox(props) {
             labelStyle={{color: '#00095e'}}
             style={styles.checkBox}
             color="#00095e"
-            key={key}
-            status={Array.isArray(props.value) && props.value.indexOf(item.id) >= 0 ? 'checked' : 'unchecked'}
-            onPress={() => onChange(item.id)}
+            key={String(key)}
+            status={Array.isArray(props.value) && props.value.indexOf(String(key)) >= 0 ? 'checked' : 'unchecked'}
+            onPress={() => onChange(String(key))}
           />
         )
       }

@@ -12,9 +12,9 @@ export default function Response_Scale(props){
 
   const onChange = (value) => {
     let flags = {};
-    for (const key in props.flagChanges) {
+    for (const key in props.effects) {
       if (key == value) {
-        flags = {...props.flagChanges[key]};
+        flags = {...props.effects[key]};
         break;
       }
     }
@@ -23,7 +23,7 @@ export default function Response_Scale(props){
 
   return(
     <View style={styles.quizQuestion}>
-      <RadioButton.Group onValueChange={value => onChange(value)} value={props.value}>
+      <RadioButton.Group onValueChange={value => onChange(value)} value={String(props.value)}>
         {
           options.map((item, key) =>
             <RadioButton.Item
@@ -31,7 +31,8 @@ export default function Response_Scale(props){
               labelStyle={{color: '#00095e'}}
               style={styles.radioButton}
               color="#00095e"
-              value={item}
+              // TODO: There are a few issues with the ways scale works... using item is a hacky fix
+              value={String(item)}
               key={key}
             />
           )

@@ -10,13 +10,7 @@ import { Portal, Modal } from 'react-native-paper';
 export default function QuizScreen(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [quiz, setQuiz] = React.useState({});
-  const [visible, setVisible] = React.useState(false);
-
-  const showModal = () => setVisible(true);
-
-  const hideModal = () => setVisible(false);
-
-  // let quizName = "incidentQuestionnaire";
+  const [modalVisible, setModalVisible] = React.useState(false);
 
   React.useEffect(() => {
     console.log(props)
@@ -30,7 +24,7 @@ export default function QuizScreen(props) {
       setQuiz(quizData);
       setLoadingComplete(true);
       saveIncidentQuiz(quizData);
-      showModal();
+      setModalVisible(true);
     })
   }, []);
 
@@ -56,7 +50,7 @@ export default function QuizScreen(props) {
       <View style={styles.container}>
 
         <Portal>
-          <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContent}>
+          <Modal visible={modalVisible} onDismiss={() => setModalVisible(false)} contentContainerStyle={styles.modalContent}>
             <Text style={styles.modalHeadingText}>Welcome To the HitPause Quiz</Text>
             <Text style={styles.modalText}>This quiz will ask 10 questions regarding your current experience with anxiety.
             Once the quiz has been completed, our custom designed suggestion algorithm, The Pause Algorithm, will calculate your results and provide
@@ -66,7 +60,7 @@ export default function QuizScreen(props) {
         <View style={styles.contentContainer}>
           <View style={styles.headingCont}>
           <Text style={styles.header}>{quiz.quizName}</Text>
-            <FontAwesome name="info-circle" size={24} color="white" style={styles.info} onPress={showModal} /> 
+            <FontAwesome name="info-circle" size={24} color="white" style={styles.info} onPress={() => setModalVisible(true)} /> 
           </View>
           <QuizCard quiz={quiz} quizName={props.route.params.quizName} navigation={props.navigation}></QuizCard>
         </View>

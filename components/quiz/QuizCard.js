@@ -12,13 +12,15 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { AppContext } from '../../AppContext';
 import SuggestionSwitcher from './SuggestionSwitcher';
 import AppIcons from '../AppIcons';
+import { AuthContext } from '../../AuthContext';
 
 export default function QuizCard(props) {
+  const user = React.useContext(AuthContext);
   const hitpause = React.useContext(AppContext);
   const [quizIndex, setQuizIndex] = React.useState(0);
   const [quizLength, setQuizLength] = React.useState(Array.isArray(props.quiz.questions) ? props.quiz.questions.length : 0);
   const [quizData, setQuizData] = React.useState([]);
-  const [quizFlags, setQuizFlags] = React.useState([]);
+  const [quizEffects, setquizEffects] = React.useState([]);
   const [nextDisabled, setNextDisabled] = React.useState(false);
   const [prevDisabled, setPrevDisabled] = React.useState(true);
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -27,11 +29,11 @@ export default function QuizCard(props) {
   // Updates data for quiz when a response is selected or changes
   function updateQuizData(data, flags) {
     let dataUpdate = [...quizData];
-    let flagUpdate = [...quizFlags];
+    let effectsUpdate = [...quizEffects];
     dataUpdate[quizIndex] = data;
-    flagUpdate[quizIndex] = flags;
+    effectsUpdate[quizIndex] = flags;
     setQuizData(dataUpdate);
-    setQuizFlags(flagUpdate);
+    setquizEffects(effectsUpdate);
     console.log(data, flags);
   }
 
@@ -41,46 +43,55 @@ export default function QuizCard(props) {
       if (typeof quizData[key] === 'undefined') quizData[key] = '';
     }
 
-    let outputFlags = tallyOutputFlags();
-    let topThree = getHighsAndLows(outputFlags, 3, 0)[0];
-    console.log('outputFlags:', outputFlags);
-    console.log('topThree:', topThree);
-
-    let suggestion = getRandomizedSuggestion(topThree);
-    console.log(suggestion);
-    setOutputSuggestions(hitpause.suggestions[suggestion]);
-    setModalVisible(true);
-
-    firebase.database()
-      .ref(`users/${firebase.auth().currentUser.uid}/profile/quizHistory/${props.quizName}`)
-      .push({
+    // Check for quiz type
+    // Initial Assessment submitted
+    if (props.quizName == 'initialAssessment') {
+      let data = {};
+      // For each object in the effects array
+      for (const key in quizEffects) {
+        // For each property in the flag object
+        for (const traitFlag in quizEffects[key]) {
+          data[traitFlag] = quizEffects[key][traitFlag];
+        }
+      }
+      firebase.database().ref(`users/${user.uid}/profile/traits`).set(data);
+    // Incident Questionnaire submitted
+    } else {
+      let outputFlags = tallyOutputFlags(quizEffects);
+      let topThree = getHighsAndLows(outputFlags, 3, 0)[0];
+      let suggestion = getRandomizedSuggestion(topThree);
+      setOutputSuggestions(hitpause.suggestions[suggestion]);
+      firebase.database().ref(`users/${user.uid}/profile/quizHistory/incidentQuestionnaire`).push({
         suggestion: suggestion,
         timestamp: Date.now(),
         responses: quizData,
         outputFlags: outputFlags
-      });
+      }); 
+      setModalVisible(true);
+    }
   }
 
-  function tallyOutputFlags() {
-    let flags = {};
+  function tallyOutputFlags(flags) {
+    let outputFlags = {};
     let modifiers = [];
-    // Get flag changes
-    for (const key in quizFlags) {
-      for (const flagKey in quizFlags[key]) {
+    // For each object in the array of flags
+    for (const key in flags) {
+      // For each property in the flag object
+      for (const flagKey in flags[key]) {
         // Flag has a special behavior
         if (flagKey.includes('_highest_')) {
           let count = parseInt(flagKey.replace('_highest_', ''));
-          modifiers.push({ type: 'high', count: count, amount: parseFloat(quizFlags[key][flagKey]) });
+          modifiers.push({ type: 'high', count: count, amount: parseFloat(flags[key][flagKey]) });
         } else if (flagKey.includes('_lowest_')) {
           let count = parseInt(flagKey.replace('_lowest_', ''));
-          modifiers.push({ type: 'low', count: count, amount: parseFloat(quizFlags[key][flagKey]) });
+          modifiers.push({ type: 'low', count: count, amount: parseFloat(flags[key][flagKey]) });
 
           // Flags of this type already exist, will sum
         } else if (Object.keys(flags).includes(flagKey)) {
-          flags[flagKey] = parseFloat(flags[flagKey]) + parseFloat(quizFlags[key][flagKey]);
+          outputFlags[flagKey] = parseFloat(flags[flagKey]) + parseFloat(flags[key][flagKey]);
           // Otherwise, add normally
         } else {
-          flags[flagKey] = parseFloat(quizFlags[key][flagKey]);
+          outputFlags[flagKey] = parseFloat(flags[key][flagKey]);
         }
       }
     }
@@ -90,17 +101,17 @@ export default function QuizCard(props) {
       let modifiedFlags = {};
       // Depending on type of case, grab relevant flags
       if (modifiers[key].type == 'high') {
-        modifiedFlags = getHighsAndLows(flags, modifiers[key].count, 0)[0];
+        modifiedFlags = getHighsAndLows(outputFlags, modifiers[key].count, 0)[0];
       } else if (modifiers[key].type == 'low') {
-        modifiedFlags = getHighsAndLows(flags, 0, modifiers[key].count)[1];
+        modifiedFlags = getHighsAndLows(outputFlags, 0, modifiers[key].count)[1];
       }
       // Apply changes to those flags
       for (const flagKey in modifiedFlags) {
         modifiedFlags[flagKey] = modifiedFlags[flagKey] + modifiers[key].amount;
       }
-      flags = { ...flags, ...modifiedFlags };
+      outputFlags = { ...outputFlags, ...modifiedFlags };
     }
-    return flags;
+    return outputFlags;
   }
 
   // TODO: Incomplete... will probably want to move this into summary screen
@@ -143,41 +154,43 @@ export default function QuizCard(props) {
     if (newIndex == 0) setPrevDisabled(true);
   }
 
-  function getResponseComponent() {
-    let responseComponent;
-    if (props.quiz.questions[quizIndex].type == "checkbox") {
-      responseComponent =
+  function getResponseComponent(question) {
+    if (question.type == "checkbox") {
+      return (
         <Response_Checkbox
-          responses={props.quiz.questions[quizIndex].responses}
+          responses={question.responses}
           onChange={updateQuizData}
           value={quizData[quizIndex]}
         ></Response_Checkbox>
+      );
     }
-    else if (props.quiz.questions[quizIndex].type == "radio") {
-      responseComponent =
+    else if (question.type == "radio") {
+      return (
         <Response_Radio
-          responses={props.quiz.questions[quizIndex].responses}
+          responses={question.responses}
           onChange={updateQuizData}
           value={quizData[quizIndex]}
         ></Response_Radio>
+      );
     }
-    else if (props.quiz.questions[quizIndex].type == "scale") {
-      responseComponent =
+    else if (question.type == "scale") {
+      return (
         <Response_Scale
-          flagChanges={props.quiz.questions[quizIndex].flagChanges}
-          scaleLow={props.quiz.questions[quizIndex].scaleLow}
-          scaleHigh={props.quiz.questions[quizIndex].scaleHigh}
+          effects={question.effects}
+          scaleLow={question.scaleLow}
+          scaleHigh={question.scaleHigh}
           onChange={updateQuizData}
           value={quizData[quizIndex]}
         ></Response_Scale>
+      );
     }
-    else if (props.quiz.questions[quizIndex].type == "text") {
-      responseComponent = <Response_Text></Response_Text>
+    else if (question.type == "text") {
+      return <Response_Text></Response_Text>;
     }
-    else if (props.quiz.questions[quizIndex].type == "textarea") {
-      responseComponent = <Response_TextArea></Response_TextArea>
+    else if (question.type == "textarea") {
+      return <Response_TextArea></Response_TextArea>;
     }
-    return responseComponent;
+    return null;
   }
 
   return (
@@ -189,7 +202,7 @@ export default function QuizCard(props) {
       </View>
 
       <ScrollView style={{flexGrow: 1}}>
-        {getResponseComponent(quizIndex)}
+        {getResponseComponent(props.quiz.questions[quizIndex])}
       </ScrollView>
 
       <View style={styles.controlButtons}>
@@ -248,16 +261,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     flex: 1
-  },
-  text: {
-    color: 'white',
-    fontFamily: 'Poppins-Medium',
-    fontSize: 20,
-    marginTop: 5,
-    textAlign: 'center',
-  },
-  scrollView: {
-
   },
   resultsModal: {
     backgroundColor: '#132090',
