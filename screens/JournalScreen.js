@@ -27,18 +27,13 @@ export default function JournalScreen(props) {
   React.useEffect(() => {
     // TODO: Get and store these locally
     firebase.database().ref(`users/${user.uid}/journal`).on('value',(s) => {
-       setEntries(s.val());
-       setDisplayEntries(s.val());
-      //setEntries (Object.entries(s.val()).sort((a, b) => a[1].dateModified - b[1].dateModified));
-      //setDisplayEntries(Object.entries(s.val()).sort((a, b) => a[1].dateModified - b[1].dateModified));
+      //  setEntries(s.val());
+      //  setDisplayEntries(s.val());
+      setEntries (Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
+      setDisplayEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
     });
   }, []);
 
-  // React.useEffect(() => {
-  //  setEntries (Object.entries(s.val()).sort((a,b) => a[1].dateModified - b[1].dateModified));
-  // });
-
-  const onPress = () => props.navigation.navigate("HomeScreen");
   const openEntry = (entryId, title, text) => {
     // If there is no entryId (we are creating a new entry) get a new push ID from Firebase
     if (!entryId) entryId = firebase.database().ref().push().key;
@@ -60,17 +55,6 @@ export default function JournalScreen(props) {
     }
   }
 
-//  const sortEntries = () => {
-//     let sortedEntries = Object.values(entries)
-//     .sort((a,b) => new Date(...b.dateModified.split('-').reverse()) -
-//                    new Date(...a.dateModified.split('-').reverse()) ||
-//                    new Date(...b.timeModified.split(':')) -
-//                    new Date(...a.timeModified.split(':'))  
-//                   );
-//     setDisplayEntries(sortedEntries);
-//   }
-
-
   return (
     <View style={styles.container}>
        {/* <ImageBackground
@@ -88,17 +72,18 @@ export default function JournalScreen(props) {
         /> 
         <ScrollView>
           {
-            !!displayEntries && Object.entries(displayEntries).length > 0 ? ( 
-              Object.entries(displayEntries).map((item, key) =>
-                 //<TouchableOpacity key={key} onPress={() => openEntry(item[0], item[1].title, item[1].text)}>  
-                    <JournalCard 
-                        key={key} 
-                        deleteEntry = {() =>deleteEntry(item[0])} 
-                        openEntry={() => openEntry(item[0], item[1].title, item[1].text)} 
-                        entry={item[1]} id={item[0]}>
-                    </JournalCard>  
-                  //</TouchableOpacity>    
-                )
+            !!displayEntries && displayEntries.length > 0 ? ( 
+              displayEntries.map((item, key) =>
+                <View
+                  key={key} 
+                >
+                  <JournalCard 
+                    deleteEntry = {() => deleteEntry(item[0])} 
+                    openEntry={() => openEntry(item[0], item[1].title, item[1].text)} 
+                    entry={item[1]} id={item[0]}>
+                  </JournalCard>  
+                </View>
+              )
             ) : (
               <View style={styles.textContainer}>
                 <Text style={styles.text}>No journal entries here...</Text>
