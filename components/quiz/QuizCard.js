@@ -173,6 +173,17 @@ export default function QuizCard(props) {
     if (newIndex == 0) setPrevDisabled(true);
   }
 
+  function closeAndRedirect() {
+    props.navigation.navigate('Home');
+    setQuizIndex(0);
+    setQuizData([]);
+    setquizEffects([]);
+    setNextDisabled(false);
+    setPrevDisabled(true);
+    setModalVisible(false);
+    setOutputSuggestions(null);
+  }
+
   function getResponseComponent(question) {
     if (question.type == "checkbox") {
       return (
@@ -271,10 +282,7 @@ export default function QuizCard(props) {
                 <SuggestionSwitcher suggestionId={outputSuggestions.suggestion_1}></SuggestionSwitcher>
                 {/* <SpotifySuggestions></SpotifySuggestions> */}
                 <View style={styles.modalRow}>
-                  <TouchableOpacity style={styles.modalButton} onPress={() => {
-                    setModalVisible(false);
-                    props.navigation.navigate('Home');
-                  }}>
+                  <TouchableOpacity style={styles.modalButton} onPress={() => closeAndRedirect()}>
                     <Text style={styles.modalText}>Close</Text>
                   </TouchableOpacity>
                 </View>
@@ -290,10 +298,7 @@ export default function QuizCard(props) {
                 <SuggestionSwitcher suggestionId={outputSuggestions.suggestion_2}></SuggestionSwitcher>
                 {/* <SpotifySuggestions></SpotifySuggestions> */}
                 <View style={styles.modalRow}>
-                  <TouchableOpacity style={styles.modalButton} onPress={() => {
-                    setModalVisible(false);
-                    props.navigation.navigate('Home');
-                  }}>
+                  <TouchableOpacity style={styles.modalButton} onPress={() => closeAndRedirect()}>
                     <Text style={styles.modalText}>Close</Text>
                   </TouchableOpacity>
                 </View>
@@ -309,10 +314,7 @@ export default function QuizCard(props) {
                 <SuggestionSwitcher suggestionId={outputSuggestions.suggestion_3}></SuggestionSwitcher>
                 {/* <SpotifySuggestions></SpotifySuggestions> */}
                 <View style={styles.modalRow}>
-                  <TouchableOpacity style={styles.modalButton} onPress={() => {
-                    setModalVisible(false);
-                    props.navigation.navigate('Home');
-                  }}>
+                  <TouchableOpacity style={styles.modalButton} onPress={() => closeAndRedirect()}>
                     <Text style={styles.modalText}>Close</Text>
                   </TouchableOpacity>
                 </View>
