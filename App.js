@@ -198,7 +198,7 @@ export default function App(props) {
             week: perfectWeek,
           });
         });
-        handleSpotifyLogin();
+        // handleSpotifyLogin();
         setHitpause(await getAppData());
         setIsLoading(false);
       } else {
