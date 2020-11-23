@@ -4,6 +4,7 @@ import firebase from '../Firebase.js';
 import { AuthContext } from '../AuthContext.js';
 
 import SpotifyButton from '../components/Spotify/SpotifyButton';
+import SpotifyAuthButton from '../spotify/SpotifyAuthButton';
 
 import AppIcons from '../components/AppIcons';
 import FillButton from '../components/buttons/FillButton';
@@ -42,8 +43,9 @@ export default function Account(props) {
         <AppIcons name="fontawesome5:spotify" size={30} color="white" />
         {/* This is bad data, only using as placeholder */}
         {/* <Text style={styles.text}>{user ? 'Connected' : 'Not Connected'}</Text> */}
+        <SpotifyAuthButton></SpotifyAuthButton>
       </View>
-
+   
       <View style={styles.separator}></View>
 
       <View style={styles.category}>

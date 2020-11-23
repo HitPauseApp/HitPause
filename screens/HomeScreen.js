@@ -5,9 +5,9 @@ import { AuthContext } from '../AuthContext.js';
 import { Portal, Modal } from 'react-native-paper';
 import TipOTD from '../components/TipOTD';
 import WelcomeBanner from '../components/WelcomeBanner';
-import albumImage from '../assets/images/album-placeholder.png';
 import { RFValue } from "react-native-responsive-fontsize";
-import CalendarStrip from "react-native-calendar-strip";
+import firebase from '../Firebase';
+
 
 
 export default function HomeScreen(props) {
@@ -15,6 +15,8 @@ export default function HomeScreen(props) {
 
   const [visible, setVisible] = React.useState(false);
   const [count, setCount] = React.useState(0);
+  const [streak, setStreak] = React.useState(1);
+  const [perfectWeek, setPerfectWeek] = React.useState(0);
   const [screenText, setScreenText] = React.useState([
     "Our goal is to provide each and every user with their own tips and tricks on how to better deal with their anxiety. Click next to take the virtual tour and get started",
     "The journal page is designed to help relieve stress through writing. Hit the pen and paper to start a new entry, or swipe left to delete a previously existing entry",
@@ -28,11 +30,22 @@ export default function HomeScreen(props) {
     "History"
   ]);
 
+  React.useEffect(() => {
+    firebase.database().ref('users/' + user.uid + '/logins/').once('value').then(s => {
+      setStreak(s.val().streak)
+    })
+  }, []);
+
+  React.useEffect(() => {
+    firebase.database().ref('users/' + user.uid + '/logins/').once('value').then(s => {
+      setPerfectWeek(s.val().week)
+    })
+  }, []);
+
   const showModal = () => setVisible(true);
 
   const hideModal = () => setVisible(false);
 
-  const date = new Date().toDateString();
 
 
 
@@ -56,16 +69,12 @@ export default function HomeScreen(props) {
       </View>
 
       <View style={styles.dailyTrackerContainer}>
-        <Text style={styles.dailyTrackerText}>Week of November 8th</Text>
-        <View style={styles.weekView}>
-          <Text>Test</Text>
-          <Text>Test</Text>
-          <Text>Test</Text>
-          <Text>Test</Text>
-          <Text>Test</Text>
-          <Text>Test</Text>
-          <Text>Test</Text>
+        <View style = {styles.weekView}>
+          <Text style={styles.dailyTrackerText}>Streak: {streak}</Text>
+          <Text style={styles.dailyTrackerText}>|</Text>
+          <Text style={styles.dailyTrackerText}>Weeks: {perfectWeek}</Text>
         </View>
+        
       </View>
       <Text style={styles.text2}>Need to adjust your assessment?</Text>
       <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
@@ -87,6 +96,7 @@ export default function HomeScreen(props) {
           </View>
           
         </Modal>
+
       </Portal>  
     </View>
   );
@@ -97,10 +107,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#00095e',
     flex: 1
   },
-  imageContainer: {
-    
-  },
-  
+
   header:{
     padding: 15,
     fontFamily: 'Poppins-Medium',
@@ -114,24 +121,27 @@ const styles = StyleSheet.create({
   dailyTrackerContainer: {
     marginTop: 20,
     alignSelf: 'center',
+    justifyContent: 'center',
     borderRadius: 30,
-    height: RFValue(200),
+    height: RFValue(70),
     width: '95%',
     backgroundColor: '#132090',
     padding: 10,
-    paddingLeft: 20
+    paddingLeft: 20,
+    paddingRight: 20,
+    
   },
 
   dailyTrackerText: {
     color: 'white',
     fontFamily: 'Poppins-Medium',
     fontSize: 20,
-    paddingRight: 10,
-    
+    textAlign: 'center',
   },
 
   weekView: {
     flexDirection: 'row',
+    justifyContent: 'space-evenly'
   },
   
   tourModal:{
