@@ -21,6 +21,8 @@ export default function App() {
     scopes: ['user-read-email', 'playlist-modify-public']
   });
 
+    const [userData, setUserData] = React.useState();
+
   const [request, response, promptAsync] = useAuthRequest(
     {
       responseType: ResponseType.Token,
@@ -50,6 +52,7 @@ export default function App() {
   React.useEffect(() => {
     if (response?.type === 'success') {
       const { access_token } = response.params;
+      setUserData(access_token);
       saveSpotifyToken(access_token);
       }
   }, [response]);
