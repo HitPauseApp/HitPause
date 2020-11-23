@@ -43,8 +43,9 @@ export default function Account(props) {
         <AppIcons name="fontawesome5:spotify" size={30} color="white" />
         {/* This is bad data, only using as placeholder */}
         {/* <Text style={styles.text}>{user ? 'Connected' : 'Not Connected'}</Text> */}
+        <SpotifyAuthButton></SpotifyAuthButton>
       </View>
-
+   
       <View style={styles.separator}></View>
 
       <View style={styles.category}>
