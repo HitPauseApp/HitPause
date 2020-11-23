@@ -78,7 +78,6 @@ export default function QuizCard(props) {
         // TODO: Make work with multiple suggestions
         suggestion: suggestions[0],
         timestamp: Date.now(),
-        responses: quizData,
         outputFlags: outputFlags
       });
       setModalVisible(true);
