@@ -3,19 +3,19 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 
 export default function Response_Radio(props) {
-  const onChange = (value) => {
+  const onChange = (id) => {
     let flags = {};
     for (const key in props.responses) {
-      if (props.responses[key].id == value) {
-        flags = { ...props.responses[key].flagChanges };
+      if (key == id) {
+        flags = { ...props.responses[key].effects };
         break;
       }
     }
-    props.onChange(value, flags);
+    props.onChange(id, flags);
   }
   return (
     <View>
-      <RadioButton.Group onValueChange={value => onChange(value)} value={props.value}>
+      <RadioButton.Group onValueChange={value => onChange(value)} value={String(props.value)}>
         {
           Object.values(props.responses).map((item, key) =>
             <RadioButton.Item
@@ -23,7 +23,7 @@ export default function Response_Radio(props) {
               labelStyle={{color: '#00095e'}}
               style={styles.radioButton}
               color="#00095e"
-              value={item.id}
+              value={String(key)}
               key={key}
             />
           )
