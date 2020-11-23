@@ -1,5 +1,3 @@
-import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
-import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import firebase from '../Firebase';
 import { StyleSheet, Text, View, Image, TouchableOpacity, PanResponsder, ImageBackground } from 'react-native';
@@ -7,45 +5,33 @@ import { PanGestureHandler, RectButton, ScrollView} from 'react-native-gesture-h
 import { AuthContext } from '../AuthContext';
 import JournalCard from '../components/JournalCard';
 import { TextInput } from 'react-native';
-import Animated from 'react-native-reanimated';
-import Swipeout from 'react-native-swipeout';
-
-// import {SwipeableGesture} from './SwipeGesture';
-
-
-
+import AppIcons from '../components/AppIcons';
 
 export default function JournalScreen(props) {
   const user = React.useContext(AuthContext);
   const [entries, setEntries] = React.useState(null);
   const [displayEntries, setDisplayEntries] = React.useState(null)
-  //const [sort, sortEntries] = React.useState(null)
-  //const [date, setDate] = React.useState(null)
-  //const sortedEntries = displayEntries.sort((a,b) => b.timeModified - a.timeModified)
-
 
   React.useEffect(() => {
     // TODO: Get and store these locally
     firebase.database().ref(`users/${user.uid}/journal`).on('value',(s) => {
-      //  setEntries(s.val());
-      //  setDisplayEntries(s.val());
-      setEntries (Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
+      setEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
       setDisplayEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
     });
   }, []);
 
-  const openEntry = (entryId, title, text) => {
+  function openEntry(entryId, title, text) {
     // If there is no entryId (we are creating a new entry) get a new push ID from Firebase
     if (!entryId) entryId = firebase.database().ref().push().key;
     // Pass the existing (or new) entryId to JournalEntry as a parameter and navigate there
     props.navigation.navigate('JournalEntry', { entryId: entryId, title: title, text: text });
   }
 
-  const deleteEntry = (entryId) => { 
+  function deleteEntry(entryId) { 
     firebase.database().ref('users/' + user.uid +'/journal/').child(entryId).remove()
   }
 
-  const searchEntries = (searchText) => {
+  function searchEntries(searchText) {
     if (searchText != '') {
       let filteredEntries = Object.values(entries)
       .filter((entry) => (entry.title + entry.text).toLowerCase().indexOf(searchText.toLowerCase()) >= 0);
@@ -57,10 +43,6 @@ export default function JournalScreen(props) {
 
   return (
     <View style={styles.container}>
-       {/* <ImageBackground
-          style={ styles.imgBackground }  
-          source={require('../assets/images/wallpaper3.png')}> */}
-        
       <View style={styles.contentContainer}>
         <Text style={styles.header}>My Journal</Text>
         <TextInput
@@ -95,32 +77,17 @@ export default function JournalScreen(props) {
      
       <View style={styles.buttonView}>
         <TouchableOpacity onPress={() => openEntry(null, '', '')}>
-          <FontAwesome name="pencil-square-o" size={40} color="white" />
+          <AppIcons name="fontawesome5:pencil-alt" size={40} color="white"></AppIcons>
         </TouchableOpacity>
       </View>
-      {/* <View style={styles.buttonView2}>
-        <TouchableOpacity style={styles.button} onPress={() => sortEntries()}>
-          <FontAwesome name="trash-o" size={40} color="white" />
-        </TouchableOpacity>
-      </View> */}
-      {/* </ImageBackground> */}
     </View>
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#00095e',
-    //justifyContent: "center",
-    flex: 1,
-    // [TOS] This line below is throwing an error
-    // vertical: true
-  },
-  container2: {
-    backgroundColor: '#00095e',
-    flex: 1,
-    marginTop: '0%'
+    flex: 1
   },
   header: {
     fontFamily: 'Poppins-Medium',
@@ -129,30 +96,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingHorizontal: 20,
     paddingVertical: '9%',
-  },
-  pic: {
-    flex: 1,
-    flexDirection: 'row',
-    bottom: '30%',
-  },
-  pic2: {
-    flex: 1,
-    flexDirection: 'row-reverse',
-  },
-  contentContainer: {
-    flex: 1
-  },
-  button1: {
-    backgroundColor: 'white',
-    width: 55,
-    height: 55,
-    borderRadius: 55/2,
-    // flexBasis: 'column',
-    borderColor: 'white'
-  },
-  button2: {
-    // flexBasis: 'column'
-
   },
   textContainer: {
     backgroundColor: '#132090',
@@ -166,31 +109,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
     height: 150
   },
-  img: {
-    width: '50%',
-    height: '50%',
-  },
-  imgBackground: {
-    width: '100%',
-    height: '100%',
-    // bottom: -7,
-    // right: -7,
-    resizeMode: "cover",
-    flex:1
-  },
   buttonView: {
     flex: 1,
     flexDirection: 'row-reverse',
     right: '8%',
     bottom: '3%',
     position: 'absolute'
-  },
-  buttonView2: {
-    flex: 1,
-    bottom: '4%',
-    left: '8%',
-    position: 'absolute',
-    //flexDirection: 'row'
   },
   text: {
     textAlign: 'center',
@@ -212,6 +136,5 @@ const styles = StyleSheet.create({
     marginTop: 20,
     zIndex: 3,
     alignSelf: 'center',
-  },
-
+  }
 });
