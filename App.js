@@ -173,7 +173,7 @@ export default function App(props) {
         // if (authUser.newUser) {
         //   setAuthNavState('InitialAssessment');
         // }
-        handleSpotifyLogin();
+        // handleSpotifyLogin();
         setHitpause(await getAppData());
         setIsLoading(false);
       } else {
