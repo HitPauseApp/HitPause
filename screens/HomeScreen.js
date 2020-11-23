@@ -6,6 +6,7 @@ import { Portal, Modal } from 'react-native-paper';
 import TipOTD from '../components/TipOTD';
 import WelcomeBanner from '../components/WelcomeBanner';
 import { RFValue } from "react-native-responsive-fontsize";
+import firebase from '../Firebase';
 
 
 
@@ -14,6 +15,7 @@ export default function HomeScreen(props) {
 
   const [visible, setVisible] = React.useState(false);
   const [count, setCount] = React.useState(0);
+  const [streak, setStreak] = React.useState(1);
   const [screenText, setScreenText] = React.useState([
     "Our goal is to provide each and every user with their own tips and tricks on how to better deal with their anxiety. Click next to take the virtual tour and get started",
     "The journal page is designed to help relieve stress through writing. Hit the pen and paper to start a new entry, or swipe left to delete a previously existing entry",
@@ -26,6 +28,12 @@ export default function HomeScreen(props) {
     "Take the Quiz!",
     "History"
   ]);
+
+  React.useEffect(() => {
+    firebase.database().ref('users/' + user.uid + '/logins/').once('value').then(s => {
+      setStreak(s.val().streak)
+    })
+  }, []);
 
   const showModal = () => setVisible(true);
 
@@ -55,7 +63,7 @@ export default function HomeScreen(props) {
 
       <View style={styles.dailyTrackerContainer}>
         <View style = {styles.weekView}>
-          <Text style={styles.dailyTrackerText}>Streak: 1</Text>
+  <Text style={styles.dailyTrackerText}>Streak: {streak}</Text>
           <Text style={styles.dailyTrackerText}>|</Text>
           <Text style={styles.dailyTrackerText}>Weeks: 1</Text>
         </View>

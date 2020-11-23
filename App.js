@@ -133,7 +133,25 @@ export default function App(props) {
         // if (authUser.newUser) {
         //   setAuthNavState('InitialAssessment');
         // }
-        
+        firebase.database().ref('users/' + user.uid + '/logins/').once('value').then(s => {
+          let currentDate = Date.now();
+          
+          let loginData = s.val;
+          let newStreak = 1;
+          if(loginData){
+            let lastLogin = new Date(loginData.lastLogin);
+            let today = new Date();
+            let yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+            if(lastLogin.getDate() == yesterday.getDate() && lastLogin.getMonth() == yesterday.getMonth() && lastLogin.getFullYear() == yesterday.getFullYear()){
+              newStreak = loginData.streak + 1;
+            }
+          }
+          firebase.database().ref('users/' + user.uid + '/logins/').update({
+            streak: newStreak,
+            lastLogin: currentDate,
+          });
+        });
         setHitpause(await getAppData());
         setIsLoading(false);
       } else {
