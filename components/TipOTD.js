@@ -6,8 +6,9 @@ export default class TipOTD extends Component{
     render(){
         return (
             <View style={styles.container}>
-                <Text style={styles.header}>Tip of the Day</Text>
+                <Text style={styles.header}>Quote of the Day</Text>
                 <Text style={styles.bodyText}>{this.props.TOTD}</Text>
+                
             </View>
         );
     }
