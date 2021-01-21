@@ -166,6 +166,7 @@ export default function App(props) {
     // Establish firebase authentication observer
     firebase.auth().onAuthStateChanged(async (user) => {
       setIsLoading(true);
+      // If user exists after the auth state has changed
       if (user) {
         console.log("Logged in as:", user.email);
         await updateAuthContext(user.uid, isAppConnected);
@@ -174,9 +175,9 @@ export default function App(props) {
         // if (authUser.newUser) {
         //   setAuthNavState('InitialAssessment');
         // }
+        // Remember this login, save streak data
         firebase.database().ref('users/' + user.uid + '/logins/').once('value').then(s => {
           let currentDate = Date.now();
-          
           let loginData = s.val;
           let newStreak = 1;
           let perfectWeek = 0;
@@ -207,6 +208,7 @@ export default function App(props) {
       }
     });
 
+    // Check firebase connection status
     firebase.database().ref('.info/connected').on('value', s => {
       if (s.val() === true) {
         setIsAppConnected(true);
