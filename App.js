@@ -35,6 +35,7 @@ import JournalEntry from './screens/JournalEntry';
 
 import { AsyncStorage } from 'react-native';
 import { InputGroup } from 'native-base';
+import AdminPanel from './components/admin/AdminPanel';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -96,6 +97,10 @@ export default function App(props) {
           name="InitialAssessment"
           component={QuizScreen}
           initialParams={{ quizName: 'initialAssessment' }}
+        />
+        <homeStack.Screen
+          name="AdminPanel"
+          component={AdminPanel}
         />
         
       </homeStack.Navigator>
@@ -231,7 +236,8 @@ export default function App(props) {
         uid: uid,
         firstName: data.firstName,
         lastName: data.lastName,
-        email: data.email
+        email: data.email,
+        admin: data.admin
       };
       // Store firebase data locally
       AsyncStorage.setItem('userData', JSON.stringify(userData));

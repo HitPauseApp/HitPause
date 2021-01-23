@@ -64,7 +64,7 @@ export default function HomeScreen(props) {
       <View style={styles.imageContainer}>
         <ImageBackground style={ styles.image }  
           source={require('../assets/images/homepage.jpg')}>
-          <WelcomeBanner name={user.firstName}></WelcomeBanner>
+          <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner>
         </ImageBackground>
       </View>
 
