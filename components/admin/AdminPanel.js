@@ -29,12 +29,14 @@ export default function AdminPanel(props) {
         let outputFlags = tallyOutputFlags(data);
         let topThree = getHighsAndLows(outputFlags, 3, 0)[0];
         let suggestions = randomizeSuggestions(topThree);
-        totals[suggestions[0]].testTally = (totals[suggestions[0]].testTally || 0) + 3;
-        totals[suggestions[1]].testTally = (totals[suggestions[1]].testTally || 0) + 2;
-        totals[suggestions[2]].testTally = (totals[suggestions[2]].testTally || 0) + 1;
+        totals[suggestions[0]].tally1 = (totals[suggestions[0]].tally1 || 0) + 1;
+        totals[suggestions[1]].tally2 = (totals[suggestions[1]].tally2 || 0) + 1;
+        totals[suggestions[2]].tally3 = (totals[suggestions[2]].tally3 || 0) + 1;
       }
       // For each result, tally the first, second, and third suggestions
-      console.log(Object.entries(totals).map(e => { return { [e[0]]: e[1].testTally } }));
+      console.log(Object.entries(totals).map(e => {
+        return { [e[0]]: `1: ${e[1].tally1}, 2: ${e[1].tally2}, 3: ${e[1].tally3}` }
+      }));
     }
     else if (test == 'initial') {
       console.log('yeet');
