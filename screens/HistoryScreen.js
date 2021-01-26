@@ -17,16 +17,17 @@ export default function HistoryScreen(props) {
   const [currentReview, setCurrentReview] = React.useState(null);
 
   React.useEffect(() => {
+    // On component load, query firebase for the user's suggestions
     firebase.database().ref(`users/${user.uid}/profile/quizHistory/incidentQuestionnaire`).on('value', (s) => {
+      // Get the response from the firebase query, set the id attribute, and set the userSuggestions var
       let allUserSuggestions = s.val() || {};
-      for (const key in allUserSuggestions) {
-        allUserSuggestions[key].id = key;
-      }
+      for (const key in allUserSuggestions) allUserSuggestions[key].id = key;
       setUserSuggestions(Object.values(allUserSuggestions));
     });
   }, []);
 
   function handleRatingChanged(id, rating) {
+    // Update the suggestion's rating
     firebase.database().ref(`users/${user.uid}/profile/quizHistory/incidentQuestionnaire/${id}`).update({
       starRating: rating
     });
@@ -43,13 +44,8 @@ export default function HistoryScreen(props) {
   }
 
   function reviewSuggestion(id) {
-    let review = {};
-    for (const key in userSuggestions) {
-      if (userSuggestions[key].id == id) {
-        review = userSuggestions[key];
-        break;
-      }
-    }
+    // Find the review by its id, add some more information, and set currentReview
+    let review = userSuggestions[userSuggestions.findIndex(s => s.id == id)];
     review.fullSuggestion = hitpause.suggestions[review.suggestion];
     review.id = id;
     setCurrentReview(review);
@@ -64,6 +60,7 @@ export default function HistoryScreen(props) {
   }
 
   function renderSuggestion({ item }) {
+    // Render a button for a specific suggestion
     let suggestion = hitpause.suggestions[item.suggestion] || {};
     return (
       <TouchableOpacity style={styles.suggestionBlock} onPress={() => reviewSuggestion(item.id)}>

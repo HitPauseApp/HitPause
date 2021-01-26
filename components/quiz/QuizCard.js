@@ -27,8 +27,8 @@ export default function QuizCard(props) {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [outputSuggestions, setOutputSuggestions] = React.useState(null);
 
-  // Updates data for quiz when a response is selected or changes
   function updateQuizData(data, flags) {
+    // Updates data for quiz when a response is selected or changes
     let dataUpdate = [...quizData];
     let effectsUpdate = [...quizEffects];
     dataUpdate[quizIndex] = data;
@@ -40,24 +40,19 @@ export default function QuizCard(props) {
 
   function handleSubmission() {
     // Sanitize input data
-    for (const key in quizData) {
-      if (typeof quizData[key] === 'undefined') quizData[key] = '';
-    }
+    for (const key in quizData) if (typeof quizData[key] === 'undefined') quizData[key] = '';
 
-    // Check for quiz type
-    // Initial Assessment submitted
+    // If the quiz is the initial Assessment submitted
     if (props.quizName == 'initialAssessment') {
       let data = {};
       // For each object in the effects array
       for (const key in quizEffects) {
-        // For each property in the flag object
-        for (const traitFlag in quizEffects[key]) {
-          data[traitFlag] = quizEffects[key][traitFlag];
-        }
+        // For each property in the flag object, add it to the data object
+        for (const traitFlag in quizEffects[key]) data[traitFlag] = quizEffects[key][traitFlag];
       }
       firebase.database().ref(`users/${user.uid}/profile/traits`).set(data);
     }
-    // Incident Questionnaire submitted
+    // If it was the incident Questionnaire submitted
     else {
       // let suggestion = this.randomizeSuggestions(topThree);
       // console.log(suggestion);
@@ -66,14 +61,17 @@ export default function QuizCard(props) {
       // this.setState({ outputSuggestion3: this.context.suggestions[suggestion[2]] });
       // this.setState({ modalVisible: true });
 
+      // Tally the output flags, filter for the three highest, and randomize them
       let outputFlags = tallyOutputFlags(quizEffects);
       let topThree = getHighsAndLows(outputFlags, 3, 0)[0];
       let suggestions = randomizeSuggestions(topThree);
+      // Set the outputSuggestions object with the randomized suggestions
       setOutputSuggestions({
         suggestion_1: hitpause.suggestions[suggestions[0]],
         suggestion_2: hitpause.suggestions[suggestions[1]],
         suggestion_3: hitpause.suggestions[suggestions[2]]
       });
+      // Save the results to firebase
       firebase.database().ref(`users/${user.uid}/profile/quizHistory/incidentQuestionnaire`).push({
         // TODO: Make work with multiple suggestions
         suggestion: suggestions[0],
@@ -91,21 +89,22 @@ export default function QuizCard(props) {
     for (const key in flags) {
       // For each property in the flag object
       for (const flagKey in flags[key]) {
-        // Flag has a special behavior
+        // If we are affecting the highest flags
         if (flagKey.includes('_highest_')) {
           let count = parseInt(flagKey.replace('_highest_', ''));
           modifiers.push({ type: 'high', count: count, amount: parseFloat(flags[key][flagKey]) });
-        } else if (flagKey.includes('_lowest_')) {
+        }
+        // If we are affecting the lowest flags
+        else if (flagKey.includes('_lowest_')) {
           let count = parseInt(flagKey.replace('_lowest_', ''));
           modifiers.push({ type: 'low', count: count, amount: parseFloat(flags[key][flagKey]) });
-
-          // Flags of this type already exist, will sum
-        } else if (Object.keys(flags).includes(flagKey)) {
-          outputFlags[flagKey] = parseFloat(flags[flagKey]) + parseFloat(flags[key][flagKey]);
-          // Otherwise, add normally
-        } else {
-          outputFlags[flagKey] = parseFloat(flags[key][flagKey]);
         }
+        // If flags of this type already exist, sum them
+        else if (Object.keys(flags).includes(flagKey)) {
+          outputFlags[flagKey] = parseFloat(flags[flagKey]) + parseFloat(flags[key][flagKey]);
+        }
+        // Otherwise, add normally
+        else outputFlags[flagKey] = parseFloat(flags[key][flagKey]);
       }
     }
 
@@ -119,9 +118,7 @@ export default function QuizCard(props) {
         modifiedFlags = getHighsAndLows(outputFlags, 0, modifiers[key].count)[1];
       }
       // Apply changes to those flags
-      for (const flagKey in modifiedFlags) {
-        modifiedFlags[flagKey] = modifiedFlags[flagKey] + modifiers[key].amount;
-      }
+      for (const flagKey in modifiedFlags) modifiedFlags[flagKey] = modifiedFlags[flagKey] + modifiers[key].amount;
       outputFlags = { ...outputFlags, ...modifiedFlags };
     }
     return outputFlags;
@@ -173,6 +170,7 @@ export default function QuizCard(props) {
   }
 
   function closeAndRedirect() {
+    // Reset all variables to prepare for next quiz
     props.navigation.navigate('Home');
     setQuizIndex(0);
     setQuizData([]);
