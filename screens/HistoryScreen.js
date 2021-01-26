@@ -56,6 +56,13 @@ export default function HistoryScreen(props) {
     setVisible(true);
   }
 
+  function removeSuggestion(){
+    setVisible(false);
+    if(currentReview.starRating >= 0.5){
+
+    }
+  }
+
   function renderSuggestion({ item }) {
     let suggestion = hitpause.suggestions[item.suggestion] || {};
     return (
@@ -123,7 +130,7 @@ export default function HistoryScreen(props) {
       <Portal>
         {
           !!currentReview &&
-          <Modal visible={visible} onDismiss={() => setVisible(false)} contentContainerStyle={styles.reviewModal}>
+          <Modal visible={visible} onDismiss={removeSuggestion} contentContainerStyle={styles.reviewModal}>
             <Text style={styles.modalText}>{currentReview.fullSuggestion.text}</Text>
             <Text style={styles.modalText}>Leave a review!</Text>
             <StarRating
@@ -220,17 +227,19 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 8,
     backgroundColor: '#fff',
-    padding: 10,
+    //padding: 10,
     margin: 10
   },
   smallText: {
     fontSize: 10,
     color: '#333',
     alignSelf: 'center',
-    textAlign: 'center'
+    textAlign: 'center',
+    padding: 5
+    
   },
   starRating: {
-    width: '50%'
+    
   },
 
 });
