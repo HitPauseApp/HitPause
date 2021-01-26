@@ -15,8 +15,6 @@ export default function HomeScreen(props) {
 
   const [visible, setVisible] = React.useState(false);
   const [count, setCount] = React.useState(0);
-  const [streak, setStreak] = React.useState(1);
-  const [perfectWeek, setPerfectWeek] = React.useState(0);
   const [screenText, setScreenText] = React.useState([
     "Our goal is to provide each and every user with their own tips and tricks on how to better deal with their anxiety. Click next to take the virtual tour and get started",
     "The journal page is designed to help relieve stress through writing. Hit the pen and paper to start a new entry, or swipe left to delete a previously existing entry",
@@ -30,17 +28,7 @@ export default function HomeScreen(props) {
     "History"
   ]);
 
-  React.useEffect(() => {
-    firebase.database().ref('users/' + user.uid + '/logins/').once('value').then(s => {
-      setStreak(s.val().streak)
-    })
-  }, []);
-
-  React.useEffect(() => {
-    firebase.database().ref('users/' + user.uid + '/logins/').once('value').then(s => {
-      setPerfectWeek(s.val().week)
-    })
-  }, []);
+  
 
   const showModal = () => setVisible(true);
 
