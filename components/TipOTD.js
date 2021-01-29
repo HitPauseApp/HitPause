@@ -8,7 +8,6 @@ export default class TipOTD extends Component{
             <View style={styles.container}>
                 <Text style={styles.header}>Quote of the Day</Text>
                 <Text style={styles.bodyText}>{this.props.TOTD}</Text>
-                
             </View>
         );
     }
