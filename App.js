@@ -237,7 +237,8 @@ export default function App(props) {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
-        admin: data.admin
+        admin: data.admin,
+        ref: firebase.database().ref(`users/${uid}`)
       };
       // Store firebase data locally
       AsyncStorage.setItem('userData', JSON.stringify(userData));
@@ -258,7 +259,8 @@ export default function App(props) {
   // Loads data used by the app (non-account-specific)
   async function getAppData() {
     let suggestions = await firebase.database().ref('hitpause/suggestions').once('value').then(s => s.val());
-    return {suggestions: suggestions};
+    let traits = await firebase.database().ref('hitpause/traits').once('value').then(s => s.val());
+    return { suggestions, traits };
   }
 
   // TODO: A lot of this structure probably ought to be broken out into separate files

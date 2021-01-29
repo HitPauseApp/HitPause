@@ -39,7 +39,7 @@ export default function QuizCard(props) {
     console.log(data, flags);
   }
 
-  function handleSubmission() {
+  async function handleSubmission() {
     // Sanitize input data
     for (const key in quizData) if (typeof quizData[key] === 'undefined') quizData[key] = '';
 
@@ -51,19 +51,20 @@ export default function QuizCard(props) {
         // For each property in the flag object, add it to the data object
         for (const traitFlag in quizEffects[key]) data[traitFlag] = quizEffects[key][traitFlag];
       }
-      firebase.database().ref(`users/${user.uid}/profile/traits`).set(data);
+      user.ref.child('profile/traits').set(data);
     }
     // If it was the incident Questionnaire submitted
     else {
-      // let suggestion = this.randomizeSuggestions(topThree);
-      // console.log(suggestion);
-      // this.setState({ outputSuggestion1: this.context.suggestions[suggestion[0]] });
-      // this.setState({ outputSuggestion2: this.context.suggestions[suggestion[1]] });
-      // this.setState({ outputSuggestion3: this.context.suggestions[suggestion[2]] });
-      // this.setState({ modalVisible: true });
+      // Get the user's traits
+      let userTraits = Object.keys(await user.ref.child('profile/traits').once('value').then(s => s.val()) || {});
+      let traitEffects = [];
+      for (const key in userTraits) {
+        let effects = (hitpause.traits[userTraits[key]] || {}).effects;
+        if (effects) traitEffects.push(effects);
+      }
 
       // Tally the output flags, filter for the three highest, and randomize them
-      let outputFlags = h.tallyOutputFlags(quizEffects);
+      let outputFlags = h.tallyOutputFlags([...quizEffects, ...traitEffects]);
       let topThree = h.getHighsAndLows(outputFlags, 3, 0)[0];
       let suggestions = h.randomizeSuggestions(topThree);
       // Set the outputSuggestions object with the randomized suggestions
@@ -73,7 +74,7 @@ export default function QuizCard(props) {
         suggestion_3: hitpause.suggestions[suggestions[2]]
       });
       // Save the results to firebase
-      firebase.database().ref(`users/${user.uid}/profile/quizHistory/incidentQuestionnaire`).push({
+      user.ref.child(`profile/quizHistory/incidentQuestionnaire`).push({
         // TODO: Make work with multiple suggestions
         suggestion: suggestions[0],
         timestamp: Date.now(),
