@@ -64,18 +64,10 @@ export default function HomeScreen(props) {
       <View style={styles.imageContainer}>
         <ImageBackground style={ styles.image }  
           source={require('../assets/images/homepage.jpg')}>
-          <WelcomeBanner name={user.firstName}></WelcomeBanner>
+          <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner>
         </ImageBackground>
       </View>
 
-      <View style={styles.dailyTrackerContainer}>
-        <View style = {styles.weekView}>
-          <Text style={styles.dailyTrackerText}>Streak: {streak}</Text>
-          <Text style={styles.dailyTrackerText}>|</Text>
-          <Text style={styles.dailyTrackerText}>Weeks: {perfectWeek}</Text>
-        </View>
-        
-      </View>
       <Text style={styles.text2}>Need to adjust your assessment?</Text>
       <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
         <Text style={styles.text}>Retake Assessment</Text>
@@ -116,32 +108,6 @@ const styles = StyleSheet.create({
   },
   image: {
     height: RFValue(180),
-  },
-
-  dailyTrackerContainer: {
-    marginTop: 20,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    borderRadius: 30,
-    height: RFValue(70),
-    width: '95%',
-    backgroundColor: '#132090',
-    padding: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-    
-  },
-
-  dailyTrackerText: {
-    color: 'white',
-    fontFamily: 'Poppins-Medium',
-    fontSize: 20,
-    textAlign: 'center',
-  },
-
-  weekView: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly'
   },
   
   tourModal:{
