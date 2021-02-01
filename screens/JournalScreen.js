@@ -39,9 +39,9 @@ export default function JournalScreen(props) {
   }
 
   function searchEntries(searchText) {
-    if (searchText != '') {
+    if (searchText != '' && entries) {
       let filteredEntries = Object.values(entries)
-      .filter((entry) => (entry.title + entry.text).toLowerCase().indexOf(searchText.toLowerCase()) >= 0);
+      .filter((entry) => (entry[1].title + entry[1].text).toLowerCase().indexOf(searchText.toLowerCase()) >= 0);
       setDisplayEntries(filteredEntries);
     } else {
       setDisplayEntries(entries);
