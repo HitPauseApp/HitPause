@@ -1,32 +1,52 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-import { StyleSheet, View, Text} from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
-async function getQOTDFromApi() {
-    try {
-        let response = await fetch('https://zenquotes.io/api/today');
-        let responseJson = await response.json();
-        return responseJson.q;
-    } catch (error) {
-        console.error(error);
+export default class TipOTD extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { isLoading: true };
+      }
+
+    getQOTDFromApi() {
+        return fetch('https://cors-anywhere.herokuapp.com/https://zenquotes.io/api/today')
+            .then(response => response.json())
+            .then(responseJson => {
+                this.setState({
+                    isLoading: false,
+                    jsonData: responseJson[0].q
+                });
+                console.log(responseJson[0].q);
+                // return responseJson.q;
+            }).catch(error => {
+                console.error(error);
+            });
     }
-}
 
+    componentDidMount(){
+        this.getQOTDFromApi();
+    }
 
+    render() {
+        if (this.state.isLoading) {
+            return (
+              <View style={{ flex: 1, padding: 20 }}>
+                <Text>Loading...</Text>
+              </View>
+            );
+          }
 
-export default class TipOTD extends Component{
-    render(){
         return (
             <View style={styles.container}>
                 <Text style={styles.header}>Quote of the Day</Text>
-                <Text style={styles.bodyText}>{getQOTDFromApi}</Text>
+                <Text style={styles.bodyText}>{this.state.jsonData}</Text>
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         backgroundColor: '#132090',
         justifyContent: 'center',
         alignContent: 'center',
@@ -37,13 +57,13 @@ const styles = StyleSheet.create({
         bottom: 10,
         margin: 10
     },
-    header:{
+    header: {
         color: 'white',
         fontFamily: 'Poppins-Medium',
         fontSize: 24,
         textAlign: 'center'
     },
-    bodyText:{
+    bodyText: {
         color: 'white',
         fontFamily: 'Poppins-Extra-Light',
         marginTop: 5,
