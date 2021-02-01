@@ -59,7 +59,7 @@ export default function Account(props) {
       >Sign Out</Text>
       </View>
 
-      <SpotifyButton href="https://open.spotify.com/playlist/37i9dQZF1DX9B1hu73DioC?si=3i6KmA--RBi9aVggiR0z3Q"></SpotifyButton>
+      {/*<SpotifyButton href="https://open.spotify.com/playlist/37i9dQZF1DX9B1hu73DioC?si=3i6KmA--RBi9aVggiR0z3Q"></SpotifyButton>*/}
       
       <Text
         style={styles.deleteData}
@@ -110,6 +110,6 @@ const styles = StyleSheet.create({
   deleteData: {
     color: 'white',
     alignSelf: 'center',
-    marginTop: 20
+    marginBottom: 10
   }
 });

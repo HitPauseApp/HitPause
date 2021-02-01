@@ -2,14 +2,15 @@ import React, {Component} from 'react';
 
 import { StyleSheet, View, Text} from 'react-native';
 
-const getQOTDFromApi = async () => {
+async function getQOTDFromApi() {
     try {
-      let response = await fetch('https://zenquotes.io/api/today')
-      return response;
+        let response = await fetch('https://zenquotes.io/api/today');
+        let responseJson = await response.json();
+        return responseJson.q;
     } catch (error) {
-       console.error(error);
+        console.error(error);
     }
-};
+}
 
 
 
