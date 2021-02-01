@@ -14,9 +14,9 @@ export default class TipOTD extends Component {
             .then(responseJson => {
                 this.setState({
                     isLoading: false,
-                    jsonData: responseJson[0].q
+                    jsonData: responseJson[0],
                 });
-                console.log(responseJson[0].q);
+                console.log(responseJson[0]);
                 // return responseJson.q;
             }).catch(error => {
                 console.error(error);
@@ -39,7 +39,11 @@ export default class TipOTD extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.header}>Quote of the Day</Text>
-                <Text style={styles.bodyText}>{this.state.jsonData}</Text>
+                <Text style={styles.bodyText}>{this.state.jsonData.q}</Text>
+                <Text style={styles.bodyText}>- {this.state.jsonData.a}</Text>
+                <Text style={styles.attributionText}>Inspirational quotes provided by{"\n"}
+                    <a href="https://zenquotes.io/" style={{color: 'white'}} target="_blank">ZenQuotes API</a>
+                </Text>
             </View>
         );
     }
@@ -61,12 +65,23 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'Poppins-Medium',
         fontSize: 24,
-        textAlign: 'center'
+        textAlign: 'center',
+        textDecorationLine: 'underline'
     },
     bodyText: {
         color: 'white',
-        fontFamily: 'Poppins-Extra-Light',
-        marginTop: 5,
+        fontFamily: 'Poppins-Light',
+        marginTop: 15,
+        fontSize: 20,
         textAlign: 'center',
     },
+    attributionText: {
+        color: 'white',
+        fontFamily: 'Poppins-Extra-Light',
+        marginTop: 5,
+        fontSize: 10,
+        textAlign: 'center',
+        marginTop: 25
+    },
+
 });
