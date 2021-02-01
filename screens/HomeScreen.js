@@ -46,21 +46,24 @@ export default function HomeScreen(props) {
     }
   }
 
-  const TOTD = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar pellentesque ex at maximus. Nam feugiat rhoncus accumsan. ';
+  
+  
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <ImageBackground style={ styles.image }  
-          source={require('../assets/images/homepage.jpg')}>
-          <WelcomeBanner name={user.firstName}></WelcomeBanner>
-        </ImageBackground>
+      <ImageBackground style={ styles.image }  
+        source={require('../assets/images/homepage.jpg')}>
+        <WelcomeBanner name={user.firstName}></WelcomeBanner>
+      </ImageBackground>
+      
+      <View style={styles.badgeContainer}>
+
       </View>
 
       <Text style={styles.text2}>Need to adjust your assessment?</Text>
       <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
         <Text style={styles.text}>Retake Assessment</Text>
       </TouchableOpacity>
-      <TipOTD TOTD={TOTD}></TipOTD>
+      <TipOTD></TipOTD>
       <Portal>
         <Modal visible={visible} dismissable={false} contentContainerStyle={styles.tourModal}>
           <Text style={styles.modalHeader}>{screenHead[count]}</Text>
@@ -95,9 +98,18 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   image: {
-    height: RFValue(180),
+    height: RFValue(130),
   },
-  
+  badgeContainer: {
+    backgroundColor: '#132090',
+    justifyContent: 'center',
+    alignContent: 'center',
+    width: '80%',
+    alignSelf: 'center',
+    borderRadius: 10,
+    padding: 50,
+    marginTop: 50
+  },
   tourModal:{
     backgroundColor: '#132090',
     justifyContent: 'center',
