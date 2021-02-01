@@ -18,10 +18,6 @@ import firebase from './Firebase';
 import { AuthContext } from './AuthContext.js';
 import { AppContext } from './AppContext';
 
-// TODO: Remove?
-// import BottomTabNavigator from './navigation/BottomTabNavigator';
-// import useLinking from './navigation/useLinking';
-
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
 import QuizScreen from './screens/QuizScreen';
@@ -43,8 +39,8 @@ const JournalStack = createStackNavigator();
 const homeStack = createStackNavigator();
 
 export default function App(props) {
-  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoadingApp, setIsLoadingApp] = React.useState(true);
+  const [isLoadingUser, setIsLoadingUser] = React.useState(false);
   const [isAppConnected, setIsAppConnected] = React.useState(false);
   const [preAuthNavState, setPreAuthNavState] = React.useState('Login');
   const [authNavState, setAuthNavState] = React.useState('Home');
@@ -161,7 +157,7 @@ export default function App(props) {
         // We might want to provide this error information to an error reporting service
         console.warn(e);
       } finally {
-        setLoadingComplete(true);
+        setIsLoadingApp(false);
         SplashScreen.hide();
       }
     }
@@ -170,7 +166,7 @@ export default function App(props) {
 
     // Establish firebase authentication observer
     firebase.auth().onAuthStateChanged(async (user) => {
-      setIsLoading(true);
+      setIsLoadingUser(true);
       // If user exists after the auth state has changed
       if (user) {
         console.log("Logged in as:", user.email);
@@ -206,10 +202,10 @@ export default function App(props) {
         });
         // handleSpotifyLogin();
         setHitpause(await getAppData());
-        setIsLoading(false);
+        setIsLoadingUser(false);
       } else {
         setAuthUser(null);
-        setIsLoading(false);
+        setIsLoadingUser(false);
       }
     });
 
@@ -265,118 +261,118 @@ export default function App(props) {
 
   // TODO: A lot of this structure probably ought to be broken out into separate files
   //       Doing so might fix the 'state change on unmounted componente' error
-  if (!isLoadingComplete && !props.skipLoadingScreen) {
-    return null;
-  } else if (isLoading) {
-    return <Loading></Loading>;
-  } else {
+  // Display loading screen if app or user is being loaded
+  if (isLoadingApp || isLoadingUser) return <Loading></Loading>;
+  // If authUser is null, display pre-login screens
+  else if (authUser == null) {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName={preAuthNavState} headerMode="none">
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
+  // Otherwise, we are logged in
+  else {
     return (
       <AuthContext.Provider value={authUser}>
         <PaperProvider>
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-            {/* Display authentication screens or app screens based on userToken */}
-            { authUser == null ? (
-              <NavigationContainer>
-                <Stack.Navigator initialRouteName={preAuthNavState} headerMode="none">
-                  <Stack.Screen name="Login" component={Login} />
-                  <Stack.Screen name="SignUp" component={SignUp} />
-                  <Stack.Screen name="ResetPassword" component={ResetPassword} />
-                </Stack.Navigator>
-              </NavigationContainer>
-            ) : (
-              <AppContext.Provider value={hitpause}>
+            <AppContext.Provider value={hitpause}>
 
-                <NavigationContainer>
-                  <Tab.Navigator 
+              <NavigationContainer>
+                <Tab.Navigator 
                   initialRouteName={authNavState} 
                   activeColor='#6050DC'
                   inactiveColor='black'
                   barStyle={{ backgroundColor: 'white' }}
-                  >
-                    <Tab.Screen
-                      name="Home"
-                      component={homeStackScreen}
-                      options={{
-                        title: 'Home',
-                        tabBarLabel: false,
-                        tabBarIcon: ({ color}) => (
-                          <MaterialCommunityIcons name="home" color={color} size={26} />
-                        ),
-                        // <TabBarIcon focused={focused} name="md-home" />,
-                      }}
-                    />
-                    <Tab.Screen
-                      name="Journal"
-                      component={JournalStackScreen}
-                      options={{
-                        title: 'Journal',
-                        tabBarLabel: false,
-                        tabBarIcon: ({ color }) => (
-                         <MaterialCommunityIcons name="book" color={color} size={26} />
-                        ),
-                        // <TabBarIcon focused={focused} name="md-book" />,
-                      }}
-                    />
-                    <Tab.Screen
-                      name="PauseQuiz"
-                      component={QuizScreen}
-                      initialParams={{ quizName: 'incidentQuestionnaire' }}
-                      options={{
-                        title: 'HitPause Quiz',
-                        tabBarLabel: false,
-                        tabBarIcon: ({ color }) => (
-                          <MaterialCommunityIcons name="pause" color={color} size={26} />
-                        ),
-                        // <TabBarIcon focused={focused} name="md-pause" />,
-                      }}
-                    />
-                    <Tab.Screen
-                      name="History"
-                      component={HistoryScreen}
-                      options={{
-                        title: 'History',
-                        tabBarLabel: false,
-                        tabBarIcon: ({ color }) => (
-                          <MaterialCommunityIcons name="bookmark" color={color} size={26} />
-                        ),
-                        // <TabBarIcon focused={focused} name="md-bookmark" />,
-                      }}
-                    />
-                    <Tab.Screen
-                      name="Account"
-                      component={Account}
-                      options={{
-                        title: 'Account',
-                        tabBarLabel: false,
-                        tabBarIcon: ({ color }) =>(
-                          <MaterialCommunityIcons name="settings" color={color} size={26} />
-                        ),
-                        //  <TabBarIcon focused={focused} name="md-settings" />,
-                      }}
-                    />
-                    {/* Hidden tabs */}
-                    {/* <Tab.Screen
-                      name='InitialAssessment'
-                      component={QuizScreen}
-                      initialParams={{ quizName: 'initialAssessment' }}
-                      // screenOptions={{tabBarButton:() => any}}
-                      // options={{
-                      //   tabBarButton: () => null,
-                      // }}
-                    /> */}
-                    {/* <Tab.Screen
-                      name='JournalEntry'
-                      component={JournalEntry}
-                      options={{
-                        tabBarVisible: false,
-                        tabBarButton: () => null
-                      }}
-                    /> */}
-                  </Tab.Navigator>
-                </NavigationContainer>
-              </AppContext.Provider>
-            )}
+                >
+                  <Tab.Screen
+                    name="Home"
+                    component={homeStackScreen}
+                    options={{
+                      title: 'Home',
+                      tabBarLabel: false,
+                      tabBarIcon: ({ color}) => (
+                        <MaterialCommunityIcons name="home" color={color} size={26} />
+                      ),
+                      // <TabBarIcon focused={focused} name="md-home" />,
+                    }}
+                  />
+                  <Tab.Screen
+                    name="Journal"
+                    component={JournalStackScreen}
+                    options={{
+                      title: 'Journal',
+                      tabBarLabel: false,
+                      tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="book" color={color} size={26} />
+                      ),
+                      // <TabBarIcon focused={focused} name="md-book" />,
+                    }}
+                  />
+                  <Tab.Screen
+                    name="PauseQuiz"
+                    component={QuizScreen}
+                    initialParams={{ quizName: 'incidentQuestionnaire' }}
+                    options={{
+                      title: 'HitPause Quiz',
+                      tabBarLabel: false,
+                      tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="pause" color={color} size={26} />
+                      ),
+                      // <TabBarIcon focused={focused} name="md-pause" />,
+                    }}
+                  />
+                  <Tab.Screen
+                    name="History"
+                    component={HistoryScreen}
+                    options={{
+                      title: 'History',
+                      tabBarLabel: false,
+                      tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="bookmark" color={color} size={26} />
+                      ),
+                      // <TabBarIcon focused={focused} name="md-bookmark" />,
+                    }}
+                  />
+                  <Tab.Screen
+                    name="Account"
+                    component={Account}
+                    options={{
+                      title: 'Account',
+                      tabBarLabel: false,
+                      tabBarIcon: ({ color }) =>(
+                        <MaterialCommunityIcons name="settings" color={color} size={26} />
+                      ),
+                      //  <TabBarIcon focused={focused} name="md-settings" />,
+                    }}
+                  />
+                  {/* Hidden tabs */}
+                  {/* <Tab.Screen
+                    name='InitialAssessment'
+                    component={QuizScreen}
+                    initialParams={{ quizName: 'initialAssessment' }}
+                    // screenOptions={{tabBarButton:() => any}}
+                    // options={{
+                    //   tabBarButton: () => null,
+                    // }}
+                  /> */}
+                  {/* <Tab.Screen
+                    name='JournalEntry'
+                    component={JournalEntry}
+                    options={{
+                      tabBarVisible: false,
+                      tabBarButton: () => null
+                    }}
+                  /> */}
+                </Tab.Navigator>
+              </NavigationContainer>
+            </AppContext.Provider>
           </View>
         </PaperProvider>
       </AuthContext.Provider>

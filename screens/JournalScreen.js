@@ -14,9 +14,16 @@ export default function JournalScreen(props) {
 
   React.useEffect(() => {
     // TODO: Get and store these locally
-    firebase.database().ref(`users/${user.uid}/journal`).on('value',(s) => {
-      setEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
-      setDisplayEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
+    firebase.database().ref(`users/${user.uid}/journal`).on('value', (s) => {
+      if (s.exists()) {
+        setEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
+        setDisplayEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
+      }
+      // If journal does not exist, set entries to blank arrays
+      else {
+        setEntries([]);
+        setDisplayEntries([]);
+      }
     });
   }, []);
 
