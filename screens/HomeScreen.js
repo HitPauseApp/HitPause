@@ -34,6 +34,7 @@ export default function HomeScreen(props) {
 
   const hideModal = () => setVisible(false);
 
+  //test
 
 
 
@@ -50,13 +51,11 @@ export default function HomeScreen(props) {
   
   return (
     <View style={styles.container}>
-      <ImageBackground style={ styles.image }  
-        source={require('../assets/images/homepage.jpg')}>
-        <WelcomeBanner name={user.firstName}></WelcomeBanner>
-      </ImageBackground>
-      
-      <View style={styles.badgeContainer}>
-
+      <View style={styles.imageContainer}>
+        <ImageBackground style={ styles.image }  
+          source={require('../assets/images/homepage.jpg')}>
+          <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner>
+        </ImageBackground>
       </View>
 
       <Text style={styles.text2}>Need to adjust your assessment?</Text>
