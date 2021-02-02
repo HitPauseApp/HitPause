@@ -26,23 +26,24 @@ import Loading from './screens/Loading';
 import HomeScreen from './screens/HomeScreen';
 import JournalScreen from './screens/JournalScreen';
 import HistoryScreen from './screens/HistoryScreen';
-import Account from './screens/AccountScreen';
 import JournalEntry from './screens/JournalEntry';
+
+import AccountStack from './screens/account/AccountStack';
 
 import { AsyncStorage } from 'react-native';
 import { InputGroup } from 'native-base';
 import AdminPanel from './components/admin/AdminPanel';
+import AppIcons from './components/AppIcons';
 
-const Stack = createStackNavigator();
+const AuthStack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 const JournalStack = createStackNavigator();
-const homeStack = createStackNavigator();
+const HomeStack = createStackNavigator();
 
 export default function App(props) {
   const [isLoadingApp, setIsLoadingApp] = React.useState(true);
   const [isLoadingUser, setIsLoadingUser] = React.useState(false);
   const [isAppConnected, setIsAppConnected] = React.useState(false);
-  const [preAuthNavState, setPreAuthNavState] = React.useState('Login');
   const [authNavState, setAuthNavState] = React.useState('Home');
   // TODO: There's probably a better way to pass these without using state...?
   const [authUser, setAuthUser] = React.useState(null);
@@ -82,24 +83,24 @@ export default function App(props) {
     );
   }
 
-  function homeStackScreen () {
+  function HomeStackScreen() {
     return (
-      <homeStack.Navigator headerMode="none">
-        <homeStack.Screen
+      <HomeStack.Navigator headerMode="none">
+        <HomeStack.Screen
           name="Home"
           component={HomeScreen}
         />
-        <homeStack.Screen
+        <HomeStack.Screen
           name="InitialAssessment"
           component={QuizScreen}
           initialParams={{ quizName: 'initialAssessment' }}
         />
-        <homeStack.Screen
+        <HomeStack.Screen
           name="AdminPanel"
           component={AdminPanel}
         />
         
-      </homeStack.Navigator>
+      </HomeStack.Navigator>
     )
   }
 
@@ -138,9 +139,6 @@ export default function App(props) {
       try {
         SplashScreen.preventAutoHide();
 
-        // Load our initial navigation state
-        // setpreAuthNavState(await getInitialState());
-
         // Load fonts
         await Font.loadAsync({
           ...Ionicons.font,
@@ -171,35 +169,6 @@ export default function App(props) {
       if (user) {
         console.log("Logged in as:", user.email);
         await updateAuthContext(user.uid, isAppConnected);
-        // If user profile does not exist (new user)
-        // TODO: Fix this
-        // if (authUser.newUser) {
-        //   setAuthNavState('InitialAssessment');
-        // }
-        // Remember this login, save streak data
-        firebase.database().ref('users/' + user.uid + '/logins/').once('value').then(s => {
-          let currentDate = Date.now();
-          let loginData = s.val;
-          let newStreak = 1;
-          let perfectWeek = 0;
-          if(loginData){
-            let lastLogin = new Date(loginData.lastLogin);
-            let today = new Date();
-            let yesterday = new Date(today);
-            yesterday.setDate(yesterday.getDate() - 1);
-            if(lastLogin.getDate() == yesterday.getDate() && lastLogin.getMonth() == yesterday.getMonth() && lastLogin.getFullYear() == yesterday.getFullYear()){
-              newStreak = loginData.streak + 1;
-            }
-            if(newStreak % 7 == 0){
-              perfectWeek = loginData.week + 1;
-            }
-          }
-          firebase.database().ref('users/' + user.uid + '/logins/').update({
-            streak: newStreak,
-            lastLogin: currentDate,
-            week: perfectWeek,
-          });
-        });
         // handleSpotifyLogin();
         setHitpause(await getAppData());
         setIsLoadingUser(false);
@@ -234,6 +203,7 @@ export default function App(props) {
         lastName: data.lastName,
         email: data.email,
         admin: data.admin,
+        isNewUser: data.isNewUser,
         ref: firebase.database().ref(`users/${uid}`)
       };
       // Store firebase data locally
@@ -267,11 +237,20 @@ export default function App(props) {
   else if (authUser == null) {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={preAuthNavState} headerMode="none">
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="SignUp" component={SignUp} />
-          <Stack.Screen name="ResetPassword" component={ResetPassword} />
-        </Stack.Navigator>
+        <AuthStack.Navigator headerMode="none">
+          <AuthStack.Screen
+            name="Login"
+            component={Login}
+          />
+          <AuthStack.Screen
+            name="SignUp"
+            component={SignUp}
+          />
+          <AuthStack.Screen
+            name="ResetPassword"
+            component={ResetPassword}
+          />
+        </AuthStack.Navigator>
       </NavigationContainer>
     );
   }
@@ -286,21 +265,20 @@ export default function App(props) {
 
               <NavigationContainer>
                 <Tab.Navigator 
-                  initialRouteName={authNavState} 
+                  initialRouteName='Home'
                   activeColor='#6050DC'
                   inactiveColor='black'
                   barStyle={{ backgroundColor: 'white' }}
                 >
                   <Tab.Screen
                     name="Home"
-                    component={homeStackScreen}
+                    component={HomeStackScreen}
                     options={{
                       title: 'Home',
                       tabBarLabel: false,
-                      tabBarIcon: ({ color}) => (
-                        <MaterialCommunityIcons name="home" color={color} size={26} />
+                      tabBarIcon: ({ color }) => (
+                        <AppIcons name="materialcommunityicons:home" color={color} size={26} />
                       ),
-                      // <TabBarIcon focused={focused} name="md-home" />,
                     }}
                   />
                   <Tab.Screen
@@ -310,9 +288,8 @@ export default function App(props) {
                       title: 'Journal',
                       tabBarLabel: false,
                       tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons name="book" color={color} size={26} />
+                        <AppIcons name="materialcommunityicons:book" color={color} size={26} />
                       ),
-                      // <TabBarIcon focused={focused} name="md-book" />,
                     }}
                   />
                   <Tab.Screen
@@ -323,9 +300,8 @@ export default function App(props) {
                       title: 'HitPause Quiz',
                       tabBarLabel: false,
                       tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons name="pause" color={color} size={26} />
+                        <AppIcons name="materialcommunityicons:pause" color={color} size={26} />
                       ),
-                      // <TabBarIcon focused={focused} name="md-pause" />,
                     }}
                   />
                   <Tab.Screen
@@ -335,41 +311,21 @@ export default function App(props) {
                       title: 'History',
                       tabBarLabel: false,
                       tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons name="bookmark" color={color} size={26} />
+                        <AppIcons name="materialcommunityicons:bookmark" color={color} size={26} />
                       ),
-                      // <TabBarIcon focused={focused} name="md-bookmark" />,
                     }}
                   />
                   <Tab.Screen
                     name="Account"
-                    component={Account}
+                    component={AccountStack}
                     options={{
                       title: 'Account',
                       tabBarLabel: false,
                       tabBarIcon: ({ color }) =>(
-                        <MaterialCommunityIcons name="settings" color={color} size={26} />
+                        <AppIcons name="materialicons:person" color={color} size={26} />
                       ),
-                      //  <TabBarIcon focused={focused} name="md-settings" />,
                     }}
                   />
-                  {/* Hidden tabs */}
-                  {/* <Tab.Screen
-                    name='InitialAssessment'
-                    component={QuizScreen}
-                    initialParams={{ quizName: 'initialAssessment' }}
-                    // screenOptions={{tabBarButton:() => any}}
-                    // options={{
-                    //   tabBarButton: () => null,
-                    // }}
-                  /> */}
-                  {/* <Tab.Screen
-                    name='JournalEntry'
-                    component={JournalEntry}
-                    options={{
-                      tabBarVisible: false,
-                      tabBarButton: () => null
-                    }}
-                  /> */}
                 </Tab.Navigator>
               </NavigationContainer>
             </AppContext.Provider>
