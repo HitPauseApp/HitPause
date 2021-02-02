@@ -27,7 +27,7 @@ export default function Account(props) {
       <View style={styles.category}>
         <AppIcons name="materialicons:person"></AppIcons>
         <Text style={styles.text}>{user.firstName} {user.lastName}</Text>
-        <Text onPress={() => props.navigation.navigate('Traits')}>Traits</Text>
+        <Text onPress={() => props.navigation.navigate('AccountTraits')}>Traits</Text>
       </View>
 
       <View style={styles.separator}></View>

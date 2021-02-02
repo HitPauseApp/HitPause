@@ -6,11 +6,8 @@ import * as Font from 'expo-font';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import TabBarIcon from './components/TabBarIcon';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 
@@ -24,21 +21,19 @@ import QuizScreen from './screens/QuizScreen';
 import ResetPassword from './screens/ResetPassword';
 import Loading from './screens/Loading';
 import HomeScreen from './screens/HomeScreen';
-import JournalScreen from './screens/JournalScreen';
 import HistoryScreen from './screens/HistoryScreen';
-import JournalEntry from './screens/JournalEntry';
-
-import AccountStack from './screens/account/AccountStack';
+import JournalScreen from './screens/journal/JournalScreen';
+import JournalEntry from './screens/journal/JournalEntry';
+import AccountSummary from './screens/account/AccountSummary';
+import AccountTraits from './screens/account/AccountTraits';
 
 import { AsyncStorage } from 'react-native';
-import { InputGroup } from 'native-base';
 import AdminPanel from './components/admin/AdminPanel';
 import AppIcons from './components/AppIcons';
 
 const AuthStack = createStackNavigator();
-const Tab = createMaterialBottomTabNavigator();
-const JournalStack = createStackNavigator();
-const HomeStack = createStackNavigator();
+const MainStack = createStackNavigator();
+const HomeTab = createMaterialBottomTabNavigator();
 
 export default function App(props) {
   const [isLoadingApp, setIsLoadingApp] = React.useState(true);
@@ -58,69 +53,23 @@ export default function App(props) {
     WebBrowser.maybeCompleteAuthSession();
   }
 
-  function JournalStackScreen(navigation, route) {
-
-    // if (route.state && route.state.index > 0) {
-    //   navigation.setOptions= {options:{tabBarVisible:false}}
-    // }
-    // else {
-    //   navigation.setOptions= {options:{tabBarVisible:true}}
-    // }
-    return (
-       <JournalStack.Navigator headerMode="none">
-        <JournalStack.Screen
-          name="JournalScreen"
-          component={JournalScreen}
-        />
-        <JournalStack.Screen
-          name="JournalEntry"
-          component={JournalEntry}
-          options={{
-            tabBarVisible:false
-          }}
-        />
-      </JournalStack.Navigator>
-    );
-  }
-
-  function HomeStackScreen() {
-    return (
-      <HomeStack.Navigator headerMode="none">
-        <HomeStack.Screen
-          name="Home"
-          component={HomeScreen}
-        />
-        <HomeStack.Screen
-          name="InitialAssessment"
-          component={QuizScreen}
-          initialParams={{ quizName: 'initialAssessment' }}
-        />
-        <HomeStack.Screen
-          name="AdminPanel"
-          component={AdminPanel}
-        />
-        
-      </HomeStack.Navigator>
-    )
-  }
-
   //Sign in with Implicit Grant flow. NO USER DATA IS ACCESSIBLE HERE
   let handleSpotifyLogin = async () => {
     // let redirectUrl = AuthSession.getRedirectUrl();
     let results = await AuthSession.startAsync({
       authUrl:
-      `https://accounts.spotify.com/authorize?client_id=${config.clientId}&redirect_uri=${config.redirectUri}&scope=user-read-email&response_type=token`,
+        `https://accounts.spotify.com/authorize?client_id=${config.clientId}&redirect_uri=${config.redirectUri}&scope=user-read-email&response_type=token`,
       returnUrl: config.redirectUri
     });
     //return the access token
     console.log(results);
-    if(results.type === 'success' && !!results.params.access_token){
+    if (results.type === 'success' && !!results.params.access_token) {
       saveSpotifyToken(results.params.access_token);
-    }else if (results.type === 'dismiss'){
+    } else if (results.type === 'dismiss') {
       console.error("Spotify Signin & Token Generation Failed (App.js -> handleSpotifyLogin). Results were 'dismissed' (signin window closed)");
-    }else if (results.type === 'error'){
+    } else if (results.type === 'error') {
       console.error("Spotify Signin & Token Generation Failed (App.js -> handleSpotifyLogin). Results returned an error (probably a 404/401 to Spotify)")
-    }else{
+    } else {
       console.error("Unkown Failure... Spotify Signin & Token Generation Failed (App.js -> handleSpotifyLogin)");
     }
   };
@@ -229,6 +178,64 @@ export default function App(props) {
     return { suggestions, traits };
   }
 
+  function HomeTabNavigator() {
+    return (
+      <HomeTab.Navigator
+        initialRouteName='Home'
+        activeColor='#6050DC'
+        inactiveColor='black'
+        barStyle={{ backgroundColor: 'white' }}
+      >
+        <HomeTab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            title: 'Home',
+            tabBarLabel: false,
+            tabBarIcon: ({ color }) => <AppIcons name="materialcommunityicons:home" color={color} size={26} />,
+          }}
+        />
+        <HomeTab.Screen
+          name="Journal"
+          component={JournalScreen}
+          options={{
+            title: 'Journal',
+            tabBarLabel: false,
+            tabBarIcon: ({ color }) => <AppIcons name="materialcommunityicons:book" color={color} size={26} />,
+          }}
+        />
+        <HomeTab.Screen
+          name="PauseQuiz"
+          component={QuizScreen}
+          initialParams={{ quizName: 'incidentQuestionnaire' }}
+          options={{
+            title: 'HitPause Quiz',
+            tabBarLabel: false,
+            tabBarIcon: ({ color }) => <AppIcons name="materialcommunityicons:pause" color={color} size={26} />,
+          }}
+        />
+        <HomeTab.Screen
+          name="History"
+          component={HistoryScreen}
+          options={{
+            title: 'History',
+            tabBarLabel: false,
+            tabBarIcon: ({ color }) => <AppIcons name="materialcommunityicons:bookmark" color={color} size={26} />,
+          }}
+        />
+        <HomeTab.Screen
+          name="Account"
+          component={AccountSummary}
+          options={{
+            title: 'Account',
+            tabBarLabel: false,
+            tabBarIcon: ({ color }) => <AppIcons name="materialicons:person" color={color} size={26} />,
+          }}
+        />
+      </HomeTab.Navigator>
+    )
+  }
+
   // TODO: A lot of this structure probably ought to be broken out into separate files
   //       Doing so might fix the 'state change on unmounted componente' error
   // Display loading screen if app or user is being loaded
@@ -264,69 +271,36 @@ export default function App(props) {
             <AppContext.Provider value={hitpause}>
 
               <NavigationContainer>
-                <Tab.Navigator 
-                  initialRouteName='Home'
-                  activeColor='#6050DC'
-                  inactiveColor='black'
-                  barStyle={{ backgroundColor: 'white' }}
-                >
-                  <Tab.Screen
-                    name="Home"
-                    component={HomeStackScreen}
-                    options={{
-                      title: 'Home',
-                      tabBarLabel: false,
-                      tabBarIcon: ({ color }) => (
-                        <AppIcons name="materialcommunityicons:home" color={color} size={26} />
-                      ),
-                    }}
+                <MainStack.Navigator headerMode="none">
+                  {/* Main Tab Navigator */}
+                  <MainStack.Screen
+                    name="HomeTabNavigator"
+                    component={HomeTabNavigator}
                   />
-                  <Tab.Screen
-                    name="Journal"
-                    component={JournalStackScreen}
-                    options={{
-                      title: 'Journal',
-                      tabBarLabel: false,
-                      tabBarIcon: ({ color }) => (
-                        <AppIcons name="materialcommunityicons:book" color={color} size={26} />
-                      ),
-                    }}
+                  {/* Screens without bottom tab */}
+                  <MainStack.Screen
+                    name="AdminPanel"
+                    component={AdminPanel}
                   />
-                  <Tab.Screen
-                    name="PauseQuiz"
+                  <MainStack.Screen
+                    name="InitialAssessment"
+                    component={QuizScreen}
+                    initialParams={{ quizName: 'initialAssessment' }}
+                  />
+                  <MainStack.Screen
+                    name="IncidentQuestionnaire"
                     component={QuizScreen}
                     initialParams={{ quizName: 'incidentQuestionnaire' }}
-                    options={{
-                      title: 'HitPause Quiz',
-                      tabBarLabel: false,
-                      tabBarIcon: ({ color }) => (
-                        <AppIcons name="materialcommunityicons:pause" color={color} size={26} />
-                      ),
-                    }}
                   />
-                  <Tab.Screen
-                    name="History"
-                    component={HistoryScreen}
-                    options={{
-                      title: 'History',
-                      tabBarLabel: false,
-                      tabBarIcon: ({ color }) => (
-                        <AppIcons name="materialcommunityicons:bookmark" color={color} size={26} />
-                      ),
-                    }}
+                  <MainStack.Screen
+                    name="JournalEntry"
+                    component={JournalEntry}
                   />
-                  <Tab.Screen
-                    name="Account"
-                    component={AccountStack}
-                    options={{
-                      title: 'Account',
-                      tabBarLabel: false,
-                      tabBarIcon: ({ color }) =>(
-                        <AppIcons name="materialicons:person" color={color} size={26} />
-                      ),
-                    }}
+                  <MainStack.Screen
+                    name="AccountTraits"
+                    component={AccountTraits}
                   />
-                </Tab.Navigator>
+                </MainStack.Navigator>
               </NavigationContainer>
             </AppContext.Provider>
           </View>

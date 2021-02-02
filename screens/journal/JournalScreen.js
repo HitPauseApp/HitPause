@@ -1,11 +1,11 @@
 import * as React from 'react';
-import firebase from '../Firebase';
+import firebase from '../../Firebase';
 import { StyleSheet, Text, View, Image, TouchableOpacity, PanResponsder, ImageBackground } from 'react-native';
 import { PanGestureHandler, RectButton, ScrollView} from 'react-native-gesture-handler';
-import { AuthContext } from '../AuthContext';
-import JournalCard from '../components/JournalCard';
+import { AuthContext } from '../../AuthContext';
+import JournalCard from '../../components/JournalCard';
 import { TextInput } from 'react-native';
-import AppIcons from '../components/AppIcons';
+import AppIcons from '../../components/AppIcons';
 
 export default function JournalScreen(props) {
   const user = React.useContext(AuthContext);
