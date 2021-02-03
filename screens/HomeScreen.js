@@ -15,8 +15,6 @@ export default function HomeScreen(props) {
 
   const [visible, setVisible] = React.useState(false);
   const [count, setCount] = React.useState(0);
-  const [streak, setStreak] = React.useState(1);
-  const [perfectWeek, setPerfectWeek] = React.useState(0);
   const [screenText, setScreenText] = React.useState([
     "Our goal is to provide each and every user with their own tips and tricks on how to better deal with their anxiety. Click next to take the virtual tour and get started",
     "The journal page is designed to help relieve stress through writing. Hit the pen and paper to start a new entry, or swipe left to delete a previously existing entry",
@@ -30,17 +28,7 @@ export default function HomeScreen(props) {
     "History"
   ]);
 
-  React.useEffect(() => {
-    firebase.database().ref('users/' + user.uid + '/logins/').once('value').then(s => {
-      setStreak(s.val().streak)
-    })
-  }, []);
-
-  React.useEffect(() => {
-    firebase.database().ref('users/' + user.uid + '/logins/').once('value').then(s => {
-      setPerfectWeek(s.val().week)
-    })
-  }, []);
+  
 
   const showModal = () => setVisible(true);
 
@@ -59,7 +47,8 @@ export default function HomeScreen(props) {
     }
   }
 
-  const TOTD = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar pellentesque ex at maximus. Nam feugiat rhoncus accumsan. ';
+  
+  
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -73,7 +62,7 @@ export default function HomeScreen(props) {
       <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
         <Text style={styles.text}>Retake Assessment</Text>
       </TouchableOpacity>
-      <TipOTD TOTD={TOTD}></TipOTD>
+      <TipOTD></TipOTD>
       <Portal>
         <Modal visible={visible} dismissable={false} contentContainerStyle={styles.tourModal}>
           <Text style={styles.modalHeader}>{screenHead[count]}</Text>
@@ -108,9 +97,18 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   image: {
-    height: RFValue(180),
+    height: RFValue(130),
   },
-  
+  badgeContainer: {
+    backgroundColor: '#132090',
+    justifyContent: 'center',
+    alignContent: 'center',
+    width: '80%',
+    alignSelf: 'center',
+    borderRadius: 10,
+    padding: 50,
+    marginTop: 50
+  },
   tourModal:{
     backgroundColor: '#132090',
     justifyContent: 'center',
