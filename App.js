@@ -271,34 +271,40 @@ export default function App(props) {
             <AppContext.Provider value={hitpause}>
 
               <NavigationContainer>
-                <MainStack.Navigator headerMode="none">
+                <MainStack.Navigator>
                   {/* Main Tab Navigator */}
                   <MainStack.Screen
                     name="HomeTabNavigator"
                     component={HomeTabNavigator}
+                    options={{ headerShown: false }}
                   />
                   {/* Screens without bottom tab */}
                   <MainStack.Screen
                     name="AdminPanel"
                     component={AdminPanel}
-                  />
+                    options={{ headerTitle: 'Admin Panel' }}
+                    />
                   <MainStack.Screen
                     name="InitialAssessment"
                     component={QuizScreen}
                     initialParams={{ quizName: 'initialAssessment' }}
-                  />
+                    options={{ headerTitle: 'Initial Survey' }}
+                    />
                   <MainStack.Screen
                     name="IncidentQuestionnaire"
                     component={QuizScreen}
                     initialParams={{ quizName: 'incidentQuestionnaire' }}
+                    options={{ headerTitle: 'Incident Survey' }}
                   />
                   <MainStack.Screen
                     name="JournalEntry"
                     component={JournalEntry}
+                    options={{ headerTitle: 'Journal Entry' }}
                   />
                   <MainStack.Screen
                     name="AccountTraits"
                     component={AccountTraits}
+                    options={{ headerTitle: 'Account Traits' }}
                   />
                 </MainStack.Navigator>
               </NavigationContainer>
