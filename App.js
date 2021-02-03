@@ -283,13 +283,13 @@ export default function App(props) {
                     name="AdminPanel"
                     component={AdminPanel}
                     options={{ headerTitle: 'Admin Panel' }}
-                    />
+                  />
                   <MainStack.Screen
                     name="InitialAssessment"
                     component={QuizScreen}
                     initialParams={{ quizName: 'initialAssessment' }}
                     options={{ headerTitle: 'Initial Survey' }}
-                    />
+                  />
                   <MainStack.Screen
                     name="IncidentQuestionnaire"
                     component={QuizScreen}
