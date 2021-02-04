@@ -153,6 +153,7 @@ export default function App(props) {
         email: data.email,
         admin: data.admin,
         isNewUser: data.isNewUser,
+        spotifyToken: data.spotifyToken,
         ref: firebase.database().ref(`users/${uid}`)
       };
       // Store firebase data locally

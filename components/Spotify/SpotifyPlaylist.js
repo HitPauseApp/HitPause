@@ -9,9 +9,10 @@ import * as React from 'react';
 import { StyleSheet, View, Text, AsyncStorage, Image } from 'react-native';
 
 import SpotifyWebAPI from 'spotify-web-api-js';
+import { AuthContext } from '../../AuthContext';
 
 export default function SpotifyPlaylist(props) {
-
+  const user = React.useContext(AuthContext);
   const [playlistData, setPlaylistData] = React.useState({
     title: 'Awaiting Authorization',
     auther: 'Awaiting Authorization',
@@ -21,12 +22,19 @@ export default function SpotifyPlaylist(props) {
   const spotifyApi = new SpotifyWebAPI();
 
   let getAccessToken = async () => {
-    AsyncStorage.getItem('SpotifyToken', (err, result) => {
-      // console.log(result);
-      if (result) {
-        spotifyApi.setAccessToken(result);
-      }
-    });
+    // If the user's token is available from firebase
+    if (user.spotifyToken) {
+      spotifyApi.setAccessToken(user.spotifyToken);
+    }
+    // Otherwise, get from AsyncStorage
+    else {
+      AsyncStorage.getItem('SpotifyToken', (err, result) => {
+        // console.log(result);
+        if (result) {
+          spotifyApi.setAccessToken(result);
+        }
+      });
+    }
   }
 
   let playlistURI = () =>{

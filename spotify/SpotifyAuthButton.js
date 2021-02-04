@@ -3,6 +3,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, ResponseType, useAuthRequest } from 'expo-auth-session';
 import { Button } from 'react-native';
 import { AsyncStorage } from 'react-native';
+import { AuthContext } from '../AuthContext';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -13,6 +14,7 @@ const discovery = {
 };
 
 export default function App() {
+  const user = React.useContext(AuthContext);
 
     const [config, setConfig] = React.useState({
     clientId: 'bc628be0b7a344a384e7acff4617a332',
@@ -43,6 +45,7 @@ export default function App() {
 
   let saveSpotifyToken = async (token) => {
     try {
+      await user.ref.child('spotifyToken').set(token);
       await AsyncStorage.setItem('SpotifyToken', token);
     } catch (error) {
       console.log(error);
