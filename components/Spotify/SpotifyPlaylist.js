@@ -1,8 +1,6 @@
 /*
 
  Contains the Spotify Playlist display component. 
-
-  Last edited 11/19 by Drew Weaver
 */
 
 import * as React from 'react';
@@ -25,6 +23,7 @@ export default function SpotifyPlaylist(props) {
     // If the user's token is available from firebase
     if (user.spotifyToken) {
       spotifyApi.setAccessToken(user.spotifyToken);
+      console.log("Spotify authenticated from Firebase");
     }
     // Otherwise, get from AsyncStorage
     else {
@@ -32,6 +31,7 @@ export default function SpotifyPlaylist(props) {
         // console.log(result);
         if (result) {
           spotifyApi.setAccessToken(result);
+          console.log("Spotify authenticated from Async");
         }
       });
     }
