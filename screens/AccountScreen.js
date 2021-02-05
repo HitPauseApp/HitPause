@@ -3,8 +3,8 @@ import { View, StyleSheet, Text, Image, Button, AsyncStorage } from 'react-nativ
 import firebase from '../Firebase.js';
 import { AuthContext } from '../AuthContext.js';
 
-import SpotifyButton from '../components/Spotify/SpotifyButton';
 import SpotifyAuthButton from '../spotify/SpotifyAuthButton';
+import NotificationHandler from '../components/notifications/NotificationHandler';
 
 import AppIcons from '../components/AppIcons';
 import FillButton from '../components/buttons/FillButton';
@@ -67,6 +67,9 @@ export default function Account(props) {
           AsyncStorage.removeItem('userData');
         }}
       >Delete Local Account Data</Text>
+
+        
+      <NotificationHandler></NotificationHandler>
     </View>
   );
 }
