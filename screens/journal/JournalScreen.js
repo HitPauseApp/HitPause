@@ -1,11 +1,11 @@
 import * as React from 'react';
-import firebase from '../Firebase';
+import firebase from '../../Firebase';
 import { StyleSheet, Text, View, Image, TouchableOpacity, PanResponsder, ImageBackground } from 'react-native';
 import { PanGestureHandler, RectButton, ScrollView} from 'react-native-gesture-handler';
-import { AuthContext } from '../AuthContext';
-import JournalCard from '../components/JournalCard';
+import { AuthContext } from '../../AuthContext';
+import JournalCard from '../../components/JournalCard';
 import { TextInput } from 'react-native';
-import AppIcons from '../components/AppIcons';
+import AppIcons from '../../components/AppIcons';
 
 export default function JournalScreen(props) {
   const user = React.useContext(AuthContext);
@@ -14,9 +14,16 @@ export default function JournalScreen(props) {
 
   React.useEffect(() => {
     // TODO: Get and store these locally
-    firebase.database().ref(`users/${user.uid}/journal`).on('value',(s) => {
-      setEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
-      setDisplayEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
+    firebase.database().ref(`users/${user.uid}/journal`).on('value', (s) => {
+      if (s.exists()) {
+        setEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
+        setDisplayEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
+      }
+      // If journal does not exist, set entries to blank arrays
+      else {
+        setEntries([]);
+        setDisplayEntries([]);
+      }
     });
   }, []);
 
@@ -32,9 +39,9 @@ export default function JournalScreen(props) {
   }
 
   function searchEntries(searchText) {
-    if (searchText != '') {
+    if (searchText != '' && entries) {
       let filteredEntries = Object.values(entries)
-      .filter((entry) => (entry.title + entry.text).toLowerCase().indexOf(searchText.toLowerCase()) >= 0);
+      .filter((entry) => (entry[1].title + entry[1].text).toLowerCase().indexOf(searchText.toLowerCase()) >= 0);
       setDisplayEntries(filteredEntries);
     } else {
       setDisplayEntries(entries);

@@ -1,18 +1,17 @@
 import * as React from 'react';
-import { View, StyleSheet, Text, Image, Button, AsyncStorage } from 'react-native';
-import firebase from '../Firebase.js';
-import { AuthContext } from '../AuthContext.js';
+import { View, StyleSheet, Text, Image, Button, AsyncStorage, ScrollView } from 'react-native';
+import firebase from '../../Firebase.js';
+import { AuthContext } from '../../AuthContext.js';
 
-import SpotifyButton from '../components/Spotify/SpotifyButton';
-import SpotifyAuthButton from '../spotify/SpotifyAuthButton';
+import SpotifyButton from '../../components/Spotify/SpotifyButton';
+import SpotifyAuthButton from '../../spotify/SpotifyAuthButton';
 
-import AppIcons from '../components/AppIcons';
-import FillButton from '../components/buttons/FillButton';
-import userImg from '../assets/images/user.png';
+import AppIcons from '../../components/AppIcons';
+import FillButton from '../../components/buttons/FillButton';
+import userImg from '../../assets/images/user.png';
 
 
 export default function Account(props) {
-  const [isLoadingComplete, setLoadingComplete] = React.useState(true);
   const user = React.useContext(AuthContext);
   
   function handleLogout() {
@@ -22,12 +21,13 @@ export default function Account(props) {
   }
   
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.contentContainer}> 
       <Image source={userImg} style={styles.avatar}></Image>
       <View style={styles.category}>
         <AppIcons name="materialicons:person"></AppIcons>
         <Text style={styles.text}>{user.firstName} {user.lastName}</Text>
+        <Text onPress={() => props.navigation.navigate('AccountTraits')}>Traits</Text>
       </View>
 
       <View style={styles.separator}></View>
@@ -59,7 +59,7 @@ export default function Account(props) {
       >Sign Out</Text>
       </View>
 
-      <SpotifyButton href="https://open.spotify.com/playlist/37i9dQZF1DX9B1hu73DioC?si=3i6KmA--RBi9aVggiR0z3Q"></SpotifyButton>
+      {/*<SpotifyButton href="https://open.spotify.com/playlist/37i9dQZF1DX9B1hu73DioC?si=3i6KmA--RBi9aVggiR0z3Q"></SpotifyButton>*/}
       
       <Text
         style={styles.deleteData}
@@ -67,7 +67,10 @@ export default function Account(props) {
           AsyncStorage.removeItem('userData');
         }}
       >Delete Local Account Data</Text>
-    </View>
+
+        
+      <NotificationHandler></NotificationHandler>
+    </ScrollView>
   );
 }
 
@@ -110,6 +113,6 @@ const styles = StyleSheet.create({
   deleteData: {
     color: 'white',
     alignSelf: 'center',
-    marginTop: 20
+    marginBottom: 10
   }
 });

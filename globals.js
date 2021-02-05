@@ -72,10 +72,15 @@ let randomizeSuggestions = (flags) => {
   return null;
 }
 
+let titleCase = (str, del) => {
+  return str.split(del || ' ').map(i => i[0].toUpperCase() + i.slice(1)).join(' ');
+}
+
 var h = {
   tallyOutputFlags,
   getHighsAndLows,
-  randomizeSuggestions
+  randomizeSuggestions,
+  titleCase
 }
 
 export default h;
