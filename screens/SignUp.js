@@ -37,64 +37,85 @@ export default class SignUp extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style = {styles.header}>Sign Up</Text>
+         <Text style = {styles.header}>Sign Up</Text>
+        <View style = {styles.testing}>
         {!!this.state.errorMessage &&
-          <Text style={{ color: 'red' }}>
+          <Text style={{marginTop: '5%', color: 'red', left: '9%'}}>
             {this.state.errorMessage}
           </Text>
         }
+        <View style = {styles.textbox}>
+          <Text style = {styles.textboxTitle}>First Name</Text> 
         <TextInput
-          placeholder="First Name"
-          placeholderTextColor="#ffffff"
+          placeholder="Bob"
+          placeholderTextColor="#757575"
           autoCapitalize="none"
           style={styles.textInput}
           onChangeText={firstName => this.setState({ firstName })}
           value={this.state.firstName}
         />
+         </View>
+
+         <View style = {styles.textbox}>
+          <Text style = {styles.textboxTitle}>Last Name</Text>  
         <TextInput
-          placeholder="Last Name"
-          placeholderTextColor="#ffffff"
+          placeholder="Marley"
+          placeholderTextColor="#757575"
           autoCapitalize="none"
           style={styles.textInput}
           onChangeText={lastName => this.setState({ lastName })}
           value={this.state.lastName}
         />
+        </View>
+
+        <View style = {styles.textbox}>
+          <Text style = {styles.textboxTitle}>Email</Text>  
         <TextInput
-          placeholder="Email"
-          placeholderTextColor="#ffffff"
+          placeholder="example123@gmail.com"
+          placeholderTextColor="#757575"
           autoCapitalize="none"
           style={styles.textInput}
           onChangeText={email => this.setState({ email })}
           value={this.state.email}
         />
+        </View>
+
+        <View style = {styles.textbox}>
+          <Text style = {styles.textboxTitle}>Password</Text> 
         <TextInput
           secureTextEntry
-          placeholder="Password"
-          placeholderTextColor="#ffffff"
+          placeholder="Enter password"
+          placeholderTextColor="#757575"
+          //top = '%'
           autoCapitalize="none"
           style={styles.textInput}
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
           />
+          </View>
+
+        <View style = {styles.textbox}>
+        <Text style = {styles.textboxTitle}>Confirm Password</Text>   
         <TextInput
           secureTextEntry
-          placeholder="Confirm Password"
-          placeholderTextColor="#ffffff"
+          placeholder="Re-enter password"
+          placeholderTextColor="#757575"
           autoCapitalize="none"
           style={styles.textInput}
           onChangeText={repeatedPassword => this.setState({ repeatedPassword })}
           value={this.state.repeatedPassword}
         />
+        </View>
         
 
         <TouchableOpacity style={styles.SignUpButton} onPress={this.handleSignUp}>
             <Text style={styles.text}>Sign Up</Text>
         </TouchableOpacity>
-        <Text style={styles.text2}>Already have an account?</Text>
-        <TouchableOpacity style={styles.loginButton} onPress={() => this.props.navigation.navigate('Login')}>
-          <Text style={styles.text}>Login</Text>
+        {/* <Text style={styles.text2}>Already have an account?</Text> */}
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
+          <Text style={styles.text3}>Already have an account? Log in.</Text>
         </TouchableOpacity>
-
+        </View>
       </View>
     )
   }
@@ -105,51 +126,95 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#00095e',
+    padding: 10
   },
   header:{
     fontSize: 40,
+    flex: 1,
     fontWeight: 'bold',
     color: 'white',
-    alignItems: 'center'
+    alignItems: 'center',
+    top: '10%'
+  },
+  testing: {
+    backgroundColor: 'white',
+    height: '100%',
+    width:'105%',
+    position: 'absolute',
+    top: '23%',
+    borderRadius: 30,
   },
   textInput: {
-    height: 40,
-    width: '90%',
-    borderColor: 'white',
-    color: 'white',
-    borderBottomWidth: 1,
-    marginTop: 20,
-    zIndex: 3
+    width: '80%',
+    color: '#757575',
+    marginTop: '4%',
+    left: '5%',
+    zIndex: 3,
+    alignSelf: 'flex-start'
   },
   SignUpButton: { 
-    marginTop: 30,
-    borderWidth: 2,
-    borderColor: '#FFFFFF'  ,
+    marginTop: '10%',
+    backgroundColor: '#00095e',
     borderRadius: 50,
-    padding: 8,
-    overflow: 'hidden' ,
+    borderRadius: 50,
     height: RFValue(40),
-    width: RFValue(100),
+    width: RFValue(280),
+    justifyContent: 'center',
+    alignSelf:'center',
   },
-  loginButton: { 
-    borderWidth: 2,
-    borderColor: 'white' ,
-    borderRadius: 50,
-    height: RFValue(30),
-    width: RFValue(150),
-
-  },
+  // loginButton: { 
+  //   //borderWidth: 2,
+  //   //backgroundColor: '#00095e',
+  //   borderRadius: 50,
+  //   height: RFValue(40),
+  //   width: RFValue(220),
+  //   justifyContent: 'center',
+  //   alignSelf:'center',
+  // },
   text: { 
-    fontSize: 20,
+    fontSize: 22,
     color: 'white',
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'Poppins-Bold',
     textAlign: 'center',
 
+  },
+
+  textbox: { 
+  backgroundColor: 'white',
+  width: '84%',
+  height: '8%',
+  alignSelf: 'center',
+  shadowColor:  "#000",
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  borderRadius: 20,
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  marginTop: '7%',
+
+  elevation: 5,
+
+  },
+  textboxTitle: {
+    color: '#00095e',
+    fontFamily: 'Poppins-Bold',
+    textAlign: 'left',
+    left: '5%',
+    top: '10%'
   },
   text2: {
     marginTop: 15,
     fontSize: 20,
-    color: 'white',
+    color: '#00095e',
     fontFamily: 'Poppins-Light'
   },
+  text3: {
+    fontSize: 18,
+    marginTop: '5%',
+    color: '#00095e',
+    fontFamily: 'Poppins-Medium',
+    textAlign: 'center',
+  }
 })
