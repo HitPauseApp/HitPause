@@ -27,6 +27,7 @@ export default function QuizCard(props) {
   const [prevDisabled, setPrevDisabled] = React.useState(true);
   const [modalVisible, setModalVisible] = React.useState(false);
   const [outputSuggestions, setOutputSuggestions] = React.useState(null);
+  const [surveyId, setSurveyId] = React.useState(null);
 
   function updateQuizData(data, flags) {
     // Updates data for quiz when a response is selected or changes
@@ -43,49 +44,57 @@ export default function QuizCard(props) {
     // Sanitize input data
     for (const key in quizData) if (typeof quizData[key] === 'undefined') quizData[key] = '';
 
-    // If the quiz is the initial Assessment submitted
-    if (props.quizName == 'initialAssessment') {
-      let data = {};
-      // For each object in the effects array
-      for (const key in quizEffects) {
-        // For each property in the flag object, add it to the data object
-        for (const traitFlag in quizEffects[key]) data[traitFlag] = quizEffects[key][traitFlag];
-      }
-      user.ref.child('profile/traits').set(data);
-    }
-    // If it was the incident Questionnaire submitted
-    else {
-      // Get the user's traits
-      let userTraits = Object.keys(await user.ref.child('profile/traits').once('value').then(s => s.val()) || {});
-      let traitEffects = [];
-      for (const key in userTraits) {
-        let effects = (hitpause.traits[userTraits[key]] || {}).effects;
-        if (effects) traitEffects.push(effects);
-      }
-
-      // Tally the output flags, filter for the three highest, and randomize them
-      let outputFlags = h.tallyOutputFlags([...quizEffects, ...traitEffects]);
-      let topThree = h.getHighsAndLows(outputFlags, 3, 0)[0];
-      let suggestions = h.randomizeSuggestions(topThree);
-      // Set the outputSuggestions object with the randomized suggestions
-      setOutputSuggestions({
-        suggestion_1: hitpause.suggestions[suggestions[0]],
-        suggestion_2: hitpause.suggestions[suggestions[1]],
-        suggestion_3: hitpause.suggestions[suggestions[2]]
-      });
-      // Save the results to firebase
-      user.ref.child(`profile/quizHistory/incidentQuestionnaire`).push({
-        // TODO: Make work with multiple suggestions
-        suggestion: suggestions[0],
-        timestamp: Date.now(),
-        outputFlags: outputFlags
-      });
-      setModalVisible(true);
+    switch (props.quizName) {
+      // If the quiz is the initial Assessment submitted
+      case 'initialAssessment': return submitInitialSurvey();
+      // If it was the incident Questionnaire submitted
+      case 'incidentQuestionnaire': return submitPauseSurvey();
+      // Otherwise, something went wrong: do nothing
+      default: return null;
     }
   }
 
+  function submitInitialSurvey() {
+    let data = {};
+    // For each object in the effects array
+    for (const key in quizEffects) {
+      // For each property in the flag object, add it to the data object
+      for (const traitFlag in quizEffects[key]) data[traitFlag] = quizEffects[key][traitFlag];
+    }
+    user.ref.child('profile/traits').set(data);
+  }
+
+  async function submitPauseSurvey() {
+    // Get the user's traits
+    let userTraits = Object.keys(await user.ref.child('profile/traits').once('value').then(s => s.val()) || {});
+    let traitEffects = [];
+    for (const key in userTraits) {
+      let effects = (hitpause.traits[userTraits[key]] || {}).effects;
+      if (effects) traitEffects.push(effects);
+    }
+
+    // Tally the output flags, filter for the three highest, and randomize them
+    let outputFlags = h.tallyOutputFlags([...quizEffects, ...traitEffects]);
+    let topThree = h.getHighsAndLows(outputFlags, 3, 0)[0];
+    let suggestions = h.randomizeSuggestions(topThree);
+    // Set the outputSuggestions object with the randomized suggestions
+    setOutputSuggestions({
+      suggestion_1: { ...hitpause.suggestions[suggestions[0]], $key: suggestions[0] },
+      suggestion_2: { ...hitpause.suggestions[suggestions[1]], $key: suggestions[1] },
+      suggestion_3: { ...hitpause.suggestions[suggestions[2]], $key: suggestions[2] }
+    });
+    // Save the results to firebase
+    user.ref.child(`profile/pauseSurveys`).push({
+      suggestions: suggestions,
+      timestamp: Date.now(),
+      outputFlags: outputFlags
+    }).then((s) => setSurveyId(s.key));
+    setModalVisible(true);
+  }
+
   function handleNextQuestion() {
-    setQuizIndex(quizIndex + 1);
+    let newIndex = quizIndex + 1;
+    setQuizIndex(newIndex);
     // Always re-enable previous button when moving forward
     setPrevDisabled(false);
   }
@@ -96,8 +105,9 @@ export default function QuizCard(props) {
     if (newIndex == 0) setPrevDisabled(true);
   }
 
-  function closeAndRedirect() {
+  function closeAndRedirect(selectedId) {
     // Reset all variables to prepare for next quiz
+    user.ref.child(`profile/pauseSurveys/${surveyId}/selected`).set(selectedId)
     props.navigation.navigate('Home');
     setQuizIndex(0);
     setQuizData([]);
@@ -106,6 +116,7 @@ export default function QuizCard(props) {
     setPrevDisabled(true);
     setModalVisible(false);
     setOutputSuggestions(null);
+    setSurveyId(null);
   }
 
   function getResponseComponent(question) {
@@ -156,7 +167,7 @@ export default function QuizCard(props) {
       </View>
 
       <ScrollView style={{ flexGrow: 1 }}>
-        {getResponseComponent(props.quiz.questions[quizIndex])}
+        { getResponseComponent(props.quiz.questions[quizIndex]) }
       </ScrollView>
 
       <View style={styles.controlButtons}>
@@ -206,7 +217,7 @@ export default function QuizCard(props) {
                 <SuggestionSwitcher suggestionId={outputSuggestions.suggestion_1}></SuggestionSwitcher>
                 {/* <SpotifySuggestions></SpotifySuggestions> */}
                 <View style={styles.modalRow}>
-                  <TouchableOpacity style={styles.modalButton} onPress={() => closeAndRedirect()}>
+                  <TouchableOpacity style={styles.modalButton} onPress={() => closeAndRedirect(outputSuggestions.suggestion_1.$key)}>
                     <Text style={styles.modalText}>Close</Text>
                   </TouchableOpacity>
                 </View>
@@ -222,7 +233,7 @@ export default function QuizCard(props) {
                 <SuggestionSwitcher suggestionId={outputSuggestions.suggestion_2}></SuggestionSwitcher>
                 {/* <SpotifySuggestions></SpotifySuggestions> */}
                 <View style={styles.modalRow}>
-                  <TouchableOpacity style={styles.modalButton} onPress={() => closeAndRedirect()}>
+                  <TouchableOpacity style={styles.modalButton} onPress={() => closeAndRedirect(outputSuggestions.suggestion_2.$key)}>
                     <Text style={styles.modalText}>Close</Text>
                   </TouchableOpacity>
                 </View>
@@ -238,7 +249,7 @@ export default function QuizCard(props) {
                 <SuggestionSwitcher suggestionId={outputSuggestions.suggestion_3}></SuggestionSwitcher>
                 {/* <SpotifySuggestions></SpotifySuggestions> */}
                 <View style={styles.modalRow}>
-                  <TouchableOpacity style={styles.modalButton} onPress={() => closeAndRedirect()}>
+                  <TouchableOpacity style={styles.modalButton} onPress={() => closeAndRedirect(outputSuggestions.suggestion_3.$key)}>
                     <Text style={styles.modalText}>Close</Text>
                   </TouchableOpacity>
                 </View>
