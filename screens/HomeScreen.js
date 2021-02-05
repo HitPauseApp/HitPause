@@ -27,16 +27,18 @@ export default function HomeScreen(props) {
     "Take the Quiz!",
     "History"
   ]);
+  const [showInitialAssessment, setShowInitalAssessment] = React.useState(false);
 
-  
+  React.useEffect(() => {
+    user.ref.child('profile/traits').on('value', (s) => {
+      if (!s.exists()) setShowInitalAssessment(true);
+      else setShowInitalAssessment(false);
+    })
+  }, [])
 
   const showModal = () => setVisible(true);
 
   const hideModal = () => setVisible(false);
-
-  //test
-
-
 
   let nextScreen = () =>{
     if(count < screenText.length - 1){
@@ -51,17 +53,21 @@ export default function HomeScreen(props) {
   
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
+      <View>
         <ImageBackground style={ styles.image }  
           source={require('../assets/images/homepage.jpg')}>
           <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner>
         </ImageBackground>
       </View>
-
-      <Text style={styles.text2}>Need to adjust your assessment?</Text>
-      <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
-        <Text style={styles.text}>Retake Assessment</Text>
-      </TouchableOpacity>
+      {
+        showInitialAssessment &&
+        <View style={{ backgroundColor: '#132090', marginTop: 20, marginBottom: 20 }}>
+          <Text style={styles.text2}>Complete your profile by taking our profile survey.</Text>
+          <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
+            <Text style={styles.text}>Take Survey</Text>
+          </TouchableOpacity>
+        </View>
+      }
       <TipOTD></TipOTD>
       <Portal>
         <Modal visible={visible} dismissable={false} contentContainerStyle={styles.tourModal}>
@@ -89,7 +95,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#00095e',
     flex: 1
   },
-
   header:{
     padding: 15,
     fontFamily: 'Poppins-Medium',

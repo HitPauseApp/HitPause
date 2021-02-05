@@ -1,10 +1,8 @@
-import { Poppins_100Thin_Italic } from '@expo-google-fonts/poppins';
 import { AntDesign } from '@expo/vector-icons';
 import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, TextInput, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { AuthContext } from '../AuthContext';
-import firebase from '../Firebase';
+import { AuthContext } from '../../AuthContext';
+import firebase from '../../Firebase';
 
 export default function JournalEntry({ navigation: { goBack }, ...props }) {
   const user = React.useContext(AuthContext);

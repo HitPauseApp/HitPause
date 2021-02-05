@@ -1,18 +1,17 @@
 import * as React from 'react';
-import { View, StyleSheet, Text, Image, Button, AsyncStorage } from 'react-native';
-import firebase from '../Firebase.js';
-import { AuthContext } from '../AuthContext.js';
+import { View, StyleSheet, Text, Image, Button, AsyncStorage, ScrollView } from 'react-native';
+import firebase from '../../Firebase.js';
+import { AuthContext } from '../../AuthContext.js';
 
-import SpotifyButton from '../components/Spotify/SpotifyButton';
-import SpotifyAuthButton from '../spotify/SpotifyAuthButton';
+import SpotifyButton from '../../components/Spotify/SpotifyButton';
+import SpotifyAuthButton from '../../spotify/SpotifyAuthButton';
 
-import AppIcons from '../components/AppIcons';
-import FillButton from '../components/buttons/FillButton';
-import userImg from '../assets/images/user.png';
+import AppIcons from '../../components/AppIcons';
+import FillButton from '../../components/buttons/FillButton';
+import userImg from '../../assets/images/user.png';
 
 
 export default function Account(props) {
-  const [isLoadingComplete, setLoadingComplete] = React.useState(true);
   const user = React.useContext(AuthContext);
   
   function handleLogout() {
@@ -22,12 +21,13 @@ export default function Account(props) {
   }
   
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.contentContainer}> 
       <Image source={userImg} style={styles.avatar}></Image>
       <View style={styles.category}>
         <AppIcons name="materialicons:person"></AppIcons>
         <Text style={styles.text}>{user.firstName} {user.lastName}</Text>
+        <Text onPress={() => props.navigation.navigate('AccountTraits')}>Traits</Text>
       </View>
 
       <View style={styles.separator}></View>
@@ -67,7 +67,7 @@ export default function Account(props) {
           AsyncStorage.removeItem('userData');
         }}
       >Delete Local Account Data</Text>
-    </View>
+    </ScrollView>
   );
 }
 

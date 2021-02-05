@@ -6,8 +6,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import QuizCard from '../components/quiz/QuizCard';
 import Loading from './Loading';
 import { Portal, Modal } from 'react-native-paper';
+import { AuthContext } from '../AuthContext.js';
 
 export default function QuizScreen(props) {
+  const user = React.useContext(AuthContext);
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [quiz, setQuiz] = React.useState({});
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -24,7 +26,9 @@ export default function QuizScreen(props) {
       setQuiz(quizData);
       setLoadingComplete(true);
       saveIncidentQuiz(quizData);
-      setModalVisible(true);
+      user.ref.child('profile/pauseSurveys').once('value').then((s) => {
+        if (!s.exists()) setModalVisible(true);
+      });
     })
   }, []);
 
