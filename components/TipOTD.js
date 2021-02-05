@@ -30,9 +30,9 @@ export default class TipOTD extends Component {
     render() {
         if (this.state.isLoading) {
             return (
-              <View style={{ flex: 1, padding: 20 }}>
-                <Text>Loading...</Text>
-              </View>
+            <View style={styles.container}>
+                <Text style={styles.bodyText}>Loading Quote of the Day</Text>
+            </View>
             );
           }
 

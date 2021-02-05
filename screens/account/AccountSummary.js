@@ -67,6 +67,9 @@ export default function Account(props) {
           AsyncStorage.removeItem('userData');
         }}
       >Delete Local Account Data</Text>
+
+        
+      <NotificationHandler></NotificationHandler>
     </ScrollView>
   );
 }
