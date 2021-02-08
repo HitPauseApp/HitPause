@@ -6,7 +6,6 @@ import { AuthContext } from '../../AuthContext.js';
 import QuizReminder from '../../components/settings/QuizReminder';
 import NotificationHandler from '../../components/notifications/NotificationHandler';
 import SpotifyAuthButton from '../../spotify/SpotifyAuthButton';
-import NotificationHandler from '../../components/notifications/NotificationHandler';
 
 import AppIcons from '../../components/AppIcons';
 import FillButton from '../../components/buttons/FillButton';
