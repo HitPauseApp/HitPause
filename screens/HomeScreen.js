@@ -57,18 +57,6 @@ export default function HomeScreen(props) {
       {
         showInitialAssessment ? (
           <View style={{ padding: RFValue(10) }}>
-            <View style={styles.card}>
-              <View style={{ display: 'flex', flexDirection: 'row', padding: RFValue(10), alignItems: 'center' }}>
-                <AppIcons name='materialicons:check-circle' color='#222'></AppIcons>
-                <View style={{ paddingLeft: RFValue(10), flex: 1 }}>
-                  <Text style={{ fontSize: RFValue(18) }}>Your Profile is up to date!</Text>
-                  <Text style={{ fontSize: RFValue(12) }}>Thanks for helping us help you.</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        ) : (
-          <View style={{ padding: RFValue(10) }}>
             <TouchableOpacity style={styles.card} onPress={() => props.navigation.navigate('InitialAssessment')}>
               <View style={{ display: 'flex', flexDirection: 'row', padding: RFValue(10), alignItems: 'center' }}>
                 <AppIcons name='materialicons:info' color='#222'></AppIcons>
@@ -78,6 +66,18 @@ export default function HomeScreen(props) {
                 </View>
               </View>
             </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={{ padding: RFValue(10) }}>
+            <View style={styles.card}>
+              <View style={{ display: 'flex', flexDirection: 'row', padding: RFValue(10), alignItems: 'center' }}>
+                <AppIcons name='materialicons:check-circle' color='#222'></AppIcons>
+                <View style={{ paddingLeft: RFValue(10), flex: 1 }}>
+                  <Text style={{ fontSize: RFValue(18) }}>Your Profile is up to date!</Text>
+                  <Text style={{ fontSize: RFValue(12) }}>Thanks for helping us help you.</Text>
+                </View>
+              </View>
+            </View>
           </View>
         )
       }
