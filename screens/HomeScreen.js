@@ -1,14 +1,11 @@
-import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, ImageBackground } from 'react-native';
+import firebase from '../Firebase';
+import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button } from 'react-native';
 import { AuthContext } from '../AuthContext.js';
 import { Portal, Modal } from 'react-native-paper';
 import TipOTD from '../components/TipOTD';
 import WelcomeBanner from '../components/WelcomeBanner';
 import { RFValue } from "react-native-responsive-fontsize";
-import firebase from '../Firebase';
-
-
 
 export default function HomeScreen(props) {
   const user = React.useContext(AuthContext);
@@ -53,11 +50,8 @@ export default function HomeScreen(props) {
   
   return (
     <View style={styles.container}>
-      <View>
-        <ImageBackground style={ styles.image }  
-          source={require('../assets/images/homepage.jpg')}>
-          <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner>
-        </ImageBackground>
+      <View style={{ height: RFValue(200) }}>
+        <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner>
       </View>
       {
         showInitialAssessment &&
