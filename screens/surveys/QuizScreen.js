@@ -1,18 +1,16 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import firebase from '../Firebase.js'
+import firebase from '../../Firebase.js'
 import { StyleSheet, Text, View, Button, AsyncStorage } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import QuizCard from '../components/quiz/QuizCard';
-import Loading from './Loading';
-import { Portal, Modal } from 'react-native-paper';
-import { AuthContext } from '../AuthContext.js';
+import QuizCard from '../../components/quiz/QuizCard';
+import Loading from '../Loading';
+import { AuthContext } from '../../AuthContext.js';
 
 export default function QuizScreen(props) {
   const user = React.useContext(AuthContext);
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [quiz, setQuiz] = React.useState({});
-  const [modalVisible, setModalVisible] = React.useState(false);
 
   React.useEffect(() => {
     console.log(props)
@@ -26,9 +24,6 @@ export default function QuizScreen(props) {
       setQuiz(quizData);
       setLoadingComplete(true);
       saveIncidentQuiz(quizData);
-      user.ref.child('profile/pauseSurveys').once('value').then((s) => {
-        if (!s.exists()) setModalVisible(true);
-      });
     })
   }, []);
 
@@ -52,20 +47,7 @@ export default function QuizScreen(props) {
   } else {
     return (
       <View style={styles.container}>
-
-        <Portal>
-          <Modal visible={modalVisible} onDismiss={() => setModalVisible(false)} contentContainerStyle={styles.modalContent}>
-            <Text style={styles.modalHeadingText}>Welcome To the HitPause Quiz</Text>
-            <Text style={styles.modalText}>This quiz will ask 10 questions regarding your current experience with anxiety.
-            Once the quiz has been completed, our custom designed suggestion algorithm, The Pause Algorithm, will calculate your results and provide
-            a recommendation to help relieve your anxiety.</Text>
-          </Modal>
-        </Portal>
         <View style={styles.contentContainer}>
-          <View style={styles.headingCont}>
-          <Text style={styles.header}>{quiz.quizName}</Text>
-            <FontAwesome name="info-circle" size={24} color="white" style={styles.info} onPress={() => setModalVisible(true)} /> 
-          </View>
           <QuizCard quiz={quiz} quizName={props.route.params.quizName} navigation={props.navigation}></QuizCard>
         </View>
       </View>

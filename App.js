@@ -17,8 +17,9 @@ import { AppContext } from './AppContext';
 
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
-import QuizScreen from './screens/QuizScreen';
 import ResetPassword from './screens/ResetPassword';
+import QuizScreen from './screens/surveys/QuizScreen';
+import PauseSurvey from './screens/surveys/PauseSurvey';
 import Loading from './screens/Loading';
 import HomeScreen from './screens/HomeScreen';
 import HistoryScreen from './screens/HistoryScreen';
@@ -206,9 +207,8 @@ export default function App(props) {
           }}
         />
         <HomeTab.Screen
-          name="PauseQuiz"
-          component={QuizScreen}
-          initialParams={{ quizName: 'incidentQuestionnaire' }}
+          name="PauseSurvey"
+          component={PauseSurvey}
           options={{
             title: 'HitPause Quiz',
             tabBarLabel: false,
