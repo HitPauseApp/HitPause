@@ -62,10 +62,7 @@ export default function QuizScreen(props) {
           </Modal>
         </Portal>
         <View style={styles.contentContainer}>
-          <View style={styles.headingCont}>
-          <Text style={styles.header}>{quiz.quizName}</Text>
-            <FontAwesome name="info-circle" size={24} color="white" style={styles.info} onPress={() => setModalVisible(true)} /> 
-          </View>
+          <FontAwesome name="info-circle" size={24} color="white" style={styles.info} onPress={() => setModalVisible(true)} /> 
           <QuizCard quiz={quiz} quizName={props.route.params.quizName} navigation={props.navigation}></QuizCard>
         </View>
       </View>
