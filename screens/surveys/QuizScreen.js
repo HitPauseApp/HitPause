@@ -1,15 +1,22 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import firebase from '../../Firebase.js'
+import h from '../../globals';
 import { StyleSheet, Text, View, Button, AsyncStorage } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
 import QuizCard from '../../components/quiz/QuizCard';
 import Loading from '../Loading';
 import { AuthContext } from '../../AuthContext.js';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { AppContext } from '../../AppContext.js';
+import AppIcons from '../../components/AppIcons.js';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function QuizScreen(props) {
   const user = React.useContext(AuthContext);
-  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
+  const hitpause = React.useContext(AppContext);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [showResults, setShowResults] = React.useState(false);
+  const [results, setResults] = React.useState({});
   const [quiz, setQuiz] = React.useState({});
 
   React.useEffect(() => {
@@ -22,8 +29,7 @@ export default function QuizScreen(props) {
         quizData.questions = sortedQuestionList.slice();
       }
       setQuiz(quizData);
-      setLoadingComplete(true);
-      saveIncidentQuiz(quizData);
+      setIsLoading(false);
     })
   }, []);
 
@@ -41,15 +47,71 @@ export default function QuizScreen(props) {
     });
   }
 
+  async function handleSubmit(effects) {
+    // Get the user's traits
+    let userTraits = Object.keys(await user.ref.child('profile/traits').once('value').then(s => s.val()) || {});
+    let traitEffects = [];
+    for (const key in userTraits) {
+      let effects = (hitpause.traits[userTraits[key]] || {}).effects;
+      if (effects) traitEffects.push(effects);
+    }
 
-  if (!isLoadingComplete) {
-    return <Loading message="Loading your quiz..."></Loading>;
-  } else {
+    // Tally the output flags, filter for the three highest, and randomize them
+    let outputFlags = h.tallyOutputFlags([...effects, ...traitEffects]);
+    let topThree = h.getHighsAndLows(outputFlags, 3, 0)[0];
+    let suggestions = h.randomizeSuggestions(topThree);
+    // // Set the outputSuggestions object with the randomized suggestions
+    setResults({
+      s1: { ...hitpause.suggestions[suggestions[0]], $key: suggestions[0] },
+      s2: { ...hitpause.suggestions[suggestions[1]], $key: suggestions[1] },
+      s3: { ...hitpause.suggestions[suggestions[2]], $key: suggestions[2] }
+    });
+    // Save the results to firebase
+    user.ref.child(`profile/pauseSurveys`).push({
+      suggestions: suggestions,
+      timestamp: Date.now(),
+      outputFlags: outputFlags
+    });
+    console.log('suggestions:', suggestions);
+  }
+
+  if (isLoading) return <Loading message="Loading your quiz..."></Loading>;
+  else {
     return (
       <View style={styles.container}>
-        <View style={styles.contentContainer}>
-          <QuizCard quiz={quiz} quizName={props.route.params.quizName} navigation={props.navigation}></QuizCard>
-        </View>
+        {
+          !Object.keys(results).length ? (
+            <View>
+              <QuizCard quiz={quiz} onSubmit={handleSubmit}></QuizCard>
+            </View>
+          ) : (
+            <ScrollView style={{ display: 'flex' }}>
+              <View style={{ flex: 1, display: 'flex' }}>
+                <Text style={{ color: '#fff', fontSize: RFValue(24) }}>Our top suggestion for you is:</Text>
+                <AppIcons name={results.s1.icon} size={RFValue(48)}/>
+                <Text style={{ color: '#fff', fontSize: RFValue(18) }}>{results.s1.text}</Text>
+                <Text style={{ color: '#fff', fontSize: RFValue(12) }}>{results.s1.body}</Text>
+              </View>
+              <View style={{ flex: 1, display: 'flex'}}>
+                <Text>Here are some other things to try:</Text>
+                <View style={styles.card}>
+                  <AppIcons name={results.s2.icon} color="#222"></AppIcons>
+                  <View style={{ flex: 1, paddingLeft: RFValue(10) }}>
+                    <Text style={styles.cardTitle}>{results.s2.text}</Text>
+                    <Text style={{ fontSize: RFValue(12) }}>{results.s2.body}</Text>
+                  </View>
+                </View>
+                <View style={styles.card}>
+                  <AppIcons name={results.s3.icon} color="#222"></AppIcons>
+                  <View style={{ flex: 1, paddingLeft: RFValue(10) }}>
+                    <Text style={styles.cardTitle}>{results.s3.text}</Text>
+                    <Text style={{ fontSize: RFValue(12) }}>{results.s3.body}</Text>
+                  </View>
+                </View>
+              </View>
+            </ScrollView>
+          )
+        }
       </View>
     );
   }
@@ -58,51 +120,21 @@ export default function QuizScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#00095e'
+    backgroundColor: '#00095e',
+    paddingTop: RFValue(20)
   },
-  header: {
-    fontFamily: 'Poppins-Medium',
-    color: 'white',
-    fontSize: 26,
-    fontWeight: 'bold',
-    paddingHorizontal: 20,
-    paddingVertical: '9%',
-
+  card: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: RFValue(20),
+    overflow: 'hidden',
+    padding: RFValue(10),
+    margin: RFValue(10)
   },
-  headingCont:{
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  contentContainer: {
-    paddingTop: 15,
-    flex: 1
-  },
-  modalContent:{
-    backgroundColor: '#132090',
-    justifyContent: 'center',
-    alignContent: 'center',
-    width: '80%',
-    alignSelf: 'center',
-    borderRadius: 10,
-    padding: 10,
-    bottom: 10,
-    margin: 30,
-  },
-  modalHeadingText:{
-    textAlign: 'center',
-    padding: 10,
-    fontFamily: 'Poppins-Light',
-    fontSize: 25,
-    color: 'white'
-  },
-  modalText: {
-    padding: 15,
-    fontFamily: 'Poppins-Extra-Light',
-    fontSize: 15,
-    color: 'white',
-    textAlign: 'center',
-  },
-  info: {
-    
+  cardTitle: {
+    fontSize: RFValue(18),
+    fontWeight: 'bold'
   }
 });

@@ -44,14 +44,16 @@ export default function QuizCard(props) {
     // Sanitize input data
     for (const key in quizData) if (typeof quizData[key] === 'undefined') quizData[key] = '';
 
-    switch (props.quizName) {
-      // If the quiz is the initial Assessment submitted
-      case 'initialAssessment': return submitInitialSurvey();
-      // If it was the incident Questionnaire submitted
-      case 'incidentQuestionnaire': return submitPauseSurvey();
-      // Otherwise, something went wrong: do nothing
-      default: return null;
-    }
+    props.onSubmit(quizEffects);
+
+    // switch (props.quizName) {
+    //   // If the quiz is the initial Assessment submitted
+    //   case 'initialAssessment': return submitInitialSurvey();
+    //   // If it was the incident Questionnaire submitted
+    //   case 'incidentQuestionnaire': return submitPauseSurvey();
+    //   // Otherwise, something went wrong: do nothing
+    //   default: return null;
+    // }
   }
 
   function submitInitialSurvey() {
@@ -62,34 +64,6 @@ export default function QuizCard(props) {
       for (const traitFlag in quizEffects[key]) data[traitFlag] = quizEffects[key][traitFlag];
     }
     user.ref.child('profile/traits').set(data);
-  }
-
-  async function submitPauseSurvey() {
-    // Get the user's traits
-    let userTraits = Object.keys(await user.ref.child('profile/traits').once('value').then(s => s.val()) || {});
-    let traitEffects = [];
-    for (const key in userTraits) {
-      let effects = (hitpause.traits[userTraits[key]] || {}).effects;
-      if (effects) traitEffects.push(effects);
-    }
-
-    // Tally the output flags, filter for the three highest, and randomize them
-    let outputFlags = h.tallyOutputFlags([...quizEffects, ...traitEffects]);
-    let topThree = h.getHighsAndLows(outputFlags, 3, 0)[0];
-    let suggestions = h.randomizeSuggestions(topThree);
-    // Set the outputSuggestions object with the randomized suggestions
-    setOutputSuggestions({
-      suggestion_1: { ...hitpause.suggestions[suggestions[0]], $key: suggestions[0] },
-      suggestion_2: { ...hitpause.suggestions[suggestions[1]], $key: suggestions[1] },
-      suggestion_3: { ...hitpause.suggestions[suggestions[2]], $key: suggestions[2] }
-    });
-    // Save the results to firebase
-    user.ref.child(`profile/pauseSurveys`).push({
-      suggestions: suggestions,
-      timestamp: Date.now(),
-      outputFlags: outputFlags
-    }).then((s) => setSurveyId(s.key));
-    setModalVisible(true);
   }
 
   function handleNextQuestion() {

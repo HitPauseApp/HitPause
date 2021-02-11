@@ -8,7 +8,7 @@ import { AuthContext } from '../../AuthContext.js';
 import AppIcons from '../../components/AppIcons.js';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-export default function PauseSurvey(props) {
+export default function PauseHome(props) {
   const user = React.useContext(AuthContext);
 
   return (

@@ -19,7 +19,7 @@ import Login from './screens/Login';
 import SignUp from './screens/SignUp';
 import ResetPassword from './screens/ResetPassword';
 import QuizScreen from './screens/surveys/QuizScreen';
-import PauseSurvey from './screens/surveys/PauseSurvey';
+import PauseHome from './screens/surveys/PauseHome';
 import Loading from './screens/Loading';
 import HomeScreen from './screens/HomeScreen';
 import HistoryScreen from './screens/HistoryScreen';
@@ -88,8 +88,6 @@ export default function App(props) {
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
-
-        console.log('plat', Platform)
 
         // Load fonts
         await Font.loadAsync({
@@ -209,8 +207,8 @@ export default function App(props) {
           }}
         />
         <HomeTab.Screen
-          name="PauseSurvey"
-          component={PauseSurvey}
+          name="PauseHome"
+          component={PauseHome}
           options={{
             title: 'HitPause Quiz',
             tabBarLabel: false,
