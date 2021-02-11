@@ -89,6 +89,8 @@ export default function App(props) {
       try {
         SplashScreen.preventAutoHide();
 
+        console.log('plat', Platform)
+
         // Load fonts
         await Font.loadAsync({
           ...Ionicons.font,
@@ -269,6 +271,7 @@ export default function App(props) {
         <PaperProvider>
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            {Platform.OS === 'android' && <StatusBar barStyle="default" />}
             <AppContext.Provider value={hitpause}>
 
               <NavigationContainer>
