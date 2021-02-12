@@ -19,7 +19,7 @@ export default function PauseHome(props) {
             <Text style={{ color: '#fff', fontSize: RFValue(24), fontWeight: 'bold', textAlign: 'center' }}>HIT PAUSE</Text>
             <Text style={{ color: '#fff', fontSize: RFValue(16) }}>TO TAKE CONTROL OF YOUR ANXIETY</Text>
           </View>
-          <TouchableOpacity style={styles.pauseButton} onPress={() => props.navigation.navigate('IncidentQuestionnaire')}>
+          <TouchableOpacity style={styles.pauseButton} onPress={() => props.navigation.navigate('PauseSurvey')}>
             <AppIcons name="materialicons:pause" size={RFValue(240)}></AppIcons>
           </TouchableOpacity>
           <Text style={{ paddingTop: RFValue(20), color: '#fff' }}>Questions? Scroll down...</Text>

@@ -1,9 +1,9 @@
-import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import firebase from '../../Firebase.js'
 import h from '../../globals';
-import { StyleSheet, Text, View, Button, AsyncStorage } from 'react-native';
-import QuizCard from '../../components/quiz/QuizCard';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import Form from '../../components/quiz/Form';
+import SuggestionSwitcher from '../../components/quiz/SuggestionSwitcher';
 import Loading from '../Loading';
 import { AuthContext } from '../../AuthContext.js';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -15,13 +15,12 @@ export default function QuizScreen(props) {
   const user = React.useContext(AuthContext);
   const hitpause = React.useContext(AppContext);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [showResults, setShowResults] = React.useState(false);
   const [results, setResults] = React.useState({});
   const [quiz, setQuiz] = React.useState({});
 
   React.useEffect(() => {
-    console.log(props)
-    firebase.database().ref(`hitpause/quizzes/${props.route.params.quizName}`).once('value').then(s => {
+    // Get quiz config from firebase
+    firebase.database().ref(`hitpause/quizzes/incidentQuestionnaire`).once('value').then(s => {
       let quizData = s.val();
       let questionList = quizData.questions;
       if (!quizData.dynamic) {
@@ -32,20 +31,6 @@ export default function QuizScreen(props) {
       setIsLoading(false);
     })
   }, []);
-
-  let saveIncidentQuiz = async (quizData) => {
-    try {
-      await AsyncStorage.setItem('IncidentQuiz', JSON.stringify(quizData));
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  let getSavedQuiz = async () => {
-    AsyncStorage.getItem('IncidentQuiz', (err, result) => {
-      return JSON.parse(result);
-    });
-  }
 
   async function handleSubmit(effects) {
     // Get the user's traits
@@ -91,6 +76,7 @@ export default function QuizScreen(props) {
                 <AppIcons name={results.s1.icon} size={RFValue(48)}/>
                 <Text style={{ color: '#fff', fontSize: RFValue(18) }}>{results.s1.text}</Text>
                 <Text style={{ color: '#fff', fontSize: RFValue(12) }}>{results.s1.body}</Text>
+                <SuggestionSwitcher suggestionId={results.s1.$key}></SuggestionSwitcher>
               </View>
               <View style={{ flex: 1, display: 'flex'}}>
                 <Text>Here are some other things to try:</Text>
