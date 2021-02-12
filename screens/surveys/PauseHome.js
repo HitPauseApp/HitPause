@@ -1,9 +1,6 @@
 import * as React from 'react';
 import firebase from '../../Firebase.js'
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
-import QuizCard from '../../components/quiz/QuizCard';
-import Loading from '../Loading';
-import { Portal, Modal } from 'react-native-paper';
 import { AuthContext } from '../../AuthContext.js';
 import AppIcons from '../../components/AppIcons.js';
 import { RFValue } from 'react-native-responsive-fontsize';

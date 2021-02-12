@@ -20,6 +20,7 @@ import SignUp from './screens/SignUp';
 import ResetPassword from './screens/ResetPassword';
 import PauseSurvey from './screens/surveys/PauseSurvey';
 import PauseHome from './screens/surveys/PauseHome';
+import ProfileSurvey from './screens/surveys/ProfileSurvey';
 import Loading from './screens/Loading';
 import HomeScreen from './screens/HomeScreen';
 import HistoryScreen from './screens/HistoryScreen';
@@ -286,12 +287,11 @@ export default function App(props) {
                     component={AdminPanel}
                     options={{ headerTitle: 'Admin Panel' }}
                   />
-                  {/* <MainStack.Screen
-                    name="InitialAssessment"
-                    component={QuizScreen}
-                    initialParams={{ quizName: 'initialAssessment' }}
-                    options={{ headerTitle: 'Initial Survey' }}
-                  /> */}
+                  <MainStack.Screen
+                    name="ProfileSurvey"
+                    component={ProfileSurvey}
+                    options={{ headerTitle: 'Profile Survey' }}
+                  />
                   <MainStack.Screen
                     name="PauseSurvey"
                     component={PauseSurvey}

@@ -11,7 +11,7 @@ import { AppContext } from '../../AppContext.js';
 import AppIcons from '../../components/AppIcons.js';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default function QuizScreen(props) {
+export default function PauseSurvey(props) {
   const user = React.useContext(AuthContext);
   const hitpause = React.useContext(AppContext);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -19,7 +19,7 @@ export default function QuizScreen(props) {
   const [quiz, setQuiz] = React.useState({});
 
   React.useEffect(() => {
-    // Get quiz config from firebase
+    // Get survey config from firebase
     firebase.database().ref(`hitpause/quizzes/incidentQuestionnaire`).once('value').then(s => {
       let quizData = s.val();
       let questionList = quizData.questions;
@@ -67,24 +67,25 @@ export default function QuizScreen(props) {
         {
           !Object.keys(results).length ? (
             <View>
-              <QuizCard quiz={quiz} onSubmit={handleSubmit}></QuizCard>
+              <Form quiz={quiz} onSubmit={handleSubmit}></Form>
             </View>
           ) : (
             <ScrollView style={{ display: 'flex' }}>
-              <View style={{ flex: 1, display: 'flex' }}>
+              <View style={{ flex: 1, display: 'flex', padding: RFValue(20) }}>
                 <Text style={{ color: '#fff', fontSize: RFValue(24) }}>Our top suggestion for you is:</Text>
-                <AppIcons name={results.s1.icon} size={RFValue(48)}/>
+                <AppIcons name={results.s1.icon} size={RFValue(96)}/>
                 <Text style={{ color: '#fff', fontSize: RFValue(18) }}>{results.s1.text}</Text>
                 <Text style={{ color: '#fff', fontSize: RFValue(12) }}>{results.s1.body}</Text>
                 <SuggestionSwitcher suggestionId={results.s1.$key}></SuggestionSwitcher>
               </View>
               <View style={{ flex: 1, display: 'flex'}}>
-                <Text>Here are some other things to try:</Text>
+                <Text style={{ textAlign: 'center', fontSize: RFValue(18), color: '#fff' }}>Here are some other things to try:</Text>
                 <View style={styles.card}>
                   <AppIcons name={results.s2.icon} color="#222"></AppIcons>
                   <View style={{ flex: 1, paddingLeft: RFValue(10) }}>
                     <Text style={styles.cardTitle}>{results.s2.text}</Text>
                     <Text style={{ fontSize: RFValue(12) }}>{results.s2.body}</Text>
+                    <SuggestionSwitcher suggestionId={results.s2.$key}></SuggestionSwitcher>
                   </View>
                 </View>
                 <View style={styles.card}>
@@ -92,6 +93,7 @@ export default function QuizScreen(props) {
                   <View style={{ flex: 1, paddingLeft: RFValue(10) }}>
                     <Text style={styles.cardTitle}>{results.s3.text}</Text>
                     <Text style={{ fontSize: RFValue(12) }}>{results.s3.body}</Text>
+                    <SuggestionSwitcher suggestionId={results.s3.$key}></SuggestionSwitcher>
                   </View>
                 </View>
               </View>

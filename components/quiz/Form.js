@@ -43,16 +43,6 @@ export default function Form(props) {
     props.onSubmit(quizEffects);
   }
 
-  function submitInitialSurvey() {
-    let data = {};
-    // For each object in the effects array
-    for (const key in quizEffects) {
-      // For each property in the flag object, add it to the data object
-      for (const traitFlag in quizEffects[key]) data[traitFlag] = quizEffects[key][traitFlag];
-    }
-    user.ref.child('profile/traits').set(data);
-  }
-
   function handleNextQuestion() {
     let newIndex = quizIndex + 1;
     setQuizIndex(newIndex);
