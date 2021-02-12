@@ -42,7 +42,7 @@ export default function NotificationHandler() {
         justifyContent: 'space-around',
       }}>
       <Button
-        title="Enable Notifications"
+        title="Enable All Notifications"
         onPress={async () => {
           await schedulePushNotification();
         }}

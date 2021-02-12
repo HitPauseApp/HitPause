@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Text, Image, Button, AsyncStorage, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, Image, Button, AsyncStorage, ScrollView, TouchableOpacity} from 'react-native';
 import firebase from '../../Firebase.js';
 import { AuthContext } from '../../AuthContext.js';
 
@@ -56,14 +56,16 @@ export default function Account(props) {
 
         <View style={styles.separator}></View>
 
-        <View style={styles.category}>
+        {/*<View style={styles.category}>
           <Text style={styles.text}>Quiz Reminders</Text>
           <QuizReminder></QuizReminder>
         </View>
 
-        <View style={styles.separator}></View>
+        <View style={styles.separator}></View>*/}
 
-        <FillButton text="EDIT DETAILS"></FillButton>
+        <TouchableOpacity style={styles.notifications} onPress={() => props.navigation.navigate('NotificationsScreen')}>
+          <Text style={styles.notifications}>Notification Settings</Text>
+        </TouchableOpacity>
         <Text
           style={styles.signOut}
           onPress={() => handleLogout()}
@@ -79,7 +81,7 @@ export default function Account(props) {
         }}
       >Delete Local Account Data</Text>
 
-      <NotificationHandler></NotificationHandler>
+      {/*<NotificationHandler></NotificationHandler>*/}
       
     </ScrollView>
   );
@@ -125,5 +127,9 @@ const styles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center',
     marginBottom: 10
+  },
+  notifications: {
+    color: 'white',
+    alignSelf: 'center',
   }
 });

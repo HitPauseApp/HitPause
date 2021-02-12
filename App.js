@@ -27,6 +27,7 @@ import JournalScreen from './screens/journal/JournalScreen';
 import JournalEntry from './screens/journal/JournalEntry';
 import AccountSummary from './screens/account/AccountSummary';
 import AccountTraits from './screens/account/AccountTraits';
+import NotificationsScreen from './screens/account/NotificationsScreen';
 
 import { AsyncStorage } from 'react-native';
 import AdminPanel from './components/admin/AdminPanel';
@@ -184,7 +185,7 @@ export default function App(props) {
     return (
       <HomeTab.Navigator
         initialRouteName='Home'
-        activeColor='#6050DC'
+        activeColor='#132090'
         inactiveColor='black'
         barStyle={{ backgroundColor: 'white' }}
       >
@@ -306,6 +307,11 @@ export default function App(props) {
                     name="AccountTraits"
                     component={AccountTraits}
                     options={{ headerTitle: 'Account Traits' }}
+                  />
+                  <MainStack.Screen
+                    name="NotificationsScreen"
+                    component={NotificationsScreen}
+                    options={{ headerTitle: 'Notification Settings' }}
                   />
                 </MainStack.Navigator>
               </NavigationContainer>

@@ -37,9 +37,6 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => {goBack()}}>
-        <AntDesign name="arrowleft" size={30} color="white" />
-      </TouchableOpacity>
       <Text style={styles.header}>{getCurrentDate()}</Text>
       <View style={styles.textInputContainer}>
         <TextInput
@@ -47,6 +44,7 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
           placeholder='Note Title...'
           placeholderTextColor='#aaa'
           returnKeyType='next'
+          selectionColor='white'
           onChangeText={title => setTitle(title)}
           value={title}
         />
@@ -103,7 +101,7 @@ const styles = StyleSheet.create({
       marginBottom: 60,
       fontFamily: 'Poppins-Light',
       fontSize: 16,
-      textAlignVertical: 'top'
+      textAlignVertical: 'top',
     }
   });
   

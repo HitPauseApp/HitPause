@@ -15,7 +15,7 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#191414"
+      "backgroundColor": "#132090"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
