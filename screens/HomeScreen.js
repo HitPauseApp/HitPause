@@ -55,9 +55,9 @@ export default function HomeScreen(props) {
         <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner>
       </View>
       {
-        showInitialAssessment ? (
+        !showInitialAssessment ? (
           <View style={{ padding: RFValue(10) }}>
-            <TouchableOpacity style={styles.card} onPress={() => props.navigation.navigate('InitialAssessment')}>
+            <TouchableOpacity style={styles.card} onPress={() => props.navigation.navigate('ProfileSurvey')}>
               <View style={{ display: 'flex', flexDirection: 'row', padding: RFValue(10), alignItems: 'center' }}>
                 <AppIcons name='materialicons:info' color='#222'></AppIcons>
                 <View style={{ paddingLeft: RFValue(10), flex: 1 }}>

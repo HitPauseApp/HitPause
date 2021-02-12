@@ -18,8 +18,9 @@ import { AppContext } from './AppContext';
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
 import ResetPassword from './screens/ResetPassword';
-import QuizScreen from './screens/surveys/QuizScreen';
 import PauseSurvey from './screens/surveys/PauseSurvey';
+import PauseHome from './screens/surveys/PauseHome';
+import ProfileSurvey from './screens/surveys/ProfileSurvey';
 import Loading from './screens/Loading';
 import HomeScreen from './screens/HomeScreen';
 import HistoryScreen from './screens/HistoryScreen';
@@ -207,8 +208,8 @@ export default function App(props) {
           }}
         />
         <HomeTab.Screen
-          name="PauseSurvey"
-          component={PauseSurvey}
+          name="PauseHome"
+          component={PauseHome}
           options={{
             title: 'HitPause Quiz',
             tabBarLabel: false,
@@ -269,6 +270,7 @@ export default function App(props) {
         <PaperProvider>
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            {Platform.OS === 'android' && <StatusBar barStyle="default" />}
             <AppContext.Provider value={hitpause}>
 
               <NavigationContainer>
@@ -286,16 +288,14 @@ export default function App(props) {
                     options={{ headerTitle: 'Admin Panel' }}
                   />
                   <MainStack.Screen
-                    name="InitialAssessment"
-                    component={QuizScreen}
-                    initialParams={{ quizName: 'initialAssessment' }}
-                    options={{ headerTitle: 'Initial Survey' }}
+                    name="ProfileSurvey"
+                    component={ProfileSurvey}
+                    options={{ headerTitle: 'Profile Survey' }}
                   />
                   <MainStack.Screen
-                    name="IncidentQuestionnaire"
-                    component={QuizScreen}
-                    initialParams={{ quizName: 'incidentQuestionnaire' }}
-                    options={{ headerTitle: 'Incident Survey' }}
+                    name="PauseSurvey"
+                    component={PauseSurvey}
+                    options={{ headerTitle: 'Pause Survey' }}
                   />
                   <MainStack.Screen
                     name="JournalEntry"
