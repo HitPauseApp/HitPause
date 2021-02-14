@@ -42,7 +42,7 @@ export default function NotificationHandler() {
         justifyContent: 'space-around',
       }}>
       <Button
-        title="Enable Notifications"
+        title="Enable All Notifications"
         onPress={async () => {
           await schedulePushNotification();
         }}
@@ -65,7 +65,7 @@ async function schedulePushNotification() {
 
 async function registerForPushNotificationsAsync() {
   let token;
-  if (Constants.isDevice) {
+  if (Constants.isDevice && !Constants.platform.web) {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
     if (existingStatus !== 'granted') {

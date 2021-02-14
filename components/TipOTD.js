@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Platform } from 'react-native';
 
 export default class TipOTD extends Component {
     constructor(props) {
@@ -9,7 +9,8 @@ export default class TipOTD extends Component {
       }
 
     getQOTDFromApi() {
-        return fetch('https://cors-anywhere.herokuapp.com/https://zenquotes.io/api/today')
+        if(Platform.OS === 'ios' || Platform.OS === 'android'){
+            return fetch('https://zenquotes.io/api/today')
             .then(response => response.json())
             .then(responseJson => {
                 this.setState({
@@ -19,8 +20,16 @@ export default class TipOTD extends Component {
                 console.log(responseJson[0]);
                 // return responseJson.q;
             }).catch(error => {
-                console.error(error);
+                console.warn(error);
             });
+        
+        //Since QOTD doesn't work on web browser, there is no data so just set loading to false
+        }else{
+            this.setState({
+                isLoading: false,
+            });
+        }
+        
     }
 
     componentDidMount(){
@@ -36,16 +45,26 @@ export default class TipOTD extends Component {
             );
           }
 
-        return (
-            <View style={styles.container}>
-                <Text style={styles.header}>Quote of the Day</Text>
-                <Text style={styles.bodyText}>{this.state.jsonData.q}</Text>
-                <Text style={styles.bodyText}>- {this.state.jsonData.a}</Text>
-                <Text style={styles.attributionText}>Inspirational quotes provided by{"\n"}
-                    <a href="https://zenquotes.io/" style={{color: 'white'}} target="_blank">ZenQuotes API</a>
-                </Text>
-            </View>
-        );
+        if(Platform.OS === 'ios' || Platform.OS === 'android'){
+            return (
+                <View style={styles.container}>
+                    <Text style={styles.header}>Quote of the Day</Text>
+                    <Text style={styles.bodyText}>"{this.state.jsonData.q}"</Text>
+                    <Text style={styles.bodyText}>- {this.state.jsonData.a}</Text>
+                    {/* <Text style={styles.attributionText}>Inspirational quotes provided by{"\n"}
+                        <a href="https://zenquotes.io/" style={{color: 'white'}} target="_blank">ZenQuotes API</a>
+                    </Text> */}
+                </View>
+            );
+        
+        //Since QOTD doesn't work on web browser, there is no data so just display this text
+        }else{
+            return (
+                <View style={styles.container}>
+                    <Text style={styles.bodyText}>Quote of the Day incompatible with web view!</Text>
+                </View>
+            );
+        }
     }
 }
 

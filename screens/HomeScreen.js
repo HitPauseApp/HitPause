@@ -1,14 +1,12 @@
-import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, ImageBackground } from 'react-native';
+import firebase from '../Firebase';
+import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button } from 'react-native';
 import { AuthContext } from '../AuthContext.js';
 import { Portal, Modal } from 'react-native-paper';
 import TipOTD from '../components/TipOTD';
 import WelcomeBanner from '../components/WelcomeBanner';
 import { RFValue } from "react-native-responsive-fontsize";
-import firebase from '../Firebase';
-
-
+import AppIcons from '../components/AppIcons';
 
 export default function HomeScreen(props) {
   const user = React.useContext(AuthContext);
@@ -40,52 +38,51 @@ export default function HomeScreen(props) {
 
   const hideModal = () => setVisible(false);
 
-  let nextScreen = () =>{
-    if(count < screenText.length - 1){
+  let nextScreen = () => {
+    if (count < screenText.length - 1) {
       setCount(count + 1);
     }
-    else{
+    else {
       setCount(0);
     }
   }
 
-  
-  
+
+
   return (
     <View style={styles.container}>
-      <View>
-        <ImageBackground style={ styles.image }  
-          source={require('../assets/images/homepage.jpg')}>
-          <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner>
-        </ImageBackground>
+      <View style={{ height: RFValue(200) }}>
+        <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner>
       </View>
       {
-        showInitialAssessment &&
-        <View style={{ backgroundColor: '#132090', marginTop: 20, marginBottom: 20 }}>
-          <Text style={styles.text2}>Complete your profile by taking our profile survey.</Text>
-          <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitialAssessment')}>
-            <Text style={styles.text}>Take Survey</Text>
-          </TouchableOpacity>
-        </View>
-      }
-      <TipOTD></TipOTD>
-      <Portal>
-        <Modal visible={visible} dismissable={false} contentContainerStyle={styles.tourModal}>
-          <Text style={styles.modalHeader}>{screenHead[count]}</Text>
-          <Text style={styles.modalText}>{screenText[count]}</Text>
-          <View style={styles.recentTab}>
-            <TouchableOpacity style={styles.modalButton} onPress={hideModal}>
-              <Text style={styles.modalText}>Close</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.modalButton} onPress={nextScreen}>
-              <Text style={styles.modalText}>Next</Text>
-
+        !showInitialAssessment ? (
+          <View style={{ padding: RFValue(10) }}>
+            <TouchableOpacity style={styles.card} onPress={() => props.navigation.navigate('ProfileSurvey')}>
+              <View style={{ display: 'flex', flexDirection: 'row', padding: RFValue(10), alignItems: 'center' }}>
+                <AppIcons name='materialicons:info' color='#222'></AppIcons>
+                <View style={{ paddingLeft: RFValue(10), flex: 1 }}>
+                  <Text style={{ fontSize: RFValue(18) }}>Complete your profile survey!</Text>
+                  <Text style={{ fontSize: RFValue(12) }}>It helps us help you.</Text>
+                </View>
+              </View>
             </TouchableOpacity>
           </View>
-          
-        </Modal>
-
-      </Portal>  
+        ) : (
+          <View style={{ padding: RFValue(10) }}>
+            <View style={styles.card}>
+              <View style={{ display: 'flex', flexDirection: 'row', padding: RFValue(10), alignItems: 'center' }}>
+                <AppIcons name='materialicons:check-circle' color='#222'></AppIcons>
+                <View style={{ paddingLeft: RFValue(10), flex: 1 }}>
+                  <Text style={{ fontSize: RFValue(18) }}>Your Profile is up to date!</Text>
+                  <Text style={{ fontSize: RFValue(12) }}>Thanks for helping us help you.</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        )
+      }
+      {/*<TipOTD></TipOTD>*/}
+      <View style={{ flex: 1 }}></View>
     </View>
   );
 }
@@ -95,14 +92,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#00095e',
     flex: 1
   },
-  header:{
-    padding: 15,
-    fontFamily: 'Poppins-Medium',
-    fontSize: 20,
-    color: 'white'
-  },
-  image: {
-    height: RFValue(130),
+  card: {
+    borderRadius: RFValue(20),
+    backgroundColor: 'white',
+    display: 'flex',
+    alignItems: 'center'
   },
   badgeContainer: {
     backgroundColor: '#132090',
@@ -114,7 +108,7 @@ const styles = StyleSheet.create({
     padding: 50,
     marginTop: 50
   },
-  tourModal:{
+  tourModal: {
     backgroundColor: '#132090',
     justifyContent: 'center',
     alignContent: 'center',
@@ -125,21 +119,21 @@ const styles = StyleSheet.create({
     bottom: 10,
     margin: 30,
   },
-  modalHeader:{
+  modalHeader: {
     textAlign: 'center',
     padding: 10,
     fontFamily: 'Poppins-Light',
     fontSize: 25,
     color: 'white'
   },
-  modalText:{
+  modalText: {
     padding: 15,
     fontFamily: 'Poppins-Extra-Light',
     fontSize: 15,
     color: 'white',
     textAlign: 'center',
   },
-  recentTab:{
+  recentTab: {
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
@@ -148,35 +142,25 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
   },
-  buttonContainer:{
+  buttonContainer: {
     margin: 10,
     padding: 10
   },
-  button:{
+  button: {
     marginBottom: 20,
     backgroundColor: '#132090',
     alignSelf: 'center',
     padding: 10,
     borderRadius: 8
   },
-  modalButton:{
+  modalButton: {
     backgroundColor: '#00095e',
     borderRadius: 8,
     width: RFValue(80),
   },
   text: {
     color: 'white',
-    fontSize: 16,   
+    fontSize: 16,
     fontFamily: 'Poppins-Medium'
-  },
-  text2: {
-    textAlign: 'center',
-    color: 'white',
-    fontSize: 14,
-    fontFamily: 'Poppins-Light',
-    marginTop: 30,
-    marginBottom: 5,
   }
-
-  
 });

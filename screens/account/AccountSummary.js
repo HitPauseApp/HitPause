@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { View, StyleSheet, Text, Image, Button, AsyncStorage, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, Image, Button, AsyncStorage, ScrollView, TouchableOpacity} from 'react-native';
 import firebase from '../../Firebase.js';
 import { AuthContext } from '../../AuthContext.js';
 
-import SpotifyButton from '../../components/Spotify/SpotifyButton';
+import QuizReminder from '../../components/settings/QuizReminder';
+import NotificationHandler from '../../components/notifications/NotificationHandler';
 import SpotifyAuthButton from '../../spotify/SpotifyAuthButton';
 
 import AppIcons from '../../components/AppIcons';
@@ -13,54 +14,66 @@ import userImg from '../../assets/images/user.png';
 
 export default function Account(props) {
   const user = React.useContext(AuthContext);
-  
+
   function handleLogout() {
     firebase.auth().signOut().catch((error) => {
       console.error(error);
     });
   }
-  
+
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.contentContainer}> 
-      <Image source={userImg} style={styles.avatar}></Image>
-      <View style={styles.category}>
-        <AppIcons name="materialicons:person"></AppIcons>
-        <Text style={styles.text}>{user.firstName} {user.lastName}</Text>
-        <Text onPress={() => props.navigation.navigate('AccountTraits')}>Traits</Text>
-      </View>
+      <View style={styles.contentContainer}>
+        <Image source={userImg} style={styles.avatar}></Image>
+        <View style={styles.category}>
+          <AppIcons name="materialicons:person"></AppIcons>
+          <Text style={styles.text}>{user.firstName} {user.lastName}</Text>
+          <Text onPress={() => props.navigation.navigate('AccountTraits')}>Traits</Text>
+        </View>
 
-      <View style={styles.separator}></View>
+        <View style={styles.separator}></View>
 
-      <View style={styles.category}>
-        <AppIcons name="materialicons:email"></AppIcons>
-        <Text style={styles.text}>{user.email}</Text>
-      </View>
+        <View style={styles.category}>
+          <AppIcons name="materialicons:email"></AppIcons>
+          <Text style={styles.text}>{user.email}</Text>
+        </View>
 
-      <View style={styles.separator}></View>
+        <View style={styles.separator}></View>
 
-      <View style={styles.category}>
-        <AppIcons name="fontawesome5:spotify" size={30} color="white" />
-        {/* This is bad data, only using as placeholder */}
-        {/* <Text style={styles.text}>{user ? 'Connected' : 'Not Connected'}</Text> */}
-        <SpotifyAuthButton></SpotifyAuthButton>
-      </View>
-   
-      <View style={styles.separator}></View>
+        <View style={styles.category}>
+          <AppIcons name="fontawesome5:spotify" size={30} color="white" />
+          {/* This is bad data, only using as placeholder */}
+          {/* <Text style={styles.text}>{user ? 'Connected' : 'Not Connected'}</Text> */}
+          <SpotifyAuthButton></SpotifyAuthButton>
+        </View>
 
-      <View style={styles.category}>
-        <AppIcons name="materialcommunityicons:textbox-password" size={30} color="white" />
-        <Text style={styles.text}>*******</Text>
-      </View>
-      <FillButton text="EDIT DETAILS"></FillButton>
-      <Text
-        style={styles.signOut}
-        onPress={() => handleLogout()}
-      >Sign Out</Text>
+        <View style={styles.separator}></View>
+
+        <View style={styles.category}>
+          <AppIcons name="materialcommunityicons:textbox-password" size={30} color="white" />
+          <Text style={styles.text}>*******</Text>
+        </View>
+
+        <View style={styles.separator}></View>
+
+        {/*<View style={styles.category}>
+          <Text style={styles.text}>Quiz Reminders</Text>
+          <QuizReminder></QuizReminder>
+        </View>
+
+        <View style={styles.separator}></View>*/}
+
+        <TouchableOpacity style={styles.notifications} onPress={() => props.navigation.navigate('NotificationsScreen')}>
+          <Text style={styles.notifications}>Notification Settings</Text>
+        </TouchableOpacity>
+        <Text
+          style={styles.signOut}
+          onPress={() => handleLogout()}
+        >Sign Out</Text>
       </View>
 
       {/*<SpotifyButton href="https://open.spotify.com/playlist/37i9dQZF1DX9B1hu73DioC?si=3i6KmA--RBi9aVggiR0z3Q"></SpotifyButton>*/}
-      
+
       <Text
         style={styles.deleteData}
         onPress={() => {
@@ -68,8 +81,8 @@ export default function Account(props) {
         }}
       >Delete Local Account Data</Text>
 
-        
-      <NotificationHandler></NotificationHandler>
+      {/*<NotificationHandler></NotificationHandler>*/}
+      
     </ScrollView>
   );
 }
@@ -114,5 +127,9 @@ const styles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center',
     marginBottom: 10
+  },
+  notifications: {
+    color: 'white',
+    alignSelf: 'center',
   }
 });

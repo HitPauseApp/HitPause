@@ -17,8 +17,10 @@ import { AppContext } from './AppContext';
 
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
-import QuizScreen from './screens/QuizScreen';
 import ResetPassword from './screens/ResetPassword';
+import PauseSurvey from './screens/surveys/PauseSurvey';
+import PauseHome from './screens/surveys/PauseHome';
+import ProfileSurvey from './screens/surveys/ProfileSurvey';
 import Loading from './screens/Loading';
 import HomeScreen from './screens/HomeScreen';
 import HistoryScreen from './screens/HistoryScreen';
@@ -26,6 +28,7 @@ import JournalScreen from './screens/journal/JournalScreen';
 import JournalEntry from './screens/journal/JournalEntry';
 import AccountSummary from './screens/account/AccountSummary';
 import AccountTraits from './screens/account/AccountTraits';
+import NotificationsScreen from './screens/account/NotificationsScreen';
 
 import { AsyncStorage } from 'react-native';
 import AdminPanel from './components/admin/AdminPanel';
@@ -183,7 +186,7 @@ export default function App(props) {
     return (
       <HomeTab.Navigator
         initialRouteName='Home'
-        activeColor='#6050DC'
+        activeColor='#132090'
         inactiveColor='black'
         barStyle={{ backgroundColor: 'white' }}
       >
@@ -206,9 +209,8 @@ export default function App(props) {
           }}
         />
         <HomeTab.Screen
-          name="PauseQuiz"
-          component={QuizScreen}
-          initialParams={{ quizName: 'incidentQuestionnaire' }}
+          name="PauseHome"
+          component={PauseHome}
           options={{
             title: 'HitPause Quiz',
             tabBarLabel: false,
@@ -269,6 +271,7 @@ export default function App(props) {
         <PaperProvider>
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            {Platform.OS === 'android' && <StatusBar barStyle="default" />}
             <AppContext.Provider value={hitpause}>
 
               <NavigationContainer>
@@ -286,16 +289,14 @@ export default function App(props) {
                     options={{ headerTitle: 'Admin Panel' }}
                   />
                   <MainStack.Screen
-                    name="InitialAssessment"
-                    component={QuizScreen}
-                    initialParams={{ quizName: 'initialAssessment' }}
-                    options={{ headerTitle: 'Initial Survey' }}
+                    name="ProfileSurvey"
+                    component={ProfileSurvey}
+                    options={{ headerTitle: 'Profile Survey' }}
                   />
                   <MainStack.Screen
-                    name="IncidentQuestionnaire"
-                    component={QuizScreen}
-                    initialParams={{ quizName: 'incidentQuestionnaire' }}
-                    options={{ headerTitle: 'Incident Survey' }}
+                    name="PauseSurvey"
+                    component={PauseSurvey}
+                    options={{ headerTitle: 'Pause Survey' }}
                   />
                   <MainStack.Screen
                     name="JournalEntry"
@@ -306,6 +307,11 @@ export default function App(props) {
                     name="AccountTraits"
                     component={AccountTraits}
                     options={{ headerTitle: 'Account Traits' }}
+                  />
+                  <MainStack.Screen
+                    name="NotificationsScreen"
+                    component={NotificationsScreen}
+                    options={{ headerTitle: 'Notification Settings' }}
                   />
                 </MainStack.Navigator>
               </NavigationContainer>
