@@ -65,10 +65,10 @@ const styles = StyleSheet.create({
     width:'90%',
     position: 'absolute',
     alignSelf:'center',
-    borderRadius: 30,
+    //borderRadius: RFValue(30),//30,
   },
   header:{
-    fontSize: 30,
+    fontSize: RFValue(22),
     fontWeight: 'bold',
     color: '#00095e',
     fontFamily: 'Poppins-Medium',
@@ -80,17 +80,17 @@ const styles = StyleSheet.create({
     alignSelf:'center'
   },
   bodyText: {
-    fontSize:15,
+    fontSize:RFValue(11),
     color: '#00095e',
     fontFamily: 'Poppins-Medium',
     marginTop: '7%',
     left: '2%'
   },
   textInput: {
-    height: 40,
+   // height: '',
     width: '90%',
     color: '#00095e',
-    marginTop: '0.7%',
+    marginTop: '3.2%',
     zIndex: 3,
     left: '5%'
   },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     //borderWidth: 2,
     //borderColor: '#00095e' ,
-    borderRadius: 20,
+    borderRadius: RFValue(15.5), //20,
     height: RFValue(37),
     width: RFValue(145),
     alignSelf:'flex-end',
@@ -118,13 +118,13 @@ const styles = StyleSheet.create({
   // },
   text: { 
     textAlign: 'center',
-    fontSize: 15,
+    fontSize: RFValue(11),
     color: 'white',
     fontFamily: 'Poppins-Bold'
 
   },
   text2: { 
-    fontSize: 15,
+    fontSize: RFValue(11),
     color: '#00095e',
     fontFamily: 'Poppins-Bold',
     marginTop:'20%',
@@ -138,15 +138,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     shadowColor:  "#000",
     shadowOffset: {
-      width: 0,
-      height: 2,
+      width: RFValue(0),
+      height: RFValue(2),
     },
-    borderRadius: 20,
-    shadowOpacity: 0.18,
-    shadowRadius: 3.84,
+    borderRadius: RFValue(15),
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
     marginTop: '8%',
   
-    elevation: 1,
+    elevation: RFValue(1),
   
     },
     textboxTitle: {

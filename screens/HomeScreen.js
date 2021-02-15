@@ -7,6 +7,8 @@ import TipOTD from '../components/TipOTD';
 import WelcomeBanner from '../components/WelcomeBanner';
 import { RFValue } from "react-native-responsive-fontsize";
 import AppIcons from '../components/AppIcons';
+import Music from '../assets/images/DancingDoodle.svg';
+
 
 export default function HomeScreen(props) {
   const user = React.useContext(AuthContext);
@@ -51,9 +53,15 @@ export default function HomeScreen(props) {
 
   return (
     <View style={styles.container}>
-      <View style={{ height: RFValue(200) }}>
+      <View style={{ height: RFValue(150) }}>
         <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner>
       </View>
+      <View style={styles.homecard}>
+          {/* <Text>Need some song recommendations? We have some for you.</Text> */}
+          {/* <Image source={require('../assets/images/MusicIcon.png')}
+              style= {styles.pic}></Image> */}
+              {/* <Music width={48} height={48} fill="#000" /> */}
+        </View>
       {
         !showInitialAssessment ? (
           <View style={{ padding: RFValue(10) }}>
@@ -71,10 +79,10 @@ export default function HomeScreen(props) {
           <View style={{ padding: RFValue(10) }}>
             <View style={styles.card}>
               <View style={{ display: 'flex', flexDirection: 'row', padding: RFValue(10), alignItems: 'center' }}>
-                <AppIcons name='materialicons:check-circle' color='#222'></AppIcons>
+                <AppIcons name='materialicons:check-circle' color='#00095e'></AppIcons>
                 <View style={{ paddingLeft: RFValue(10), flex: 1 }}>
-                  <Text style={{ fontSize: RFValue(18) }}>Your Profile is up to date!</Text>
-                  <Text style={{ fontSize: RFValue(12) }}>Thanks for helping us help you.</Text>
+                  <Text style={{ fontSize: RFValue(15), color: '#00095e', fontFamily: 'Poppins-Bold' }}>Your Profile is up to date!</Text>
+                  <Text style={{ fontSize: RFValue(11), color: '#00095e', fontFamily: 'Poppins-Medium'  }}>Thanks for helping us help you.</Text>
                 </View>
               </View>
             </View>
@@ -89,14 +97,22 @@ export default function HomeScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#00095e',
+    backgroundColor: 'white',
     flex: 1
   },
   card: {
     borderRadius: RFValue(20),
-    backgroundColor: 'white',
+    backgroundColor: 'white', //'#E1E2E2',
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    shadowColor:  "#000",
+    shadowOffset: {
+      width: RFValue(0),
+      height: RFValue(2),
+    },
+    borderRadius: RFValue(15),
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
   },
   badgeContainer: {
     backgroundColor: '#132090',
@@ -162,5 +178,38 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontFamily: 'Poppins-Medium'
+  },
+  homecard: {
+    backgroundColor: 'white',
+    height: '20%',
+    width: '92%',
+    alignSelf: 'center',
+    borderRadius: RFValue(15),
+    shadowColor:  "#000",
+    shadowOffset: {
+    width: RFValue(0),
+    height: RFValue(2),
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: RFValue(3.84),
+  elevation: RFValue(1),
+  justifyContent:'center',
+  alignContent: 'center'
+  },
+  pic: {
+    height: '70%',
+    width: '70%',
+    overflow:'hidden'
+  //   alignSelf:'center',
+  //   borderRadius: RFValue(15),
+  //   overflow: 'hidden',
+  //   shadowColor:  "#000",
+  //   shadowOffset: {
+  //   width: RFValue(0),
+  //   height: RFValue(10),
+  // },
+  // shadowOpacity: 0.50,
+  // shadowRadius: RFValue(3.84),
+  //elevation: RFValue(1),
   }
 });
