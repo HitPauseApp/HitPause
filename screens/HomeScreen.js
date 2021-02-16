@@ -81,25 +81,8 @@ export default function HomeScreen(props) {
           </View>
         )
       }
-      <TipOTD></TipOTD>
+      {/*<TipOTD></TipOTD>*/}
       <View style={{ flex: 1 }}></View>
-      <Portal>
-        <Modal visible={visible} dismissable={false} contentContainerStyle={styles.tourModal}>
-          <Text style={styles.modalHeader}>{screenHead[count]}</Text>
-          <Text style={styles.modalText}>{screenText[count]}</Text>
-          <View style={styles.recentTab}>
-            <TouchableOpacity style={styles.modalButton} onPress={hideModal}>
-              <Text style={styles.modalText}>Close</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.modalButton} onPress={nextScreen}>
-              <Text style={styles.modalText}>Next</Text>
-
-            </TouchableOpacity>
-          </View>
-
-        </Modal>
-
-      </Portal>
     </View>
   );
 }
