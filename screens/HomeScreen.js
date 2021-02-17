@@ -8,7 +8,7 @@ import WelcomeBanner from '../components/WelcomeBanner';
 import { RFValue } from "react-native-responsive-fontsize";
 import AppIcons from '../components/AppIcons';
 import Music from '../assets/images/DancingDoodle.svg';
-import Swiper from 'react-native-swiper';
+import Swiper from 'react-native-swiper/src';
 //import user from '../../assets/images/userImg.png';
 
 
