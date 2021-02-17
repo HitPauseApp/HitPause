@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10
+    padding: '2.5%'
   },
   picCont: {
     height: '80%',
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   header:{
     fontFamily: 'Poppins-Bold',
-    fontSize: 40,
+    fontSize: RFValue(29.5), // 40
     fontWeight: 'bold',
     color: '#00095e',
     // left: '5%',
@@ -108,9 +108,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   loginButton: { 
-    marginTop: 45,
+    marginTop: '10.5%',
     backgroundColor:'#00095e',
-    borderRadius: 30,
+    borderRadius: RFValue(30),
     overflow: 'hidden' ,
     height: RFValue(40),
     width: RFValue(220),
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   },
   signupButton: {
     backgroundColor:'#00095e',
-    borderRadius: 50,
+    borderRadius: RFValue(50),
     height: RFValue(40),
     width: RFValue(220),
     justifyContent: 'center',
@@ -128,34 +128,34 @@ const styles = StyleSheet.create({
 
   },
   forgotButton: { 
-    borderRadius: 20,
+    //borderRadius: 20,
     alignSelf:'center',
-    marginTop: 10
+    marginTop: '2.3%'
   },
   textInput: {
     width: '80%',
     color: '#757575',
-    marginTop: '4%',
+    marginTop: '3.2%',
     left: '5%',
     zIndex: 3,
     alignSelf: 'flex-start'
   },
   text1: { 
-    fontSize: 22,
+    fontSize: RFValue(16),
     color: 'white',
     fontFamily: 'Poppins-Bold',
     textAlign: 'center',
   },
   text2: {
     marginTop: '8%',
-    fontSize: 18,
+    fontSize: RFValue(13),
     color: '#00095e',
     fontFamily: 'Poppins-Bold',
     alignSelf:'center'
   },
   text3: {
-    marginTop: 5,
-    fontSize: 15,
+    marginTop: '3%',
+    fontSize: RFValue(11),
     color: '#00095e',
     fontFamily: 'Poppins-Light',
     
@@ -170,11 +170,11 @@ const styles = StyleSheet.create({
     width:'105%',
     position: 'absolute',
     top: '33%',
-    borderRadius: 30,
+    borderRadius: RFValue(23),
   },
   line: {
     borderBottomColor: '#D4D5D7',
-    borderBottomWidth: 1,
+    borderBottomWidth: RFValue(1),
     width: '70%',
     alignSelf: 'center',
     marginTop: '8%'
@@ -186,15 +186,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     shadowColor:  "#000",
     shadowOffset: {
-      width: 0,
-      height: 2,
+      width: RFValue(0),
+      height: RFValue(2),
     },
-    borderRadius: 20,
+    borderRadius: RFValue(15),
     shadowOpacity: 0.18,
-    shadowRadius: 3.84,
+    shadowRadius: RFValue(3.84),
     marginTop: '8%',
   
-    elevation: 1,
+    elevation: RFValue(1),
   
     },
     textboxTitle: {
