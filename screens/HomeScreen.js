@@ -94,7 +94,7 @@ export default function HomeScreen(props) {
       </View>
 
       {
-        !showInitialAssessment ? (
+        showInitialAssessment ? (
           <View style={{ padding: RFValue(10) }}>
             <TouchableOpacity style={styles.card} onPress={() => props.navigation.navigate('ProfileSurvey')}>
               <View style={{ display: 'flex', flexDirection: 'row', padding: RFValue(10), alignItems: 'center' }}>
