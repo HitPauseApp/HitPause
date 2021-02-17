@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   switch: {
-    float: 'right',
+   // float: 'right',
     padding: 50
   },
   contentContainer: {

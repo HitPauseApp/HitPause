@@ -126,10 +126,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#00095e',
-    padding: 10
+    padding: '2.5%'
   },
   header:{
-    fontSize: 40,
+    fontSize: RFValue(29.5),
     flex: 1,
     fontWeight: 'bold',
     color: 'white',
@@ -142,12 +142,12 @@ const styles = StyleSheet.create({
     width:'105%',
     position: 'absolute',
     top: '23%',
-    borderRadius: 30,
+    borderRadius: RFValue(23),
   },
   textInput: {
     width: '80%',
     color: '#757575',
-    marginTop: '4%',
+    marginTop: '3.2%',
     left: '5%',
     zIndex: 3,
     alignSelf: 'flex-start'
@@ -155,28 +155,17 @@ const styles = StyleSheet.create({
   SignUpButton: { 
     marginTop: '10%',
     backgroundColor: '#00095e',
-    borderRadius: 50,
-    borderRadius: 50,
+    borderRadius: RFValue(50),// 50,
     height: RFValue(40),
     width: RFValue(280),
     justifyContent: 'center',
     alignSelf:'center',
   },
-  // loginButton: { 
-  //   //borderWidth: 2,
-  //   //backgroundColor: '#00095e',
-  //   borderRadius: 50,
-  //   height: RFValue(40),
-  //   width: RFValue(220),
-  //   justifyContent: 'center',
-  //   alignSelf:'center',
-  // },
   text: { 
-    fontSize: 22,
+    fontSize: RFValue(16), //22,
     color: 'white',
     fontFamily: 'Poppins-Bold',
     textAlign: 'center',
-
   },
 
   textbox: { 
@@ -186,15 +175,15 @@ const styles = StyleSheet.create({
   alignSelf: 'center',
   shadowColor:  "#000",
   shadowOffset: {
-    width: 0,
-    height: 2,
+    width: RFValue(0),
+    height: RFValue(2),
   },
-  borderRadius: 20,
+  borderRadius: RFValue(15),
   shadowOpacity: 0.25,
-  shadowRadius: 3.84,
+  shadowRadius: RFValue(3.84),
   marginTop: '7%',
 
-  elevation: 5,
+  elevation: RFValue(1),
 
   },
   textboxTitle: {
@@ -204,14 +193,14 @@ const styles = StyleSheet.create({
     left: '5%',
     top: '10%'
   },
-  text2: {
-    marginTop: 15,
-    fontSize: 20,
-    color: '#00095e',
-    fontFamily: 'Poppins-Light'
-  },
+  // text2: {
+  //   marginTop: RFValue(15),
+  //   fontSize: 20,
+  //   color: '#00095e',
+  //   fontFamily: 'Poppins-Light'
+  // },
   text3: {
-    fontSize: 18,
+    fontSize: RFValue(13),
     marginTop: '5%',
     color: '#00095e',
     fontFamily: 'Poppins-Medium',

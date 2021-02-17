@@ -66,7 +66,7 @@ export default function PauseSurvey(props) {
       <View style={styles.container}>
         {
           !Object.keys(results).length ? (
-            <View>
+            <View style={styles.largeContainer}>
               <Form quiz={quiz} onSubmit={handleSubmit}></Form>
             </View>
           ) : (
@@ -124,5 +124,9 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: RFValue(18),
     fontWeight: 'bold'
+  },
+  largeContainer: {
+    height:'100%',
+    width:'100%'
   }
 });
