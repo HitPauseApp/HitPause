@@ -122,9 +122,6 @@ export default function HomeScreen(props) {
       }
       <View style={styles.tipHolder}>
         <TipOTD></TipOTD>
-        <TouchableOpacity onPress={() => props.navigation.navigate('WelcomeScreen')}>
-          <Text style={styles.notifications}>Welcome Screen</Text>
-        </TouchableOpacity>
       </View>
       {/* <View style={{ flex: 1 }}></View> */}
     </View>
