@@ -29,6 +29,7 @@ import JournalEntry from './screens/journal/JournalEntry';
 import AccountSummary from './screens/account/AccountSummary';
 import AccountTraits from './screens/account/AccountTraits';
 import NotificationsScreen from './screens/account/NotificationsScreen';
+import WelcomeScreen from './screens/WelcomeScreen';
 
 import { AsyncStorage } from 'react-native';
 import AdminPanel from './components/admin/AdminPanel';
@@ -312,6 +313,11 @@ export default function App(props) {
                     name="NotificationsScreen"
                     component={NotificationsScreen}
                     options={{ headerTitle: 'Notification Settings' }}
+                  />
+                  <MainStack.Screen
+                    name="WelcomeScreen"
+                    component={WelcomeScreen}
+                    options={{ headerShown: false }}
                   />
                 </MainStack.Navigator>
               </NavigationContainer>

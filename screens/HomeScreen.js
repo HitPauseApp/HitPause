@@ -8,7 +8,7 @@ import WelcomeBanner from '../components/WelcomeBanner';
 import { RFValue } from "react-native-responsive-fontsize";
 import AppIcons from '../components/AppIcons';
 import Music from '../assets/images/DancingDoodle.svg';
-import Swiper from 'react-native-swiper';
+import Swiper from 'react-native-swiper/src';
 //import user from '../../assets/images/userImg.png';
 
 
@@ -60,37 +60,37 @@ export default function HomeScreen(props) {
       </View>
 
       <View style={styles.swiperHolder}>
-      <Swiper style={styles.wrapper} loop={false}>
-      <View testID="Suggestion1" style={styles.homecard}>
-          <Image source={require('../assets/images/MusicIcon.png')}
-              style= {styles.pic}></Image>
-       
-        <View style={styles.cardText}> 
-            <Text style={styles.textForCard}>Need some music?</Text>
-            <Text style={styles.textForCard}>We have some for you.</Text>
-         </View>
-        </View>
+        <Swiper style={styles.wrapper} loop={false}>
+          <View testID="Suggestion1" style={styles.homecard}>
+              <Image source={require('../assets/images/MusicIcon.png')}
+                  style= {styles.pic}></Image>
+          
+            <View style={styles.cardText}> 
+                <Text style={styles.textForCard}>Need some music?</Text>
+                <Text style={styles.textForCard}>We have some for you.</Text>
+            </View>
+          </View>
 
-      <View testID="Suggestion2" style={styles.homecard}>
-          <Image source={require('../assets/images/JumpDoodle.png')}
-              style= {styles.pic2}></Image>
-      
-        <View style={styles.cardText2}> 
-            <Text style={styles.textForCard}>Feeling Anxious?</Text>
-            <Text style={styles.textForCard}>Take our quiz.</Text>
-         </View>
-      </View>
+          <View testID="Suggestion2" style={styles.homecard}>
+              <Image source={require('../assets/images/JumpDoodle.png')}
+                  style= {styles.pic2}></Image>
+          
+            <View style={styles.cardText2}> 
+                <Text style={styles.textForCard}>Feeling Anxious?</Text>
+                <Text style={styles.textForCard}>Take our quiz.</Text>
+            </View>
+          </View>
 
-      <View testID="Suggestion3" style={styles.homecard}>
-          <Image source={require('../assets/images/LoveDoodle.png')}
-              style= {styles.pic3}></Image>
-      
-        <View style={styles.cardText3}> 
-            <Text style={styles.textForCard}>Keep track of your emotions.</Text>
-            <Text style={styles.textForCard}>Start journaling.</Text>
-         </View>
-      </View>
-      </Swiper>
+          <View testID="Suggestion3" style={styles.homecard}>
+              <Image source={require('../assets/images/LoveDoodle.png')}
+                  style= {styles.pic3}></Image>
+          
+            <View style={styles.cardText3}> 
+                <Text style={styles.textForCard}>Keep track of your emotions.</Text>
+                <Text style={styles.textForCard}>Start journaling.</Text>
+            </View>
+          </View>
+        </Swiper>
       </View>
 
       {
@@ -121,7 +121,10 @@ export default function HomeScreen(props) {
         )
       }
       <View style={styles.tipHolder}>
-      <TipOTD></TipOTD>
+        <TipOTD></TipOTD>
+        <TouchableOpacity onPress={() => props.navigation.navigate('WelcomeScreen')}>
+          <Text style={styles.notifications}>Welcome Screen</Text>
+        </TouchableOpacity>
       </View>
       {/* <View style={{ flex: 1 }}></View> */}
     </View>
@@ -151,41 +154,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: RFValue(3.84),
   },
-  badgeContainer: {
-    backgroundColor: '#132090',
-    justifyContent: 'center',
-    alignContent: 'center',
-    width: '80%',
-    alignSelf: 'center',
-    borderRadius: 10,
-    padding: 50,
-    marginTop: 50
-  },
-  tourModal: {
-    backgroundColor: '#132090',
-    justifyContent: 'center',
-    alignContent: 'center',
-    width: '80%',
-    alignSelf: 'center',
-    borderRadius: 10,
-    padding: 10,
-    bottom: 10,
-    margin: 30,
-  },
-  modalHeader: {
-    textAlign: 'center',
-    padding: 10,
-    fontFamily: 'Poppins-Light',
-    fontSize: 25,
-    color: 'white'
-  },
-  modalText: {
-    padding: 15,
-    fontFamily: 'Poppins-Extra-Light',
-    fontSize: 15,
-    color: 'white',
-    textAlign: 'center',
-  },
+  
+  
   recentTab: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -205,11 +175,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 10,
     borderRadius: 8
-  },
-  modalButton: {
-    backgroundColor: '#00095e',
-    borderRadius: 8,
-    width: RFValue(80),
   },
   text: {
     color: 'white',
