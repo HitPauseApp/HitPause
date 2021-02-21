@@ -220,22 +220,25 @@ export default function App(props) {
   // If authUser is null, display pre-login screens
   else if (authUser == null) {
     return (
-      <NavigationContainer>
-        <AuthStack.Navigator headerMode="none">
-          <AuthStack.Screen
-            name="Login"
-            component={Login}
-          />
-          <AuthStack.Screen
-            name="SignUp"
-            component={SignUp}
-          />
-          <AuthStack.Screen
-            name="ResetPassword"
-            component={ResetPassword}
-          />
-        </AuthStack.Navigator>
-      </NavigationContainer>
+      <View style={styles.container}>
+        <StatusBar barStyle="default"></StatusBar>
+        <NavigationContainer>
+          <AuthStack.Navigator headerMode="none">
+            <AuthStack.Screen
+              name="Login"
+              component={Login}
+            />
+            <AuthStack.Screen
+              name="SignUp"
+              component={SignUp}
+            />
+            <AuthStack.Screen
+              name="ResetPassword"
+              component={ResetPassword}
+            />
+          </AuthStack.Navigator>
+        </NavigationContainer>
+      </View>
     );
   }
   // Otherwise, we are logged in
