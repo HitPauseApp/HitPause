@@ -55,75 +55,79 @@ export default function HomeScreen(props) {
 
   return (
     <View style={styles.container}>
-      <View style={{ height: RFValue(140) }}>
-        <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner>
+      <View style={{ padding: 16 }}>
+        <Text style={{ fontFamily: 'Poppins-Light', fontSize: RFValue(20), color: '#00095e' }}>Welcome Back,</Text>
+        <Text style={{ fontFamily: 'Poppins-Bold', fontSize: RFValue(32), color: '#00095e' }}>{user.firstName} {user.lastName}!</Text>
+        {/* <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner> */}
       </View>
 
-      <View style={styles.swiperHolder}>
-        <Swiper style={styles.wrapper} loop={false}>
-          <View testID="Suggestion1" style={styles.homecard}>
-              <Image source={require('../assets/images/MusicIcon.png')}
-                  style= {styles.pic}></Image>
-          
-            <View style={styles.cardText}> 
-                <Text style={styles.textForCard}>Need some music?</Text>
-                <Text style={styles.textForCard}>We have some for you.</Text>
+      <View style={{ height: 220 }}>
+        <Swiper loop={false}>
+          <TouchableOpacity testID="Suggestion1" style={styles.homecard} onPress={() => props.navigation.navigate('History')}>
+            <View style={styles.cardTextContainer}>
+              <Text style={styles.cardText}>Need some music?</Text>
+              <Text style={styles.cardText}>We have some for you.</Text>
             </View>
-          </View>
+            <Image source={require('../assets/images/MusicIcon.png')} style={styles.cardImage} />
+          </TouchableOpacity>
 
-          <View testID="Suggestion2" style={styles.homecard}>
-              <Image source={require('../assets/images/JumpDoodle.png')}
-                  style= {styles.pic2}></Image>
-          
-            <View style={styles.cardText2}> 
-                <Text style={styles.textForCard}>Feeling Anxious?</Text>
-                <Text style={styles.textForCard}>Take our quiz.</Text>
-            </View>
-          </View>
+          <TouchableOpacity testID="Suggestion2" style={styles.homecard} onPress={() => props.navigation.navigate('PauseHome')}>
+            <Image source={require('../assets/images/JumpDoodle.png')} style={styles.cardImage} />
 
-          <View testID="Suggestion3" style={styles.homecard}>
-              <Image source={require('../assets/images/LoveDoodle.png')}
-                  style= {styles.pic3}></Image>
-          
-            <View style={styles.cardText3}> 
-                <Text style={styles.textForCard}>Keep track of your emotions.</Text>
-                <Text style={styles.textForCard}>Start journaling.</Text>
+            <View style={styles.cardTextContainer}>
+              <Text style={styles.cardText}>Feeling Anxious?</Text>
+              <Text style={styles.cardText}>Take our quiz.</Text>
             </View>
-          </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity testID="Suggestion3" style={styles.homecard} onPress={() => props.navigation.navigate('Journal')}>
+            <Image source={require('../assets/images/LoveDoodle.png')} style={styles.cardImage} />
+
+            <View style={styles.cardTextContainer}>
+              <Text style={styles.cardText}>Keep track of your emotions.</Text>
+              <Text style={styles.cardText}>Start journaling.</Text>
+            </View>
+          </TouchableOpacity>
         </Swiper>
       </View>
 
-      {
-        showInitialAssessment ? (
-          <View style={{ padding: RFValue(10) }}>
-            <TouchableOpacity style={styles.card} onPress={() => props.navigation.navigate('ProfileSurvey')}>
-              <View style={{ display: 'flex', flexDirection: 'row', padding: RFValue(10), alignItems: 'center' }}>
-                <AppIcons name='materialicons:info' color='#222'></AppIcons>
-                <View style={{ paddingLeft: RFValue(10), flex: 1 }}>
-                  <Text style={{ fontSize: RFValue(18) }}>Complete your profile survey!</Text>
-                  <Text style={{ fontSize: RFValue(12) }}>It helps us help you.</Text>
+      <View style={{ flex: 1, display: 'flex' }}>
+
+        {
+          showInitialAssessment ? (
+            <View style={styles.row}>
+              <TouchableOpacity style={styles.card} onPress={() => props.navigation.navigate('ProfileSurvey')}>
+                <View style={{ display: 'flex', flexDirection: 'row', padding: 10, alignItems: 'center' }}>
+                  <AppIcons name='materialicons:info' color='#222'></AppIcons>
+                  <View style={{ paddingLeft: 10, flex: 1 }}>
+                    <Text style={{ fontSize: RFValue(18) }}>Complete your profile survey!</Text>
+                    <Text style={{ fontSize: RFValue(12) }}>It helps us help you.</Text>
+                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <View style={{ padding: RFValue(2), marginTop:'0%'}}>
-            <View style={styles.card}>
-              <View style={{ display: 'flex', flexDirection: 'row', padding: RFValue(10), alignItems: 'center' }}>
-                <AppIcons name='materialicons:check-circle' color='#00095e'></AppIcons>
-                <View style={{ paddingLeft: RFValue(10), flex: 1 }}>
-                  <Text style={{ fontSize: RFValue(15), color: '#00095e', fontFamily: 'Poppins-Bold' }}>Your Profile is up to date!</Text>
-                  <Text style={{ fontSize: RFValue(11), color: '#00095e', fontFamily: 'Poppins-Medium'  }}>Thanks for helping us help you.</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.row}>
+              <View style={styles.card}>
+                <View style={{ display: 'flex', flexDirection: 'row', padding: 10, alignItems: 'center' }}>
+                  <AppIcons name='materialicons:check-circle' color='#00095e'></AppIcons>
+                  <View style={{ paddingLeft: 10, flex: 1 }}>
+                    <Text style={{ fontSize: RFValue(15), color: '#00095e', fontFamily: 'Poppins-Bold' }}>Your Profile is up to date!</Text>
+                    <Text style={{ fontSize: RFValue(11), color: '#00095e', fontFamily: 'Poppins-Medium' }}>Thanks for helping us help you.</Text>
+                  </View>
                 </View>
               </View>
             </View>
+          )
+        }
+
+        <View style={styles.row}>
+          <View style={styles.card}>
+            <TipOTD></TipOTD>
           </View>
-        )
-      }
-      <View style={styles.tipHolder}>
-        <TipOTD></TipOTD>
+        </View>
+
       </View>
-      {/* <View style={{ flex: 1 }}></View> */}
     </View>
   );
 }
@@ -131,144 +135,72 @@ export default function HomeScreen(props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    flex: 1
+    flex: 1,
+  },
+  row: {
+    // flex: 1,
+    padding: 16,
   },
   card: {
+    display: 'flex',
+    flexDirection: 'row',
     borderRadius: RFValue(20),
-    height: '30%',
-    width:'90%',
-    alignSelf: 'center',
-    backgroundColor: 'white', //'#E1E2E2',
-    marginTop:'5%',
-   // display: 'flex',
+    backgroundColor: '#fff',
     alignItems: 'center',
-    shadowColor:  "#000",
+    shadowColor: "#000",
     shadowOffset: {
-      width: RFValue(0),
-      height: RFValue(2),
+      width: RFValue(10),
+      height: RFValue(10),
     },
+    elevation: 3,
     borderRadius: RFValue(15),
     shadowOpacity: 0.25,
     shadowRadius: RFValue(3.84),
+    backgroundColor: '#F2FCFD'
   },
-  
-  
-  recentTab: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  albumImages: {
-    borderRadius: 8,
-    width: 100,
-    height: 100,
-  },
-  buttonContainer: {
-    margin: 10,
-    padding: 10
-  },
-  button: {
-    marginBottom: 20,
+  badgeContainer: {
     backgroundColor: '#132090',
+    justifyContent: 'center',
+    alignContent: 'center',
+    width: '80%',
     alignSelf: 'center',
-    padding: 10,
-    borderRadius: 8
-  },
-  text: {
-    color: 'white',
-    fontSize: 16,
-    fontFamily: 'Poppins-Medium'
+    borderRadius: 10,
+    padding: 50,
+    marginTop: 50
   },
   homecard: {
     backgroundColor: '#F2FCFD',
-    // opacity: 0.4,
-    height: '94%',//'25%',
-    width: '90%',//'92%',
+    height: 200,
+    width: '90%',
     alignSelf: 'center',
     borderRadius: RFValue(15),
-    shadowColor:  "#000",
+    padding: 16,
+    shadowColor: "#000",
     shadowOffset: {
-    width: RFValue(1),
-    height: RFValue(5),
+      width: RFValue(1),
+      height: RFValue(5),
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
+    elevation: 3,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10
   },
-  shadowOpacity: 0.25,
-  shadowRadius: RFValue(3.84),
-  elevation: RFValue(1),
-  justifyContent:'center',
-  alignContent: 'center',
-  //flexWrap:'wrap'
+  cardImage: {
+    aspectRatio: 1,
+    resizeMode: 'contain',
+    width: RFValue(140),
   },
-
-  pic: {
-    height: '55%',
-    width: '55%',
-    overflow:'visible',
-    alignSelf:'flex-end',
-    marginTop: '27%',
-    flex:1,
-    left:'1%'
-  },
-  pic2: {
-    height: '48%',
-    width: '48%',
-    overflow:'visible',
-    alignSelf:'flex-start',
-    marginTop: '22%',
-    flex:1,
-    left:'2.8%'
-  },
-  pic3: {
-    height: '50%',
-    width: '50%',
-    overflow:'visible',
-    alignSelf:'flex-end',
-    marginTop: '25%',
-    flex:1,
-    right:'3%'
+  cardTextContainer: {
+    flex: 1,
+    paddingHorizontal: 8
   },
   cardText: {
-    //backgroundColor: 'blue',
-    height: '40%',
-    width: '43%',
-    left: '5%',
-    bottom: '25%'
-   // alignSelf: 'flex-start',
-   // marginTop: '10%',
-   // flexDirection:'column',
-    //flex:1
-  },
-  cardText2: {
-    //backgroundColor: 'blue',
-    height: '40%',
-    width: '43%',
-    right: '1%',
-    bottom: '20%',
-    alignSelf: 'flex-end',
-   // marginTop: '10%',
-   // flexDirection:'column',
-    //flex:1
-  },
-  cardText3: {
-    //backgroundColor: 'blue',
-    height: '40%',
-    width: '43%',
-    left: '5%',
-    bottom: '25%',
-    alignSelf: 'flex-start',
-   // marginTop: '10%',
-   // flexDirection:'column',
-    //flex:1
-  },
-  textForCard: {
-    fontSize: RFValue(12), 
-    color: '#00095e', 
+    fontSize: RFValue(12),
+    color: '#00095e',
     fontFamily: 'Poppins-Bold'
-  },
-  swiperHolder: {
-    height: '30%',
-  },
-  tipHolder: {
-    height:'25%',
-    //flex:1,
-    bottom:'17%'
   }
 });
