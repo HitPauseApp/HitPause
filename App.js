@@ -29,6 +29,7 @@ import JournalEntry from './screens/journal/JournalEntry';
 import AccountSummary from './screens/account/AccountSummary';
 import AccountTraits from './screens/account/AccountTraits';
 import NotificationsScreen from './screens/account/NotificationsScreen';
+import WelcomeTutorial from './screens/WelcomeTutorial';
 
 import { AsyncStorage } from 'react-native';
 import AdminPanel from './components/admin/AdminPanel';
@@ -129,19 +130,6 @@ export default function App(props) {
         setIsLoadingUser(false);
       }
     });
-
-    // Check firebase connection status
-    firebase.database().ref('.info/connected').on('value', s => {
-      if (s.val() === true) {
-        setIsAppConnected(true);
-        // Update AuthContext using firebase
-        if (firebase.auth().currentUser && firebase.auth().currentUser.uid) { // <-- NEW
-          updateAuthContext(firebase.auth().currentUser.uid);
-        }                                                                     // <-- New
-      } else {
-        setIsAppConnected(false);
-      }
-    });
   }, []);
 
   async function updateAuthContext(uid) {
@@ -159,13 +147,6 @@ export default function App(props) {
         spotifyToken: data.spotifyToken,
         ref: firebase.database().ref(`users/${uid}`)
       };
-    }
-    // If no 'userData' object exists
-    if (userData == null) {
-      // Try one more time to load data from firebase
-      console.log('Local userData was null... trying to load from Firebase');
-      setTimeout(await updateAuthContext(uid), 3000);
-      return;
     }
     setAuthUser(userData);
   }
@@ -234,8 +215,6 @@ export default function App(props) {
     )
   }
 
-  // TODO: A lot of this structure probably ought to be broken out into separate files
-  //       Doing so might fix the 'state change on unmounted componente' error
   // Display loading screen if app or user is being loaded
   if (isLoadingApp || isLoadingUser) return <Loading></Loading>;
   // If authUser is null, display pre-login screens
@@ -307,6 +286,11 @@ export default function App(props) {
                     name="NotificationsScreen"
                     component={NotificationsScreen}
                     options={{ headerTitle: 'Notification Settings' }}
+                  />
+                  <MainStack.Screen
+                    name="WelcomeTutorial"
+                    component={WelcomeTutorial}
+                    options={{ headerShown: false, headerTitle: 'Welcome Tutorial' }}
                   />
                 </MainStack.Navigator>
               </NavigationContainer>

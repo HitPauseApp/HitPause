@@ -14,28 +14,17 @@ import Swiper from 'react-native-swiper/src';
 
 export default function HomeScreen(props) {
   const user = React.useContext(AuthContext);
-
-  const [visible, setVisible] = React.useState(false);
-  const [count, setCount] = React.useState(0);
-  const [screenText, setScreenText] = React.useState([
-    "Our goal is to provide each and every user with their own tips and tricks on how to better deal with their anxiety. Click next to take the virtual tour and get started",
-    "The journal page is designed to help relieve stress through writing. Hit the pen and paper to start a new entry, or swipe left to delete a previously existing entry",
-    "The quiz is 10 questions long and uses an algorithm, along with your answers from the initial assessment to give you some suggestions that are unique to you in the moment",
-    "The history page allows you to look back on, and even rate, some of your past suggestions and playlists. Our rating system is designed to get to know what you enjoy, so it can be more accurate in the future"
-  ]);
-  const [screenHead, setScreenHead] = React.useState([
-    "Welcome to the HitPause Family!",
-    "Journal Screen",
-    "Take the Quiz!",
-    "History"
-  ]);
   const [showInitialAssessment, setShowInitalAssessment] = React.useState(false);
 
   React.useEffect(() => {
+    if (user.isNewUser) {
+      props.navigation.navigate('WelcomeTutorial');
+      user.ref.update({ isNewUser: false });
+    }
     user.ref.child('profile/traits').on('value', (s) => {
       if (!s.exists()) setShowInitalAssessment(true);
       else setShowInitalAssessment(false);
-    })
+    });
   }, []);
 
   return (
