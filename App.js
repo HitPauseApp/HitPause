@@ -120,7 +120,7 @@ export default function App(props) {
       // If user exists after the auth state has changed
       if (user) {
         console.log("Logged in as:", user.email);
-        await updateAuthContext(user.uid, isAppConnected);
+        await updateAuthContext(user.uid);
         // handleSpotifyLogin();
         setHitpause(await getAppData());
         setIsLoadingUser(false);
@@ -136,7 +136,7 @@ export default function App(props) {
         setIsAppConnected(true);
         // Update AuthContext using firebase
         if (firebase.auth().currentUser && firebase.auth().currentUser.uid) { // <-- NEW
-          updateAuthContext(firebase.auth().currentUser.uid, true);
+          updateAuthContext(firebase.auth().currentUser.uid);
         }                                                                     // <-- New
       } else {
         setIsAppConnected(false);
@@ -144,11 +144,11 @@ export default function App(props) {
     });
   }, []);
 
-  async function updateAuthContext(uid, useFirebase) {
-    let userData = {};
-    if (useFirebase) {
-      // Get data from firebase
-      let data = await firebase.database().ref(`users/${uid}`).once('value').then(s => s.val());
+  async function updateAuthContext(uid) {
+    let userData = null;
+    // Get data from firebase
+    let data = await firebase.database().ref(`users/${uid}`).once('value').then(s => s.val());
+    if (data) {
       userData = {
         uid: uid,
         firstName: data.firstName,
@@ -159,18 +159,13 @@ export default function App(props) {
         spotifyToken: data.spotifyToken,
         ref: firebase.database().ref(`users/${uid}`)
       };
-      // Store firebase data locally
-      AsyncStorage.setItem('userData', JSON.stringify(userData));
-    } else {
-      // Get data from local storage
-      userData = JSON.parse(await AsyncStorage.getItem('userData'));
-      // If no 'userData' object exists
-      if (userData == null) {
-        // Try one more time to load data from firebase
-        console.log('Local userData was null... trying to load from Firebase');
-        setTimeout(await updateAuthContext(uid, true), 3000);
-        return;
-      }
+    }
+    // If no 'userData' object exists
+    if (userData == null) {
+      // Try one more time to load data from firebase
+      console.log('Local userData was null... trying to load from Firebase');
+      setTimeout(await updateAuthContext(uid), 3000);
+      return;
     }
     setAuthUser(userData);
   }

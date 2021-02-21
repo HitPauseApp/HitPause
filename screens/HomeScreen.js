@@ -36,22 +36,7 @@ export default function HomeScreen(props) {
       if (!s.exists()) setShowInitalAssessment(true);
       else setShowInitalAssessment(false);
     })
-  }, [])
-
-  const showModal = () => setVisible(true);
-
-  const hideModal = () => setVisible(false);
-
-  let nextScreen = () => {
-    if (count < screenText.length - 1) {
-      setCount(count + 1);
-    }
-    else {
-      setCount(0);
-    }
-  }
-
-
+  }, []);
 
   return (
     <View style={styles.container}>
