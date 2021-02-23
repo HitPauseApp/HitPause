@@ -68,6 +68,15 @@ export default function Account(props) {
         </View>
 
         <View style={styles.buttonContainter}>
+          <TouchableOpacity
+            style={{ ...styles.button, backgroundColor: '#00095e' }}
+            onPress={() => props.navigation.navigate('BadgeScreen')}
+          >
+            <Text style={styles.buttonText}>View Badges</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.buttonContainter}>
           <View style={{ ...styles.button, backgroundColor: '#1DB954' }}>
             <View style={{ display: 'flex', flexDirection: 'row' }}>
               <View style={{ paddingRight: 10 }}>
