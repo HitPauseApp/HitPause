@@ -30,6 +30,7 @@ import AccountSummary from './screens/account/AccountSummary';
 import AccountTraits from './screens/account/AccountTraits';
 import NotificationsScreen from './screens/account/NotificationsScreen';
 import WelcomeTutorial from './screens/WelcomeTutorial';
+import BadgeScreen from './screens/account/BadgeScreen';
 
 import { AsyncStorage } from 'react-native';
 import AdminPanel from './components/admin/AdminPanel';
@@ -294,6 +295,11 @@ export default function App(props) {
                     name="WelcomeTutorial"
                     component={WelcomeTutorial}
                     options={{ headerShown: false, headerTitle: 'Welcome Tutorial' }}
+                  />
+                  <MainStack.Screen
+                    name="BadgeScreen"
+                    component={BadgeScreen}
+                    options={{headerTitle: 'My Badges' }}
                   />
                 </MainStack.Navigator>
               </NavigationContainer>

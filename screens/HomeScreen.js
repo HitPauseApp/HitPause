@@ -28,7 +28,7 @@ export default function HomeScreen(props) {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={{ padding: 16 }}>
         <Text style={{ fontFamily: 'Poppins-Light', fontSize: RFValue(20), color: '#00095e' }}>Welcome Back,</Text>
         <Text style={{ fontFamily: 'Poppins-Bold', fontSize: RFValue(32), color: '#00095e' }}>{user.firstName} {user.lastName}!</Text>
@@ -100,9 +100,17 @@ export default function HomeScreen(props) {
             <TipOTD></TipOTD>
           </View>
         </View>
+        <TouchableOpacity style={styles.badgecard} onPress={() => props.navigation.navigate('Journal')}>
+          <Text style={styles.cardText}>Earn More Badges.</Text>
+          <View style={styles.badgeContainer}>
+            <Text style={styles.cardText}>Test</Text>
+            <Text style={styles.cardText}>Test</Text>
+            <Text style={styles.cardText}>Test</Text>
+          </View>
+        </TouchableOpacity>
 
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -133,14 +141,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2FCFD'
   },
   badgeContainer: {
-    backgroundColor: '#132090',
-    justifyContent: 'center',
-    alignContent: 'center',
-    width: '80%',
+    //display: 'flex',
+    flexDirection: 'row',
+  },
+  badgecard: {
+    backgroundColor: '#F2FCFD',
+    height: 200,
+    width: '90%',
     alignSelf: 'center',
-    borderRadius: 10,
-    padding: 50,
-    marginTop: 50
+    borderRadius: RFValue(15),
+    padding: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: RFValue(1),
+      height: RFValue(5),
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
+    elevation: 3,
+    display: 'flex',
+    //flexDirection: 'row',
+    //justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10
   },
   homecard: {
     backgroundColor: '#F2FCFD',
