@@ -5,7 +5,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 export default function WelcomeBanner(props) {
   return (
     <View style={styles.container}>
-      <ImageBackground style={styles.image} source={require('../assets/images/homepage.jpg')}>
+      <ImageBackground style={styles.image} imageStyle={{ resizeMode: 'cover', width: 'auto', height: 'auto' }} source={require('../assets/images/homepage.jpg')}>
         <Text style={styles.heading}>Welcome Back,</Text>
         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <View>
