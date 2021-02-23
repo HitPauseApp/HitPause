@@ -8,7 +8,11 @@ export default function QuizReminder() {
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
   return (
     <View>
-      <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+      <Switch 
+        value={isSwitchOn} 
+        onValueChange={onToggleSwitch}  
+        style={{}} 
+      />
     </View>
   );
 }
