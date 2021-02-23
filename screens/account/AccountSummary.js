@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Text, Image, Button, AsyncStorage, ScrollView, TouchableOpacity} from 'react-native';
+import { View, StyleSheet, Text, Image, Button, AsyncStorage, ScrollView, TouchableOpacity } from 'react-native';
 import firebase from '../../Firebase.js';
 import { AuthContext } from '../../AuthContext.js';
 
@@ -9,7 +9,8 @@ import SpotifyAuthButton from '../../spotify/SpotifyAuthButton';
 
 import AppIcons from '../../components/AppIcons';
 import FillButton from '../../components/buttons/FillButton';
-import userImg from '../../assets/images/user.png';
+import userImg from '../../assets/images/userImg.png';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 
 export default function Account(props) {
@@ -24,65 +25,65 @@ export default function Account(props) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.contentContainer}>
-        <Image source={userImg} style={styles.avatar}></Image>
-        <View style={styles.category}>
-          <AppIcons name="materialicons:person"></AppIcons>
-          <Text style={styles.text}>{user.firstName} {user.lastName}</Text>
-          <Text onPress={() => props.navigation.navigate('AccountTraits')}>Traits</Text>
+
+        <View style={styles.screenHeader}>
+          <View style={styles.userContainer}>
+            <Image source={userImg} style={styles.avatar}></Image>
+            <View style={styles.userDetails}>
+              <Text style={styles.userName}>{user.firstName} {user.lastName}</Text>
+              <View style={styles.contactInfo}>
+                <AppIcons name="materialicons:email" size={22} color="#00095e" ></AppIcons>
+                <Text style={styles.smallText}>{user.email}</Text>
+              </View>
+            </View>
+          </View>
         </View>
 
-        <View style={styles.separator}></View>
-
-        <View style={styles.category}>
-          <AppIcons name="materialicons:email"></AppIcons>
-          <Text style={styles.text}>{user.email}</Text>
+        <View style={styles.buttonContainter}>
+          <TouchableOpacity
+            style={{ ...styles.button, backgroundColor: '#00095e' }}
+            onPress={() => props.navigation.navigate('AccountTraits')}
+          >
+            <Text style={styles.buttonText}>View My Traits</Text>
+          </TouchableOpacity>
         </View>
 
-        <View style={styles.separator}></View>
-
-        <View style={styles.category}>
-          <AppIcons name="fontawesome5:spotify" size={30} color="white" />
-          {/* This is bad data, only using as placeholder */}
-          {/* <Text style={styles.text}>{user ? 'Connected' : 'Not Connected'}</Text> */}
-          <SpotifyAuthButton></SpotifyAuthButton>
-        </View>
-
-        <View style={styles.separator}></View>
-
-        <View style={styles.category}>
-          <AppIcons name="materialcommunityicons:textbox-password" size={30} color="white" />
+        {/* <View style={styles.category3}>
+          <AppIcons name="materialcommunityicons:textbox-password" size={30} color="#00095e" />
           <Text style={styles.text}>*******</Text>
-        </View>
-
-        <View style={styles.separator}></View>
+        </View> */}
 
         {/*<View style={styles.category}>
           <Text style={styles.text}>Quiz Reminders</Text>
           <QuizReminder></QuizReminder>
+          </View>*/}
+
+        <View style={styles.buttonContainter}>
+          <TouchableOpacity
+            style={{ ...styles.button, backgroundColor: '#00095e' }}
+            onPress={() => props.navigation.navigate('NotificationsScreen')}
+          >
+            <Text style={styles.buttonText}>Notification Settings</Text>
+          </TouchableOpacity>
         </View>
 
-        <View style={styles.separator}></View>*/}
+        <View style={styles.buttonContainter}>
+          <View style={{ ...styles.button, backgroundColor: '#1DB954' }}>
+            <View style={{ display: 'flex', flexDirection: 'row' }}>
+              <View style={{ paddingRight: 10 }}>
+                <AppIcons name="fontawesome5:spotify" size={40} color="white" />
+              </View>
+              <SpotifyAuthButton></SpotifyAuthButton>
+            </View>
+          </View>
+        </View>
 
-        <TouchableOpacity style={styles.notifications} onPress={() => props.navigation.navigate('NotificationsScreen')}>
-          <Text style={styles.notifications}>Notification Settings</Text>
-        </TouchableOpacity>
-        <Text
-          style={styles.signOut}
-          onPress={() => handleLogout()}
-        >Sign Out</Text>
+        <View style={styles.buttonContainter}>
+          <TouchableOpacity style={{ ...styles.button, backgroundColor: '#00095e' }} onPress={() => handleLogout()}>
+            <Text style={styles.buttonText}>Sign Out</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-
-      {/*<SpotifyButton href="https://open.spotify.com/playlist/37i9dQZF1DX9B1hu73DioC?si=3i6KmA--RBi9aVggiR0z3Q"></SpotifyButton>*/}
-
-      <Text
-        style={styles.deleteData}
-        onPress={() => {
-          AsyncStorage.removeItem('userData');
-        }}
-      >Delete Local Account Data</Text>
-
-      {/*<NotificationHandler></NotificationHandler>*/}
-      
     </ScrollView>
   );
 }
@@ -90,46 +91,71 @@ export default function Account(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#00095e'
-  },
-  text: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 16,
-    marginLeft: 30
+    backgroundColor: 'white',
   },
   contentContainer: {
-    flex: 1,
-    paddingTop: '15%'
+    paddingTop: 40,
+    display: 'flex',
+    height: '100%'
   },
-  separator: {
-    borderBottomColor: '#fff',
-    borderBottomWidth: 2,
-    width: '80%',
-    alignSelf: 'center',
-    margin: 20.5
+  userName: {
+    color: '#00095e',
+    fontFamily: 'Poppins-Bold',
+    fontSize: RFValue(15),
   },
-  category: {
+  smallText: {
+    color: '#00095e',
+    fontFamily: 'Poppins-Medium',
+    fontSize: RFValue(9.5),
+    left: '45%'
+  },
+  contactInfo: {
+    width: '100%',
     flexDirection: "row",
-    marginLeft: 40
+    top: '2%'
   },
   avatar: {
     width: 100,
     height: 100,
-    alignSelf: 'center',
-    margin: 20
   },
-  signOut: {
-    color: 'white',
-    alignSelf: 'center',
+  userDetails: {
+    flex: 1,
+    paddingLeft: 20
   },
-  deleteData: {
-    color: 'white',
-    alignSelf: 'center',
-    marginBottom: 10
+  screenHeader: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center'
   },
-  notifications: {
-    color: 'white',
+  userContainer: {
+    width: '80%',
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  authButton: {
+    left: '100%',
+    width: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonContainter: {
+    flex: 1,
+    paddingTop: 20
+  },
+  button: {
     alignSelf: 'center',
+    width: '80%',
+    padding: 10,
+    borderRadius: 999,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  buttonText: {
+    color: '#fff',
+    fontFamily: 'Poppins-Bold',
+    fontSize: RFValue(12)
   }
 });

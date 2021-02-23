@@ -5,7 +5,8 @@ import { RFValue } from 'react-native-responsive-fontsize';
 export default function WelcomeBanner(props) {
   return (
     <View style={styles.container}>
-      <ImageBackground style={styles.image} imageStyle={{ resizeMode: 'cover', width: 'auto', height: 'auto' }} source={require('../assets/images/homepage.jpg')}>
+      {/* <ImageBackground style={styles.image} imageStyle={{ resizeMode: 'cover', width: 'auto', height: 'auto' }} source={require('../assets/images/homepage.jpg')}> */}
+      <View style = {styles.image}> 
         <Text style={styles.heading}>Welcome Back,</Text>
         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <View>
@@ -21,7 +22,8 @@ export default function WelcomeBanner(props) {
             </TouchableOpacity>
           }
         </View>
-      </ImageBackground>
+        </View>
+      {/* </ImageBackground> */}
     </View>
   );
 }
@@ -31,27 +33,31 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     width: '100%',
     height: '100%',
-    padding: RFValue(10)
+    //padding: RFValue(10)
   },
   image: {
-    borderRadius: 20,
+    borderRadius: RFValue(15),
     width: '100%',
     height: '100%',
-    overflow: 'hidden',
-    display: 'flex',
-    justifyContent: 'flex-end',
-    padding: RFValue(10)
+    //overflow: 'hidden',
+    //display: 'flex',
+    alignSelf: 'center',
+    //justifyContent: 'flex-end',
+    //padding: RFValue(10)
   },
   heading: {
-    fontFamily: 'Poppins-Extra-Light',
-    color: 'white',
+    fontFamily: 'Poppins-Light',
+    color: '#00095e',
     fontSize: RFValue(18),
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginTop: '15%',
+    left: '5%'
   },
   headerText: {
-    fontFamily: 'Poppins-Light',
-    color: 'white',
-    fontSize: 24,
-    fontWeight: 'bold'
+    fontFamily: 'Poppins-Medium',
+    color: '#00095e',
+    fontSize: RFValue(18),
+    fontWeight: 'bold',
+    left: '20%'
   }
 });

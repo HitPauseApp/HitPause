@@ -76,11 +76,17 @@ let titleCase = (str, del) => {
   return str.split(del || ' ').map(i => i[0].toUpperCase() + i.slice(1)).join(' ');
 }
 
+let colors = {
+  primary: '#00095e',
+  secondary: '#cbebf7'
+}
+
 var h = {
   tallyOutputFlags,
   getHighsAndLows,
   randomizeSuggestions,
-  titleCase
+  titleCase,
+  colors
 }
 
 export default h;

@@ -63,7 +63,7 @@ export default function App() {
   return (
     <Button
       disabled={!request}
-      title="Login"
+      title="Login to Spotify"
       onPress={() => {
         promptAsync();
         }}
