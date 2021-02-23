@@ -104,7 +104,9 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 15,
     padding: 10,
-    display: 'flex'
+    display: 'flex',
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0
   },
   header: {
     fontFamily: 'Poppins-Bold',
@@ -127,7 +129,7 @@ const styles = StyleSheet.create({
       width: RFValue(0),
       height: RFValue(2),
     },
-    borderRadius: 15,
+    borderRadius: 25,
     shadowOpacity: 0.18,
     shadowRadius: RFValue(3.84),
     elevation: 3,
