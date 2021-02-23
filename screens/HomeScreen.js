@@ -2,12 +2,10 @@ import * as React from 'react';
 import firebase from '../Firebase';
 import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Svg, Path } from 'react-native';
 import { AuthContext } from '../AuthContext.js';
-import { Portal, Modal } from 'react-native-paper';
+
 import TipOTD from '../components/TipOTD';
-import WelcomeBanner from '../components/WelcomeBanner';
 import { RFValue } from "react-native-responsive-fontsize";
 import AppIcons from '../components/AppIcons';
-import Music from '../assets/images/DancingDoodle.svg';
 import Swiper from 'react-native-swiper/src';
 //import user from '../../assets/images/userImg.png';
 

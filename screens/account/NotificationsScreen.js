@@ -5,11 +5,8 @@ import { AuthContext } from '../../AuthContext.js';
 
 import QuizReminder from '../../components/settings/QuizReminder';
 import NotificationHandler from '../../components/notifications/NotificationHandler';
-import SpotifyAuthButton from '../../spotify/SpotifyAuthButton';
+import { RFValue } from "react-native-responsive-fontsize";
 
-import AppIcons from '../../components/AppIcons';
-import FillButton from '../../components/buttons/FillButton';
-import userImg from '../../assets/images/user.png';
 
 
 export default function NotificationsScreen(props) {
@@ -56,12 +53,13 @@ export default function NotificationsScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#00095e'
+    backgroundColor: 'white'
   },
   text: {
-    color: '#fff',
+    fontSize: RFValue(12),
+    color: '#00095e',
+    fontFamily: 'Poppins-Bold',
     textAlign: 'center',
-    fontSize: 16,
   },
   switch: {
    // float: 'right',
@@ -72,7 +70,7 @@ const styles = StyleSheet.create({
     paddingTop: '15%'
   },
   separator: {
-    borderBottomColor: '#fff',
+    borderBottomColor: 'black',
     borderBottomWidth: 2,
     width: '80%',
     alignSelf: 'center',

@@ -2,13 +2,8 @@ import * as React from 'react';
 import { View, StyleSheet, Text, Image, Button, AsyncStorage, ScrollView, TouchableOpacity } from 'react-native';
 import firebase from '../../Firebase.js';
 import { AuthContext } from '../../AuthContext.js';
-
-import QuizReminder from '../../components/settings/QuizReminder';
-import NotificationHandler from '../../components/notifications/NotificationHandler';
 import SpotifyAuthButton from '../../spotify/SpotifyAuthButton';
-
 import AppIcons from '../../components/AppIcons';
-import FillButton from '../../components/buttons/FillButton';
 import userImg from '../../assets/images/userImg.png';
 import { RFValue } from 'react-native-responsive-fontsize';
 
