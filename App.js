@@ -156,7 +156,8 @@ export default function App(props) {
   async function getAppData() {
     let suggestions = await firebase.database().ref('hitpause/suggestions').once('value').then(s => s.val());
     let traits = await firebase.database().ref('hitpause/traits').once('value').then(s => s.val());
-    return { suggestions, traits };
+    let badges = await firebase.database().ref('hitpause/badges').once('value').then(s => s.val());
+    return { suggestions, traits, badges };
   }
 
   function HomeTabNavigator() {

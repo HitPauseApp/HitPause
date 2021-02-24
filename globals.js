@@ -78,7 +78,8 @@ let titleCase = (str, del) => {
 
 let colors = {
   primary: '#00095e',
-  secondary: '#cbebf7'
+  secondary: '#deedfa',
+  tertiary: '#15B097'
 }
 
 var h = {

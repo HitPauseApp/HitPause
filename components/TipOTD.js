@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     header: {
         color: '#00095e',
         fontFamily: 'Poppins-Bold',
-        fontSize: 24,
+        fontSize: RFValue(24),
         textAlign: 'center',
     },
     bodyText: {
