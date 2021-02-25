@@ -44,7 +44,7 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
           placeholder='Note Title...'
           placeholderTextColor='#aaa'
           returnKeyType='next'
-          selectionColor='white'
+          selectionColor='#00095e'
           onChangeText={title => setTitle(title)}
           value={title}
         />
@@ -66,12 +66,12 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
 const styles = StyleSheet.create({
     container: {
       paddingTop: '15%',
-      backgroundColor: '#00095e',
+      backgroundColor: 'white',
       flex: 1,
     },
     header: {
       fontFamily: 'Poppins-Medium',
-      color: 'white',
+      color: '#00095e',
       fontSize: 30,
       fontWeight: 'bold',
       paddingHorizontal: '5%',
@@ -84,17 +84,18 @@ const styles = StyleSheet.create({
       flex: 1
     },
     inputTitleStyle: {
-      color: 'white',
+      color: '#00095e',
       height: 60,
       paddingTop: 5,
       paddingLeft: 20,
       paddingRight: 20,
       paddingBottom: 0,
       fontFamily: 'Poppins-Medium',
-      fontSize: 20
+      fontSize: 20,
+      top: '2%'
     },
     inputDescriptionStyle: {
-      color: 'white',
+      color: '#00095e',
       flex: 1,
       paddingLeft: 20,
       paddingRight: 20,
@@ -102,6 +103,7 @@ const styles = StyleSheet.create({
       fontFamily: 'Poppins-Light',
       fontSize: 16,
       textAlignVertical: 'top',
+      top: '4%'
     }
   });
   

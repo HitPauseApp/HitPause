@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 30
+    paddingTop: 80
   },
   logo: {
     height: '100%',
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
       width: RFValue(0),
       height: RFValue(2),
     },
-    borderRadius: 15,
+    borderRadius: RFValue(15),
     shadowOpacity: 0.18,
     shadowRadius: RFValue(3.84),
     elevation: 3,
@@ -142,7 +142,8 @@ const styles = StyleSheet.create({
   },
   textInput: {
     color: '#757575',
-    fontSize: RFValue(14),
+    fontSize: RFValue(10),
+    fontFamily: 'Poppins-Light',
     marginTop: 4,
     zIndex: 3
   },

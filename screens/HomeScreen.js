@@ -29,9 +29,9 @@ export default function HomeScreen(props) {
 
   return (
     <View style={styles.container}>
-      <View style={{ padding: 16 }}>
-        <Text style={{ fontFamily: 'Poppins-Light', fontSize: RFValue(20), color: '#00095e' }}>Welcome Back,</Text>
-        <Text style={{ fontFamily: 'Poppins-Bold', fontSize: RFValue(32), color: '#00095e' }}>{user.firstName} {user.lastName}!</Text>
+      <View style={{ padding: 16, paddingTop:80}}>
+        <Text style={{ fontFamily: 'Poppins-Light', fontSize: RFValue(18), color: '#00095e'}}>Welcome Back,</Text>
+        <Text style={{ fontFamily: 'Poppins-Bold', fontSize: RFValue(20), color: '#00095e' }}>{user.firstName} {user.lastName}!</Text>
         {/* <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner> */}
       </View>
 
@@ -119,18 +119,18 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     borderRadius: RFValue(20),
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     alignItems: 'center',
     shadowColor: "#000",
     shadowOffset: {
-      width: RFValue(10),
-      height: RFValue(10),
+      width: RFValue(2),
+      height: RFValue(3),
     },
     elevation: 3,
     borderRadius: RFValue(15),
     shadowOpacity: 0.25,
     shadowRadius: RFValue(3.84),
-    backgroundColor: '#F2FCFD'
+    //backgroundColor: '#F2FCFD'
   },
   badgeContainer: {
     backgroundColor: '#132090',
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: RFValue(1),
-      height: RFValue(5),
+      height: RFValue(3),
     },
     shadowOpacity: 0.25,
     shadowRadius: RFValue(3.84),

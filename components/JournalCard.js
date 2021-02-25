@@ -4,6 +4,7 @@ import Swipeout from 'react-native-swipeout';
 //import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
 import * as GestureHandler from 'react-native-gesture-handler';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 import { StyleSheet, View, Text, TouchableOpacity, Animated, I18nManager } from 'react-native';
 
@@ -106,7 +107,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     height: '100%',
-    flex: 1
+    flex: 1,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: RFValue(1),
+      height: RFValue(5),
+    },
+    elevation: 3,
+    borderRadius: RFValue(15),
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
   },
   bodyText: {
     color: 'white',
@@ -114,15 +124,17 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 12,
     textAlign: 'left',
-    flex: 1
+    flex: 1,
+    left:'3%',
+    top: '4%'
   },
   dateText: {
     color: 'white',
     fontFamily: 'Poppins-Medium',
-    marginTop: '5%',
+    marginTop: '10%',
     fontSize: 12,
     textAlign: 'right',
-    right: '5%',
+    right: '2%',
     flex: 1,
     padding: 10
 
@@ -130,6 +142,8 @@ const styles = StyleSheet.create({
   titleText: {
     color: 'white',
     fontFamily: 'Poppins-Medium',
-    fontSize: 18
+    fontSize: RFValue(12),
+    left:'3%',
+    top: '4%'
   }
 });

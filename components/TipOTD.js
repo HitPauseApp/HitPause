@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         borderRadius: RFValue(15),
         padding: 10,
-        backgroundColor: '#F2FCFD'
+        backgroundColor: 'white' 
     },
     header: {
         color: '#00095e',

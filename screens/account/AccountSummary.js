@@ -67,7 +67,7 @@ export default function Account(props) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.buttonContainter}>
+        <View style={styles.buttonContainter1}>
           <View style={{ ...styles.button, backgroundColor: '#1DB954' }}>
             <View style={{ display: 'flex', flexDirection: 'row' }}>
               <View style={{ paddingRight: 10 }}>
@@ -78,9 +78,11 @@ export default function Account(props) {
           </View>
         </View>
 
-        <View style={styles.buttonContainter}>
-          <TouchableOpacity style={{ ...styles.button, backgroundColor: '#00095e' }} onPress={() => handleLogout()}>
-            <Text style={styles.buttonText}>Sign Out</Text>
+        {/* style={{ ...styles.button, backgroundColor: '#00095e' }} */}
+
+        <View style={styles.buttonContainter2}>
+          <TouchableOpacity style={styles.button1} onPress={() => handleLogout()}> 
+            <Text style={styles.buttonText1}>Sign Out</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -127,7 +129,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingTop: 50
   },
   userContainer: {
     width: '80%',
@@ -142,19 +145,41 @@ const styles = StyleSheet.create({
   },
   buttonContainter: {
     flex: 1,
-    paddingTop: 20
+    paddingTop: 30
+  },
+  buttonContainter1: {
+    flex: 1,
+    paddingTop: 40
+  },
+  buttonContainter2: {
+    flex: 1,
+    paddingTop: 40
   },
   button: {
     alignSelf: 'center',
     width: '80%',
     padding: 10,
-    borderRadius: 999,
+    borderRadius: RFValue(30),
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  button1: {
+    alignSelf: 'center',
+    width: '80%',
+    padding: 10,
+    borderRadius: RFValue(30),
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center'
   },
   buttonText: {
     color: '#fff',
+    fontFamily: 'Poppins-Bold',
+    fontSize: RFValue(12)
+  },
+  buttonText1: {
+    color: 'red',
     fontFamily: 'Poppins-Bold',
     fontSize: RFValue(12)
   }
