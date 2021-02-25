@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { RadioButton } from 'react-native-paper';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Response_Radio(props) {
   const onChange = (id) => {
@@ -39,6 +40,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     alignSelf: 'center',
-    width: '80%'
+    width: '80%',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: RFValue(1),
+      height: RFValue(3),
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
+    elevation: 3,
+    borderRadius: RFValue(15),
   },
 });

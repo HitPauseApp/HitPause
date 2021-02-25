@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, TextInput, View } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 import { AuthContext } from '../../AuthContext';
 import firebase from '../../Firebase';
 
@@ -44,7 +45,7 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
           placeholder='Note Title...'
           placeholderTextColor='#aaa'
           returnKeyType='next'
-          selectionColor='white'
+          //selectionColor='#00095e'
           onChangeText={title => setTitle(title)}
           value={title}
         />
@@ -66,13 +67,13 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
 const styles = StyleSheet.create({
     container: {
       paddingTop: '15%',
-      backgroundColor: '#00095e',
+      backgroundColor: 'white',
       flex: 1,
     },
     header: {
-      fontFamily: 'Poppins-Medium',
-      color: 'white',
-      fontSize: 30,
+      fontFamily: 'Poppins-Bold',
+      color: '#00095e',
+      fontSize: RFValue(24),
       fontWeight: 'bold',
       paddingHorizontal: '5%',
       paddingVertical: '5%'
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
       flex: 1
     },
     inputTitleStyle: {
-      color: 'white',
+      color: '#00095e',
       height: 60,
       paddingTop: 5,
       paddingLeft: 20,
@@ -94,9 +95,10 @@ const styles = StyleSheet.create({
       fontSize: 20
     },
     inputDescriptionStyle: {
-      color: 'white',
+      color: '#00095e',
       flex: 1,
       paddingLeft: 20,
+      paddingTop: 15,
       paddingRight: 20,
       marginBottom: 60,
       fontFamily: 'Poppins-Light',

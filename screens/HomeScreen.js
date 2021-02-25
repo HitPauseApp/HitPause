@@ -27,9 +27,9 @@ export default function HomeScreen(props) {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={{ padding: 16 }}>
-        <Text style={{ fontFamily: 'Poppins-Light', fontSize: RFValue(20), color: '#00095e' }}>Welcome Back,</Text>
-        <Text style={{ fontFamily: 'Poppins-Bold', fontSize: RFValue(32), color: '#00095e' }}>{user.firstName} {user.lastName}!</Text>
+      <View style={{ padding: 16, paddingTop: 80 }}>
+        <Text style={{ fontFamily: 'Poppins-Light', fontSize: RFValue(18), color: '#00095e' }}>Welcome Back,</Text>
+        <Text style={{ fontFamily: 'Poppins-Bold', fontSize: RFValue(22), color: '#00095e' }}>{user.firstName} {user.lastName}!</Text>
         {/* <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner> */}
       </View>
 
@@ -82,7 +82,7 @@ export default function HomeScreen(props) {
             <View style={styles.row}>
               <View style={styles.card}>
                 <View style={{ display: 'flex', flexDirection: 'row', padding: 10, alignItems: 'center' }}>
-                  <AppIcons name='materialicons:check-circle' color='#00095e'></AppIcons>
+                  <AppIcons name='materialicons:check-circle' color='white'></AppIcons>
                   <View style={{ paddingLeft: 10, flex: 1 }}>
                     <Text style={{ fontSize: RFValue(15), color: '#00095e', fontFamily: 'Poppins-Bold' }}>Your Profile is up to date!</Text>
                     <Text style={{ fontSize: RFValue(11), color: '#00095e', fontFamily: 'Poppins-Medium' }}>Thanks for helping us help you.</Text>
@@ -129,21 +129,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     shadowColor: "#000",
     shadowOffset: {
-      width: RFValue(10),
-      height: RFValue(10),
+      width: RFValue(1),
+      height: RFValue(3),
     },
     elevation: 3,
     borderRadius: RFValue(15),
     shadowOpacity: 0.25,
     shadowRadius: RFValue(3.84),
-    backgroundColor: '#F2FCFD'
+    //backgroundColor: '#F2FCFD'
   },
   badgeContainer: {
     //display: 'flex',
     flexDirection: 'row',
   },
   badgecard: {
-    backgroundColor: '#F2FCFD',
+    backgroundColor: 'white',
     height: 200,
     width: '90%',
     alignSelf: 'center',
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: RFValue(1),
-      height: RFValue(5),
+      height: RFValue(3),
     },
     shadowOpacity: 0.25,
     shadowRadius: RFValue(3.84),

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { Checkbox } from 'react-native-paper';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Response_Checkbox(props) {
   const onChange = (id) => {
@@ -59,7 +60,15 @@ const styles = StyleSheet.create({
   checkBox: {
     marginBottom: 10,
     backgroundColor: 'white',
-    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: RFValue(1),
+      height: RFValue(3),
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
+    elevation: 3,
+    borderRadius: RFValue(15),
     alignSelf: 'center',
     width: '80%'
   }

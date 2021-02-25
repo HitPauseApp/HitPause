@@ -54,7 +54,7 @@ export default function JournalScreen(props) {
         <Text style={styles.header}>My Journal</Text>
         <TextInput
           placeholder="Search"
-          placeholderTextColor="#ffffff"
+          placeholderTextColor="#00095e"
           autoCapitalize="none"
           style={styles.textInput}
           onChangeText={text => searchEntries(text)}
@@ -84,7 +84,7 @@ export default function JournalScreen(props) {
      
       <View style={styles.buttonView}>
         <TouchableOpacity onPress={() => openEntry(null, '', '')}>
-          <AppIcons name="fontawesome5:pencil-alt" size={40} color="white"></AppIcons>
+          <AppIcons name="fontawesome5:pencil-alt" size={32} color="#F2FCFD"></AppIcons>
         </TouchableOpacity>
       </View>
     </View>
@@ -93,16 +93,18 @@ export default function JournalScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#00095e',
+    backgroundColor: 'white',
     flex: 1
   },
   header: {
-    fontFamily: 'Poppins-Medium',
-    color: 'white',
+    fontFamily: 'Poppins-Bold',
+    color: '#00095e',
     fontSize: 26,
     fontWeight: 'bold',
     paddingHorizontal: 20,
-    paddingVertical: '9%',
+    //paddingVertical: '9%',
+    paddingTop: 65,
+    //paddingBottom: 1
   },
   textContainer: {
     backgroundColor: '#132090',
@@ -119,13 +121,19 @@ const styles = StyleSheet.create({
   buttonView: {
     flex: 1,
     flexDirection: 'row-reverse',
-    right: '8%',
+    right: '6%',
     bottom: '3%',
-    position: 'absolute'
+    position: 'absolute',
+    width: 65,
+    height: 65,
+    borderRadius: 65 / 2,
+    backgroundColor: '#00095e',
+    justifyContent: 'center',
+    alignItems:'center'
   },
   text: {
     textAlign: 'center',
-    color: 'white',
+    color: '#00095e',
     fontFamily: 'Poppins-Medium',
     fontWeight: 'bold',
     fontSize: 20,
@@ -137,11 +145,12 @@ const styles = StyleSheet.create({
   textInput: {
     height: 40,
     width: '80%',
-    borderColor: 'white',
-    color: 'white',
+    borderColor: '#00095e',
+    // color: '#00095e',
     borderBottomWidth: 1,
     marginTop: 20,
     zIndex: 3,
     alignSelf: 'center',
-  }
+  },
+
 });
