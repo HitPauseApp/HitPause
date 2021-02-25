@@ -99,7 +99,8 @@ export default function HomeScreen(props) {
         }
 
         <View style={styles.row}>
-          <View style={styles.card}>
+          <View style={[styles.card, { flexDirection: 'column' }]}>
+            <Text style={styles.cardHeader}>Quote of the Day</Text>
             <TipOTD></TipOTD>
           </View>
         </View>
@@ -107,11 +108,11 @@ export default function HomeScreen(props) {
         <View style={styles.row}>
           <View style={styles.card}>
             <View style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-              <Text style={styles.badgeHeader}>Badges</Text>
+              <Text style={styles.cardHeader}>Badges</Text>
               {
                 !!Object.values(userBadges).length ? Object.values(userBadges).map(badge => (
-                  <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-                    <View style={styles.badgeContainer} key={badge.id}>
+                  <View style={{ paddingHorizontal: 20, paddingVertical: 10, width: '100%' }} key={badge.id}>
+                    <View style={styles.badgeContainer}>
                       <BadgeIcon size={80} icon={badge.icon}></BadgeIcon>
                       <View style={styles.cardTextContainer}>
                         <Text style={styles.cardTextHeader}>{badge.title}</Text>
@@ -123,11 +124,20 @@ export default function HomeScreen(props) {
                   <Text>You haven't earned any badges yet</Text>
                 )
               }
-              <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('BadgeScreen')}>
+              <TouchableOpacity
+                style={[styles.button, { marginVertical: 10, width: '80%' }]}
+                onPress={() => props.navigation.navigate('BadgeScreen')}
+              >
                 <Text style={styles.buttonText}>Earn More Badges</Text>
               </TouchableOpacity>
             </View>
           </View>
+        </View>
+
+        <View style={styles.row}>
+          <TouchableOpacity style={[styles.button, { width: '100%' }]} onPress={() => props.navigation.navigate('WelcomeTutorial')}>
+            <Text style={styles.buttonText}>Re-show Tutorial</Text>
+          </TouchableOpacity>
         </View>
 
       </View>
@@ -183,8 +193,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     //flexDirection: 'row',
     //justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 10
+    alignItems: 'center'
   },
   homecard: {
     backgroundColor: h.colors.secondary,
@@ -226,7 +235,7 @@ const styles = StyleSheet.create({
     color: h.colors.primary,
     fontFamily: 'Poppins-Medium'
   },
-  badgeHeader: {
+  cardHeader: {
     fontSize: RFValue(24),
     color: h.colors.primary,
     fontFamily: 'Poppins-Bold',
