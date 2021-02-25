@@ -89,40 +89,6 @@ export default function HistoryScreen(props) {
             <Text style={styles.text}>View More</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.header}>Recent Suggestions</Text>
-          <View style={styles.recentTab}>
-            <Image source={albumImage} style={styles.albumImages}></Image>
-            <Image source={albumImage} style={styles.albumImages}></Image>
-            <Image source={albumImage} style={styles.albumImages}></Image>
-          </View>
-          <TouchableOpacity>
-            <Text style={styles.text}>View More</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.header}>Recently Liked Suggestions</Text>
-          <View style={styles.recentTab}>
-            <Image source={albumImage} style={styles.albumImages}></Image>
-            <Image source={albumImage} style={styles.albumImages}></Image>
-            <Image source={albumImage} style={styles.albumImages}></Image>
-          </View>
-          <TouchableOpacity>
-            <Text style={styles.text}>View More</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.header}>Most Frequent Suggestions</Text>
-          <View style={styles.recentTab}>
-            <Image source={albumImage} style={styles.albumImages}></Image>
-            <Image source={albumImage} style={styles.albumImages}></Image>
-            <Image source={albumImage} style={styles.albumImages}></Image>
-          </View>
-          <TouchableOpacity>
-            <Text style={styles.text}>View More</Text>
-          </TouchableOpacity>
-        </View>
-
       </ScrollView>
       <Portal>
         {

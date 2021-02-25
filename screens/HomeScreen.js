@@ -3,8 +3,8 @@ import firebase from '../Firebase';
 import h from '../globals';
 import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Svg, Path } from 'react-native';
 import { AuthContext } from '../AuthContext.js';
+
 import TipOTD from '../components/TipOTD';
-import WelcomeBanner from '../components/WelcomeBanner';
 import { RFValue } from "react-native-responsive-fontsize";
 import AppIcons from '../components/AppIcons';
 import Swiper from 'react-native-swiper/src';
