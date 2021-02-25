@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-
 import { StyleSheet, View, Text, Platform } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class TipOTD extends Component {
     constructor(props) {
@@ -19,6 +19,7 @@ export default class TipOTD extends Component {
                         jsonData: responseJson[0],
                     });
                     console.log(responseJson[0]);
+                    this.storeQOTD(responseJson[0].q);
                     // return responseJson.q;
                 }).catch(error => {
                     console.warn(error);
@@ -30,7 +31,15 @@ export default class TipOTD extends Component {
                 isLoading: false,
             });
         }
+    }
 
+
+    storeQOTD = async (json) => {
+        try {
+            await AsyncStorage.setItem('QOTD', json);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     componentDidMount() {

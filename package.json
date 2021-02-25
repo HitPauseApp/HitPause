@@ -19,6 +19,7 @@
     "@expo-google-fonts/poppins": "^0.1.0",
     "@expo/vector-icons": "^10.1.0",
     "@freakycoder/react-native-header-view": "^1.0.0",
+    "@react-native-async-storage/async-storage": "^1.14.1",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.9.2",
     "@react-navigation/material-bottom-tabs": "^5.3.4",
