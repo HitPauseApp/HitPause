@@ -29,6 +29,8 @@ import JournalEntry from './screens/journal/JournalEntry';
 import AccountSummary from './screens/account/AccountSummary';
 import AccountTraits from './screens/account/AccountTraits';
 import NotificationsScreen from './screens/account/NotificationsScreen';
+import WelcomeTutorial from './screens/WelcomeTutorial';
+import BadgeScreen from './screens/account/BadgeScreen';
 
 import { AsyncStorage } from 'react-native';
 import AdminPanel from './components/admin/AdminPanel';
@@ -120,7 +122,7 @@ export default function App(props) {
       // If user exists after the auth state has changed
       if (user) {
         console.log("Logged in as:", user.email);
-        await updateAuthContext(user.uid, isAppConnected);
+        await updateAuthContext(user.uid);
         // handleSpotifyLogin();
         setHitpause(await getAppData());
         setIsLoadingUser(false);
@@ -129,26 +131,13 @@ export default function App(props) {
         setIsLoadingUser(false);
       }
     });
-
-    // Check firebase connection status
-    firebase.database().ref('.info/connected').on('value', s => {
-      if (s.val() === true) {
-        setIsAppConnected(true);
-        // Update AuthContext using firebase
-        if (firebase.auth().currentUser && firebase.auth().currentUser.uid) { // <-- NEW
-          updateAuthContext(firebase.auth().currentUser.uid, true);
-        }                                                                     // <-- New
-      } else {
-        setIsAppConnected(false);
-      }
-    });
   }, []);
 
-  async function updateAuthContext(uid, useFirebase) {
-    let userData = {};
-    if (useFirebase) {
-      // Get data from firebase
-      let data = await firebase.database().ref(`users/${uid}`).once('value').then(s => s.val());
+  async function updateAuthContext(uid) {
+    let userData = null;
+    // Get data from firebase
+    let data = await firebase.database().ref(`users/${uid}`).once('value').then(s => s.val());
+    if (data) {
       userData = {
         uid: uid,
         firstName: data.firstName,
@@ -159,18 +148,6 @@ export default function App(props) {
         spotifyToken: data.spotifyToken,
         ref: firebase.database().ref(`users/${uid}`)
       };
-      // Store firebase data locally
-      AsyncStorage.setItem('userData', JSON.stringify(userData));
-    } else {
-      // Get data from local storage
-      userData = JSON.parse(await AsyncStorage.getItem('userData'));
-      // If no 'userData' object exists
-      if (userData == null) {
-        // Try one more time to load data from firebase
-        console.log('Local userData was null... trying to load from Firebase');
-        setTimeout(await updateAuthContext(uid, true), 3000);
-        return;
-      }
     }
     setAuthUser(userData);
   }
@@ -239,29 +216,30 @@ export default function App(props) {
     )
   }
 
-  // TODO: A lot of this structure probably ought to be broken out into separate files
-  //       Doing so might fix the 'state change on unmounted componente' error
   // Display loading screen if app or user is being loaded
   if (isLoadingApp || isLoadingUser) return <Loading></Loading>;
   // If authUser is null, display pre-login screens
   else if (authUser == null) {
     return (
-      <NavigationContainer>
-        <AuthStack.Navigator headerMode="none">
-          <AuthStack.Screen
-            name="Login"
-            component={Login}
-          />
-          <AuthStack.Screen
-            name="SignUp"
-            component={SignUp}
-          />
-          <AuthStack.Screen
-            name="ResetPassword"
-            component={ResetPassword}
-          />
-        </AuthStack.Navigator>
-      </NavigationContainer>
+      <View style={styles.container}>
+        <StatusBar barStyle="default"></StatusBar>
+        <NavigationContainer>
+          <AuthStack.Navigator headerMode="none">
+            <AuthStack.Screen
+              name="Login"
+              component={Login}
+            />
+            <AuthStack.Screen
+              name="SignUp"
+              component={SignUp}
+            />
+            <AuthStack.Screen
+              name="ResetPassword"
+              component={ResetPassword}
+            />
+          </AuthStack.Navigator>
+        </NavigationContainer>
+      </View>
     );
   }
   // Otherwise, we are logged in
@@ -312,6 +290,16 @@ export default function App(props) {
                     name="NotificationsScreen"
                     component={NotificationsScreen}
                     options={{ headerTitle: 'Notification Settings' }}
+                  />
+                  <MainStack.Screen
+                    name="WelcomeTutorial"
+                    component={WelcomeTutorial}
+                    options={{ headerShown: false, headerTitle: 'Welcome Tutorial' }}
+                  />
+                  <MainStack.Screen
+                    name="BadgeScreen"
+                    component={BadgeScreen}
+                    options={{headerTitle: 'My Badges' }}
                   />
                 </MainStack.Navigator>
               </NavigationContainer>
