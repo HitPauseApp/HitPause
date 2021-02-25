@@ -34,7 +34,7 @@ export default function Account(props) {
           </View>
         </View>
 
-        <View style={styles.buttonContainter}>
+        <View style={styles.buttonContainter1}>
           <TouchableOpacity
             style={{ ...styles.button, backgroundColor: '#00095e' }}
             onPress={() => props.navigation.navigate('AccountTraits')}
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   contentContainer: {
-    paddingTop: 40,
+    paddingTop:100,
     display: 'flex',
     height: '100%'
   },
@@ -147,6 +147,10 @@ const styles = StyleSheet.create({
   buttonContainter: {
     flex: 1,
     paddingTop: 20
+  },
+  buttonContainter1: {
+    flex: 1,
+    paddingTop: 40
   },
   button: {
     alignSelf: 'center',

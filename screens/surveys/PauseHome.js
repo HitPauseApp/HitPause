@@ -12,14 +12,15 @@ export default function PauseHome(props) {
     <View style={styles.container}>
       <ScrollView style={{flex: 1}}>
         <View style={{ height: Dimensions.get('window').height - 54, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <View style={{ padding: RFValue(20) }}>
-            <Text style={{ color: '#fff', fontSize: RFValue(24), fontWeight: 'bold', textAlign: 'center' }}>HIT PAUSE</Text>
-            <Text style={{ color: '#fff', fontSize: RFValue(16) }}>TO TAKE CONTROL OF YOUR ANXIETY</Text>
+          <View style={{ padding: RFValue(30) }}>
+            <Text style={{ color: '#00095e', fontSize: RFValue(24), fontWeight: 'bold', textAlign: 'center',fontFamily: 'Poppins-Bold' }}>HIT PAUSE</Text>
+            <Text style={{ color: '#00095e', fontSize: RFValue(13),fontFamily: 'Poppins-Medium' }}>TO TAKE CONTROL OF YOUR ANXIETY</Text>
           </View>
           <TouchableOpacity style={styles.pauseButton} onPress={() => props.navigation.navigate('PauseSurvey')}>
-            <AppIcons name="materialicons:pause" size={RFValue(240)}></AppIcons>
+            <AppIcons name="materialicons:pause" size={RFValue(200)} color='#00095e'></AppIcons>
           </TouchableOpacity>
-          <Text style={{ paddingTop: RFValue(20), color: '#fff' }}>Questions? Scroll down...</Text>
+          <Text style={{ paddingTop: RFValue(20), color: '#00095e', fontFamily: 'Poppins-Medium' }}>Tap the Pause Button to start!</Text>
+          <Text style={{ paddingTop: RFValue(30), color: '#00095e', fontFamily: 'Poppins-Light'  }}>Questions? Scroll down...</Text>
         </View>
         <View>
           <Text style={styles.modalHeadingText}>The HitPause Survey</Text>
@@ -35,7 +36,7 @@ export default function PauseHome(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#00095e',
+    backgroundColor: 'white',
     display: 'flex',
   },
   pauseButton: {
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 15,
-    borderColor: 'white',
+    borderColor: '#00095e',
     borderRadius: 999,
     overflow: 'hidden'
   },
@@ -62,16 +63,16 @@ const styles = StyleSheet.create({
   },
   modalHeadingText:{
     textAlign: 'center',
-    padding: 10,
-    fontFamily: 'Poppins-Light',
+    padding: 5,
+    fontFamily: 'Poppins-Medium',
     fontSize: 25,
-    color: 'white'
+    color: '#00095e'
   },
   modalText: {
     padding: 15,
-    fontFamily: 'Poppins-Extra-Light',
+    fontFamily: 'Poppins-Light',
     fontSize: 15,
-    color: 'white',
+    color: '#00095e',
     textAlign: 'center',
   },
   info: {

@@ -108,14 +108,14 @@ export default function PauseSurvey(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#00095e',
+    backgroundColor: 'white',
     paddingTop: RFValue(20)
   },
   card: {
     flex: 1,
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: '#00095e',
     borderRadius: RFValue(20),
     overflow: 'hidden',
     padding: RFValue(10),

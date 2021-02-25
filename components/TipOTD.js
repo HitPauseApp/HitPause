@@ -93,19 +93,19 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         borderRadius: RFValue(15),
         padding: 10,
-        backgroundColor: '#F2FCFD'
+        //backgroundColor: '#F2FCFD'
     },
     header: {
         color: '#00095e',
         fontFamily: 'Poppins-Bold',
-        fontSize: 24,
+        fontSize: RFValue(17),
         textAlign: 'center',
     },
     bodyText: {
         color: '#00095e',
         fontFamily: 'Poppins-Medium',
         marginTop: 10,
-        fontSize: RFValue(13),
+        fontSize: RFValue(12),
         textAlign: 'center',
         alignSelf: 'center'
     },
