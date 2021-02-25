@@ -17,27 +17,24 @@ export default function NotificationsScreen(props) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.contentContainer}>
-
-        <NotificationHandler></NotificationHandler>
-        <View style={styles.separator}></View>
         
         <View style={styles.category}>
           <Text style={styles.text}>Quiz Reminders</Text>
-          <QuizReminder></QuizReminder>
+          <NotificationHandler notificationType={"quiz_reminder"}></NotificationHandler>
         </View>
 
         <View style={styles.separator}></View>
 
         <View style={styles.category}>
           <Text style={styles.text}>Quote of the Day</Text>
-          <QuizReminder></QuizReminder>
+          <NotificationHandler notificationType={"QOTD"}></NotificationHandler>
         </View>
 
         <View style={styles.separator}></View>
 
         <View style={styles.category}>
           <Text style={styles.text}>Check In Reminders</Text>
-          <QuizReminder></QuizReminder>
+          <NotificationHandler notificationType={"checkin_reminder"}></NotificationHandler>
         </View>
 
         <View style={styles.separator}></View>
@@ -60,10 +57,11 @@ const styles = StyleSheet.create({
     color: '#00095e',
     fontFamily: 'Poppins-Bold',
     textAlign: 'center',
+    marginRight: 10
   },
   switch: {
    // float: 'right',
-    padding: 50
+    padding: 50,
   },
   contentContainer: {
     flex: 1,
