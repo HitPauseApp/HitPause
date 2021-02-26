@@ -33,7 +33,7 @@ import WelcomeTutorial from './screens/WelcomeTutorial';
 import BadgeScreen from './screens/account/BadgeScreen';
 import ReviewScreen from './screens/ReviewScreen'
 
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AdminPanel from './components/admin/AdminPanel';
 import AppIcons from './components/AppIcons';
 
@@ -157,7 +157,8 @@ export default function App(props) {
   async function getAppData() {
     let suggestions = await firebase.database().ref('hitpause/suggestions').once('value').then(s => s.val());
     let traits = await firebase.database().ref('hitpause/traits').once('value').then(s => s.val());
-    return { suggestions, traits };
+    let badges = await firebase.database().ref('hitpause/badges').once('value').then(s => s.val());
+    return { suggestions, traits, badges };
   }
 
   function HomeTabNavigator() {

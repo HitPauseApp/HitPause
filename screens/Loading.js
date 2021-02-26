@@ -16,10 +16,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00095e'
+    backgroundColor: 'white'
   },
   text: {
     marginBottom: 20,
-    color: '#fff'
+    color: '#00095e'
   }
 })

@@ -46,9 +46,7 @@ export default function WelcomeTutorial(props) {
             <Text style={styles.smallText}>We look forward to walking with you in this journey towards better mental health! Tap the "Get Started" button below to access the rest of the app.</Text>
           </View>
           <TouchableOpacity style={styles.getStarted} onPress={() => props.navigation.navigate('Home')}>
-            <View style={styles.buttonTextContainer}>
-              <Text style={styles.buttonText}>Get Started</Text>
-            </View>
+            <Text style={styles.buttonText}>Get Started</Text>
           </TouchableOpacity>
         </View>
       </Swiper>
@@ -83,6 +81,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: RFValue(3.84),
     display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 16
   },
   buttonTextContainer: {

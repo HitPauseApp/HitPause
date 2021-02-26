@@ -1,8 +1,7 @@
-// Login.js
-import React, { useState }from 'react'
-import firebase from '../Firebase.js'
-import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient';
+import React from 'react';
+import firebase from '../Firebase.js';
+import h from '../globals';
+import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity } from 'react-native';
 import { RFValue } from "react-native-responsive-fontsize";
 
 export default function ResetPassword(props) {
@@ -19,36 +18,32 @@ export default function ResetPassword(props) {
 
   return (
     <View style={styles.container}>
-      {/* <View style = {styles.testing}> */}
-      <Text style = {styles.header}>Reset Password</Text>
-      <View style ={styles.textHolder}>
-        <Text style = {styles.bodyText}>Enter the email address associated with your account and we will
-        send you an email with the instructions to reset your password.</Text>
-      </View>
-     
+      <Text style={styles.header}>Reset Password</Text>
+      <Text style={styles.bodyText}>Enter the email address associated with your account and we will send you an email with the instructions to reset your password.</Text>
+
       {!!errorMessage &&
         <Text style={{ color: 'red' }}>
           {errorMessage}
         </Text>}
 
-      <View style = {styles.textbox}>
-      <Text style = {styles.textboxTitle}>Email</Text> 
-      <TextInput
-        style={styles.textInput}
-        autoCapitalize="none"
-        placeholder="Enter email address"
-        placeholderTextColor="#757575"
-        onChangeText={(email) => setEmail(email)}
-        value={email}
-      />
+      <View style={styles.textbox}>
+        <Text style={styles.textboxTitle}>Email</Text>
+        <TextInput
+          style={styles.textInput}
+          autoCapitalize="none"
+          placeholder="Enter your account email address"
+          placeholderTextColor="#757575"
+          onChangeText={(email) => setEmail(email)}
+          value={email}
+        />
       </View>
 
-      <TouchableOpacity style={styles.button1} onPress={() => handleReset()}>
-            <Text style={styles.text}>Send Reset Email</Text>
-        </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => handleReset()}>
+        <Text style={styles.buttonText}>Send Reset Email</Text>
+      </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button2} onPress={() => props.navigation.navigate('Login')}>
-            <Text style={styles.text2}>Back to Login</Text>
+      <TouchableOpacity style={{ paddingTop: 30 }} onPress={() => props.navigation.navigate('Login')}>
+        <Text style={styles.smallButtonText}>Back to Login</Text>
       </TouchableOpacity>
       {/* </View> */}
     </View>
@@ -58,102 +53,67 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
+    paddingHorizontal: 25,
+    paddingTop: 100
   },
-  testing: {
-    backgroundColor: 'white',
-    height: '60%',
-    width:'90%',
-    position: 'absolute',
-    alignSelf:'center',
-    //borderRadius: RFValue(30),//30,
-  },
-  header:{
-    fontSize: RFValue(22),
+  header: {
+    fontSize: RFValue(24),
     fontWeight: 'bold',
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
-    marginTop: '32%',
-    left: '7%'
-  },
-  textHolder: {
-    width: '90%',
-    alignSelf:'center'
   },
   bodyText: {
-    fontSize:RFValue(11),
-    color: '#00095e',
+    fontSize: RFValue(11),
+    color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
-    marginTop: '7%',
-    left: '2%'
+    paddingVertical: 16
   },
-  textInput: {
-   // height: '',
-    width: '90%',
-    color: '#00095e',
-    marginTop: '3.2%',
-    zIndex: 3,
-    left: '5%'
-  },
-  button1: { 
-    marginTop: '10%',
-    //textAlign:'center',
-    backgroundColor: '#00095e',
+  button: {
+    backgroundColor: h.colors.primary,
+    borderRadius: 30,
+    height: RFValue(40),
+    width: RFValue(220),
     justifyContent: 'center',
-    //borderWidth: 2,
-    //borderColor: '#00095e' ,
-    borderRadius: RFValue(15.5), //20,
-    height: RFValue(37),
-    width: RFValue(145),
-    alignSelf:'flex-end',
-    right: '5%'
-    
-  },
-  // button2: { 
-  //   marginTop: 30,
-  //   //borderRadius: 50,
-  //   //backgroundColor: '#00095e',
-  //   height: RFValue(37),
-  //   width: RFValue(145),
-  //   justifyContent: 'center',
-  // },
-  text: { 
-    textAlign: 'center',
-    fontSize: RFValue(11),
-    color: 'white',
-    fontFamily: 'Poppins-Bold'
-
-  },
-  text2: { 
-    fontSize: RFValue(11),
-    color: '#00095e',
-    fontFamily: 'Poppins-Bold',
-    marginTop:'20%',
-    alignSelf:'center'
-
-  },
-  textbox: { 
-    backgroundColor: 'white',
-    width: '88%',
-    height: '7%',
     alignSelf: 'center',
-    shadowColor:  "#000",
+    marginVertical: 16
+  },
+  buttonText: {
+    fontSize: RFValue(13),
+    color: 'white',
+    fontFamily: 'Poppins-Bold',
+    textAlign: 'center',
+  },
+  smallButtonText: {
+    fontSize: RFValue(11),
+    color: h.colors.primary,
+    fontFamily: 'Poppins-Bold',
+    alignSelf: 'center'
+  },
+  textbox: {
+    backgroundColor: 'white',
+    width: '100%',
+    shadowColor: "#000",
     shadowOffset: {
       width: RFValue(0),
       height: RFValue(2),
     },
-    borderRadius: RFValue(15),
-    shadowOpacity: 0.25,
+    borderRadius: 25,
+    shadowOpacity: 0.18,
     shadowRadius: RFValue(3.84),
-    marginTop: '8%',
-  
-    elevation: RFValue(1),
-  
-    },
-    textboxTitle: {
-      color: '#00095e',
-      fontFamily: 'Poppins-Bold',
-      textAlign: 'left',
-      left: '5%',
-      top: '10%'
-    },
+    elevation: 3,
+    marginVertical: 8,
+    display: 'flex',
+    padding: 12
+  },
+  textboxTitle: {
+    color: h.colors.primary,
+    fontFamily: 'Poppins-Bold',
+    textAlign: 'left',
+  },
+  textInput: {
+    color: '#757575',
+    fontSize: RFValue(14),
+    marginTop: 4,
+    zIndex: 3
+  },
 })

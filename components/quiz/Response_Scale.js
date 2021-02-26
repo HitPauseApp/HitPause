@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { RadioButton } from 'react-native-paper';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Response_Scale(props){
   // TODO: The following is a temporary solution, eventually we'll want to use an actual scale element
@@ -47,6 +48,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: 'white',
     borderRadius: 10,
+    //alignSelf: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: RFValue(1),
+      height: RFValue(3),
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
+    elevation: 3,
+    borderRadius: RFValue(15),
     alignSelf: 'center',
     width: '80%'
   },

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Text, Image, Button, AsyncStorage, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, Button, ScrollView, TouchableOpacity } from 'react-native';
 import firebase from '../../Firebase.js';
 import { AuthContext } from '../../AuthContext.js';
 import SpotifyAuthButton from '../../spotify/SpotifyAuthButton';
@@ -34,9 +34,9 @@ export default function Account(props) {
           </View>
         </View>
 
-        <View style={styles.buttonContainter}>
+        <View style={styles.buttonContainter1}>
           <TouchableOpacity
-            style={{ ...styles.button, backgroundColor: '#00095e' }}
+            style={[styles.button, { backgroundColor: '#00095e' }]}
             onPress={() => props.navigation.navigate('AccountTraits')}
           >
             <Text style={styles.buttonText}>View My Traits</Text>
@@ -55,7 +55,7 @@ export default function Account(props) {
 
         <View style={styles.buttonContainter}>
           <TouchableOpacity
-            style={{ ...styles.button, backgroundColor: '#00095e' }}
+            style={[styles.button, { backgroundColor: '#00095e' }]}
             onPress={() => props.navigation.navigate('NotificationsScreen')}
           >
             <Text style={styles.buttonText}>Notification Settings</Text>
@@ -64,7 +64,7 @@ export default function Account(props) {
 
         <View style={styles.buttonContainter}>
           <TouchableOpacity
-            style={{ ...styles.button, backgroundColor: '#00095e' }}
+            style={[styles.button, { backgroundColor: '#00095e' }]}
             onPress={() => props.navigation.navigate('BadgeScreen')}
           >
             <Text style={styles.buttonText}>View Badges</Text>
@@ -72,7 +72,7 @@ export default function Account(props) {
         </View>
 
         <View style={styles.buttonContainter}>
-          <View style={{ ...styles.button, backgroundColor: '#1DB954' }}>
+          <View style={[styles.button, { backgroundColor: '#1DB954' }]}>
             <View style={{ display: 'flex', flexDirection: 'row' }}>
               <View style={{ paddingRight: 10 }}>
                 <AppIcons name="fontawesome5:spotify" size={40} color="white" />
@@ -83,7 +83,7 @@ export default function Account(props) {
         </View>
 
         <View style={styles.buttonContainter}>
-          <TouchableOpacity style={{ ...styles.button, backgroundColor: '#00095e' }} onPress={() => handleLogout()}>
+          <TouchableOpacity style={[styles.button, { backgroundColor: '#00095e' }]} onPress={() => handleLogout()}>
             <Text style={styles.buttonText}>Sign Out</Text>
           </TouchableOpacity>
         </View>
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   contentContainer: {
-    paddingTop: 40,
+    paddingTop:100,
     display: 'flex',
     height: '100%'
   },
@@ -147,6 +147,10 @@ const styles = StyleSheet.create({
   buttonContainter: {
     flex: 1,
     paddingTop: 20
+  },
+  buttonContainter1: {
+    flex: 1,
+    paddingTop: 40
   },
   button: {
     alignSelf: 'center',

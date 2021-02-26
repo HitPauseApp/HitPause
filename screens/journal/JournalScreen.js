@@ -6,6 +6,7 @@ import { AuthContext } from '../../AuthContext';
 import JournalCard from '../../components/JournalCard';
 import { TextInput } from 'react-native';
 import AppIcons from '../../components/AppIcons';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function JournalScreen(props) {
   const user = React.useContext(AuthContext);
@@ -14,7 +15,7 @@ export default function JournalScreen(props) {
 
   React.useEffect(() => {
     // TODO: Get and store these locally
-    firebase.database().ref(`users/${user.uid}/journal`).on('value', (s) => {
+    user.ref.child(`journal`).on('value', (s) => {
       if (s.exists()) {
         setEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
         setDisplayEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
@@ -29,7 +30,13 @@ export default function JournalScreen(props) {
 
   function openEntry(entryId, title, text) {
     // If there is no entryId (we are creating a new entry) get a new push ID from Firebase
-    if (!entryId) entryId = firebase.database().ref().push().key;
+    if (!entryId) {
+      entryId = firebase.database().ref().push().key;
+      // If entries is empty (and we are creating our first entry) award a badge
+      if (entries && entries.length == 0) user.ref.child('profile/badges').update({ firstJournalEntry: true })
+      // If there are 4 entries (and we are creating our fifth entry) award a badge
+      if (entries && entries.length == 4) user.ref.child('profile/badges').update({ fiveJournalEntries: true })
+    }
     // Pass the existing (or new) entryId to JournalEntry as a parameter and navigate there
     props.navigation.navigate('JournalEntry', { entryId: entryId, title: title, text: text });
   }
@@ -54,7 +61,7 @@ export default function JournalScreen(props) {
         <Text style={styles.header}>My Journal</Text>
         <TextInput
           placeholder="Search"
-          placeholderTextColor="#ffffff"
+          placeholderTextColor="#00095e"
           autoCapitalize="none"
           style={styles.textInput}
           onChangeText={text => searchEntries(text)}
@@ -84,7 +91,7 @@ export default function JournalScreen(props) {
      
       <View style={styles.buttonView}>
         <TouchableOpacity onPress={() => openEntry(null, '', '')}>
-          <AppIcons name="fontawesome5:pencil-alt" size={40} color="white"></AppIcons>
+          <AppIcons name="fontawesome5:pencil-alt" size={32} color="#F2FCFD"></AppIcons>
         </TouchableOpacity>
       </View>
     </View>
@@ -93,16 +100,18 @@ export default function JournalScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#00095e',
+    backgroundColor: 'white',
     flex: 1
   },
   header: {
-    fontFamily: 'Poppins-Medium',
-    color: 'white',
-    fontSize: 26,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
+    color: '#00095e',
+    fontSize: RFValue(22),
+    // fontWeight: 'bold',
     paddingHorizontal: 20,
-    paddingVertical: '9%',
+    //paddingVertical: '9%',
+    paddingTop: 65,
+    //paddingBottom: 1
   },
   textContainer: {
     backgroundColor: '#132090',
@@ -119,9 +128,15 @@ const styles = StyleSheet.create({
   buttonView: {
     flex: 1,
     flexDirection: 'row-reverse',
-    right: '8%',
+    right: '6%',
     bottom: '3%',
-    position: 'absolute'
+    position: 'absolute',
+    width: 65,
+    height: 65,
+    borderRadius: 65 / 2,
+    backgroundColor: '#00095e',
+    justifyContent: 'center',
+    alignItems:'center'
   },
   text: {
     textAlign: 'center',
@@ -137,11 +152,12 @@ const styles = StyleSheet.create({
   textInput: {
     height: 40,
     width: '80%',
-    borderColor: 'white',
-    color: 'white',
+    borderColor: '#00095e',
+    // color: '#00095e',
     borderBottomWidth: 1,
     marginTop: 20,
     zIndex: 3,
     alignSelf: 'center',
-  }
+  },
+
 });

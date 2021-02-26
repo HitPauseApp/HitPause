@@ -4,10 +4,11 @@
 */
 
 import * as React from 'react';
-import { StyleSheet, View, Text, AsyncStorage, Image } from 'react-native';
-
+import { StyleSheet, View, Text, Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import SpotifyWebAPI from 'spotify-web-api-js';
 import { AuthContext } from '../../AuthContext';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function SpotifyPlaylist(props) {
   const user = React.useContext(AuthContext);
@@ -92,26 +93,29 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     bottom: 10,
-    margin: 10,
+    margin: 12,
     flexDirection: "row"
   },
   header: {
     color: 'white',
     fontFamily: 'Poppins-Medium',
-    fontSize: 24,
+    fontSize: RFValue(20),
+    alignSelf:'center',
+    right:'30%',
     textAlign: 'center'
   },
   bodyText: {
     color: 'white',
     fontFamily: 'Poppins-Extra-Light',
     marginTop: 5,
-    textAlign: 'center',
+    //textAlign: 'center',
   },
   spotifyImage: {
     width: 100,
     height: 100,
   },
   textContainer: {
-    alignItems: "center"
+    //alignItems: "center"
+    
   }
 });
