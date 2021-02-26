@@ -77,7 +77,7 @@ export default function Account(props) {
               <View style={{ paddingRight: 10 }}>
                 <AppIcons name="fontawesome5:spotify" size={40} color="white" />
               </View>
-              <SpotifyAuthButton></SpotifyAuthButton>
+              <SpotifyAuthButton handleSpotifyLogin={props.handleSpotifyLogin}></SpotifyAuthButton>
             </View>
           </View>
         </View>
