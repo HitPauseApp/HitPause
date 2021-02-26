@@ -6,6 +6,7 @@ import { AuthContext } from '../../AuthContext';
 import JournalCard from '../../components/JournalCard';
 import { TextInput } from 'react-native';
 import AppIcons from '../../components/AppIcons';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function JournalScreen(props) {
   const user = React.useContext(AuthContext);
@@ -99,8 +100,8 @@ const styles = StyleSheet.create({
   header: {
     fontFamily: 'Poppins-Bold',
     color: '#00095e',
-    fontSize: 26,
-    fontWeight: 'bold',
+    fontSize: RFValue(22),
+    // fontWeight: 'bold',
     paddingHorizontal: 20,
     //paddingVertical: '9%',
     paddingTop: 65,
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    color: '#00095e',
+    color: 'white',
     fontFamily: 'Poppins-Medium',
     fontWeight: 'bold',
     fontSize: 20,

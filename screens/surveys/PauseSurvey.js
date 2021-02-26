@@ -72,27 +72,37 @@ export default function PauseSurvey(props) {
           ) : (
             <ScrollView style={{ display: 'flex' }}>
               <View style={{ flex: 1, display: 'flex', padding: RFValue(20) }}>
-                <Text style={{ color: '#fff', fontSize: RFValue(24) }}>Our top suggestion for you is:</Text>
-                <AppIcons name={results.s1.icon} size={RFValue(96)}/>
-                <Text style={{ color: '#fff', fontSize: RFValue(18) }}>{results.s1.text}</Text>
-                <Text style={{ color: '#fff', fontSize: RFValue(12) }}>{results.s1.body}</Text>
+                <Text style={{ color: '#00095e', fontSize: RFValue(18),fontFamily: 'Poppins-Medium', }}>Our top suggestion for you is:</Text>
+                <View style={styles.titleHolder}>
+                  <View style={styles.iconHolder}>
+                    <AppIcons name={results.s1.icon} size={RFValue(96)} color={'#00095e'} />
+                  </View>
+                  <Text style={{ color: '#00095e', fontSize: RFValue(20), fontFamily: 'Poppins-Bold', alignSelf:'center', flex:1, paddingLeft:30}}>{results.s1.text}</Text>
+                </View>
+                {/* <Text style={{ color: '#00095e', fontSize: RFValue(18), fontFamily: 'Poppins-Bold', alignSelf:'center', paddingBottom:10, flex:1}}>{results.s1.text}</Text> */}
+                <Text style={{ color: '#00095e', fontSize: RFValue(12), fontFamily: 'Poppins-Medium', paddingBottom:20, textAlign:'center' }}>{results.s1.body}</Text>
                 <SuggestionSwitcher suggestionId={results.s1.$key}></SuggestionSwitcher>
               </View>
               <View style={{ flex: 1, display: 'flex'}}>
                 <Text style={{ textAlign: 'center', fontSize: RFValue(18), color: '#fff' }}>Here are some other things to try:</Text>
                 <View style={styles.card}>
+                  <View style={styles.titleHolder}>
                   <AppIcons name={results.s2.icon} color="#222"></AppIcons>
-                  <View style={{ flex: 1, paddingLeft: RFValue(10) }}>
-                    <Text style={styles.cardTitle}>{results.s2.text}</Text>
-                    <Text style={{ fontSize: RFValue(12) }}>{results.s2.body}</Text>
+                  <Text style={styles.cardTitle}>{results.s2.text}</Text>
+                  </View>
+                  <View style={{ flex: 1, paddingLeft: RFValue(5), justifyContent:'center' }}> 
+                    <Text style={{ fontSize: RFValue(11), paddingTop:18, paddingBottom: 30, textAlign:'justify', fontFamily: 'Poppins-Medium' }}>{results.s2.body}</Text>
                     <SuggestionSwitcher suggestionId={results.s2.$key}></SuggestionSwitcher>
                   </View>
                 </View>
                 <View style={styles.card}>
+                  <View style= {styles.titleHolder}>
                   <AppIcons name={results.s3.icon} color="#222"></AppIcons>
-                  <View style={{ flex: 1, paddingLeft: RFValue(10) }}>
-                    <Text style={styles.cardTitle}>{results.s3.text}</Text>
-                    <Text style={{ fontSize: RFValue(12) }}>{results.s3.body}</Text>
+                  <Text style={styles.cardTitle}>{results.s3.text}</Text>
+                  </View>
+                  <View style={{ flex: 1, paddingLeft: RFValue(5) }}>
+                    {/* <Text style={styles.cardTitle}>{results.s3.text}</Text> */}
+                    <Text style={{ fontSize: RFValue(11), paddingTop:10, fontFamily: 'Poppins-Medium', paddingBottom: 30, textAlign:'justify'}}>{results.s3.body}</Text>
                     <SuggestionSwitcher suggestionId={results.s3.$key}></SuggestionSwitcher>
                   </View>
                 </View>
@@ -114,19 +124,39 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     display: 'flex',
-    flexDirection: 'row',
-    backgroundColor: '#00095e',
+    alignSelf:'center',
+    alignContent:'center',
+    flexDirection: 'column',
+    width:'90%',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: RFValue(1),
+      height: RFValue(3),
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
+    elevation: 3,
+    backgroundColor: '#F2FCFD',
     borderRadius: RFValue(20),
-    overflow: 'hidden',
-    padding: RFValue(10),
-    margin: RFValue(10)
+    //overflow: 'hidden',
+    padding: RFValue(15),
+    margin: RFValue(10),
   },
   cardTitle: {
-    fontSize: RFValue(18),
-    fontWeight: 'bold'
+    fontSize: RFValue(17),
+    fontFamily: 'Poppins-Bold',
+    paddingLeft:20,
   },
   largeContainer: {
     height:'100%',
     width:'100%'
+  },
+  iconHolder: {
+   padding:20,
+   paddingLeft:60
+  },
+  titleHolder: {
+    display: 'flex',
+    flexDirection: 'row',
   }
 });
