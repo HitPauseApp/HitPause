@@ -37,6 +37,10 @@ export default function ProfileSurvey(props) {
       // For each property in the flag object, add it to the data object
       for (const traitFlag in effects[key]) data[traitFlag] = effects[key][traitFlag];
     }
+    // If traits does not exist (and will be created) add the profile survey badge
+    if (user.ref.child('profile/traits').once('value').then(s => !s.exists())) {
+      user.ref.child('profile/badges').update({ profileSurvey: true });
+    }
     user.ref.child('profile/traits').set(data);
     setSurveyComplete(true);
   }
@@ -47,7 +51,7 @@ export default function ProfileSurvey(props) {
       <View style={styles.container}>
         {
           !surveyComplete ? (
-            <View>
+            <View style={{ width: '100%', height: '100%' }}>
               <Form quiz={quiz} onSubmit={handleSubmit}></Form>
             </View>
           ) : (

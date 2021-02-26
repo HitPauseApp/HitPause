@@ -51,6 +51,10 @@ export default function PauseSurvey(props) {
       s2: { ...hitpause.suggestions[suggestions[1]], $key: suggestions[1] },
       s3: { ...hitpause.suggestions[suggestions[2]], $key: suggestions[2] }
     });
+    // Check if the user has a pause survey folder, and award a badge if not
+    if (user.ref.child('profile/pauseSurveys').once('value').then(s => !s.exists())) {
+      user.ref.child('profile/badges').update({ firstPauseSurvey: true });
+    }
     // Save the results to firebase
     user.ref.child(`profile/pauseSurveys`).push({
       suggestions: suggestions,
@@ -66,7 +70,7 @@ export default function PauseSurvey(props) {
       <View style={styles.container}>
         {
           !Object.keys(results).length ? (
-            <View style={styles.largeContainer}>
+            <View style={{ width: '100%', height: '100%' }}>
               <Form quiz={quiz} onSubmit={handleSubmit}></Form>
             </View>
           ) : (

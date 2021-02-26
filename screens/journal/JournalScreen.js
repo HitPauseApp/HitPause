@@ -15,7 +15,7 @@ export default function JournalScreen(props) {
 
   React.useEffect(() => {
     // TODO: Get and store these locally
-    firebase.database().ref(`users/${user.uid}/journal`).on('value', (s) => {
+    user.ref.child(`journal`).on('value', (s) => {
       if (s.exists()) {
         setEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
         setDisplayEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
@@ -30,7 +30,13 @@ export default function JournalScreen(props) {
 
   function openEntry(entryId, title, text) {
     // If there is no entryId (we are creating a new entry) get a new push ID from Firebase
-    if (!entryId) entryId = firebase.database().ref().push().key;
+    if (!entryId) {
+      entryId = firebase.database().ref().push().key;
+      // If entries is empty (and we are creating our first entry) award a badge
+      if (entries && entries.length == 0) user.ref.child('profile/badges').update({ firstJournalEntry: true })
+      // If there are 4 entries (and we are creating our fifth entry) award a badge
+      if (entries && entries.length == 4) user.ref.child('profile/badges').update({ fiveJournalEntries: true })
+    }
     // Pass the existing (or new) entryId to JournalEntry as a parameter and navigate there
     props.navigation.navigate('JournalEntry', { entryId: entryId, title: title, text: text });
   }

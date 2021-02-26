@@ -1,29 +1,21 @@
-// Login.js
 import React from 'react'
 import firebase from '../Firebase.js'
-import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity, Image, StatusBar, ScrollView } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient';
-import NoFillButton from '../components/buttons/NoFillButton';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image, ScrollView } from 'react-native'
 import { RFValue } from "react-native-responsive-fontsize";
 import h from '../globals';
 
-export default class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
-      errorMessage: null
-    }
-  }
-  handleLogin = () => {
-    // TODO: Firebase stuff...
+export default function Login(props) {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState(null);
+
+  function handleLogin() {
     console.log('handleLogin');
-    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-      .catch(error => this.setState({ errorMessage: error.message }));
+    firebase.auth().signInWithEmailAndPassword(email, password).catch(error => setErrorMessage(error.message));
   }
-  render() {
-    return (
+
+  return (
+    <ScrollView style={{ backgroundColor: '#fff' }}>
       <View style={styles.container}>
         <View style={styles.logoHeader}>
           <Image source={require('../assets/images/HitPauseLogo.png')} style={styles.logo} />
@@ -32,9 +24,9 @@ export default class Login extends React.Component {
         <View style={styles.loginForm}>
           <Text style={styles.header}>Login</Text>
           {
-            !!this.state.errorMessage &&
+            !!errorMessage &&
             <Text style={{ color: 'red', alignSelf: 'center', marginTop: '4%' }}>
-              {this.state.errorMessage}
+              {errorMessage}
             </Text>
           }
           <View style={styles.textboxContainer}>
@@ -45,8 +37,8 @@ export default class Login extends React.Component {
                 autoCapitalize="none"
                 placeholder="Email address"
                 placeholderTextColor="#757575"
-                onChangeText={email => this.setState({ email })}
-                value={this.state.email}
+                onChangeText={(val) => setEmail(val)}
+                value={email}
               />
             </View>
             <View style={styles.textbox}>
@@ -57,28 +49,28 @@ export default class Login extends React.Component {
                 autoCapitalize="none"
                 placeholder="Password"
                 placeholderTextColor="#757575"
-                onChangeText={password => this.setState({ password })}
-                value={this.state.password}
+                onChangeText={(val) => setPassword(val)}
+                value={password}
               />
             </View>
           </View>
           <View style={styles.buttonsContainer}>
-            <TouchableOpacity style={styles.button} onPress={this.handleLogin}>
+            <TouchableOpacity style={styles.button} onPress={handleLogin}>
               <Text style={styles.buttonText}>LOG IN</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.forgotButton} onPress={() => this.props.navigation.navigate('ResetPassword')}>
+            <TouchableOpacity style={styles.forgotButton} onPress={() => props.navigation.navigate('ResetPassword')}>
               <Text style={styles.forgotText}>Forgot your password?</Text>
             </TouchableOpacity>
             <View style={styles.line}></View>
             <Text style={styles.descText}>Don't have an account?</Text>
-            <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('SignUp')}>
+            <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('SignUp')}>
               <Text style={styles.buttonText}>SIGN UP</Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
-    )
-  }
+    </ScrollView>
+  )
 }
 const styles = StyleSheet.create({
   container: {
@@ -87,7 +79,7 @@ const styles = StyleSheet.create({
     display: 'flex'
   },
   logoHeader: {
-    flexBasis: '30%',
+    height: 200,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -102,9 +94,11 @@ const styles = StyleSheet.create({
   loginForm: {
     backgroundColor: 'white',
     flex: 1,
-    borderRadius: 15,
+    borderRadius: 20,
     padding: 10,
-    display: 'flex'
+    display: 'flex',
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0
   },
   header: {
     fontFamily: 'Poppins-Bold',
@@ -127,7 +121,7 @@ const styles = StyleSheet.create({
       width: RFValue(0),
       height: RFValue(2),
     },
-    borderRadius: 15,
+    borderRadius: 25,
     shadowOpacity: 0.18,
     shadowRadius: RFValue(3.84),
     elevation: 3,
