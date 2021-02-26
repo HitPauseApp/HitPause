@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   loginForm: {
     backgroundColor: 'white',
     flex: 1,
-    borderRadius: 15,
+    borderRadius: 20,
     padding: 10,
     display: 'flex',
     borderBottomLeftRadius: 0,
