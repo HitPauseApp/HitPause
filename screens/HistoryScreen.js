@@ -8,6 +8,7 @@ import { AuthContext } from '../AuthContext';
 import { AppContext } from '../AppContext';
 import StarRating from 'react-native-star-rating';
 import AppIcons from '../components/AppIcons';
+import ReviewScreen from './ReviewScreen';
 
 export default function HistoryScreen(props) {
   const user = React.useContext(AuthContext);
@@ -85,7 +86,7 @@ export default function HistoryScreen(props) {
             horizontal={true}
             keyExtractor={item => item.id}
           />
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => props.navigation.navigate('ReviewScreen')}>
             <Text style={styles.text}>View More</Text>
           </TouchableOpacity>
         </View>
