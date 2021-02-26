@@ -4,8 +4,8 @@
 */
 
 import * as React from 'react';
-import { StyleSheet, View, Text, AsyncStorage, Image } from 'react-native';
-
+import { StyleSheet, View, Text, Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import SpotifyWebAPI from 'spotify-web-api-js';
 import { AuthContext } from '../../AuthContext';
 import { RFValue } from 'react-native-responsive-fontsize';
