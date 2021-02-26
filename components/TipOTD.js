@@ -94,14 +94,14 @@ const styles = StyleSheet.create({
     header: {
         color: '#00095e',
         fontFamily: 'Poppins-Bold',
-        fontSize: RFValue(24),
+        fontSize: RFValue(17),
         textAlign: 'center',
     },
     bodyText: {
         color: '#00095e',
         fontFamily: 'Poppins-Medium',
         marginTop: 10,
-        fontSize: RFValue(13),
+        fontSize: RFValue(12),
         textAlign: 'center',
         alignSelf: 'center'
     },
