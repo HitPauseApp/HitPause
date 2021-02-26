@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Text, Image, Button, AsyncStorage, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, Image, Button, ScrollView } from 'react-native';
 import firebase from '../../Firebase.js';
 import { AuthContext } from '../../AuthContext.js';
 
