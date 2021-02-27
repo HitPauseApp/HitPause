@@ -76,6 +76,18 @@ let titleCase = (str, del) => {
   return str.split(del || ' ').map(i => i[0].toUpperCase() + i.slice(1)).join(' ');
 }
 
+let getDate = (timestamp) => {
+  let date = new Date(timestamp);
+  return `${date.getMonth() + 1}/${date.getDate()}/${String(date.getFullYear()).substr(2)}`;
+}
+
+let getTime = (timestamp) => {
+  let date = new Date(timestamp);
+  let timeString = `${date.getHours() == 0 ? '12' : (date.getHours() % 12)}:${String(date.getMinutes()).padStart(2, '0')}`;
+  let amPmString = date.getHours() < 12 ? 'AM' : 'PM';
+  return `${timeString} ${amPmString}`;
+}
+
 let colors = {
   primary: '#00095e',
   secondary: '#deedfa',
@@ -87,6 +99,8 @@ var h = {
   getHighsAndLows,
   randomizeSuggestions,
   titleCase,
+  getDate,
+  getTime,
   colors
 }
 
