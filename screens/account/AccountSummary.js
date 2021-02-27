@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Text, Image, Button, AsyncStorage, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, Button, ScrollView, TouchableOpacity } from 'react-native';
 import firebase from '../../Firebase.js';
 import { AuthContext } from '../../AuthContext.js';
 import SpotifyAuthButton from '../../spotify/SpotifyAuthButton';

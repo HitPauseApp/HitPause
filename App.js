@@ -32,7 +32,7 @@ import NotificationsScreen from './screens/account/NotificationsScreen';
 import WelcomeTutorial from './screens/WelcomeTutorial';
 import BadgeScreen from './screens/account/BadgeScreen';
 
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AdminPanel from './components/admin/AdminPanel';
 import AppIcons from './components/AppIcons';
 
