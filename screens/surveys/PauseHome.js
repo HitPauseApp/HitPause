@@ -1,5 +1,6 @@
 import * as React from 'react';
 import firebase from '../../Firebase.js'
+import h from '../../globals';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { AuthContext } from '../../AuthContext.js';
 import AppIcons from '../../components/AppIcons.js';
@@ -12,15 +13,15 @@ export default function PauseHome(props) {
     <View style={styles.container}>
       <ScrollView style={{flex: 1}}>
         <View style={{ height: Dimensions.get('window').height - 54, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <View style={{ padding: RFValue(30) }}>
-            <Text style={{ color: '#00095e', fontSize: RFValue(24), fontWeight: 'bold', textAlign: 'center',fontFamily: 'Poppins-Bold' }}>HIT PAUSE</Text>
-            <Text style={{ color: '#00095e', fontSize: RFValue(13),fontFamily: 'Poppins-Medium' }}>TO TAKE CONTROL OF YOUR ANXIETY</Text>
+          <View style={{ paddingVertical: 30 }}>
+            <Text style={{ color: h.colors.primary, fontSize: RFValue(24), textAlign: 'center',fontFamily: 'Poppins-Bold' }}>HIT PAUSE</Text>
+            <Text style={{ color: h.colors.primary, fontSize: RFValue(13), fontFamily: 'Poppins-Medium' }}>TO TAKE CONTROL OF YOUR ANXIETY</Text>
           </View>
           <TouchableOpacity style={styles.pauseButton} onPress={() => props.navigation.navigate('PauseSurvey')}>
-            <AppIcons name="materialicons:pause" size={RFValue(200)} color='#00095e'></AppIcons>
+            <AppIcons name="materialicons:pause" size={RFValue(200)} color={h.colors.primary}></AppIcons>
           </TouchableOpacity>
-          <Text style={{ paddingTop: RFValue(20), color: '#00095e', fontFamily: 'Poppins-Medium' }}>Tap the Pause Button to start!</Text>
-          <Text style={{ paddingTop: RFValue(30), color: '#00095e', fontFamily: 'Poppins-Light'  }}>Questions? Scroll down...</Text>
+          <Text style={{ paddingTop: 30, color: h.colors.primary, fontFamily: 'Poppins-Medium' }}>Tap the Pause Button to start!</Text>
+          <Text style={{ paddingTop: 10, color: h.colors.primary, fontFamily: 'Poppins-Light'  }}>Questions? Scroll down...</Text>
         </View>
         <View>
           <Text style={styles.modalHeadingText}>The HitPause Survey</Text>
@@ -40,13 +41,14 @@ const styles = StyleSheet.create({
     display: 'flex',
   },
   pauseButton: {
-    width: Math.min(Dimensions.get('window').width, Dimensions.get('window').height) * 0.75,
-    height: Math.min(Dimensions.get('window').width, Dimensions.get('window').height) * 0.75,
+    width: Dimensions.get('window').width * 0.75,
+    height: Dimensions.get('window').width * 0.75,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 15,
-    borderColor: '#00095e',
+    borderColor: h.colors.primary,
+    backgroundColor: h.colors.secondary,
     borderRadius: 999,
     overflow: 'hidden'
   },

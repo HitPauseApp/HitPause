@@ -23,10 +23,10 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
   }, [title, text]);
 
   const getCurrentDate = () => {
-    var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
+    var date = new Date().getDate();
     var year = new Date().getFullYear();
-    return date + '-' + month + '-' + year; // format: dd-mm-yyyy;
+    return month + '/' + date + '/' + year; // format: mm/dd/yyyy;
   }
 
   // const getCurrentTime = () => {
@@ -66,7 +66,6 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
 
 const styles = StyleSheet.create({
     container: {
-      paddingTop: '15%',
       backgroundColor: 'white',
       flex: 1,
     },
