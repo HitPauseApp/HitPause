@@ -3,10 +3,12 @@ import firebase from '../Firebase';
 import h from '../globals';
 import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Svg, Path } from 'react-native';
 import { AuthContext } from '../AuthContext.js';
-
+import { Portal, Modal } from 'react-native-paper';
 import TipOTD from '../components/TipOTD';
+import WelcomeBanner from '../components/WelcomeBanner';
 import { RFValue } from "react-native-responsive-fontsize";
 import AppIcons from '../components/AppIcons';
+import Music from '../assets/images/DancingDoodle.svg';
 import Swiper from 'react-native-swiper/src';
 import BadgeIcon from '../components/BadgeIcon';
 import { setBadgeCountAsync } from 'expo-notifications';
@@ -86,13 +88,13 @@ export default function HomeScreen(props) {
           ) : (
             <View style={styles.row}>
               <View style={styles.card}>
-                <View style={{ display: 'flex', flexDirection: 'row', padding: 10, alignItems: 'center' }}>
-                  <AppIcons name='materialicons:check-circle' color='white'></AppIcons>
+                <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', padding: 10, alignItems: 'center' }} onPress={() => props.navigation.navigate('ProfileSurvey')}>
+                  {/*<AppIcons name='materialicons:check-circle' color='white'></AppIcons>*/}
                   <View style={{ paddingLeft: 10, flex: 1 }}>
-                    <Text style={{ fontSize: RFValue(15), color: '#00095e', fontFamily: 'Poppins-Bold' }}>Your Profile is up to date!</Text>
-                    <Text style={{ fontSize: RFValue(11), color: '#00095e', fontFamily: 'Poppins-Medium' }}>Thanks for helping us help you.</Text>
+                    <Text style={{ fontSize: RFValue(15), textAlign: 'center', color: '#00095e', fontFamily: 'Poppins-Bold' }}>Need to retake your profile survey?</Text>
+                    <Text style={{ fontSize: RFValue(11), textAlign: 'center', color: '#00095e', fontFamily: 'Poppins-Medium' }}>Change your answers at any time</Text>
                   </View>
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
           )
@@ -134,11 +136,11 @@ export default function HomeScreen(props) {
           </View>
         </View>
 
-        <View style={styles.row}>
+        {/* <View style={styles.row}>
           <TouchableOpacity style={[styles.button, { width: '100%' }]} onPress={() => props.navigation.navigate('WelcomeTutorial')}>
             <Text style={styles.buttonText}>Re-show Tutorial</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
 
       </View>
     </ScrollView>

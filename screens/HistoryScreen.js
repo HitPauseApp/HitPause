@@ -7,6 +7,7 @@ import { AuthContext } from '../AuthContext';
 import { AppContext } from '../AppContext';
 import StarRating from 'react-native-star-rating';
 import AppIcons from '../components/AppIcons';
+import ReviewScreen from './ReviewScreen';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getCurrentTimeInSeconds } from 'expo-auth-session/build/TokenRequest';
 

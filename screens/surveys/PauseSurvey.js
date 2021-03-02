@@ -76,7 +76,7 @@ export default function PauseSurvey(props) {
           ) : (
             <ScrollView style={{ display: 'flex' }}>
               <View style={{ flex: 1, display: 'flex', padding: RFValue(20) }}>
-                <Text style={{ color: '#00095e', fontSize: RFValue(18),fontFamily: 'Poppins-Medium', }}>Our top suggestion for you is:</Text>
+                <Text style={{ textAlign: 'center', color: '#00095e', fontSize: RFValue(18),fontFamily: 'Poppins-Medium', }}>Our top suggestion for you is:</Text>
                 <View style={styles.titleHolder}>
                   <View style={styles.iconHolder}>
                     <AppIcons name={results.s1.icon} size={RFValue(96)} color={'#00095e'} />
@@ -88,7 +88,7 @@ export default function PauseSurvey(props) {
                 <SuggestionSwitcher suggestionId={results.s1.$key}></SuggestionSwitcher>
               </View>
               <View style={{ flex: 1, display: 'flex'}}>
-                <Text style={{ textAlign: 'center', fontSize: RFValue(18), color: '#fff' }}>Here are some other things to try:</Text>
+                <Text style={{ textAlign: 'center', fontSize: RFValue(18), color: '#00095e', fontFamily: 'Poppins-Medium' }}>Here are some other things to try:</Text>
                 <View style={styles.card}>
                   <View style={styles.titleHolder}>
                   <AppIcons name={results.s2.icon} color="#222"></AppIcons>
