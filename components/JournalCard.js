@@ -1,4 +1,5 @@
 import React, { Component, useDebugValue } from 'react';
+import h from '../globals';
 import firebase from '../Firebase';
 import Swipeout from 'react-native-swipeout';
 //import Swipeable from 'react-native-gesture-handler/Swipeable';
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   container: {
-    backgroundColor: '#132090',
+    backgroundColor: h.colors.secondary,
     width: '80%',
     alignSelf: 'center',
     borderRadius: 10,
@@ -111,16 +112,15 @@ const styles = StyleSheet.create({
     flex: 1
   },
   bodyText: {
-    color: 'white',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
     padding:10,
-    // marginTop: 10,
     fontSize: RFValue(10),
     textAlign: 'left',
     flex: 1
   },
   dateText: {
-    color: 'white',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
     marginTop: '5%',
     fontSize: 12,
@@ -128,10 +128,9 @@ const styles = StyleSheet.create({
     right: '5%',
     flex: 1,
     padding: 5
-
   },
   titleText: {
-    color: 'white',
+    color: h.colors.primary,
     padding: 8,
     fontFamily: 'Poppins-Medium',
     fontSize: RFValue(14.5)
