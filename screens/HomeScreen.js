@@ -88,13 +88,13 @@ export default function HomeScreen(props) {
           ) : (
             <View style={styles.row}>
               <View style={styles.card}>
-                <View style={{ display: 'flex', flexDirection: 'row', padding: 10, alignItems: 'center' }}>
-                  <AppIcons name='materialicons:check-circle' color='white'></AppIcons>
+                <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', padding: 10, alignItems: 'center' }} onPress={() => props.navigation.navigate('ProfileSurvey')}>
+                  {/*<AppIcons name='materialicons:check-circle' color='white'></AppIcons>*/}
                   <View style={{ paddingLeft: 10, flex: 1 }}>
-                    <Text style={{ fontSize: RFValue(15), color: '#00095e', fontFamily: 'Poppins-Bold' }}>Your Profile is up to date!</Text>
-                    <Text style={{ fontSize: RFValue(11), color: '#00095e', fontFamily: 'Poppins-Medium' }}>Thanks for helping us help you.</Text>
+                    <Text style={{ fontSize: RFValue(15), textAlign: 'center', color: '#00095e', fontFamily: 'Poppins-Bold' }}>Need to retake your profile survey?</Text>
+                    <Text style={{ fontSize: RFValue(11), textAlign: 'center', color: '#00095e', fontFamily: 'Poppins-Medium' }}>Change your answers at any time</Text>
                   </View>
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
           )
@@ -136,11 +136,11 @@ export default function HomeScreen(props) {
           </View>
         </View>
 
-        <View style={styles.row}>
+        {/* <View style={styles.row}>
           <TouchableOpacity style={[styles.button, { width: '100%' }]} onPress={() => props.navigation.navigate('WelcomeTutorial')}>
             <Text style={styles.buttonText}>Re-show Tutorial</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
 
       </View>
     </ScrollView>
