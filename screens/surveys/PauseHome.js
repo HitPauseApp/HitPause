@@ -16,8 +16,8 @@ export default function PauseHome(props) {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{flex: 1}}>
-      <TouchableOpacity onPress={showModal} style={{padding: 10}}>
+      <ScrollView style={{ flex: 1, position: 'relative' }}>
+      <TouchableOpacity onPress={showModal} style={{ padding: 10, position: 'absolute', top: 0, left: 0 }}>
         <AppIcons name="fontawesome5:info-circle" color={h.colors.primary}/>
       </TouchableOpacity>
         <View style={{ height: Dimensions.get('window').height - 54, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

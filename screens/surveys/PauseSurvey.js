@@ -67,7 +67,8 @@ export default function PauseSurvey(props) {
   }
 
   function handleSuggestionSelect(key) {
-    user.ref.child(`profile/pauseSurveys/${pushId}`).update({ selected: key });
+    if (key && key !== '$none') user.ref.child(`profile/pauseSurveys/${pushId}`).update({ selected: key });
+    props.navigation.navigate('Home');
   }
 
   if (isLoading) return <Loading message="Loading your quiz..."></Loading>;
@@ -128,6 +129,11 @@ export default function PauseSurvey(props) {
                     <Text style={styles.buttonText}>I will try this: {results.s3.text}</Text>
                   </TouchableOpacity>
                 </View>
+
+                <TouchableOpacity style={[styles.button, { marginTop: 0, marginBottom: 20 }]} onPress={() => handleSuggestionSelect('$none')}>
+                  <AppIcons name="materialicons:thumb-down" color="#fff" />
+                  <Text style={[styles.buttonText, { paddingLeft: 10 }]}>I don't like any of these</Text>
+                </TouchableOpacity>
               </View>
             </ScrollView>
           )
@@ -230,7 +236,9 @@ const styles = StyleSheet.create({
     shadowRadius: RFValue(3.84),
     elevation: 3,
     display: 'flex',
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     width: '100%',
     marginTop: 20
   },

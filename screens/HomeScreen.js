@@ -109,11 +109,11 @@ export default function HomeScreen(props) {
 
         <View style={styles.row}>
           <View style={styles.card}>
-            <View style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+            <View style={{ display: 'flex', alignItems: 'center', width: '100%', paddingHorizontal: 20 }}>
               <Text style={styles.cardHeader}>Badges</Text>
               {
                 !!Object.values(userBadges).length ? Object.values(userBadges).map(badge => (
-                  <View style={{ paddingHorizontal: 20, paddingVertical: 10, width: '100%' }} key={badge.id}>
+                  <View style={{ paddingVertical: 10, width: '100%' }} key={badge.id}>
                     <View style={styles.badgeContainer}>
                       <BadgeIcon size={80} icon={badge.icon}></BadgeIcon>
                       <View style={styles.cardTextContainer}>
@@ -127,7 +127,7 @@ export default function HomeScreen(props) {
                 )
               }
               <TouchableOpacity
-                style={[styles.button, { marginVertical: 10, width: '80%' }]}
+                style={[styles.button, { marginVertical: 20, width: '100%' }]}
                 onPress={() => props.navigation.navigate('BadgeScreen')}
               >
                 <Text style={styles.buttonText}>Earn More Badges</Text>
