@@ -8,7 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { makeRedirectUri, ResponseType, useAuthRequest } from 'expo-auth-session';
+import { makeRedirectUri, refreshAsync, ResponseType, useAuthRequest } from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 
 import firebase from './Firebase';
@@ -59,14 +59,16 @@ export default function App(props) {
   const [spotifyUser, setSpotifyUser] = React.useState();
   const [config, setConfig] = React.useState({
     clientId: 'bc628be0b7a344a384e7acff4617a332',
-    redirectUri: 'http://localhost:19006/',
+    redirectUri: "http://localhost:19006/",
     scopes: ['user-read-email', 'playlist-modify-public']
   });
+  const [expireTime, setExpireTime] = React.useState('0');
 
   if (Platform.OS === 'web') {
     WebBrowser.maybeCompleteAuthSession();
   }
 
+  //Log Into Spotify
   const [request, response, promptAsync] = useAuthRequest(
     {
       responseType: ResponseType.Token,
@@ -85,9 +87,14 @@ export default function App(props) {
     discovery
   );
 
-  let saveSpotifyToken = async (token) => {
+  //Save Spotify Data
+  let saveSpotifyToken = async (token, expires) => {
+    //Save the token expiration time in milliseconds (good for 1 hour)
+    let tokenExpires = Date.getItem() + expires * 1000;
     try {
       await AsyncStorage.setItem('SpotifyToken', token);
+      await AsyncStorage.setItem('SpotifyPrevAuth', true);
+      await AsyncStorage.setItem('expireTime', tokenExpires);
     } catch (error) {
       console.log(error);
     }
@@ -122,10 +129,34 @@ export default function App(props) {
 
     loadResourcesAndDataAsync();
 
+
+    //Get the expiration token out of AsyncStorage
+    try{
+      expiryTime = AsyncStorage.getItem('expireTime');
+      setExpireTime(expiryTime);
+    }catch (error){
+      //
+    }
+
+    //Check to see if the Spotify Session is still valid (token hasn't expired)
+    let isValidSession = () =>{
+      const currentTime = new Date().getTime;
+      const expiryTime = expiryTime;
+      const isSessionValid = currentTime < expiryTime;
+      return isSessionValid;
+    }
+
+    //If the session has expired, refresh the token
+    if(!isValidSession){
+      refreshAsync();
+    }
+
+    //If promptAsync was successful
     if (response?.type === 'success') {
       console.log(response.params);
       const { access_token } = response.params;
-      saveSpotifyToken(access_token);
+      const {expires} = response.params.expires_in;
+      saveSpotifyToken(access_token, expires);
       }
 
     // Establish firebase authentication observer

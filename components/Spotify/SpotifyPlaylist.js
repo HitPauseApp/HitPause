@@ -44,10 +44,9 @@ export default function SpotifyPlaylist(props) {
           author: data.owner.display_name,
           image: data.images[0].url
         });
-        // console.log('Albums information', data);
       },
       function (err) {
-        console.error(err);
+        console.warn("Spotify Error: Could not get resource")
       }
     );
   }
