@@ -8,7 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { Provider as PaperProvider } from 'react-native-paper';
-import * as AuthSession from 'expo-auth-session';
+import { makeRedirectUri, ResponseType, useAuthRequest } from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 
 import firebase from './Firebase';
@@ -41,6 +41,12 @@ const AuthStack = createStackNavigator();
 const MainStack = createStackNavigator();
 const HomeTab = createMaterialBottomTabNavigator();
 
+// Spotify Endpoints
+const discovery = {
+  authorizationEndpoint: 'https://accounts.spotify.com/authorize',
+  tokenEndpoint: 'https://accounts.spotify.com/api/token',
+};
+
 export default function App(props) {
   const [isLoadingApp, setIsLoadingApp] = React.useState(true);
   const [isLoadingUser, setIsLoadingUser] = React.useState(false);
@@ -49,36 +55,40 @@ export default function App(props) {
   // TODO: There's probably a better way to pass these without using state...?
   const [authUser, setAuthUser] = React.useState(null);
   const [hitpause, setHitpause] = React.useState(null);
+
+<<<<<<< Updated upstream
+  //Spotify
+  const [spotifyUser, setSpotifyUser] = React.useState();
   const [config, setConfig] = React.useState({
     clientId: 'bc628be0b7a344a384e7acff4617a332',
     redirectUri: 'http://localhost:19006/',
     scopes: ['user-read-email', 'playlist-modify-public']
   });
+=======
+>>>>>>> Stashed changes
 
   if (Platform.OS === 'web') {
     WebBrowser.maybeCompleteAuthSession();
   }
+<<<<<<< Updated upstream
 
-  //Sign in with Implicit Grant flow. NO USER DATA IS ACCESSIBLE HERE
-  let handleSpotifyLogin = async () => {
-    // let redirectUrl = AuthSession.getRedirectUrl();
-    let results = await AuthSession.startAsync({
-      authUrl:
-        `https://accounts.spotify.com/authorize?client_id=${config.clientId}&redirect_uri=${config.redirectUri}&scope=user-read-email&response_type=token`,
-      returnUrl: config.redirectUri
-    });
-    //return the access token
-    console.log(results);
-    if (results.type === 'success' && !!results.params.access_token) {
-      saveSpotifyToken(results.params.access_token);
-    } else if (results.type === 'dismiss') {
-      console.error("Spotify Signin & Token Generation Failed (App.js -> handleSpotifyLogin). Results were 'dismissed' (signin window closed)");
-    } else if (results.type === 'error') {
-      console.error("Spotify Signin & Token Generation Failed (App.js -> handleSpotifyLogin). Results returned an error (probably a 404/401 to Spotify)")
-    } else {
-      console.error("Unkown Failure... Spotify Signin & Token Generation Failed (App.js -> handleSpotifyLogin)");
-    }
-  };
+  const [request, response, promptAsync] = useAuthRequest(
+    {
+      responseType: ResponseType.Token,
+      clientId: config.clientId,
+      scopes: ['user-read-email', 'playlist-modify-public'],
+      // In order to follow the "Authorization Code Flow" to fetch token after authorizationEndpoint
+      // this must be set to false
+      usePKCE: false,
+      // For usage in managed apps using the proxy
+      redirectUri: config.redirectUri
+      //  makeRedirectUri({
+      //   // For usage in bare and standalone
+      //   native: 'your.app://redirect',
+      // }),
+    },
+    discovery
+  );
 
   let saveSpotifyToken = async (token) => {
     try {
@@ -87,7 +97,9 @@ export default function App(props) {
       console.log(error);
     }
   }
-
+  
+=======
+>>>>>>> Stashed changes
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
     async function loadResourcesAndDataAsync() {
@@ -117,6 +129,12 @@ export default function App(props) {
 
     loadResourcesAndDataAsync();
 
+    if (response?.type === 'success') {
+      console.log(response.params);
+      const { access_token } = response.params;
+      saveSpotifyToken(access_token);
+      }
+
     // Establish firebase authentication observer
     firebase.auth().onAuthStateChanged(async (user) => {
       setIsLoadingUser(true);
@@ -132,7 +150,7 @@ export default function App(props) {
         setIsLoadingUser(false);
       }
     });
-  }, []);
+  }, [response]);
 
   async function updateAuthContext(uid) {
     let userData = null;
@@ -146,7 +164,6 @@ export default function App(props) {
         email: data.email,
         admin: data.admin,
         isNewUser: data.isNewUser,
-        spotifyToken: data.spotifyToken,
         ref: firebase.database().ref(`users/${uid}`)
       };
     }
@@ -207,7 +224,7 @@ export default function App(props) {
         />
         <HomeTab.Screen
           name="Account"
-          component={AccountSummary}
+          children = {() => <AccountSummary handleSpotifyLogin={promptAsync}></AccountSummary>}
           options={{
             title: 'Account',
             tabBarLabel: false,

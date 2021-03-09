@@ -3,7 +3,6 @@ import { View, StyleSheet, Text, Image, Button, ScrollView, TouchableOpacity } f
 import firebase from '../../Firebase.js';
 import h from '../../globals';
 import { AuthContext } from '../../AuthContext.js';
-import SpotifyAuthButton from '../../spotify/SpotifyAuthButton';
 import AppIcons from '../../components/AppIcons';
 import userImg from '../../assets/images/userImg.png';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -73,14 +72,7 @@ export default function Account(props) {
         </View>
 
         <View style={styles.buttonContainter}>
-          <SpotifyAuthButton
-            buttonStyle={[styles.button, { backgroundColor: '#1DB954', alignItems: 'center' }]}
-            textStyle={[styles.buttonText, { paddingLeft: 10 }]}
-          />
-        </View>
-
-        <View style={styles.buttonContainter}>
-          <TouchableOpacity style={[styles.button, { backgroundColor: h.colors.primary }]} onPress={() => handleLogout()}>
+          <TouchableOpacity style={[styles.button, { backgroundColor: '#00095e' }]} onPress={() => handleLogout()}>
             <Text style={styles.buttonText}>Sign Out</Text>
           </TouchableOpacity>
         </View>
