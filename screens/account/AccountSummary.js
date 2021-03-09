@@ -71,20 +71,6 @@ export default function Account(props) {
         </View>
 
         <View style={styles.buttonContainter}>
-<<<<<<< Updated upstream
-          <View style={[styles.button, { backgroundColor: '#1DB954' }]}>
-            <View style={{ display: 'flex', flexDirection: 'row' }}>
-              <View style={{ paddingRight: 10 }}>
-                <AppIcons name="fontawesome5:spotify" size={40} color="white" />
-              </View>
-              <SpotifyAuthButton handleSpotifyLogin={props.handleSpotifyLogin}></SpotifyAuthButton>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.buttonContainter}>
-=======
->>>>>>> Stashed changes
           <TouchableOpacity style={[styles.button, { backgroundColor: '#00095e' }]} onPress={() => handleLogout()}>
             <Text style={styles.buttonText}>Sign Out</Text>
           </TouchableOpacity>
