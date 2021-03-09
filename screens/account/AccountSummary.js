@@ -2,7 +2,6 @@ import * as React from 'react';
 import { View, StyleSheet, Text, Image, Button, ScrollView, TouchableOpacity } from 'react-native';
 import firebase from '../../Firebase.js';
 import { AuthContext } from '../../AuthContext.js';
-import SpotifyAuthButton from '../../spotify/SpotifyAuthButton';
 import AppIcons from '../../components/AppIcons';
 import userImg from '../../assets/images/userImg.png';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -72,6 +71,7 @@ export default function Account(props) {
         </View>
 
         <View style={styles.buttonContainter}>
+<<<<<<< Updated upstream
           <View style={[styles.button, { backgroundColor: '#1DB954' }]}>
             <View style={{ display: 'flex', flexDirection: 'row' }}>
               <View style={{ paddingRight: 10 }}>
@@ -83,6 +83,8 @@ export default function Account(props) {
         </View>
 
         <View style={styles.buttonContainter}>
+=======
+>>>>>>> Stashed changes
           <TouchableOpacity style={[styles.button, { backgroundColor: '#00095e' }]} onPress={() => handleLogout()}>
             <Text style={styles.buttonText}>Sign Out</Text>
           </TouchableOpacity>

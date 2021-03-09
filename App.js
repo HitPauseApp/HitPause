@@ -55,6 +55,7 @@ export default function App(props) {
   const [authUser, setAuthUser] = React.useState(null);
   const [hitpause, setHitpause] = React.useState(null);
 
+<<<<<<< Updated upstream
   //Spotify
   const [spotifyUser, setSpotifyUser] = React.useState();
   const [config, setConfig] = React.useState({
@@ -62,10 +63,13 @@ export default function App(props) {
     redirectUri: 'http://localhost:19006/',
     scopes: ['user-read-email', 'playlist-modify-public']
   });
+=======
+>>>>>>> Stashed changes
 
   if (Platform.OS === 'web') {
     WebBrowser.maybeCompleteAuthSession();
   }
+<<<<<<< Updated upstream
 
   const [request, response, promptAsync] = useAuthRequest(
     {
@@ -93,6 +97,8 @@ export default function App(props) {
     }
   }
   
+=======
+>>>>>>> Stashed changes
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
     async function loadResourcesAndDataAsync() {
