@@ -89,11 +89,6 @@ export default function App(props) {
 
     loadResourcesAndDataAsync();
 
-    if (response?.type === 'success') {
-      console.log(response.params);
-      const { access_token } = response.params;
-      saveSpotifyToken(access_token);
-      }
 
     // Establish firebase authentication observer
     firebase.auth().onAuthStateChanged(async (user) => {
@@ -110,7 +105,7 @@ export default function App(props) {
         setIsLoadingUser(false);
       }
     });
-  }, [response]);
+  },[]);
 
   async function updateAuthContext(uid) {
     let userData = null;
@@ -184,7 +179,7 @@ export default function App(props) {
         />
         <HomeTab.Screen
           name="Account"
-          children = {() => <AccountSummary handleSpotifyLogin={promptAsync}></AccountSummary>}
+          children = {() => <AccountSummary></AccountSummary>}
           options={{
             title: 'Account',
             tabBarLabel: false,
