@@ -8,7 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { makeRedirectUri, refreshAsync, ResponseType, useAuthRequest } from 'expo-auth-session';
+import { makeRedirectUri, ResponseType, useAuthRequest } from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 
 import firebase from './Firebase';
@@ -55,10 +55,50 @@ export default function App(props) {
   const [authUser, setAuthUser] = React.useState(null);
   const [hitpause, setHitpause] = React.useState(null);
 
+<<<<<<< Updated upstream
+  //Spotify
+  const [spotifyUser, setSpotifyUser] = React.useState();
+  const [config, setConfig] = React.useState({
+    clientId: 'bc628be0b7a344a384e7acff4617a332',
+    redirectUri: 'http://localhost:19006/',
+    scopes: ['user-read-email', 'playlist-modify-public']
+  });
+=======
+>>>>>>> Stashed changes
+
   if (Platform.OS === 'web') {
     WebBrowser.maybeCompleteAuthSession();
   }
+<<<<<<< Updated upstream
 
+  const [request, response, promptAsync] = useAuthRequest(
+    {
+      responseType: ResponseType.Token,
+      clientId: config.clientId,
+      scopes: ['user-read-email', 'playlist-modify-public'],
+      // In order to follow the "Authorization Code Flow" to fetch token after authorizationEndpoint
+      // this must be set to false
+      usePKCE: false,
+      // For usage in managed apps using the proxy
+      redirectUri: config.redirectUri
+      //  makeRedirectUri({
+      //   // For usage in bare and standalone
+      //   native: 'your.app://redirect',
+      // }),
+    },
+    discovery
+  );
+
+  let saveSpotifyToken = async (token) => {
+    try {
+      await AsyncStorage.setItem('SpotifyToken', token);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+=======
+>>>>>>> Stashed changes
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
     async function loadResourcesAndDataAsync() {
@@ -87,6 +127,12 @@ export default function App(props) {
     }
 
     loadResourcesAndDataAsync();
+
+    if (response?.type === 'success') {
+      console.log(response.params);
+      const { access_token } = response.params;
+      saveSpotifyToken(access_token);
+      }
 
     // Establish firebase authentication observer
     firebase.auth().onAuthStateChanged(async (user) => {

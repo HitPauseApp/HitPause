@@ -28,7 +28,6 @@
     "@unimodules/core": "^5.1.2",
     "@use-expo/font": "^2.0.0",
     "base-64": "^0.1.0",
-    "dotenv": "^8.2.0",
     "expo": "^38.0.10",
     "expo-app-auth": "~9.1.1",
     "expo-asset": "~8.1.3",
