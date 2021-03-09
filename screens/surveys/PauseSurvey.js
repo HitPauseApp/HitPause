@@ -1,7 +1,7 @@
 import * as React from 'react';
 import firebase from '../../Firebase.js'
 import h from '../../globals';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import Form from '../../components/quiz/Form';
 import SuggestionSwitcher from '../../components/quiz/SuggestionSwitcher';
 import Loading from '../Loading';
@@ -16,6 +16,7 @@ export default function PauseSurvey(props) {
   const hitpause = React.useContext(AppContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [results, setResults] = React.useState({});
+  const [pushId, setPushId] = React.useState(null);
   const [quiz, setQuiz] = React.useState({});
 
   React.useEffect(() => {
@@ -55,13 +56,19 @@ export default function PauseSurvey(props) {
     if (user.ref.child('profile/pauseSurveys').once('value').then(s => !s.exists())) {
       user.ref.child('profile/badges').update({ firstPauseSurvey: true });
     }
+    let id = user.ref.push().key;
     // Save the results to firebase
-    user.ref.child(`profile/pauseSurveys`).push({
+    user.ref.child(`profile/pauseSurveys/${id}`).set({
       suggestions: suggestions,
       timestamp: Date.now(),
       outputFlags: outputFlags
     });
-    console.log('suggestions:', suggestions);
+    setPushId(id);
+  }
+
+  function handleSuggestionSelect(key) {
+    if (key && key !== '$none') user.ref.child(`profile/pauseSurveys/${pushId}`).update({ selected: key });
+    props.navigation.navigate('Home');
   }
 
   if (isLoading) return <Loading message="Loading your quiz..."></Loading>;
@@ -75,41 +82,58 @@ export default function PauseSurvey(props) {
             </View>
           ) : (
             <ScrollView style={{ display: 'flex' }}>
-              <View style={{ flex: 1, display: 'flex', padding: RFValue(20) }}>
-                <Text style={{ color: '#00095e', fontSize: RFValue(18),fontFamily: 'Poppins-Medium', }}>Our top suggestion for you is:</Text>
-                <View style={styles.titleHolder}>
-                  <View style={styles.iconHolder}>
-                    <AppIcons name={results.s1.icon} size={RFValue(96)} color={'#00095e'} />
-                  </View>
-                  <Text style={{ color: '#00095e', fontSize: RFValue(20), fontFamily: 'Poppins-Bold', alignSelf:'center', flex:1, paddingLeft:30}}>{results.s1.text}</Text>
+              <Text style={{ textAlign: 'center', color: h.colors.primary, fontSize: RFValue(18), fontFamily: 'Poppins-Medium', paddingVertical: 20 }}>Here are our suggestions for you:</Text>
+              <View style={{ flex: 1, display: 'flex', padding: 20, position: 'relative', marginTop: 20 }}>
+                <View style={{ position: 'absolute', top: -30, left: 20, right: 0 }}>
+                  <Text style={styles.bigNumber}>#1</Text>
+                  <Text style={styles.bigNumberNote}>Top Suggestion!</Text>
                 </View>
-                {/* <Text style={{ color: '#00095e', fontSize: RFValue(18), fontFamily: 'Poppins-Bold', alignSelf:'center', paddingBottom:10, flex:1}}>{results.s1.text}</Text> */}
-                <Text style={{ color: '#00095e', fontSize: RFValue(12), fontFamily: 'Poppins-Medium', paddingBottom:20, textAlign:'center' }}>{results.s1.body}</Text>
+                <View style={styles.titleHolder}>
+                  <AppIcons name={results.s1.icon} size={RFValue(96)} color={h.colors.primary} />
+                  <Text style={{ color: h.colors.primary, fontSize: RFValue(20), fontFamily: 'Poppins-Bold', maxWidth: '50%', paddingLeft: 20, textAlignVertical: 'center' }}>{results.s1.text}</Text>
+                </View>
+                <Text style={{ color: h.colors.primary, fontSize: RFValue(13), fontFamily: 'Poppins-Medium', paddingBottom: 20, textAlign: 'center' }}>{results.s1.body}</Text>
                 <SuggestionSwitcher suggestionId={results.s1.$key}></SuggestionSwitcher>
+                <TouchableOpacity style={styles.button } onPress={() => handleSuggestionSelect(results.s1.$key)}>
+                  <Text style={styles.buttonText}>I will try this: {results.s1.text}</Text>
+                </TouchableOpacity>
               </View>
-              <View style={{ flex: 1, display: 'flex'}}>
-                <Text style={{ textAlign: 'center', fontSize: RFValue(18), color: '#fff' }}>Here are some other things to try:</Text>
+
+              <View style={{ flex: 1, display: 'flex', paddingHorizontal: 30, paddingTop: 10 }}>
                 <View style={styles.card}>
+                  <Text style={styles.smallNumber}>#2</Text>
                   <View style={styles.titleHolder}>
-                  <AppIcons name={results.s2.icon} color="#222"></AppIcons>
-                  <Text style={styles.cardTitle}>{results.s2.text}</Text>
+                    <AppIcons name={results.s2.icon} size={RFValue(36)} color={h.colors.primary}></AppIcons>
+                    <Text style={styles.cardTitle}>{results.s2.text}</Text>
                   </View>
-                  <View style={{ flex: 1, paddingLeft: RFValue(5), justifyContent:'center' }}> 
-                    <Text style={{ fontSize: RFValue(11), paddingTop:18, paddingBottom: 30, textAlign:'justify', fontFamily: 'Poppins-Medium' }}>{results.s2.body}</Text>
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ fontSize: RFValue(12), paddingVertical: 10, fontFamily: 'Poppins-Medium', color: h.colors.primary }}>{results.s2.body}</Text>
                     <SuggestionSwitcher suggestionId={results.s2.$key}></SuggestionSwitcher>
                   </View>
+                  <TouchableOpacity style={styles.button} onPress={() => handleSuggestionSelect(results.s2.$key)}>
+                    <Text style={styles.buttonText}>I will try this: {results.s2.text}</Text>
+                  </TouchableOpacity>
                 </View>
+
                 <View style={styles.card}>
-                  <View style= {styles.titleHolder}>
-                  <AppIcons name={results.s3.icon} color="#222"></AppIcons>
-                  <Text style={styles.cardTitle}>{results.s3.text}</Text>
+                  <Text style={styles.smallNumber}>#3</Text>
+                  <View style={styles.titleHolder}>
+                    <AppIcons name={results.s3.icon} size={RFValue(36)} color={h.colors.primary}></AppIcons>
+                    <Text style={styles.cardTitle}>{results.s3.text}</Text>
                   </View>
-                  <View style={{ flex: 1, paddingLeft: RFValue(5) }}>
-                    {/* <Text style={styles.cardTitle}>{results.s3.text}</Text> */}
-                    <Text style={{ fontSize: RFValue(11), paddingTop:10, fontFamily: 'Poppins-Medium', paddingBottom: 30, textAlign:'justify'}}>{results.s3.body}</Text>
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ fontSize: RFValue(12), paddingVertical: 10, fontFamily: 'Poppins-Medium', color: h.colors.primary }}>{results.s3.body}</Text>
                     <SuggestionSwitcher suggestionId={results.s3.$key}></SuggestionSwitcher>
                   </View>
+                  <TouchableOpacity style={styles.button} onPress={() => handleSuggestionSelect(results.s3.$key)}>
+                    <Text style={styles.buttonText}>I will try this: {results.s3.text}</Text>
+                  </TouchableOpacity>
                 </View>
+
+                <TouchableOpacity style={[styles.button, { marginTop: 0, marginBottom: 20 }]} onPress={() => handleSuggestionSelect('$none')}>
+                  <AppIcons name="materialicons:thumb-down" color="#fff" />
+                  <Text style={[styles.buttonText, { paddingLeft: 10 }]}>I don't like any of these</Text>
+                </TouchableOpacity>
               </View>
             </ScrollView>
           )
@@ -128,10 +152,9 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     display: 'flex',
-    alignSelf:'center',
-    alignContent:'center',
-    flexDirection: 'column',
-    width:'90%',
+    position: 'relative',
+    alignContent: 'center',
+    width: '100%',
     shadowColor: "#000",
     shadowOffset: {
       width: RFValue(1),
@@ -142,25 +165,86 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: '#F2FCFD',
     borderRadius: RFValue(20),
-    //overflow: 'hidden',
-    padding: RFValue(15),
-    margin: RFValue(10),
+    padding: 20,
+    marginBottom: 20
   },
   cardTitle: {
-    fontSize: RFValue(17),
+    fontSize: RFValue(18),
     fontFamily: 'Poppins-Bold',
-    paddingLeft:20,
-  },
-  largeContainer: {
-    height:'100%',
-    width:'100%'
-  },
-  iconHolder: {
-   padding:20,
-   paddingLeft:60
+    paddingLeft: 20,
+    color: h.colors.primary,
+    maxWidth: '50%'
   },
   titleHolder: {
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 10
+  },
+  bigNumber: {
+    color: '#fff',
+    backgroundColor: h.colors.primary,
+    height: RFValue(56),
+    width: RFValue(56),
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    fontSize: RFValue(24),
+    fontFamily: 'Poppins-Bold',
+    borderRadius: 999
+  },
+  bigNumberNote: {
+    position: 'absolute',
+    zIndex: -1,
+    backgroundColor: h.colors.tertiary,
+    color: '#fff',
+    paddingLeft: 30,
+    fontFamily: 'Poppins-Medium',
+    borderRadius: 999,
+    height: RFValue(28),
+    fontSize: RFValue(13),
+    paddingRight: 16,
+    textAlignVertical: 'center',
+    top: RFValue(14),
+    left: RFValue(36)
+  },
+  smallNumber: {
+    position: 'absolute',
+    top: -10,
+    left: -10,
+    height: RFValue(48),
+    width: RFValue(48),
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    fontFamily: 'Poppins-Bold',
+    fontSize: RFValue(18),
+    backgroundColor: h.colors.primary,
+    color: '#fff',
+    borderRadius: 999
+  },
+  button: {
+    backgroundColor: h.colors.primary,
+    alignSelf: 'center',
+    borderRadius: 15,
+    padding: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: RFValue(1),
+      height: RFValue(5),
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
+    elevation: 3,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    marginTop: 20
+  },
+  buttonText: {
+    fontFamily: 'Poppins-Bold',
+    color: '#fff',
+    fontSize: RFValue(14)
   }
 });

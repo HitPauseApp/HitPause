@@ -31,6 +31,7 @@ import AccountTraits from './screens/account/AccountTraits';
 import NotificationsScreen from './screens/account/NotificationsScreen';
 import WelcomeTutorial from './screens/WelcomeTutorial';
 import BadgeScreen from './screens/account/BadgeScreen';
+import ReviewScreen from './screens/ReviewScreen'
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AdminPanel from './components/admin/AdminPanel';
@@ -318,6 +319,11 @@ export default function App(props) {
                     name="BadgeScreen"
                     component={BadgeScreen}
                     options={{headerTitle: 'My Badges' }}
+                  />
+                  <MainStack.Screen
+                    name="ReviewScreen"
+                    component={ReviewScreen}
+                    options={{headerTitle: 'Review this Suggestion' }}
                   />
                 </MainStack.Navigator>
               </NavigationContainer>

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet, Text, Image, Button, ScrollView, TouchableOpacity } from 'react-native';
 import firebase from '../../Firebase.js';
+import h from '../../globals';
 import { AuthContext } from '../../AuthContext.js';
 import AppIcons from '../../components/AppIcons';
 import userImg from '../../assets/images/userImg.png';

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import firebase from '../../Firebase';
+import h from '../../globals';
 import { StyleSheet, Text, View, Image, TouchableOpacity, PanResponsder, ImageBackground } from 'react-native';
 import { PanGestureHandler, RectButton, ScrollView} from 'react-native-gesture-handler';
 import { AuthContext } from '../../AuthContext';
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
     //paddingBottom: 1
   },
   textContainer: {
-    backgroundColor: '#132090',
+    backgroundColor: h.colors.secondary,
     justifyContent: 'center',
     alignContent: 'center',
     width: '80%',
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    color: 'white',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
     fontWeight: 'bold',
     fontSize: 20,
