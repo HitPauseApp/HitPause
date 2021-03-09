@@ -1,9 +1,10 @@
 import * as React from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, ResponseType, useAuthRequest } from 'expo-auth-session';
-import { Button } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../AuthContext';
+import AppIcons from '../components/AppIcons';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -13,7 +14,7 @@ const discovery = {
   tokenEndpoint: 'https://accounts.spotify.com/api/token',
 };
 
-export default function App() {
+export default function SpotifyAuthButton(props) {
   const user = React.useContext(AuthContext);
 
     const [config, setConfig] = React.useState({
@@ -61,13 +62,15 @@ export default function App() {
   }, [response]);
 
   return (
-    <Button
+    <TouchableOpacity
       disabled={!request}
       title="Login to Spotify"
-      onPress={() => {
-        promptAsync();
-        }}
-    />
+      onPress={() => promptAsync()}
+      style={props.buttonStyle}
+    >
+      <AppIcons name="fontawesome5:spotify" size={20} color="white" />
+      <Text style={props.textStyle}>Login to Spotify</Text>
+    </TouchableOpacity>
   );
 }
 

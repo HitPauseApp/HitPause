@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet, Text, Image, Button, ScrollView, TouchableOpacity } from 'react-native';
 import firebase from '../../Firebase.js';
+import h from '../../globals';
 import { AuthContext } from '../../AuthContext.js';
 import SpotifyAuthButton from '../../spotify/SpotifyAuthButton';
 import AppIcons from '../../components/AppIcons';
@@ -72,18 +73,14 @@ export default function Account(props) {
         </View>
 
         <View style={styles.buttonContainter}>
-          <View style={[styles.button, { backgroundColor: '#1DB954' }]}>
-            <View style={{ display: 'flex', flexDirection: 'row' }}>
-              <View style={{ paddingRight: 10 }}>
-                <AppIcons name="fontawesome5:spotify" size={40} color="white" />
-              </View>
-              <SpotifyAuthButton></SpotifyAuthButton>
-            </View>
-          </View>
+          <SpotifyAuthButton
+            buttonStyle={[styles.button, { backgroundColor: '#1DB954', alignItems: 'center' }]}
+            textStyle={[styles.buttonText, { paddingLeft: 10 }]}
+          />
         </View>
 
         <View style={styles.buttonContainter}>
-          <TouchableOpacity style={[styles.button, { backgroundColor: '#00095e' }]} onPress={() => handleLogout()}>
+          <TouchableOpacity style={[styles.button, { backgroundColor: h.colors.primary }]} onPress={() => handleLogout()}>
             <Text style={styles.buttonText}>Sign Out</Text>
           </TouchableOpacity>
         </View>
