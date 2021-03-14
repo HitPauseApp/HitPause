@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   },
   header2: {
     fontFamily: 'Poppins-Bold',
-    color: '#00095e',
+    color: h.colors.primary,
     fontSize: RFValue(22),
     // fontWeight: 'bold',
     paddingHorizontal: 20,

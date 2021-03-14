@@ -1,4 +1,5 @@
 import * as React from 'react';
+import h from '../globals';
 import { View, StyleSheet, Text, Image, Button, ScrollView } from 'react-native';
 import firebase from '../Firebase.js';
 import { AuthContext } from '../AuthContext.js';
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   headerText: {
-    color: '#00095e',
+    color: h.colors.primary,
     textAlign: 'center',
     fontSize: 28,
     padding: 20,
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
 
   },
   bodyText: {
-    color: '#00095e',
+    color: h.colors.primary,
     textAlign: 'center',
     fontSize: 16,
     padding: 20,
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
   },
   button: {
-    backgroundColor: '#00095e',
+    backgroundColor: h.colors.primary,
     width: '80%',
     alignSelf: 'center',
     borderRadius: 10,

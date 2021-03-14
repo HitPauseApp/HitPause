@@ -70,7 +70,7 @@ export default function ProfileSurvey(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#00095e',
+    backgroundColor: h.colors.primary,
     paddingTop: RFValue(20)
   },
   endCard: {

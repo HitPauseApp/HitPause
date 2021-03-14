@@ -1,4 +1,5 @@
 import * as React from 'react';
+import h from '../../globals';
 import { View, StyleSheet, Text, Image, Button, ScrollView } from 'react-native';
 import firebase from '../../Firebase.js';
 import { AuthContext } from '../../AuthContext.js';
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: RFValue(12),
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Bold',
     textAlign: 'center',
     marginRight: 10

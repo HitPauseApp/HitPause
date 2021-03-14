@@ -27,7 +27,7 @@ export default function Account(props) {
             <View style={styles.userDetails}>
               <Text style={styles.userName}>{user.firstName} {user.lastName}</Text>
               <View style={styles.contactInfo}>
-                <AppIcons name="materialicons:email" size={22} color="#00095e" ></AppIcons>
+                <AppIcons name="materialicons:email" size={22} color={h.colors.primary} ></AppIcons>
                 <Text style={styles.smallText}>{user.email}</Text>
               </View>
             </View>
@@ -36,17 +36,12 @@ export default function Account(props) {
 
         <View style={styles.buttonContainter1}>
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: '#00095e' }]}
+            style={[styles.button, { backgroundColor: h.colors.primary }]}
             onPress={() => props.navigation.navigate('AccountTraits')}
           >
             <Text style={styles.buttonText}>View My Traits</Text>
           </TouchableOpacity>
         </View>
-
-        {/* <View style={styles.category3}>
-          <AppIcons name="materialcommunityicons:textbox-password" size={30} color="#00095e" />
-          <Text style={styles.text}>*******</Text>
-        </View> */}
 
         {/*<View style={styles.category}>
           <Text style={styles.text}>Quiz Reminders</Text>
@@ -55,7 +50,7 @@ export default function Account(props) {
 
         <View style={styles.buttonContainter}>
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: '#00095e' }]}
+            style={[styles.button, { backgroundColor: h.colors.primary }]}
             onPress={() => props.navigation.navigate('NotificationsScreen')}
           >
             <Text style={styles.buttonText}>Notification Settings</Text>
@@ -64,7 +59,7 @@ export default function Account(props) {
 
         <View style={styles.buttonContainter}>
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: '#00095e' }]}
+            style={[styles.button, { backgroundColor: h.colors.primary }]}
             onPress={() => props.navigation.navigate('BadgeScreen')}
           >
             <Text style={styles.buttonText}>View Badges</Text>
@@ -72,7 +67,7 @@ export default function Account(props) {
         </View>
 
         <View style={styles.buttonContainter}>
-          <TouchableOpacity style={[styles.button, { backgroundColor: '#00095e' }]} onPress={() => handleLogout()}>
+          <TouchableOpacity style={[styles.button, { backgroundColor: h.colors.primary }]} onPress={() => handleLogout()}>
             <Text style={styles.buttonText}>Sign Out</Text>
           </TouchableOpacity>
         </View>
@@ -92,12 +87,12 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   userName: {
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Bold',
     fontSize: RFValue(15),
   },
   smallText: {
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
     fontSize: RFValue(9.5),
     left: '45%'

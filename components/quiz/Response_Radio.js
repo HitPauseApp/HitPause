@@ -1,4 +1,5 @@
 import * as React from 'react';
+import h from '../../globals';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -21,9 +22,9 @@ export default function Response_Radio(props) {
           Object.values(props.responses).map((item, key) =>
             <RadioButton.Item
               label={item.text}
-              labelStyle={{color: '#00095e'}}
+              labelStyle={{color: h.colors.primary}}
               style={styles.radioButton}
-              color="#00095e"
+              color={h.colors.primary}
               value={String(key)}
               key={key}
             />

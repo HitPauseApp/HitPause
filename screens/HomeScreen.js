@@ -41,9 +41,8 @@ export default function HomeScreen(props) {
   return (
     <ScrollView style={styles.container}>
       <View style={{ padding: 16, paddingTop: 80 }}>
-        <Text style={{ fontFamily: 'Poppins-Light', fontSize: RFValue(18), color: '#00095e' }}>Welcome Back,</Text>
-        <Text style={{ fontFamily: 'Poppins-Bold', fontSize: RFValue(22), color: '#00095e' }}>{user.firstName} {user.lastName}!</Text>
-        {/* <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner> */}
+        <Text style={{ fontFamily: 'Poppins-Light', fontSize: RFValue(18), color: h.colors.primary }}>Welcome Back,</Text>
+        <Text style={{ fontFamily: 'Poppins-Bold', fontSize: RFValue(22), color: h.colors.primary }}>{user.firstName} {user.lastName}!</Text>
       </View>
 
       <View style={{ height: 220 }}>
@@ -91,8 +90,8 @@ export default function HomeScreen(props) {
                 <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', padding: 10, alignItems: 'center' }} onPress={() => props.navigation.navigate('ProfileSurvey')}>
                   {/*<AppIcons name='materialicons:check-circle' color='white'></AppIcons>*/}
                   <View style={{ paddingLeft: 10, flex: 1 }}>
-                    <Text style={{ fontSize: RFValue(15), textAlign: 'center', color: '#00095e', fontFamily: 'Poppins-Bold' }}>Need to retake your profile survey?</Text>
-                    <Text style={{ fontSize: RFValue(11), textAlign: 'center', color: '#00095e', fontFamily: 'Poppins-Medium' }}>Change your answers at any time</Text>
+                    <Text style={{ fontSize: RFValue(15), textAlign: 'center', color: h.colors.primary, fontFamily: 'Poppins-Bold' }}>Need to retake your profile survey?</Text>
+                    <Text style={{ fontSize: RFValue(11), textAlign: 'center', color: h.colors.primary, fontFamily: 'Poppins-Medium' }}>Change your answers at any time</Text>
                   </View>
                 </TouchableOpacity>
               </View>

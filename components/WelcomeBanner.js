@@ -1,4 +1,5 @@
 import * as React from 'react';
+import h from '../globals';
 import { StyleSheet, View, Text, TouchableOpacity, ImageBackground } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontFamily: 'Poppins-Light',
-    color: '#00095e',
+    color: h.colors.primary,
     fontSize: RFValue(18),
     fontWeight: 'bold',
     marginTop: '15%',
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontFamily: 'Poppins-Medium',
-    color: '#00095e',
+    color: h.colors.primary,
     fontSize: RFValue(18),
     fontWeight: 'bold',
     left: '20%'

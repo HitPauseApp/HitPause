@@ -87,16 +87,13 @@ const styles = StyleSheet.create({
     padding: 5,
     fontFamily: 'Poppins-Medium',
     fontSize: 25,
-    color: '#00095e'
+    color: h.colors.primary
   },
   modalText: {
     padding: 15,
     fontFamily: 'Poppins-Light',
     fontSize: 15,
-    color: '#00095e',
+    color: h.colors.primary,
     textAlign: 'center',
-  },
-  info: {
-    
   }
 });
