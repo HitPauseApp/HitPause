@@ -6,11 +6,12 @@ import h from '../../globals';
 
 export default function AdminPanel(props) {
   const [test, setTest] = React.useState('incident');
+  const [output, setOutput] = React.useState('');
   const hitpause = React.useContext(AppContext);
 
   async function runSelectedTest() {
     let x = 10000;
-    if (test == 'incident') {
+    if (test == 'pauseSurvey') {
       // Get questions from firebase
       let s = await firebase.database().ref('hitpause/quizzes/incidentQuestionnaire/questions').once('value');
       let questions = s.val();
@@ -35,12 +36,12 @@ export default function AdminPanel(props) {
         totals[suggestions[2]].tally3 = (totals[suggestions[2]].tally3 || 0) + 1;
       }
       // For each result, tally the first, second, and third suggestions
-      console.log(Object.entries(totals).map(e => {
-        return { [e[0]]: `1: ${e[1].tally1}, 2: ${e[1].tally2}, 3: ${e[1].tally3}` }
-      }));
+      setOutput(Object.entries(totals).map(e => {
+        return `${[e[0]]}:\n  1: ${e[1].tally1}\n  2: ${e[1].tally2}\n  3: ${e[1].tally3}\n`
+      }).join('\n'));
     }
-    else if (test == 'initial') {
-      console.log('yeet');
+    else if (test == 'profileSurvey') {
+      setOutput('yeet');
     }
     else {
       console.log('yadda');
@@ -48,20 +49,43 @@ export default function AdminPanel(props) {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <Picker
         selectedValue={test}
-        style={{ height: 50, width: 150 }}
+        style={{ width: '100%' }}
         onValueChange={(itemValue, itemIndex) => setTest(itemValue)}
       >
-        <Picker.Item label="Incident Algorithm" value="incident" />
-        <Picker.Item label="Initial Algorithm" value="initial" />
+        <Picker.Item label="Pause Survey" value="pauseSurvey" />
+        <Picker.Item label="Profile Survey" value="profileSurvey" />
       </Picker>
-      <TouchableOpacity
+      <TouchableOpacity style={styles.button}
         onPress={() => runSelectedTest()}
       >
-        <Text>Run Test</Text>
+        <Text style={{ color: '#fff', textAlign: 'center' }}>Run Test</Text>
       </TouchableOpacity>
+      <ScrollView style={{ flex: 1, marginTop: 20 }}>
+        <Text style={styles.outBox}>{output}</Text>
+      </ScrollView>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    height: '100%',
+    display: 'flex'
+  },
+  button: {
+    padding: 5,
+    borderRadius: 15,
+    backgroundColor: h.colors.primary,
+    marginTop: 20
+  },
+  outBox: {
+    backgroundColor: '#333',
+    color: '#fff',
+    padding: 5,
+    overflow: 'scroll'
+  }
+});

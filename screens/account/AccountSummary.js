@@ -66,6 +66,18 @@ export default function Account(props) {
           </TouchableOpacity>
         </View>
 
+        {
+          user.isAdmin &&
+          <View style={styles.buttonContainter}>
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: h.colors.tertiary }]}
+              onPress={() => props.navigation.navigate('AdminPanel')}
+            >
+              <Text style={styles.buttonText}>Admin Panel</Text>
+            </TouchableOpacity>
+          </View>
+        }
+
         <View style={styles.buttonContainter}>
           <TouchableOpacity style={[styles.button, { backgroundColor: h.colors.primary }]} onPress={() => handleLogout()}>
             <Text style={styles.buttonText}>Sign Out</Text>
