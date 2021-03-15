@@ -16,9 +16,9 @@ export default function AdminPanel(props) {
       let s = await firebase.database().ref('hitpause/quizzes/incidentQuestionnaire/questions').once('value');
       let questions = s.val();
       let totals = JSON.parse(JSON.stringify(hitpause.suggestions));
+      let data = [];
       // Run the simulation X number of times
       for (let i = 0; i < x; i++) {
-        let data = [];
         for (const key in questions) {
           let responses = questions[key].responses;
           if (!responses) {
@@ -26,7 +26,31 @@ export default function AdminPanel(props) {
             continue;
           }
           let y = Math.floor(Math.random() * responses.length);
-          data[key] = responses[y].effects;
+          // If the question is a radio type (choose one)
+          if (['scale', 'radio'].includes(questions[key].type)) {
+            data[key] = responses[y].effects;
+          }
+          // If the question is a checkbox type (choose many)
+          else if (questions[key].type == 'checkbox') {
+            let responseEffects = responses.map((r) => r.effects);
+            let randomItems = getRandomItems(responseEffects, y);
+            let summedEffects = {}
+            // For each randomly selected item
+            for (const itemKey in randomItems) {
+              for (const flagKey in randomItems[itemKey]) {
+                // When flags compound within the same question
+                if (Object.keys(summedEffects).includes(flagKey)) {
+                  summedEffects[flagKey] = parseFloat(summedEffects[flagKey]) + parseFloat(randomItems[itemKey][flagKey]);
+                // Otherwise, add normally, depending on type
+                } else if (typeof randomItems[itemKey][flagKey] == 'boolean') {
+                  summedEffects[flagKey] = randomItems[itemKey][flagKey];
+                } else {
+                  summedEffects[flagKey] = parseFloat(randomItems[itemKey][flagKey]);
+                }
+              }
+            }
+            data[key] = summedEffects;
+          }
         }
         let outputFlags = h.tallyOutputFlags(data);
         let topThree = h.getHighsAndLows(outputFlags, 3, 0)[0];
@@ -37,15 +61,29 @@ export default function AdminPanel(props) {
       }
       // For each result, tally the first, second, and third suggestions
       setOutput(Object.entries(totals).map(e => {
-        return `${[e[0]]}:\n  1: ${e[1].tally1}\n  2: ${e[1].tally2}\n  3: ${e[1].tally3}\n`
+        return `${[e[0]]}:\n  1: ${parseInt(e[1].tally1).toString().padStart(4, ' ')} ${'-'.repeat(parseInt((e[1].tally1 / x) * 100))}\n  2: ${parseInt(e[1].tally2).toString().padStart(4, ' ')} ${'-'.repeat(parseInt((e[1].tally2 / x) * 100))}\n  3: ${parseInt(e[1].tally3).toString().padStart(4, ' ')} ${'-'.repeat(parseInt((e[1].tally3 / x) * 100))}`
       }).join('\n'));
     }
     else if (test == 'profileSurvey') {
-      setOutput('yeet');
+      setOutput('This test is not implemented yet');
     }
     else {
-      console.log('yadda');
+      setOutput('[ERROR] Something went wrong with the picker, ask Tanner');
     }
+  }
+
+  function getRandomItems(arr, n) {
+    // Copied from the interwebs, a function that randomly returns a given number of array items
+    let result = new Array(n);
+    let len = arr.length;
+    let taken = new Array(len);
+    if (n > len) throw new RangeError("getRandom: more elements taken than available");
+    while (n--) {
+      var x = Math.floor(Math.random() * len);
+      result[n] = arr[x in taken ? taken[x] : x];
+      taken[x] = --len in taken ? taken[len] : len;
+    }
+    return result;
   }
 
   return (
@@ -86,6 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#333',
     color: '#fff',
     padding: 5,
-    overflow: 'scroll'
+    overflow: 'scroll',
+    fontFamily: 'space-mono'
   }
 });
