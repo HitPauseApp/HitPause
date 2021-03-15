@@ -131,12 +131,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
   surveyQuestion: {
-    flexDirection: 'column',
-    backgroundColor: '#F2FCFD',
+    backgroundColor: h.colors.secondary,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    borderRadius: RFValue(15),
+    borderRadius: 15,
     padding: 10,
     marginBottom: 20,
     width: '80%',
@@ -151,20 +150,23 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   button: {
-    borderWidth: 2,
-    borderColor: h.colors.primary,
-    borderRadius: RFValue(15),
+    backgroundColor: h.colors.primary,
+    borderRadius: 999,
     overflow: 'hidden',
-    height: RFValue(30),
-    width: RFValue(120),
-    justifyContent:'center',
-    marginLeft: 20,
-    marginRight: 20,
-    marginBottom: 40
+    height: RFValue(36),
+    width: '40%',
+    justifyContent: 'center',
+    shadowOffset: {
+      width: RFValue(1),
+      height: RFValue(3),
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
+    elevation: 3,
   },
   buttonText: {
-    fontSize: 20,
-    color: h.colors.primary,
+    fontSize: RFValue(18),
+    color: '#fff',
     fontFamily: 'Poppins-Medium',
     textAlign: 'center'
   },
@@ -172,7 +174,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'center',
     alignSelf: 'center',
-    margin: 20
+    width: '100%',
+    padding: 30,
+    justifyContent: 'space-between'
   },
   questionText: {
     color: h.colors.primary,
@@ -182,12 +186,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   questionNumber: {
+    position: 'absolute',
+    top: -RFValue(5),
+    left: -RFValue(5),
+    width: RFValue(30),
+    height: RFValue(30),
+    borderRadius: 999,
     textAlign: 'center',
     color: '#fff',
     backgroundColor: h.colors.primary,
-    borderRadius: 100,
-    paddingHorizontal: 4,
-    fontWeight: 'bold'
+    fontSize: RFValue(16),
+    fontFamily: 'Poppins-Bold',
+    textAlignVertical: 'center',
+    paddingTop: RFValue(3)
   }
 });
 
