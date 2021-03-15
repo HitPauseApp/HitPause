@@ -1,4 +1,5 @@
 import * as React from 'react';
+import h from '../../globals';
 import { View, StyleSheet } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -29,9 +30,9 @@ export default function Response_Scale(props){
           options.map((item, key) =>
             <RadioButton.Item
               label={item}
-              labelStyle={{color: '#00095e'}}
+              labelStyle={{color: h.colors.primary}}
               style={styles.radioButton}
-              color="#00095e"
+              color={h.colors.primary}
               // TODO: There are a few issues with the ways scale works... using item is a hacky fix
               value={String(item)}
               key={key}

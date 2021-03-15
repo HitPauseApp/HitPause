@@ -117,7 +117,7 @@ export default function App(props) {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
-        admin: data.admin,
+        isAdmin: data.isAdmin,
         isNewUser: data.isNewUser,
         ref: firebase.database().ref(`users/${uid}`)
       };
@@ -179,7 +179,7 @@ export default function App(props) {
         />
         <HomeTab.Screen
           name="Account"
-          children = {() => <AccountSummary></AccountSummary>}
+          component = {AccountSummary}
           options={{
             title: 'Account',
             tabBarLabel: false,

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import h from '../globals';
 import firebase from '../Firebase';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AuthContext } from '../AuthContext.js';
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     bottom: 75,
     height: 50,
-    backgroundColor: '#cbebf7',
+    backgroundColor: h.colors.secondary,
     borderRadius: 15,
     elevation: 3,
     shadowColor: "#000",
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontFamily: 'Poppins-Medium',
-    color: '#00095e',
+    color: h.colors.primary,
     fontSize: 18,
     textAlign: 'center',
     textAlignVertical: 'center'
@@ -63,17 +64,17 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: RFValue(48),
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Light'
   },
   largeText: {
     fontSize: RFValue(28),
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Light'
   },
   smallText: {
     fontSize: RFValue(14),
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Light'
   }
 });

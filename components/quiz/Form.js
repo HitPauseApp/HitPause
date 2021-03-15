@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   },
   button: {
     borderWidth: 2,
-    borderColor: '#00095e',
+    borderColor: h.colors.primary,
     borderRadius: RFValue(15),
     overflow: 'hidden',
     height: RFValue(30),
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
     textAlign: 'center'
   },
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     margin: 20
   },
   questionText: {
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
     fontSize: 16,
     marginTop: 5,
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   questionNumber: {
     textAlign: 'center',
     color: '#fff',
-    backgroundColor: '#00095e',
+    backgroundColor: h.colors.primary,
     borderRadius: 100,
     paddingHorizontal: 4,
     fontWeight: 'bold'
