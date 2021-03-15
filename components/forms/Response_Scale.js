@@ -24,7 +24,7 @@ export default function Response_Scale(props){
   }
 
   return(
-    <View style={styles.quizQuestion}>
+    <View style={styles.surveyQuestion}>
       <RadioButton.Group onValueChange={value => onChange(value)} value={String(props.value)}>
         {
           options.map((item, key) =>

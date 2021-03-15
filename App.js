@@ -14,6 +14,7 @@ import * as WebBrowser from 'expo-web-browser';
 import firebase from './Firebase';
 import { AuthContext } from './AuthContext.js';
 import { AppContext } from './AppContext';
+import AppIcons from './components/AppIcons';
 
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
@@ -31,11 +32,8 @@ import AccountTraits from './screens/account/AccountTraits';
 import NotificationsScreen from './screens/account/NotificationsScreen';
 import WelcomeTutorial from './screens/WelcomeTutorial';
 import BadgeScreen from './screens/account/BadgeScreen';
-import ReviewScreen from './screens/ReviewScreen'
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import AdminPanel from './components/admin/AdminPanel';
-import AppIcons from './components/AppIcons';
+import ReviewScreen from './screens/ReviewScreen';
+import AdminPanel from './screens/admin/AdminPanel';
 
 const AuthStack = createStackNavigator();
 const MainStack = createStackNavigator();
@@ -130,7 +128,8 @@ export default function App(props) {
     let suggestions = await firebase.database().ref('hitpause/suggestions').once('value').then(s => s.val());
     let traits = await firebase.database().ref('hitpause/traits').once('value').then(s => s.val());
     let badges = await firebase.database().ref('hitpause/badges').once('value').then(s => s.val());
-    return { suggestions, traits, badges };
+    let ref = firebase.database().ref(`hitpause`);
+    return { suggestions, traits, badges, ref };
   }
 
   function HomeTabNavigator() {
@@ -163,7 +162,7 @@ export default function App(props) {
           name="PauseHome"
           component={PauseHome}
           options={{
-            title: 'HitPause Quiz',
+            title: 'Pause Survey Home',
             tabBarLabel: false,
             tabBarIcon: ({ color }) => <AppIcons name="materialcommunityicons:pause" color={color} size={26} />,
           }}

@@ -13,7 +13,7 @@ export default function AdminPanel(props) {
     let x = 10000;
     if (test == 'pauseSurvey') {
       // Get questions from firebase
-      let s = await firebase.database().ref('hitpause/quizzes/incidentQuestionnaire/questions').once('value');
+      let s = await hitpause.ref.child('surveys/pauseSurvey/questions').once('value');
       let questions = s.val();
       let totals = JSON.parse(JSON.stringify(hitpause.suggestions));
       let data = [];

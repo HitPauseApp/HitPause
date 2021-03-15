@@ -104,11 +104,11 @@ async function schedulePushNotification(props, QOTD) {
       trigger: { seconds: 1 },
     });
   }
-  else if (props.notificationType === 'quiz_reminder') {
+  else if (props.notificationType === 'survey_reminder') {
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "HitPause",
-        body: "Reminder! Don't forget to take your daily quiz!",
+        body: "Reminder! Don't forget to take your daily Pause Survey!",
         data: { data: 'goes here' },
       },
       trigger: { seconds: 1 },
