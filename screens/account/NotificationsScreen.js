@@ -3,25 +3,19 @@ import h from '../../globals';
 import { View, StyleSheet, Text, Image, Button, ScrollView } from 'react-native';
 import firebase from '../../Firebase.js';
 import { AuthContext } from '../../AuthContext.js';
-
-import QuizReminder from '../../components/settings/QuizReminder';
 import NotificationHandler from '../../components/notifications/NotificationHandler';
 import { RFValue } from "react-native-responsive-fontsize";
 
-
-
 export default function NotificationsScreen(props) {
   const user = React.useContext(AuthContext);
-
-  
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.contentContainer}>
         
         <View style={styles.category}>
-          <Text style={styles.text}>Quiz Reminders</Text>
-          <NotificationHandler notificationType={"quiz_reminder"}></NotificationHandler>
+          <Text style={styles.text}>Survey Reminders</Text>
+          <NotificationHandler notificationType={"survey_reminder"}></NotificationHandler>
         </View>
 
         <View style={styles.separator}></View>

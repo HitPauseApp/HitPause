@@ -43,11 +43,6 @@ export default function Account(props) {
           </TouchableOpacity>
         </View>
 
-        {/*<View style={styles.category}>
-          <Text style={styles.text}>Quiz Reminders</Text>
-          <QuizReminder></QuizReminder>
-          </View>*/}
-
         <View style={styles.buttonContainter}>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: h.colors.primary }]}

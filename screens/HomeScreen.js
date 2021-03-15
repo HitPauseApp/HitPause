@@ -60,7 +60,7 @@ export default function HomeScreen(props) {
 
             <View style={styles.cardTextContainer}>
               <Text style={styles.cardText}>Feeling Anxious?</Text>
-              <Text style={styles.cardText}>Take our quiz.</Text>
+              <Text style={styles.cardText}>Take the Pause Survey.</Text>
             </View>
           </TouchableOpacity>
 

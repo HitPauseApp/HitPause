@@ -2,8 +2,8 @@ import * as React from 'react';
 import firebase from '../../Firebase.js'
 import h from '../../globals';
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
-import Form from '../../components/quiz/Form';
-import SuggestionSwitcher from '../../components/quiz/SuggestionSwitcher';
+import Form from '../../components/forms/Form';
+import SuggestionSwitcher from '../../components/forms/SuggestionSwitcher';
 import Loading from '../Loading';
 import { AuthContext } from '../../AuthContext.js';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -17,18 +17,18 @@ export default function PauseSurvey(props) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [results, setResults] = React.useState({});
   const [pushId, setPushId] = React.useState(null);
-  const [quiz, setQuiz] = React.useState({});
+  const [survey, setSurvey] = React.useState({});
 
   React.useEffect(() => {
     // Get survey config from firebase
-    firebase.database().ref(`hitpause/quizzes/incidentQuestionnaire`).once('value').then(s => {
-      let quizData = s.val();
-      let questionList = quizData.questions;
-      if (!quizData.dynamic) {
+    hitpause.ref.child(`surveys/pauseSurvey`).once('value').then(s => {
+      let surveyData = s.val();
+      let questionList = surveyData.questions;
+      if (!surveyData.dynamic) {
         let sortedQuestionList = Object.values(questionList).sort((a, b) => a.order - b.order);
-        quizData.questions = sortedQuestionList.slice();
+        surveyData.questions = sortedQuestionList.slice();
       }
-      setQuiz(quizData);
+      setSurvey(surveyData);
       setIsLoading(false);
     })
   }, []);
@@ -71,14 +71,14 @@ export default function PauseSurvey(props) {
     props.navigation.navigate('Home');
   }
 
-  if (isLoading) return <Loading message="Loading your quiz..."></Loading>;
+  if (isLoading) return <Loading message="Loading your survey..."></Loading>;
   else {
     return (
       <View style={styles.container}>
         {
           !Object.keys(results).length ? (
             <View style={{ width: '100%', height: '100%' }}>
-              <Form quiz={quiz} onSubmit={handleSubmit}></Form>
+              <Form survey={survey} onSubmit={handleSubmit}></Form>
             </View>
           ) : (
             <ScrollView style={{ display: 'flex' }}>
