@@ -38,8 +38,9 @@ export default function HistoryScreen(props) {
     // Find the review by its id, add some more information, and set currentReview
     if (!!surveyData.selected) surveyData.fullSuggestion = hitpause.suggestions[surveyData.selected];
     surveyData.allSuggestionData = Object.values(surveyData.suggestions).map(s => hitpause.suggestions[s]);
-    setCurrentReview(surveyData);
-    setVisible(true);
+    props.navigation.navigate('ReviewScreen', { surveyData });
+    // setCurrentReview(surveyData);
+    // setVisible(true);
   }
 
   function removeSuggestion(){
