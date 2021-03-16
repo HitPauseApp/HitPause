@@ -5,14 +5,19 @@ import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react
 import { AuthContext } from '../AuthContext.js';
 import { RFValue } from "react-native-responsive-fontsize";
 import AppIcons from '../components/AppIcons';
-import Swiper from 'react-native-swiper/src';
 
 export default function ReviewScreen(props) {
   const user = React.useContext(AuthContext);
+  const surveyData = props.route.params.surveyData;
+
+  function ratingChanged(value) {
+    user.ref.child(`profile/pauseSurveys/${surveyData.id}/rating`).set(value);
+    // Might need more handling code... not sure yet
+  }
 
   return (
     <View style={styles.container}>
-      
+      <Text>{surveyData.id}</Text>
     </View>
   );
 }
