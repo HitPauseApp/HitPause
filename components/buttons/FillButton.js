@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import h from '../../globals';
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 
 export default function FillButton(props){
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         borderRadius: 8
     },
     text: {
-        color: '#00095e',
+        color: h.colors.primary,
         fontSize: 16,
         fontWeight: '600',   
     }

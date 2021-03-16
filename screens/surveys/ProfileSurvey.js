@@ -2,7 +2,7 @@ import * as React from 'react';
 import firebase from '../../Firebase.js'
 import h from '../../globals';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import Form from '../../components/quiz/Form';
+import Form from '../../components/forms/Form';
 import Loading from '../Loading';
 import { AuthContext } from '../../AuthContext.js';
 import { AppContext } from '../../AppContext.js';
@@ -14,18 +14,18 @@ export default function ProfileSurvey(props) {
   const hitpause = React.useContext(AppContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [surveyComplete, setSurveyComplete] = React.useState(false);
-  const [quiz, setQuiz] = React.useState({});
+  const [survey, setSurvey] = React.useState({});
 
   React.useEffect(() => {
     // Get survey config from firebase
-    firebase.database().ref(`hitpause/quizzes/initialAssessment`).once('value').then(s => {
-      let quizData = s.val();
-      let questionList = quizData.questions;
-      if (!quizData.dynamic) {
+    hitpause.ref.child(`surveys/profileSurvey`).once('value').then(s => {
+      let surveyData = s.val();
+      let questionList = surveyData.questions;
+      if (!surveyData.dynamic) {
         let sortedQuestionList = Object.values(questionList).sort((a, b) => a.order - b.order);
-        quizData.questions = sortedQuestionList.slice();
+        surveyData.questions = sortedQuestionList.slice();
       }
-      setQuiz(quizData);
+      setSurvey(surveyData);
       setIsLoading(false);
     })
   }, []);
@@ -45,14 +45,14 @@ export default function ProfileSurvey(props) {
     setSurveyComplete(true);
   }
 
-  if (isLoading) return <Loading message="Loading your quiz..."></Loading>;
+  if (isLoading) return <Loading message="Loading your survey..."></Loading>;
   else {
     return (
       <View style={styles.container}>
         {
           !surveyComplete ? (
             <View style={{ width: '100%', height: '100%' }}>
-              <Form quiz={quiz} onSubmit={handleSubmit}></Form>
+              <Form survey={survey} onSubmit={handleSubmit}></Form>
             </View>
           ) : (
             <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
@@ -70,7 +70,7 @@ export default function ProfileSurvey(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#00095e',
+    backgroundColor: h.colors.primary,
     paddingTop: RFValue(20)
   },
   endCard: {

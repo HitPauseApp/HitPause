@@ -62,7 +62,7 @@ export default function JournalScreen(props) {
         <Text style={styles.header}>My Journal</Text>
         <TextInput
           placeholder="Search"
-          placeholderTextColor="#00095e"
+          placeholderTextColor={h.colors.primary}
           autoCapitalize="none"
           style={styles.textInput}
           onChangeText={text => searchEntries(text)}
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontFamily: 'Poppins-Bold',
-    color: '#00095e',
+    color: h.colors.primary,
     fontSize: RFValue(22),
     // fontWeight: 'bold',
     paddingHorizontal: 20,
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     width: 65,
     height: 65,
     borderRadius: 65 / 2,
-    backgroundColor: '#00095e',
+    backgroundColor: h.colors.primary,
     justifyContent: 'center',
     alignItems:'center'
   },
@@ -153,8 +153,7 @@ const styles = StyleSheet.create({
   textInput: {
     height: 40,
     width: '80%',
-    borderColor: '#00095e',
-    // color: '#00095e',
+    borderColor: h.colors.primary,
     borderBottomWidth: 1,
     marginTop: 20,
     zIndex: 3,

@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   smallText: {
     fontSize: RFValue(13),
     marginTop: '5%',
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
     textAlign: 'center',
   }

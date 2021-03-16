@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import h from '../globals';
 import { StyleSheet, View, Text, Platform } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -92,13 +93,13 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     header: {
-        color: '#00095e',
+        color: h.colors.primary,
         fontFamily: 'Poppins-Bold',
         fontSize: RFValue(17),
         textAlign: 'center',
     },
     bodyText: {
-        color: '#00095e',
+        color: h.colors.primary,
         fontFamily: 'Poppins-Medium',
         marginTop: 10,
         fontSize: RFValue(12),
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     attributionText: {
-        color: '#00095e',
+        color: h.colors.primary,
         fontFamily: 'Poppins-Extra-Light',
         marginTop: 5,
         fontSize: 10,

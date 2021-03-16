@@ -21,24 +21,16 @@ export default function SpotifyPlaylist(props) {
   const spotifyApi = new SpotifyWebAPI();
 
   let getAccessToken = async () => {
-    // If the user's token is available from firebase
-    if (user.spotifyToken) {
-      spotifyApi.setAccessToken(user.spotifyToken);
-      console.log("Spotify authenticated from Firebase");
-    }
-    // Otherwise, get from AsyncStorage
-    else {
-      AsyncStorage.getItem('SpotifyToken', (err, result) => {
-        // console.log(result);
-        if (result) {
-          spotifyApi.setAccessToken(result);
-          console.log("Spotify authenticated from Async");
-        }
-      });
-    }
+    AsyncStorage.getItem('SpotifyToken', (err, result) => {
+      // console.log(result);
+      if (result) {
+        spotifyApi.setAccessToken(result);
+        console.log("Spotify authenticated from Async");
+      }
+    });
   }
 
-  let playlistURI = () =>{
+  let playlistURI = () => {
     let url = props.href;
     let uri = url.split("/").pop();
     return uri;
@@ -69,11 +61,11 @@ export default function SpotifyPlaylist(props) {
     <View style={styles.container}>
       <View>
         <Image
-        style={styles.spotifyImage}
-        source={{
-          uri: `${playlistData.image}`,
-        }}
-      />
+          style={styles.spotifyImage}
+          source={{
+            uri: `${playlistData.image}`,
+          }}
+        />
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.header}>{playlistData.title}</Text>
@@ -100,8 +92,8 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Poppins-Medium',
     fontSize: RFValue(20),
-    alignSelf:'center',
-    right:'30%',
+    alignSelf: 'center',
+    right: '30%',
     textAlign: 'center'
   },
   bodyText: {
@@ -116,6 +108,6 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     //alignItems: "center"
-    
+
   }
 });

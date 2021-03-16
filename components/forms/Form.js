@@ -15,44 +15,44 @@ import { AuthContext } from '../../AuthContext';
 export default function Form(props) {
   const user = React.useContext(AuthContext);
   const hitpause = React.useContext(AppContext);
-  const [quizIndex, setQuizIndex] = React.useState(0);
-  const [quizLength, setQuizLength] = React.useState(0);
-  const [quizData, setQuizData] = React.useState([]);
-  const [quizEffects, setquizEffects] = React.useState([]);
+  const [surveyIndex, setSurveyIndex] = React.useState(0);
+  const [surveyLength, setSurveyLength] = React.useState(0);
+  const [surveyData, setSurveyData] = React.useState([]);
+  const [surveyEffects, setsurveyEffects] = React.useState([]);
   const [nextDisabled, setNextDisabled] = React.useState(false);
   const [prevDisabled, setPrevDisabled] = React.useState(true);
 
   React.useEffect(() => {
-    if (Array.isArray(props.quiz.questions)) setQuizLength(props.quiz.questions.length);
-  }, [props.quiz.questions])
+    if (Array.isArray(props.survey.questions)) setSurveyLength(props.survey.questions.length);
+  }, [props.survey.questions])
 
-  function updateQuizData(data, flags) {
-    // Updates data for quiz when a response is selected or changes
-    let dataUpdate = [...quizData];
-    let effectsUpdate = [...quizEffects];
-    dataUpdate[quizIndex] = data;
-    effectsUpdate[quizIndex] = flags;
-    setQuizData(dataUpdate);
-    setquizEffects(effectsUpdate);
+  function updateSurveyData(data, flags) {
+    // Updates data for survey when a response is selected or changes
+    let dataUpdate = [...surveyData];
+    let effectsUpdate = [...surveyEffects];
+    dataUpdate[surveyIndex] = data;
+    effectsUpdate[surveyIndex] = flags;
+    setSurveyData(dataUpdate);
+    setsurveyEffects(effectsUpdate);
     console.log(data, flags);
   }
 
   async function handleSubmission() {
     // Sanitize input data
-    for (const key in quizData) if (typeof quizData[key] === 'undefined') quizData[key] = '';
-    props.onSubmit(quizEffects);
+    for (const key in surveyData) if (typeof surveyData[key] === 'undefined') surveyData[key] = '';
+    props.onSubmit(surveyEffects);
   }
 
   function handleNextQuestion() {
-    let newIndex = quizIndex + 1;
-    setQuizIndex(newIndex);
+    let newIndex = surveyIndex + 1;
+    setSurveyIndex(newIndex);
     // Always re-enable previous button when moving forward
     setPrevDisabled(false);
   }
 
   function handlePrevQuestion() {
-    let newIndex = quizIndex - 1;
-    setQuizIndex(newIndex);
+    let newIndex = surveyIndex - 1;
+    setSurveyIndex(newIndex);
     if (newIndex == 0) setPrevDisabled(true);
   }
 
@@ -62,16 +62,16 @@ export default function Form(props) {
         return (
           <Response_Checkbox
             responses={question.responses}
-            onChange={updateQuizData}
-            value={quizData[quizIndex]}
+            onChange={updateSurveyData}
+            value={surveyData[surveyIndex]}
           ></Response_Checkbox>
         );
       case 'radio':
         return (
           <Response_Radio
             responses={question.responses}
-            onChange={updateQuizData}
-            value={quizData[quizIndex]}
+            onChange={updateSurveyData}
+            value={surveyData[surveyIndex]}
           ></Response_Radio>
         );
       case 'scale':
@@ -80,8 +80,8 @@ export default function Form(props) {
             effects={question.effects}
             scaleLow={question.scaleLow}
             scaleHigh={question.scaleHigh}
-            onChange={updateQuizData}
-            value={quizData[quizIndex]}
+            onChange={updateSurveyData}
+            value={surveyData[surveyIndex]}
           ></Response_Scale>
         );
       case 'text':
@@ -96,13 +96,13 @@ export default function Form(props) {
   return (
     <View style={styles.container}>
 
-      <View style={styles.quizQuestion}>
-        <Text style={styles.questionNumber}>{quizIndex + 1}</Text>
-        <Text style={styles.questionText}>{props.quiz.questions[quizIndex].text}</Text>
+      <View style={styles.surveyQuestion}>
+        <Text style={styles.questionNumber}>{surveyIndex + 1}</Text>
+        <Text style={styles.questionText}>{props.survey.questions[surveyIndex].text}</Text>
       </View>
 
       <ScrollView style={{ flexGrow: 1 }}>
-        { getResponseComponent(props.quiz.questions[quizIndex]) }
+        { getResponseComponent(props.survey.questions[surveyIndex]) }
       </ScrollView>
 
       <View style={styles.controlButtons}>
@@ -110,7 +110,7 @@ export default function Form(props) {
           <Text style={styles.buttonText}>Previous</Text>
         </TouchableOpacity>
         {
-          quizIndex == quizLength - 1 ? (
+          surveyIndex == surveyLength - 1 ? (
             <TouchableOpacity style={styles.button} onPress={() => handleSubmission()} disabled={nextDisabled}>
               <Text style={styles.buttonText}>Submit</Text>
             </TouchableOpacity>
@@ -130,13 +130,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1
   },
-  quizQuestion: {
-    flexDirection: 'column',
-    backgroundColor: '#F2FCFD',
+  surveyQuestion: {
+    backgroundColor: h.colors.secondary,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    borderRadius: RFValue(15),
+    borderRadius: 15,
     padding: 10,
     marginBottom: 20,
     width: '80%',
@@ -151,20 +150,23 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   button: {
-    borderWidth: 2,
-    borderColor: '#00095e',
-    borderRadius: RFValue(15),
+    backgroundColor: h.colors.primary,
+    borderRadius: 999,
     overflow: 'hidden',
-    height: RFValue(30),
-    width: RFValue(120),
-    justifyContent:'center',
-    marginLeft: 20,
-    marginRight: 20,
-    marginBottom: 40
+    height: RFValue(36),
+    width: '40%',
+    justifyContent: 'center',
+    shadowOffset: {
+      width: RFValue(1),
+      height: RFValue(3),
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
+    elevation: 3,
   },
   buttonText: {
-    fontSize: 20,
-    color: '#00095e',
+    fontSize: RFValue(18),
+    color: '#fff',
     fontFamily: 'Poppins-Medium',
     textAlign: 'center'
   },
@@ -172,22 +174,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'center',
     alignSelf: 'center',
-    margin: 20
+    width: '100%',
+    padding: 30,
+    justifyContent: 'space-between'
   },
   questionText: {
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
     fontSize: 16,
     marginTop: 5,
     textAlign: 'center',
   },
   questionNumber: {
+    position: 'absolute',
+    top: -RFValue(5),
+    left: -RFValue(5),
+    width: RFValue(30),
+    height: RFValue(30),
+    borderRadius: 999,
     textAlign: 'center',
     color: '#fff',
-    backgroundColor: '#00095e',
-    borderRadius: 100,
-    paddingHorizontal: 4,
-    fontWeight: 'bold'
+    backgroundColor: h.colors.primary,
+    fontSize: RFValue(16),
+    fontFamily: 'Poppins-Bold',
+    textAlignVertical: 'center',
+    paddingTop: RFValue(3)
   }
 });
 

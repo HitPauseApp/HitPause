@@ -1,5 +1,5 @@
-import { AntDesign } from '@expo/vector-icons';
 import * as React from 'react';
+import h from '../../globals';
 import { StyleSheet, Text, TouchableOpacity, TextInput, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { AuthContext } from '../../AuthContext';
@@ -45,7 +45,6 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
           placeholder='Note Title...'
           placeholderTextColor='#aaa'
           returnKeyType='next'
-          //selectionColor='#00095e'
           onChangeText={title => setTitle(title)}
           value={title}
         />
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
     },
     header: {
       fontFamily: 'Poppins-Bold',
-      color: '#00095e',
+      color: h.colors.primary,
       fontSize: RFValue(24),
       fontWeight: 'bold',
       paddingHorizontal: '5%',
@@ -84,7 +83,7 @@ const styles = StyleSheet.create({
       flex: 1
     },
     inputTitleStyle: {
-      color: '#00095e',
+      color: h.colors.primary,
       height: 60,
       paddingTop: 5,
       paddingLeft: 20,
@@ -94,7 +93,7 @@ const styles = StyleSheet.create({
       fontSize: 20
     },
     inputDescriptionStyle: {
-      color: '#00095e',
+      color: h.colors.primary,
       flex: 1,
       paddingLeft: 20,
       paddingTop: 15,

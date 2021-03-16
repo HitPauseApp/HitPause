@@ -24,7 +24,7 @@ export default function HistoryScreen(props) {
       // Get the response from the firebase query, set the id attribute, and set the userSurveys var
       let data = s.val() || {};
       for (const key in data) data[key].id = key;
-      setUserSurveys(Object.values(data));
+      setUserSurveys(Object.values(data).sort((a, b) => b.timestamp > a.timestamp));
     });
   }, []);
 
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   },
   header2: {
     fontFamily: 'Poppins-Bold',
-    color: '#00095e',
+    color: h.colors.primary,
     fontSize: RFValue(22),
     // fontWeight: 'bold',
     paddingHorizontal: 20,
