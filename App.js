@@ -277,7 +277,7 @@ export default function App(props) {
                   <MainStack.Screen
                     name="ReviewScreen"
                     component={ReviewScreen}
-                    options={{headerTitle: 'Review this Suggestion' }}
+                    options={{headerTitle: 'Review Suggestion' }}
                   />
                 </MainStack.Navigator>
               </NavigationContainer>
