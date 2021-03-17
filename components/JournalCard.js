@@ -17,15 +17,6 @@ const { Swipeable } = GestureHandler;
 
 export default class AppleStyleSwipeGesture extends Component {
 
-  getDateAndTime(epoch) {
-    let date = new Date(epoch);
-    let dateString = `${date.getMonth() + 1}/${date.getDate()}/${String(date.getFullYear()).substr(2)}`;
-    // let timeString = `${date.getHours() == 0 ? '12' : (date.getHours() % 12)}:${String(date.getMinutes()).padStart(2, '0')}`;
-    // let amPmString = date.getHours() < 12 ? 'AM' : 'PM';
-    // return `${dateString}\n${timeString} ${amPmString}`;
-    return dateString;
-  }
-
   renderRightAction = (text, color, progress) => {
     const trans = progress.interpolate({
       inputRange: [-100, 0],
@@ -73,12 +64,12 @@ export default class AppleStyleSwipeGesture extends Component {
           {children}
 
           <TouchableOpacity key={this.props.key} onPress={() => this.props.openEntry()}>
-            <View style={{ height: 150, padding: 10 }}>
+            <View style={{ padding: 20 }}>
               <Text style={styles.titleText}>{this.props.entry.title}</Text>
               <Text style={styles.bodyText}>
-                {this.props.entry.text.substr(0, 80)} {this.props.entry.text.length > 80 && "..."}
+                {this.props.entry.text.substr(0, 80)}{this.props.entry.text.length > 80 && "..."}
               </Text>
-              <Text style={styles.dateText}>{this.getDateAndTime(this.props.entry.dateModified)}</Text>
+              <Text style={styles.dateText}>{h.getDate(this.props.entry.dateModified)}</Text>
             </View>
           </TouchableOpacity>
         </Swipeable>
@@ -114,25 +105,20 @@ const styles = StyleSheet.create({
   bodyText: {
     color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
-    padding:10,
+    paddingVertical: 10,
     fontSize: RFValue(10),
-    textAlign: 'left',
-    flex: 1
+    flex: 1,
   },
   dateText: {
     color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
-    marginTop: '5%',
-    fontSize: 12,
+    fontSize: RFValue(10),
     textAlign: 'right',
-    right: '5%',
     flex: 1,
-    padding: 5
   },
   titleText: {
     color: h.colors.primary,
-    padding: 8,
     fontFamily: 'Poppins-Medium',
-    fontSize: RFValue(14.5)
+    fontSize: RFValue(15)
   }
 });

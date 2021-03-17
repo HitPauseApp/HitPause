@@ -38,7 +38,7 @@ export default function Response_Checkbox(props) {
   }
 
   return (
-    <View>
+    <View style={{ paddingTop: 10, paddingHorizontal: 30 }}>
       {
         Object.values(props.responses).map((item, key) =>
           <Checkbox.Item
@@ -60,7 +60,7 @@ export default function Response_Checkbox(props) {
 const styles = StyleSheet.create({
   checkBox: {
     marginBottom: 10,
-    backgroundColor: 'white',
+    backgroundColor: h.colors.secondary,
     shadowColor: "#000",
     shadowOffset: {
       width: RFValue(1),
@@ -69,8 +69,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: RFValue(3.84),
     elevation: 3,
-    borderRadius: RFValue(15),
+    borderRadius: 999,
     alignSelf: 'center',
-    width: '80%'
+    width: '100%'
   }
 });

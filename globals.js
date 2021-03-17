@@ -56,9 +56,9 @@ let getHighsAndLows = (flags, numHighs, numLows) => {
 let randomizeSuggestions = (flags) => {
   let n = 0;
   for (const key in flags) {
-    let squaredDoubleFlag = (flags[key] * 2) ** 2;
-    flags[key] = squaredDoubleFlag + n;
-    n = squaredDoubleFlag + n;
+    let doubleFlag = flags[key] * 2;
+    flags[key] = doubleFlag + n;
+    n = doubleFlag + n;
   }
   let randomInt = Math.floor(Math.random() * n);
   for (const key in flags) {

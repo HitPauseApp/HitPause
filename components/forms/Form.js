@@ -24,7 +24,15 @@ export default function Form(props) {
 
   React.useEffect(() => {
     if (Array.isArray(props.survey.questions)) setSurveyLength(props.survey.questions.length);
-  }, [props.survey.questions])
+  }, [props.survey.questions]);
+
+  React.useEffect(() => checkForNextEnable(), [surveyIndex]);
+
+  function checkForNextEnable(data) {
+    data = data || surveyData;
+    if (props.survey.questions[surveyIndex].required && typeof data[surveyIndex] == 'undefined') setNextDisabled(true);
+    else setNextDisabled(false);
+  }
 
   function updateSurveyData(data, flags) {
     // Updates data for survey when a response is selected or changes
@@ -34,7 +42,8 @@ export default function Form(props) {
     effectsUpdate[surveyIndex] = flags;
     setSurveyData(dataUpdate);
     setsurveyEffects(effectsUpdate);
-    console.log(data, flags);
+    checkForNextEnable(dataUpdate);
+    // console.log(data, flags);
   }
 
   async function handleSubmission() {
@@ -99,6 +108,10 @@ export default function Form(props) {
       <View style={styles.surveyQuestion}>
         <Text style={styles.questionNumber}>{surveyIndex + 1}</Text>
         <Text style={styles.questionText}>{props.survey.questions[surveyIndex].text}</Text>
+        {
+          props.survey.questions[surveyIndex].type == 'checkbox' &&
+          <Text style={styles.helperMessage}>(select all that apply)</Text>
+        }
       </View>
 
       <ScrollView style={{ flexGrow: 1 }}>
@@ -106,16 +119,16 @@ export default function Form(props) {
       </ScrollView>
 
       <View style={styles.controlButtons}>
-        <TouchableOpacity style={styles.button} onPress={() => handlePrevQuestion()} disabled={prevDisabled}>
+        <TouchableOpacity style={[styles.button, prevDisabled ? { backgroundColor: '#bbb' } : {} ]} onPress={() => handlePrevQuestion()} disabled={prevDisabled}>
           <Text style={styles.buttonText}>Previous</Text>
         </TouchableOpacity>
         {
           surveyIndex == surveyLength - 1 ? (
-            <TouchableOpacity style={styles.button} onPress={() => handleSubmission()} disabled={nextDisabled}>
+            <TouchableOpacity style={[styles.button, nextDisabled ? { backgroundColor: '#bbb' } : {} ]} onPress={() => handleSubmission()} disabled={nextDisabled}>
               <Text style={styles.buttonText}>Submit</Text>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity style={styles.button} onPress={() => handleNextQuestion()} disabled={nextDisabled}>
+            <TouchableOpacity style={[styles.button, nextDisabled ? { backgroundColor: '#bbb' } : {} ]} onPress={() => handleNextQuestion()} disabled={nextDisabled}>
               <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>
           )
@@ -131,23 +144,13 @@ const styles = StyleSheet.create({
     flex: 1
   },
   surveyQuestion: {
-    backgroundColor: h.colors.secondary,
+    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center',
-    borderRadius: 15,
     padding: 10,
     marginBottom: 20,
-    width: '80%',
-    height: '20%',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: RFValue(1),
-      height: RFValue(3),
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: RFValue(3.84),
-    elevation: 3,
+    width: '100%',
+    height: '30%'
   },
   button: {
     backgroundColor: h.colors.primary,
@@ -181,14 +184,14 @@ const styles = StyleSheet.create({
   questionText: {
     color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
-    fontSize: 16,
-    marginTop: 5,
+    fontSize: RFValue(16),
     textAlign: 'center',
+    flex: 1,
+    width: '100%',
+    paddingHorizontal: 20,
+    textAlignVertical: 'center'
   },
   questionNumber: {
-    position: 'absolute',
-    top: -RFValue(5),
-    left: -RFValue(5),
     width: RFValue(30),
     height: RFValue(30),
     borderRadius: 999,
@@ -198,7 +201,13 @@ const styles = StyleSheet.create({
     fontSize: RFValue(16),
     fontFamily: 'Poppins-Bold',
     textAlignVertical: 'center',
-    paddingTop: RFValue(3)
+    paddingTop: RFValue(3),
+    marginVertical: 10
+  },
+  helperMessage: {
+    fontFamily: 'Poppins-Light',
+    color: h.colors.primary,
+    fontSize: RFValue(14)
   }
 });
 
