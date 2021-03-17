@@ -108,6 +108,10 @@ export default function Form(props) {
       <View style={styles.surveyQuestion}>
         <Text style={styles.questionNumber}>{surveyIndex + 1}</Text>
         <Text style={styles.questionText}>{props.survey.questions[surveyIndex].text}</Text>
+        {
+          props.survey.questions[surveyIndex].type == 'checkbox' &&
+          <Text style={styles.helperMessage}>(select all that apply)</Text>
+        }
       </View>
 
       <ScrollView style={{ flexGrow: 1 }}>
@@ -199,6 +203,11 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     paddingTop: RFValue(3),
     marginVertical: 10
+  },
+  helperMessage: {
+    fontFamily: 'Poppins-Light',
+    color: h.colors.primary,
+    fontSize: RFValue(14)
   }
 });
 
