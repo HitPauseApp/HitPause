@@ -24,7 +24,15 @@ export default function Form(props) {
 
   React.useEffect(() => {
     if (Array.isArray(props.survey.questions)) setSurveyLength(props.survey.questions.length);
-  }, [props.survey.questions])
+  }, [props.survey.questions]);
+
+  React.useEffect(() => checkForNextEnable(), [surveyIndex]);
+
+  function checkForNextEnable(data) {
+    data = data || surveyData;
+    if (props.survey.questions[surveyIndex].required && typeof data[surveyIndex] == 'undefined') setNextDisabled(true);
+    else setNextDisabled(false);
+  }
 
   function updateSurveyData(data, flags) {
     // Updates data for survey when a response is selected or changes
@@ -34,7 +42,8 @@ export default function Form(props) {
     effectsUpdate[surveyIndex] = flags;
     setSurveyData(dataUpdate);
     setsurveyEffects(effectsUpdate);
-    console.log(data, flags);
+    checkForNextEnable(dataUpdate);
+    // console.log(data, flags);
   }
 
   async function handleSubmission() {
@@ -106,16 +115,16 @@ export default function Form(props) {
       </ScrollView>
 
       <View style={styles.controlButtons}>
-        <TouchableOpacity style={styles.button} onPress={() => handlePrevQuestion()} disabled={prevDisabled}>
+        <TouchableOpacity style={[styles.button, prevDisabled ? { backgroundColor: '#bbb' } : {} ]} onPress={() => handlePrevQuestion()} disabled={prevDisabled}>
           <Text style={styles.buttonText}>Previous</Text>
         </TouchableOpacity>
         {
           surveyIndex == surveyLength - 1 ? (
-            <TouchableOpacity style={styles.button} onPress={() => handleSubmission()} disabled={nextDisabled}>
+            <TouchableOpacity style={[styles.button, nextDisabled ? { backgroundColor: '#bbb' } : {} ]} onPress={() => handleSubmission()} disabled={nextDisabled}>
               <Text style={styles.buttonText}>Submit</Text>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity style={styles.button} onPress={() => handleNextQuestion()} disabled={nextDisabled}>
+            <TouchableOpacity style={[styles.button, nextDisabled ? { backgroundColor: '#bbb' } : {} ]} onPress={() => handleNextQuestion()} disabled={nextDisabled}>
               <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>
           )
