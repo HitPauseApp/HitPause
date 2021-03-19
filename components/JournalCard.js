@@ -100,7 +100,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     height: '100%',
-    flex: 1
+    flex: 1,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: RFValue(1),
+      height: RFValue(5),
+    },
+    elevation: 3,
+    borderRadius: RFValue(15),
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
   },
   bodyText: {
     color: h.colors.primary,

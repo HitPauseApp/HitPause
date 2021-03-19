@@ -124,7 +124,16 @@ const styles = StyleSheet.create({
     padding: 10,
     bottom: 10,
     marginTop: 20,
-    height: 150
+    height: 150,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: RFValue(1),
+      height: RFValue(5),
+    },
+    elevation: 3,
+    borderRadius: RFValue(15),
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
   },
   buttonView: {
     flex: 1,
