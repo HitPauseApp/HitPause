@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: h.colors.primary,
     display: 'flex',
+    paddingTop:'30%'
   },
   header: {
     width: '100%',
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
     color: 'white',
     height: 120,
     textAlign: 'center',
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
   },
   form: {
     backgroundColor: 'white',
@@ -184,12 +185,14 @@ const styles = StyleSheet.create({
     color: h.colors.primary,
     fontFamily: 'Poppins-Bold',
     textAlign: 'left',
+    paddingLeft:'2%'
   },
   textInput: {
     color: '#757575',
-    fontSize: RFValue(14),
+    fontSize: RFValue(12),
     marginTop: 4,
-    zIndex: 3
+    zIndex: 3,
+    paddingLeft:'2%'
   },
   smallText: {
     fontSize: RFValue(13),
