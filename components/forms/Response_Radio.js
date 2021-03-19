@@ -1,4 +1,5 @@
 import * as React from 'react';
+import h from '../../globals';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -15,15 +16,15 @@ export default function Response_Radio(props) {
     props.onChange(id, flags);
   }
   return (
-    <View>
+    <View style={{ paddingTop: 10, paddingHorizontal: 30 }}>
       <RadioButton.Group onValueChange={value => onChange(value)} value={String(props.value)}>
         {
           Object.values(props.responses).map((item, key) =>
             <RadioButton.Item
               label={item.text}
-              labelStyle={{color: '#00095e'}}
+              labelStyle={{color: h.colors.primary}}
               style={styles.radioButton}
-              color="#00095e"
+              color={h.colors.primary}
               value={String(key)}
               key={key}
             />
@@ -37,10 +38,10 @@ export default function Response_Radio(props) {
 const styles = StyleSheet.create({
   radioButton: {
     marginBottom: 10,
-    backgroundColor: 'white',
-    borderRadius: 10,
+    backgroundColor: h.colors.secondary,
+    borderRadius: 999,
     alignSelf: 'center',
-    width: '80%',
+    width: '100%',
     shadowColor: "#000",
     shadowOffset: {
       width: RFValue(1),
@@ -48,7 +49,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: RFValue(3.84),
-    elevation: 3,
-    borderRadius: RFValue(15),
+    elevation: 3
   },
 });
