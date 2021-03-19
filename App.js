@@ -221,6 +221,7 @@ export default function App(props) {
       <AuthContext.Provider value={authUser}>
         <PaperProvider>
           <View style={styles.container}>
+          <StatusBar barStyle="default" />
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
             {Platform.OS === 'android' && <StatusBar barStyle="default" />}
             <AppContext.Provider value={hitpause}>

@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     borderRadius: RFValue(20),
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     alignItems: 'center',
     shadowColor: "#000",
     shadowOffset: {

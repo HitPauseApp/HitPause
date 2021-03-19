@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
     fontSize: RFValue(11),
     color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
-    paddingVertical: 16
+    paddingVertical: 16,
+
   },
   button: {
     backgroundColor: h.colors.primary,
@@ -109,11 +110,14 @@ const styles = StyleSheet.create({
     color: h.colors.primary,
     fontFamily: 'Poppins-Bold',
     textAlign: 'left',
+    paddingLeft:'2%',
   },
   textInput: {
     color: '#757575',
-    fontSize: RFValue(14),
+    fontSize: RFValue(11),
     marginTop: 4,
+    paddingTop:'1%',
+    paddingLeft:'2%',
     zIndex: 3
   },
 })

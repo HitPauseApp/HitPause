@@ -191,7 +191,8 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     fontSize: RFValue(24),
     fontFamily: 'Poppins-Bold',
-    borderRadius: 999
+    borderRadius: 999,
+    paddingTop:'3.5%'
   },
   bigNumberNote: {
     position: 'absolute',
@@ -206,7 +207,9 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     textAlignVertical: 'center',
     top: RFValue(14),
-    left: RFValue(36)
+    left: RFValue(36),
+    paddingTop:'1.5%',
+    paddingLeft:'10%'
   },
   smallNumber: {
     position: 'absolute',
@@ -220,7 +223,8 @@ const styles = StyleSheet.create({
     fontSize: RFValue(18),
     backgroundColor: h.colors.primary,
     color: '#fff',
-    borderRadius: 999
+    borderRadius: 999,
+    paddingTop:'25%'
   },
   button: {
     backgroundColor: h.colors.primary,

@@ -90,7 +90,8 @@ const styles = StyleSheet.create({
       paddingRight: 20,
       paddingBottom: 0,
       fontFamily: 'Poppins-Medium',
-      fontSize: 20
+      fontSize: 20,
+      top: '2%'
     },
     inputDescriptionStyle: {
       color: h.colors.primary,
@@ -102,6 +103,7 @@ const styles = StyleSheet.create({
       fontFamily: 'Poppins-Light',
       fontSize: 16,
       textAlignVertical: 'top',
+      top: '4%'
     }
   });
   

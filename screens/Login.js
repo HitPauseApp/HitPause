@@ -76,14 +76,15 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: h.colors.primary,
     flex: 1,
-    display: 'flex'
+    display: 'flex',
+    paddingTop:'15%'
   },
   logoHeader: {
     height: 200,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 30
+    paddingTop: 80
   },
   logo: {
     height: '100%',
@@ -133,12 +134,15 @@ const styles = StyleSheet.create({
     color: h.colors.primary,
     fontFamily: 'Poppins-Bold',
     textAlign: 'left',
+    paddingLeft:'2%'
   },
   textInput: {
     color: '#757575',
-    fontSize: RFValue(14),
+    fontSize: RFValue(10),
+    fontFamily: 'Poppins-Light',
     marginTop: 4,
-    zIndex: 3
+    zIndex: 3,
+    paddingLeft:'2%'
   },
   buttonsContainer: {
     flex: 1
