@@ -56,9 +56,9 @@ let getHighsAndLows = (flags, numHighs, numLows) => {
 let randomizeSuggestions = (flags) => {
   let n = 0;
   for (const key in flags) {
-    let squaredDoubleFlag = (flags[key] * 2) ** 2;
-    flags[key] = squaredDoubleFlag + n;
-    n = squaredDoubleFlag + n;
+    let doubleFlag = flags[key] * 2;
+    flags[key] = doubleFlag + n;
+    n = doubleFlag + n;
   }
   let randomInt = Math.floor(Math.random() * n);
   for (const key in flags) {
@@ -76,9 +76,22 @@ let titleCase = (str, del) => {
   return str.split(del || ' ').map(i => i[0].toUpperCase() + i.slice(1)).join(' ');
 }
 
+let getDate = (timestamp) => {
+  let date = new Date(timestamp);
+  return `${date.getMonth() + 1}/${date.getDate()}/${String(date.getFullYear()).substr(2)}`;
+}
+
+let getTime = (timestamp) => {
+  let date = new Date(timestamp);
+  let timeString = `${date.getHours() == 0 ? '12' : (date.getHours() % 12)}:${String(date.getMinutes()).padStart(2, '0')}`;
+  let amPmString = date.getHours() < 12 ? 'AM' : 'PM';
+  return `${timeString} ${amPmString}`;
+}
+
 let colors = {
   primary: '#00095e',
-  secondary: '#cbebf7'
+  secondary: '#deedfa',
+  tertiary: '#15B097'
 }
 
 var h = {
@@ -86,6 +99,8 @@ var h = {
   getHighsAndLows,
   randomizeSuggestions,
   titleCase,
+  getDate,
+  getTime,
   colors
 }
 

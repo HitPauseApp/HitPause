@@ -2,6 +2,8 @@ import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, Button, Platform } from 'react-native';
+import { Switch } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -11,13 +13,25 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export default function NotificationHandler() {
+export default function NotificationHandler(props) {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
+  const [QOTD, setQOTD] = useState();
   const notificationListener = useRef();
   const responseListener = useRef();
 
+  const getQOTD = async () => {
+    try {
+      const value = await AsyncStorage.getItem('QOTD')
+        console.warn("Notification " + value);
+        setQOTD(value);
+    } catch(e) {
+      // error reading value
+    }
+  }
+  
   useEffect(() => {
+    getQOTD();
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
@@ -34,33 +48,92 @@ export default function NotificationHandler() {
     };
   }, []);
 
+
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+
+  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+
+  async function onClick() {
+    onToggleSwitch();
+    if (!isSwitchOn) {
+      await schedulePushNotification(props, QOTD);
+    }
+  }
+  // return (
+  //   <View
+  //     style={{
+  //       flex: 1,
+  //       alignItems: 'center',
+  //       justifyContent: 'space-around',
+  //     }}>
+  //     <Button
+  //       title="Enable All Notifications"
+  //       onPress={async () => {
+  //         await schedulePushNotification();
+  //       }}
+  //     />
+  //   </View>
+  // );
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'space-around',
-      }}>
-      <Button
-        title="Enable All Notifications"
-        onPress={async () => {
-          await schedulePushNotification();
-        }}
+    <View>
+      <Switch
+        value={isSwitchOn}
+        onValueChange={onClick}
+        style={{}}
       />
     </View>
   );
 }
 
 
-async function schedulePushNotification() {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: "HitPause",
-      body: 'Thank you for getting our notifications!',
-      data: { data: 'goes here' },
-    },
-    trigger: { seconds: 1 },
-  });
+
+
+
+
+
+
+async function schedulePushNotification(props, QOTD) {
+  let quoteData = QOTD;
+  if (props.notificationType === 'enable_all') {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "HitPause",
+        body: "Thank you for subscribing to all of our notifications!",
+        data: { data: 'goes here' },
+      },
+      trigger: { seconds: 1 },
+    });
+  }
+  else if (props.notificationType === 'survey_reminder') {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "HitPause",
+        body: "Reminder! Don't forget to take your daily Pause Survey!",
+        data: { data: 'goes here' },
+      },
+      trigger: { seconds: 1 },
+    });
+  }
+  else if (props.notificationType === 'QOTD') {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "HitPause - Quote of the Day",
+        body: '"' + quoteData + '"',
+        data: { data: quoteData },
+      },
+      trigger: { seconds: 1 },
+    });
+  }
+  else if (props.notificationType === 'checkin_reminder') {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "HitPause",
+        body: "Reminder! Don't forget to check in with us!",
+        data: { data: 'goes here' },
+      },
+      trigger: { seconds: 1 },
+    });
+  }
 }
 
 async function registerForPushNotificationsAsync() {

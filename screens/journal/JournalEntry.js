@@ -1,6 +1,7 @@
-import { AntDesign } from '@expo/vector-icons';
 import * as React from 'react';
+import h from '../../globals';
 import { StyleSheet, Text, TouchableOpacity, TextInput, View } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 import { AuthContext } from '../../AuthContext';
 import firebase from '../../Firebase';
 
@@ -22,10 +23,10 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
   }, [title, text]);
 
   const getCurrentDate = () => {
-    var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
+    var date = new Date().getDate();
     var year = new Date().getFullYear();
-    return date + '-' + month + '-' + year; // format: dd-mm-yyyy;
+    return month + '/' + date + '/' + year; // format: mm/dd/yyyy;
   }
 
   // const getCurrentTime = () => {
@@ -44,7 +45,6 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
           placeholder='Note Title...'
           placeholderTextColor='#aaa'
           returnKeyType='next'
-          selectionColor='#00095e'
           onChangeText={title => setTitle(title)}
           value={title}
         />
@@ -65,14 +65,13 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
 
 const styles = StyleSheet.create({
     container: {
-      paddingTop: '15%',
       backgroundColor: 'white',
       flex: 1,
     },
     header: {
-      fontFamily: 'Poppins-Medium',
-      color: '#00095e',
-      fontSize: 30,
+      fontFamily: 'Poppins-Bold',
+      color: h.colors.primary,
+      fontSize: RFValue(24),
       fontWeight: 'bold',
       paddingHorizontal: '5%',
       paddingVertical: '5%'
@@ -84,7 +83,7 @@ const styles = StyleSheet.create({
       flex: 1
     },
     inputTitleStyle: {
-      color: '#00095e',
+      color: h.colors.primary,
       height: 60,
       paddingTop: 5,
       paddingLeft: 20,
@@ -95,9 +94,10 @@ const styles = StyleSheet.create({
       top: '2%'
     },
     inputDescriptionStyle: {
-      color: '#00095e',
+      color: h.colors.primary,
       flex: 1,
       paddingLeft: 20,
+      paddingTop: 15,
       paddingRight: 20,
       marginBottom: 60,
       fontFamily: 'Poppins-Light',

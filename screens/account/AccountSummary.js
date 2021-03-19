@@ -1,14 +1,9 @@
 import * as React from 'react';
-import { View, StyleSheet, Text, Image, Button, AsyncStorage, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, Button, ScrollView, TouchableOpacity } from 'react-native';
 import firebase from '../../Firebase.js';
+import h from '../../globals';
 import { AuthContext } from '../../AuthContext.js';
-
-import QuizReminder from '../../components/settings/QuizReminder';
-import NotificationHandler from '../../components/notifications/NotificationHandler';
-import SpotifyAuthButton from '../../spotify/SpotifyAuthButton';
-
 import AppIcons from '../../components/AppIcons';
-import FillButton from '../../components/buttons/FillButton';
 import userImg from '../../assets/images/userImg.png';
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -32,57 +27,55 @@ export default function Account(props) {
             <View style={styles.userDetails}>
               <Text style={styles.userName}>{user.firstName} {user.lastName}</Text>
               <View style={styles.contactInfo}>
-                <AppIcons name="materialicons:email" size={22} color="#00095e" ></AppIcons>
+                <AppIcons name="materialicons:email" size={22} color={h.colors.primary} ></AppIcons>
                 <Text style={styles.smallText}>{user.email}</Text>
               </View>
             </View>
           </View>
         </View>
 
-        <View style={styles.buttonContainter}>
+        <View style={styles.buttonContainter1}>
           <TouchableOpacity
-            style={{ ...styles.button, backgroundColor: '#00095e' }}
+            style={[styles.button, { backgroundColor: h.colors.primary }]}
             onPress={() => props.navigation.navigate('AccountTraits')}
           >
             <Text style={styles.buttonText}>View My Traits</Text>
           </TouchableOpacity>
         </View>
 
-        {/* <View style={styles.category3}>
-          <AppIcons name="materialcommunityicons:textbox-password" size={30} color="#00095e" />
-          <Text style={styles.text}>*******</Text>
-        </View> */}
-
-        {/*<View style={styles.category}>
-          <Text style={styles.text}>Quiz Reminders</Text>
-          <QuizReminder></QuizReminder>
-          </View>*/}
-
         <View style={styles.buttonContainter}>
           <TouchableOpacity
-            style={{ ...styles.button, backgroundColor: '#00095e' }}
+            style={[styles.button, { backgroundColor: h.colors.primary }]}
             onPress={() => props.navigation.navigate('NotificationsScreen')}
           >
             <Text style={styles.buttonText}>Notification Settings</Text>
           </TouchableOpacity>
         </View>
 
-        <View style={styles.buttonContainter1}>
-          <View style={{ ...styles.button, backgroundColor: '#1DB954' }}>
-            <View style={{ display: 'flex', flexDirection: 'row' }}>
-              <View style={{ paddingRight: 10 }}>
-                <AppIcons name="fontawesome5:spotify" size={40} color="white" />
-              </View>
-              <SpotifyAuthButton></SpotifyAuthButton>
-            </View>
-          </View>
+        <View style={styles.buttonContainter}>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: h.colors.primary }]}
+            onPress={() => props.navigation.navigate('BadgeScreen')}
+          >
+            <Text style={styles.buttonText}>View Badges</Text>
+          </TouchableOpacity>
         </View>
 
-        {/* style={{ ...styles.button, backgroundColor: '#00095e' }} */}
+        {
+          user.isAdmin &&
+          <View style={styles.buttonContainter}>
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: h.colors.tertiary }]}
+              onPress={() => props.navigation.navigate('AdminPanel')}
+            >
+              <Text style={styles.buttonText}>Admin Panel</Text>
+            </TouchableOpacity>
+          </View>
+        }
 
-        <View style={styles.buttonContainter2}>
-          <TouchableOpacity style={styles.button1} onPress={() => handleLogout()}> 
-            <Text style={styles.buttonText1}>Sign Out</Text>
+        <View style={styles.buttonContainter}>
+          <TouchableOpacity style={[styles.button, { backgroundColor: h.colors.primary }]} onPress={() => handleLogout()}>
+            <Text style={styles.buttonText}>Sign Out</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -96,17 +89,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   contentContainer: {
-    paddingTop: 40,
+    paddingTop:100,
     display: 'flex',
     height: '100%'
   },
   userName: {
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Bold',
     fontSize: RFValue(15),
   },
   smallText: {
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
     fontSize: RFValue(9.5),
     left: '45%'
@@ -152,6 +145,10 @@ const styles = StyleSheet.create({
     paddingTop: 40
   },
   buttonContainter2: {
+    flex: 1,
+    paddingTop: 40
+  },
+  buttonContainter1: {
     flex: 1,
     paddingTop: 40
   },

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import firebase from '../Firebase';
+import h from '../globals';
 import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Svg, Path } from 'react-native';
 import { AuthContext } from '../AuthContext.js';
 import { Portal, Modal } from 'react-native-paper';
@@ -9,12 +10,15 @@ import { RFValue } from "react-native-responsive-fontsize";
 import AppIcons from '../components/AppIcons';
 import Music from '../assets/images/DancingDoodle.svg';
 import Swiper from 'react-native-swiper/src';
-//import user from '../../assets/images/userImg.png';
-
+import BadgeIcon from '../components/BadgeIcon';
+import { setBadgeCountAsync } from 'expo-notifications';
+import { AppContext } from '../AppContext';
 
 export default function HomeScreen(props) {
   const user = React.useContext(AuthContext);
+  const hitpause = React.useContext(AppContext);
   const [showInitialAssessment, setShowInitalAssessment] = React.useState(false);
+  const [userBadges, setUserBadges] = React.useState({});
 
   React.useEffect(() => {
     if (user.isNewUser) {
@@ -25,14 +29,20 @@ export default function HomeScreen(props) {
       if (!s.exists()) setShowInitalAssessment(true);
       else setShowInitalAssessment(false);
     });
+    user.ref.child('profile/badges').on('value', (s) => {
+      if (!s.exists()) setUserBadges({});
+      else {
+        let badgeKeys = Object.keys(s.val());
+        setUserBadges(badgeKeys.map(key => hitpause.badges[key]));
+      }
+    })
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={{ padding: 16, paddingTop:80}}>
-        <Text style={{ fontFamily: 'Poppins-Light', fontSize: RFValue(18), color: '#00095e'}}>Welcome Back,</Text>
-        <Text style={{ fontFamily: 'Poppins-Bold', fontSize: RFValue(20), color: '#00095e' }}>{user.firstName} {user.lastName}!</Text>
-        {/* <WelcomeBanner name={user.firstName} isAdmin={user.admin} navigation={props.navigation}></WelcomeBanner> */}
+    <ScrollView style={styles.container}>
+      <View style={{ padding: 16, paddingTop: 80 }}>
+        <Text style={{ fontFamily: 'Poppins-Light', fontSize: RFValue(18), color: h.colors.primary }}>Welcome Back,</Text>
+        <Text style={{ fontFamily: 'Poppins-Bold', fontSize: RFValue(22), color: h.colors.primary }}>{user.firstName} {user.lastName}!</Text>
       </View>
 
       <View style={{ height: 220 }}>
@@ -50,7 +60,7 @@ export default function HomeScreen(props) {
 
             <View style={styles.cardTextContainer}>
               <Text style={styles.cardText}>Feeling Anxious?</Text>
-              <Text style={styles.cardText}>Take our quiz.</Text>
+              <Text style={styles.cardText}>Take the Pause Survey.</Text>
             </View>
           </TouchableOpacity>
 
@@ -70,39 +80,69 @@ export default function HomeScreen(props) {
         {
           showInitialAssessment ? (
             <View style={styles.row}>
-              <TouchableOpacity style={styles.card} onPress={() => props.navigation.navigate('ProfileSurvey')}>
-                <View style={{ display: 'flex', flexDirection: 'row', padding: 10, alignItems: 'center' }}>
-                  <AppIcons name='materialicons:info' color='#222'></AppIcons>
-                  <View style={{ paddingLeft: 10, flex: 1 }}>
-                    <Text style={{ fontSize: RFValue(18) }}>Complete your profile survey!</Text>
-                    <Text style={{ fontSize: RFValue(12) }}>It helps us help you.</Text>
-                  </View>
-                </View>
+              <TouchableOpacity style={[styles.button, { width: '100%' }]} onPress={() => props.navigation.navigate('ProfileSurvey')}>
+                <Text style={styles.buttonText}>Complete your profile survey!</Text>
               </TouchableOpacity>
             </View>
           ) : (
             <View style={styles.row}>
               <View style={styles.card}>
-                <View style={{ display: 'flex', flexDirection: 'row', padding: 10, alignItems: 'center' }}>
-                  <AppIcons name='materialicons:check-circle' color='#00095e'></AppIcons>
+                <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', padding: 10, alignItems: 'center' }} onPress={() => props.navigation.navigate('ProfileSurvey')}>
+                  {/*<AppIcons name='materialicons:check-circle' color='white'></AppIcons>*/}
                   <View style={{ paddingLeft: 10, flex: 1 }}>
-                    <Text style={{ fontSize: RFValue(15), color: '#00095e', fontFamily: 'Poppins-Bold' }}>Your Profile is up to date!</Text>
-                    <Text style={{ fontSize: RFValue(11), color: '#00095e', fontFamily: 'Poppins-Medium' }}>Thanks for helping us help you.</Text>
+                    <Text style={{ fontSize: RFValue(15), textAlign: 'center', color: h.colors.primary, fontFamily: 'Poppins-Bold' }}>Need to retake your profile survey?</Text>
+                    <Text style={{ fontSize: RFValue(11), textAlign: 'center', color: h.colors.primary, fontFamily: 'Poppins-Medium' }}>Change your answers at any time</Text>
                   </View>
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
           )
         }
 
         <View style={styles.row}>
-          <View style={styles.card}>
+          <View style={[styles.card, { flexDirection: 'column' }]}>
+            <Text style={styles.cardHeader}>Quote of the Day</Text>
             <TipOTD></TipOTD>
           </View>
         </View>
 
+        <View style={styles.row}>
+          <View style={styles.card}>
+            <View style={{ display: 'flex', alignItems: 'center', width: '100%', paddingHorizontal: 20 }}>
+              <Text style={styles.cardHeader}>Badges</Text>
+              {
+                !!Object.values(userBadges).length ? Object.values(userBadges).map(badge => (
+                  <View style={{ paddingVertical: 10, width: '100%' }} key={badge.id}>
+                    <View style={styles.badgeContainer}>
+                      <BadgeIcon size={80} icon={badge.icon}></BadgeIcon>
+                      <View style={styles.cardTextContainer}>
+                        <Text style={styles.cardTextHeader}>{badge.title}</Text>
+                        <Text style={styles.cardText}>{badge.description}</Text>
+                      </View>
+                    </View>
+                  </View>
+                )) : (
+                  <Text>You haven't earned any badges yet</Text>
+                )
+              }
+              <TouchableOpacity
+                style={[styles.button, { marginVertical: 20, width: '100%' }]}
+                onPress={() => props.navigation.navigate('BadgeScreen')}
+              >
+                <Text style={styles.buttonText}>Earn More Badges</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+
+        {/* <View style={styles.row}>
+          <TouchableOpacity style={[styles.button, { width: '100%' }]} onPress={() => props.navigation.navigate('WelcomeTutorial')}>
+            <Text style={styles.buttonText}>Re-show Tutorial</Text>
+          </TouchableOpacity>
+        </View> */}
+
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -112,7 +152,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   row: {
-    // flex: 1,
     padding: 16,
   },
   card: {
@@ -123,27 +162,42 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     shadowColor: "#000",
     shadowOffset: {
-      width: RFValue(2),
+      width: RFValue(1),
       height: RFValue(3),
     },
     elevation: 3,
     borderRadius: RFValue(15),
     shadowOpacity: 0.25,
     shadowRadius: RFValue(3.84),
-    //backgroundColor: '#F2FCFD'
+    backgroundColor: h.colors.secondary
   },
   badgeContainer: {
-    backgroundColor: '#132090',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'center',
-    alignContent: 'center',
-    width: '80%',
+    alignItems: 'center'
+  },
+  button: {
+    backgroundColor: h.colors.primary,
     alignSelf: 'center',
-    borderRadius: 10,
-    padding: 50,
-    marginTop: 50
+    borderRadius: RFValue(15),
+    padding: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: RFValue(1),
+      height: RFValue(5),
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
+    elevation: 3,
+    display: 'flex',
+    //flexDirection: 'row',
+    //justifyContent: 'center',
+    alignItems: 'center'
   },
   homecard: {
-    backgroundColor: '#F2FCFD',
+    backgroundColor: h.colors.secondary,
     height: 200,
     width: '90%',
     alignSelf: 'center',
@@ -172,9 +226,25 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 8
   },
+  cardTextHeader: {
+    fontSize: RFValue(14),
+    color: h.colors.primary,
+    fontFamily: 'Poppins-Bold'
+  },
   cardText: {
     fontSize: RFValue(12),
-    color: '#00095e',
-    fontFamily: 'Poppins-Bold'
+    color: h.colors.primary,
+    fontFamily: 'Poppins-Medium'
+  },
+  cardHeader: {
+    fontSize: RFValue(24),
+    color: h.colors.primary,
+    fontFamily: 'Poppins-Bold',
+    paddingTop: 16
+  },
+  buttonText: {
+    fontFamily: 'Poppins-Bold',
+    color: '#fff',
+    fontSize: RFValue(14)
   }
 });

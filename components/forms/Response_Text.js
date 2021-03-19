@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 
-export default function Response_TextArea(props){
+export default function Response_Text(props){
   return(
-    <View style={styles.quizQuestion}>
+    <View style={styles.surveyQuestion}>
     </View>
   );
 }

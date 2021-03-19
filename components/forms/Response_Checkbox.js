@@ -1,6 +1,8 @@
 import * as React from 'react';
+import h from '../../globals';
 import { Text, View, StyleSheet } from 'react-native';
 import { Checkbox } from 'react-native-paper';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Response_Checkbox(props) {
   const onChange = (id) => {
@@ -36,15 +38,15 @@ export default function Response_Checkbox(props) {
   }
 
   return (
-    <View>
+    <View style={{ paddingTop: 10, paddingHorizontal: 30 }}>
       {
         Object.values(props.responses).map((item, key) =>
           <Checkbox.Item
             label={item.text}
             // TODO: This is not working at the moment... look for an update eventually
-            labelStyle={{color: '#00095e'}}
+            labelStyle={{color: h.colors.primary}}
             style={styles.checkBox}
-            color="#00095e"
+            color={h.colors.primary}
             key={String(key)}
             status={Array.isArray(props.value) && props.value.indexOf(String(key)) >= 0 ? 'checked' : 'unchecked'}
             onPress={() => onChange(String(key))}
@@ -58,9 +60,17 @@ export default function Response_Checkbox(props) {
 const styles = StyleSheet.create({
   checkBox: {
     marginBottom: 10,
-    backgroundColor: 'white',
-    borderRadius: 10,
+    backgroundColor: h.colors.secondary,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: RFValue(1),
+      height: RFValue(3),
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
+    elevation: 3,
+    borderRadius: 999,
     alignSelf: 'center',
-    width: '80%'
+    width: '100%'
   }
 });

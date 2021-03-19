@@ -1,4 +1,5 @@
 import * as React from 'react';
+import h from '../globals';
 import firebase from '../Firebase';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AuthContext } from '../AuthContext.js';
@@ -46,9 +47,7 @@ export default function WelcomeTutorial(props) {
             <Text style={styles.smallText}>We look forward to walking with you in this journey towards better mental health! Tap the "Get Started" button below to access the rest of the app.</Text>
           </View>
           <TouchableOpacity style={styles.getStarted} onPress={() => props.navigation.navigate('Home')}>
-            <View style={styles.buttonTextContainer}>
-              <Text style={styles.buttonText}>Get Started</Text>
-            </View>
+            <Text style={styles.buttonText}>Get Started</Text>
           </TouchableOpacity>
         </View>
       </Swiper>
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     bottom: 75,
     height: 50,
-    backgroundColor: '#cbebf7',
+    backgroundColor: h.colors.secondary,
     borderRadius: 15,
     elevation: 3,
     shadowColor: "#000",
@@ -83,6 +82,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: RFValue(3.84),
     display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 16
   },
   buttonTextContainer: {
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontFamily: 'Poppins-Medium',
-    color: '#00095e',
+    color: h.colors.primary,
     fontSize: 18,
     textAlign: 'center',
     textAlignVertical: 'center'
@@ -103,17 +104,17 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: RFValue(48),
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Light'
   },
   largeText: {
     fontSize: RFValue(28),
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Light'
   },
   smallText: {
     fontSize: RFValue(14),
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Light'
   }
 });

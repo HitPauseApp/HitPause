@@ -1,5 +1,6 @@
 import * as React from 'react';
 import firebase from '../../Firebase';
+import h from '../../globals';
 import { StyleSheet, Text, View, Image, TouchableOpacity, PanResponsder, ImageBackground } from 'react-native';
 import { PanGestureHandler, RectButton, ScrollView} from 'react-native-gesture-handler';
 import { AuthContext } from '../../AuthContext';
@@ -15,7 +16,7 @@ export default function JournalScreen(props) {
 
   React.useEffect(() => {
     // TODO: Get and store these locally
-    firebase.database().ref(`users/${user.uid}/journal`).on('value', (s) => {
+    user.ref.child(`journal`).on('value', (s) => {
       if (s.exists()) {
         setEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
         setDisplayEntries(Object.entries(s.val()).sort((a, b) => b[1].dateModified - a[1].dateModified));
@@ -30,7 +31,13 @@ export default function JournalScreen(props) {
 
   function openEntry(entryId, title, text) {
     // If there is no entryId (we are creating a new entry) get a new push ID from Firebase
-    if (!entryId) entryId = firebase.database().ref().push().key;
+    if (!entryId) {
+      entryId = firebase.database().ref().push().key;
+      // If entries is empty (and we are creating our first entry) award a badge
+      if (entries && entries.length == 0) user.ref.child('profile/badges').update({ firstJournalEntry: true })
+      // If there are 4 entries (and we are creating our fifth entry) award a badge
+      if (entries && entries.length == 4) user.ref.child('profile/badges').update({ fiveJournalEntries: true })
+    }
     // Pass the existing (or new) entryId to JournalEntry as a parameter and navigate there
     props.navigation.navigate('JournalEntry', { entryId: entryId, title: title, text: text });
   }
@@ -55,7 +62,7 @@ export default function JournalScreen(props) {
         <Text style={styles.header}>My Journal</Text>
         <TextInput
           placeholder="Search"
-          placeholderTextColor="black"
+          placeholderTextColor={h.colors.primary}
           autoCapitalize="none"
           style={styles.textInput}
           onChangeText={text => searchEntries(text)}
@@ -85,11 +92,7 @@ export default function JournalScreen(props) {
      
       <View style={styles.buttonView}>
         <TouchableOpacity onPress={() => openEntry(null, '', '')}>
-          <View style={styles.circleButton}>
-            <View style={styles.icon}>
-              <AppIcons name="fontawesome5:pencil-alt" left={20} size={35} color="#00095e" ></AppIcons>
-            </View>
-          </View>
+          <AppIcons name="fontawesome5:pencil-alt" size={32} color="#F2FCFD"></AppIcons>
         </TouchableOpacity>
       </View>
     </View>
@@ -103,15 +106,16 @@ const styles = StyleSheet.create({
   },
   header: {
     fontFamily: 'Poppins-Bold',
-    color: '#00095e',
-    fontSize: RFValue(20),
-    fontWeight: 'bold',
+    color: h.colors.primary,
+    fontSize: RFValue(22),
+    // fontWeight: 'bold',
     paddingHorizontal: 20,
-    paddingVertical: '9%',
-    top: '2%'
+    //paddingVertical: '9%',
+    paddingTop: 65,
+    //paddingBottom: 1
   },
   textContainer: {
-    backgroundColor: '#132090',
+    backgroundColor: h.colors.secondary,
     justifyContent: 'center',
     alignContent: 'center',
     width: '80%',
@@ -134,13 +138,19 @@ const styles = StyleSheet.create({
   buttonView: {
     flex: 1,
     flexDirection: 'row-reverse',
-    right: '8%',
+    right: '6%',
     bottom: '3%',
-    position: 'absolute'
+    position: 'absolute',
+    width: 65,
+    height: 65,
+    borderRadius: 65 / 2,
+    backgroundColor: h.colors.primary,
+    justifyContent: 'center',
+    alignItems:'center'
   },
   text: {
     textAlign: 'center',
-    color: '#00095e',
+    color: h.colors.primary,
     fontFamily: 'Poppins-Medium',
     fontWeight: 'bold',
     fontSize: 20,
@@ -152,32 +162,11 @@ const styles = StyleSheet.create({
   textInput: {
     height: 40,
     width: '80%',
-    borderColor: '#00095e',
-    color: 'black',
+    borderColor: h.colors.primary,
     borderBottomWidth: 1,
     marginTop: 20,
     zIndex: 3,
     alignSelf: 'center',
   },
-  circleButton: {
-    borderRadius: RFValue(50),
-    height: RFValue(50),
-    width:RFValue(50),
-    backgroundColor:'#F2FCFD',
-    justifyContent:'center',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: RFValue(1),
-      height: RFValue(4),
-    },
-    elevation: 3,
-   // borderRadius: RFValue(15),
-    shadowOpacity: 0.25,
-    shadowRadius: RFValue(3.84),
-    //alignContent:'center'
-  },
-icon: {
-  alignSelf:'center'
-}
 
 });

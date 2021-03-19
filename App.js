@@ -8,12 +8,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { Provider as PaperProvider } from 'react-native-paper';
-import * as AuthSession from 'expo-auth-session';
+import { makeRedirectUri, ResponseType, useAuthRequest } from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 
 import firebase from './Firebase';
 import { AuthContext } from './AuthContext.js';
 import { AppContext } from './AppContext';
+import AppIcons from './components/AppIcons';
 
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
@@ -30,14 +31,19 @@ import AccountSummary from './screens/account/AccountSummary';
 import AccountTraits from './screens/account/AccountTraits';
 import NotificationsScreen from './screens/account/NotificationsScreen';
 import WelcomeTutorial from './screens/WelcomeTutorial';
-
-import { AsyncStorage } from 'react-native';
-import AdminPanel from './components/admin/AdminPanel';
-import AppIcons from './components/AppIcons';
+import BadgeScreen from './screens/account/BadgeScreen';
+import ReviewScreen from './screens/ReviewScreen';
+import AdminPanel from './screens/admin/AdminPanel';
 
 const AuthStack = createStackNavigator();
 const MainStack = createStackNavigator();
 const HomeTab = createMaterialBottomTabNavigator();
+
+// Spotify Endpoints
+const discovery = {
+  authorizationEndpoint: 'https://accounts.spotify.com/authorize',
+  tokenEndpoint: 'https://accounts.spotify.com/api/token',
+};
 
 export default function App(props) {
   const [isLoadingApp, setIsLoadingApp] = React.useState(true);
@@ -47,45 +53,11 @@ export default function App(props) {
   // TODO: There's probably a better way to pass these without using state...?
   const [authUser, setAuthUser] = React.useState(null);
   const [hitpause, setHitpause] = React.useState(null);
-  const [config, setConfig] = React.useState({
-    clientId: 'bc628be0b7a344a384e7acff4617a332',
-    redirectUri: 'http://localhost:19006/',
-    scopes: ['user-read-email', 'playlist-modify-public']
-  });
+
 
   if (Platform.OS === 'web') {
     WebBrowser.maybeCompleteAuthSession();
   }
-
-  //Sign in with Implicit Grant flow. NO USER DATA IS ACCESSIBLE HERE
-  let handleSpotifyLogin = async () => {
-    // let redirectUrl = AuthSession.getRedirectUrl();
-    let results = await AuthSession.startAsync({
-      authUrl:
-        `https://accounts.spotify.com/authorize?client_id=${config.clientId}&redirect_uri=${config.redirectUri}&scope=user-read-email&response_type=token`,
-      returnUrl: config.redirectUri
-    });
-    //return the access token
-    console.log(results);
-    if (results.type === 'success' && !!results.params.access_token) {
-      saveSpotifyToken(results.params.access_token);
-    } else if (results.type === 'dismiss') {
-      console.error("Spotify Signin & Token Generation Failed (App.js -> handleSpotifyLogin). Results were 'dismissed' (signin window closed)");
-    } else if (results.type === 'error') {
-      console.error("Spotify Signin & Token Generation Failed (App.js -> handleSpotifyLogin). Results returned an error (probably a 404/401 to Spotify)")
-    } else {
-      console.error("Unkown Failure... Spotify Signin & Token Generation Failed (App.js -> handleSpotifyLogin)");
-    }
-  };
-
-  let saveSpotifyToken = async (token) => {
-    try {
-      await AsyncStorage.setItem('SpotifyToken', token);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
     async function loadResourcesAndDataAsync() {
@@ -115,6 +87,7 @@ export default function App(props) {
 
     loadResourcesAndDataAsync();
 
+
     // Establish firebase authentication observer
     firebase.auth().onAuthStateChanged(async (user) => {
       setIsLoadingUser(true);
@@ -130,7 +103,7 @@ export default function App(props) {
         setIsLoadingUser(false);
       }
     });
-  }, []);
+  },[]);
 
   async function updateAuthContext(uid) {
     let userData = null;
@@ -142,9 +115,8 @@ export default function App(props) {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
-        admin: data.admin,
+        isAdmin: data.isAdmin,
         isNewUser: data.isNewUser,
-        spotifyToken: data.spotifyToken,
         ref: firebase.database().ref(`users/${uid}`)
       };
     }
@@ -155,7 +127,9 @@ export default function App(props) {
   async function getAppData() {
     let suggestions = await firebase.database().ref('hitpause/suggestions').once('value').then(s => s.val());
     let traits = await firebase.database().ref('hitpause/traits').once('value').then(s => s.val());
-    return { suggestions, traits };
+    let badges = await firebase.database().ref('hitpause/badges').once('value').then(s => s.val());
+    let ref = firebase.database().ref(`hitpause`);
+    return { suggestions, traits, badges, ref };
   }
 
   function HomeTabNavigator() {
@@ -188,7 +162,7 @@ export default function App(props) {
           name="PauseHome"
           component={PauseHome}
           options={{
-            title: 'HitPause Quiz',
+            title: 'Pause Survey Home',
             tabBarLabel: false,
             tabBarIcon: ({ color }) => <AppIcons name="materialcommunityicons:pause" color={color} size={26} />,
           }}
@@ -204,7 +178,7 @@ export default function App(props) {
         />
         <HomeTab.Screen
           name="Account"
-          component={AccountSummary}
+          component = {AccountSummary}
           options={{
             title: 'Account',
             tabBarLabel: false,
@@ -295,6 +269,16 @@ export default function App(props) {
                     name="WelcomeTutorial"
                     component={WelcomeTutorial}
                     options={{ headerShown: false, headerTitle: 'Welcome Tutorial' }}
+                  />
+                  <MainStack.Screen
+                    name="BadgeScreen"
+                    component={BadgeScreen}
+                    options={{headerTitle: 'My Badges' }}
+                  />
+                  <MainStack.Screen
+                    name="ReviewScreen"
+                    component={ReviewScreen}
+                    options={{headerTitle: 'Review Suggestion' }}
                   />
                 </MainStack.Navigator>
               </NavigationContainer>

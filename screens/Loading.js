@@ -1,4 +1,5 @@
 import React from 'react'
+import h from '../globals';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 
 export default function Loading(props) {
@@ -16,10 +17,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00095e'
+    backgroundColor: 'white'
   },
   text: {
     marginBottom: 20,
-    color: '#fff'
+    color: h.colors.primary
   }
 })
