@@ -15,6 +15,7 @@ export default function ReviewScreen(props) {
 
   function ratingChanged(value) {
     user.ref.child(`profile/pauseSurveys/${surveyData.id}/rating`).set(value);
+    user.ref.child(`profile/badges/firstSuggestionReview`).set(true);
     // Might need more handling code... not sure yet
   }
 
@@ -30,8 +31,8 @@ export default function ReviewScreen(props) {
           <Rating 
             count={5}
             reviews={["Terrible", "Bad", "Okay", "Good", "Great!"]}
-            defaultRating={0}
-            size={20}
+            startingValue={surveyData.rating || 0}
+            imageSize={40}
             onFinishRating={(r) => ratingChanged(r)}
           />
         </View>
