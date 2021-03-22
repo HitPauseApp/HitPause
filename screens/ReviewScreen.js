@@ -3,11 +3,14 @@ import h from '../globals';
 import firebase from '../Firebase';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AuthContext } from '../AuthContext.js';
+import { AppContext } from '../AppContext.js';
 import { RFValue } from "react-native-responsive-fontsize";
 import AppIcons from '../components/AppIcons';
+import { Rating } from 'react-native-ratings';
 
 export default function ReviewScreen(props) {
   const user = React.useContext(AuthContext);
+  const hitpause = React.useContext(AppContext);
   const surveyData = props.route.params.surveyData;
 
   function ratingChanged(value) {
@@ -17,7 +20,22 @@ export default function ReviewScreen(props) {
 
   return (
     <View style={styles.container}>
-      <Text>{surveyData.id}</Text>
+      {
+        !!surveyData.selected &&
+        <View style={styles.reviewContainer}>
+          <AppIcons name={hitpause.suggestions[surveyData.selected].icon} size={RFValue(200)} color={h.colors.primary} />
+          <Text style={styles.largeText}>{hitpause.suggestions[surveyData.selected].text}</Text>
+          <Text style={styles.smallText}>{hitpause.suggestions[surveyData.selected].body}</Text>
+          <Text style={styles.smallText}>How well did this work for you?</Text>
+          <Rating 
+            count={5}
+            reviews={["Terrible", "Bad", "Okay", "Good", "Great!"]}
+            defaultRating={0}
+            size={20}
+            onFinishRating={(r) => ratingChanged(r)}
+          />
+        </View>
+      }
     </View>
   );
 }
@@ -25,61 +43,22 @@ export default function ReviewScreen(props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    flex: 1
-  },
-  page: {
     flex: 1,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
   },
-  getStarted: {
-    position: 'absolute',
-    alignSelf: 'center',
-    bottom: 75,
-    height: 50,
-    backgroundColor: h.colors.secondary,
-    borderRadius: 15,
-    elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: RFValue(1),
-      height: RFValue(5),
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: RFValue(3.84),
-    display: 'flex',
-    paddingHorizontal: 16
-  },
-  buttonTextContainer: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'row'
-  },
-  buttonText: {
-    fontFamily: 'Poppins-Medium',
-    color: h.colors.primary,
-    fontSize: 18,
-    textAlign: 'center',
-    textAlignVertical: 'center'
-  },
-  textContainer: {
-    width: '100%',
-    padding: 30
-  },
-  titleText: {
-    fontSize: RFValue(48),
-    color: h.colors.primary,
-    fontFamily: 'Poppins-Light'
+  reviewContainer: {
+     alignItems: 'center',
   },
   largeText: {
     fontSize: RFValue(28),
     color: h.colors.primary,
-    fontFamily: 'Poppins-Light'
+    fontFamily: 'Poppins-Light',
+    textAlign: 'center',
   },
   smallText: {
     fontSize: RFValue(14),
     color: h.colors.primary,
-    fontFamily: 'Poppins-Light'
+    fontFamily: 'Poppins-Light',
+    textAlign: 'center',
+    padding: 10,
   }
 });
