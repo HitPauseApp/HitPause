@@ -56,9 +56,9 @@ let getHighsAndLows = (flags, numHighs, numLows) => {
 let randomizeSuggestions = (flags) => {
   let n = 0;
   for (const key in flags) {
-    let doubleFlag = flags[key] * 2;
-    flags[key] = doubleFlag + n;
-    n = doubleFlag + n;
+    let integerFlag = parseInt(flags[key] * 10);
+    flags[key] = integerFlag + n;
+    n = integerFlag + n;
   }
   let randomInt = Math.floor(Math.random() * n);
   for (const key in flags) {
@@ -91,7 +91,7 @@ let getTime = (timestamp) => {
 let colors = {
   primary: '#00095e',
   secondary: '#deedfa',
-  tertiary: '#15B097'
+  accent: '#15B097'
 }
 
 var h = {

@@ -6,17 +6,20 @@ import { AuthContext } from '../AuthContext.js';
 import { AppContext } from '../AppContext.js';
 import { RFValue } from "react-native-responsive-fontsize";
 import AppIcons from '../components/AppIcons';
-import { Rating } from 'react-native-ratings';
+import { AirbnbRating } from 'react-native-ratings';
 
 export default function ReviewScreen(props) {
   const user = React.useContext(AuthContext);
   const hitpause = React.useContext(AppContext);
   const surveyData = props.route.params.surveyData;
 
-  function ratingChanged(value) {
-    user.ref.child(`profile/pauseSurveys/${surveyData.id}/rating`).set(value);
+  function ratingChanged(type, value) {
+    user.ref.child(`profile/pauseSurveys/${surveyData.id}/${type}`).set(value);
     user.ref.child(`profile/badges/firstSuggestionReview`).set(true);
-    // Might need more handling code... not sure yet
+    // Update the user's history profile using the rating
+    if (type == 'ratingEffective') {
+      user.ref.child(`profile/historyProfile/${surveyData.selected}-${surveyData.timestamp}`).set(value - 3);
+    }
   }
 
   return (
@@ -24,16 +27,28 @@ export default function ReviewScreen(props) {
       {
         !!surveyData.selected &&
         <View style={styles.reviewContainer}>
-          <AppIcons name={hitpause.suggestions[surveyData.selected].icon} size={RFValue(200)} color={h.colors.primary} />
+          <AppIcons name={hitpause.suggestions[surveyData.selected].icon} size={RFValue(120)} color={h.colors.primary} />
           <Text style={styles.largeText}>{hitpause.suggestions[surveyData.selected].text}</Text>
           <Text style={styles.smallText}>{hitpause.suggestions[surveyData.selected].body}</Text>
-          <Text style={styles.smallText}>How well did this work for you?</Text>
-          <Rating 
+          <Text style={[styles.smallText, { fontFamily: 'Poppins-Medium' }]}>How well did this work for you?</Text>
+          <Text style={[styles.smallText, { paddingTop: 0, paddingBottom: 10 }]}>(This is for you.)</Text>
+          <AirbnbRating 
             count={5}
-            reviews={["Terrible", "Bad", "Okay", "Good", "Great!"]}
-            startingValue={surveyData.rating || 0}
-            imageSize={40}
-            onFinishRating={(r) => ratingChanged(r)}
+            showRating={false}
+            defaultRating={surveyData.ratingEffective || 0}
+            onFinishRating={(r) => ratingChanged('ratingEffective', r)}
+            selectedColor={h.colors.accent}
+            reviewColor={h.colors.accent}
+          />
+          <Text style={[styles.smallText, { fontFamily: 'Poppins-Medium' }]}>In general, was this suggestion appropriate for how you were feeling?</Text>
+          <Text style={[styles.smallText, { paddingTop: 0, paddingBottom: 10 }]}>(This is for us.)</Text>
+          <AirbnbRating 
+            count={5}
+            showRating={false}
+            defaultRating={surveyData.ratingAppropriate || 0}
+            onFinishRating={(r) => ratingChanged('ratingAppropriate', r)}
+            selectedColor={h.colors.accent}
+            reviewColor={h.colors.accent}
           />
         </View>
       }
@@ -48,6 +63,7 @@ const styles = StyleSheet.create({
   },
   reviewContainer: {
      alignItems: 'center',
+     paddingTop: 20
   },
   largeText: {
     fontSize: RFValue(28),
@@ -60,6 +76,7 @@ const styles = StyleSheet.create({
     color: h.colors.primary,
     fontFamily: 'Poppins-Light',
     textAlign: 'center',
-    padding: 10,
+    paddingHorizontal: 20,
+    paddingTop: 20
   }
 });

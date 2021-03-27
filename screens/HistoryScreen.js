@@ -7,7 +7,7 @@ import { AuthContext } from '../AuthContext';
 import { AppContext } from '../AppContext';
 import StarRating from 'react-native-star-rating';
 import AppIcons from '../components/AppIcons';
-import ReviewScreen from './ReviewScreen';
+import { AirbnbRating } from 'react-native-ratings';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getCurrentTimeInSeconds } from 'expo-auth-session/build/TokenRequest';
 
@@ -61,13 +61,31 @@ export default function HistoryScreen(props) {
             <View style={styles.reviewCard}>
               <AppIcons name={suggestion.icon} color={h.colors.primary} />
               <View style={{ flex: 1, paddingLeft: 10 }}>
-                <Text>You selected: <Text style={{ fontFamily: 'Poppins-Bold' }}>{suggestion.text}</Text>. Tap here to review this survey.</Text>
+                <Text style={{ fontFamily: 'Poppins-Light' }}>You selected: <Text style={{ fontFamily: 'Poppins-Bold' }}>{suggestion.text}</Text>.</Text>
+                {
+                  !!item.ratingEffective ? (
+                    <View style={{ flexDirection: 'row' }}>
+                      <Text style={{ fontFamily: 'Poppins-Light' }}>Rated</Text>
+                      <AirbnbRating
+                        defaultRating={item.ratingEffective}
+                        size={12}
+                        showRating={false}
+                        isDisabled={true}
+                        selectedColor={h.colors.accent}
+                        starStyle={{ marginHorizontal: 1 }}
+                        starContainerStyle={{ marginLeft: 5, marginTop: -5 }}
+                      />
+                    </View>
+                  ) : (
+                    <Text>Tap here to review this survey.</Text>
+                  )
+                }
               </View>
             </View>
           ) : (
             <View style={styles.reviewCard}>
               <AppIcons name="fontawesome5:info-circle" color={h.colors.primary} />
-              <Text style={{ flex: 1, paddingLeft: 10 }}>You did not select a suggestion from this survey. Tap here to review this survey.</Text>
+              <Text style={{ fontFamily: 'Poppins-Light', flex: 1, paddingLeft: 10 }}>You did not select a suggestion from this survey. Tap here to review this survey.</Text>
             </View>
           )
         }
@@ -232,6 +250,7 @@ const styles = StyleSheet.create({
   },
   smallText: {
     fontSize: 10,
+    fontFamily: 'Poppins-Light',
     color: '#333',
     alignSelf: 'center',
     textAlign: 'center',

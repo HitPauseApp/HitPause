@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import h from '../../globals';
 import SpotifyButton from '../Spotify/SpotifyButton';
 
 export default function SuggestionSwitcher(props) {
@@ -166,13 +167,13 @@ export default function SuggestionSwitcher(props) {
         </View>
       )
     default:
-      return <Text style={styles.noSuggestion}>No Spotify Suggestions</Text>
+      return <View></View>
   }
 }
 
 const styles = StyleSheet.create({
   noSuggestion: {
-    color: 'white',
+    color: h.colors.primary,
     alignSelf: "center"
   }
 })

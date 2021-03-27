@@ -82,24 +82,24 @@ export default function PauseSurvey(props) {
             </View>
           ) : (
             <ScrollView style={{ display: 'flex' }}>
-              <Text style={{ textAlign: 'center', color: h.colors.primary, fontSize: RFValue(18), fontFamily: 'Poppins-Medium', paddingVertical: 20 }}>Here are our suggestions for you:</Text>
-              <View style={{ flex: 1, display: 'flex', padding: 20, position: 'relative', marginTop: 20 }}>
-                <View style={{ position: 'absolute', top: -30, left: 20, right: 0 }}>
-                  <Text style={styles.bigNumber}>#1</Text>
-                  <Text style={styles.bigNumberNote}>Top Suggestion!</Text>
+              <Text style={{ textAlign: 'center', color: h.colors.primary, fontSize: RFValue(18), fontFamily: 'Poppins-Medium', paddingVertical: 40 }}>Here are our suggestions for you!</Text>
+              <View style={{ flex: 1, display: 'flex', paddingHorizontal: 30, paddingTop: 20 }}>
+                <View style={styles.card}>
+                  <View style={{ position: 'absolute', top: -30, left: -10, right: 0 }}>
+                    <Text style={styles.bigNumber}>#1</Text>
+                    <Text style={styles.bigNumberNote}>Top Suggestion!</Text>
+                  </View>
+                  <View style={styles.titleHolder}>
+                    <AppIcons name={results.s1.icon} size={RFValue(96)} color={h.colors.primary} />
+                    <Text style={{ color: h.colors.primary, fontSize: RFValue(20), fontFamily: 'Poppins-Bold', maxWidth: '50%', paddingLeft: 20, textAlignVertical: 'center' }}>{results.s1.text}</Text>
+                  </View>
+                  <Text style={{ color: h.colors.primary, fontSize: RFValue(13), fontFamily: 'Poppins-Medium', paddingBottom: 20, textAlign: 'center' }}>{results.s1.body}</Text>
+                  <SuggestionSwitcher suggestionId={results.s1.$key}></SuggestionSwitcher>
+                  <TouchableOpacity style={styles.button } onPress={() => handleSuggestionSelect(results.s1.$key)}>
+                    <Text style={styles.buttonText}>I will try this: {results.s1.text}</Text>
+                  </TouchableOpacity>
                 </View>
-                <View style={styles.titleHolder}>
-                  <AppIcons name={results.s1.icon} size={RFValue(96)} color={h.colors.primary} />
-                  <Text style={{ color: h.colors.primary, fontSize: RFValue(20), fontFamily: 'Poppins-Bold', maxWidth: '50%', paddingLeft: 20, textAlignVertical: 'center' }}>{results.s1.text}</Text>
-                </View>
-                <Text style={{ color: h.colors.primary, fontSize: RFValue(13), fontFamily: 'Poppins-Medium', paddingBottom: 20, textAlign: 'center' }}>{results.s1.body}</Text>
-                <SuggestionSwitcher suggestionId={results.s1.$key}></SuggestionSwitcher>
-                <TouchableOpacity style={styles.button } onPress={() => handleSuggestionSelect(results.s1.$key)}>
-                  <Text style={styles.buttonText}>I will try this: {results.s1.text}</Text>
-                </TouchableOpacity>
-              </View>
 
-              <View style={{ flex: 1, display: 'flex', paddingHorizontal: 30, paddingTop: 10 }}>
                 <View style={styles.card}>
                   <Text style={styles.smallNumber}>#2</Text>
                   <View style={styles.titleHolder}>
@@ -163,10 +163,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: RFValue(3.84),
     elevation: 3,
-    backgroundColor: '#F2FCFD',
+    backgroundColor: h.colors.secondary,
     borderRadius: RFValue(20),
     padding: 20,
-    marginBottom: 20
+    marginBottom: 40
   },
   cardTitle: {
     fontSize: RFValue(18),
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   bigNumberNote: {
     position: 'absolute',
     zIndex: -1,
-    backgroundColor: h.colors.tertiary,
+    backgroundColor: h.colors.accent,
     color: '#fff',
     paddingLeft: 30,
     fontFamily: 'Poppins-Medium',

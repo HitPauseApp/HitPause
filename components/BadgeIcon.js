@@ -7,7 +7,7 @@ export default function BadgeIcon(props) {
   
   return (
     <View>
-      <AppIcons name="materialcommunityicons:shield" size={props.size} color={h.colors.tertiary}></AppIcons>
+      <AppIcons name="materialcommunityicons:shield" size={props.size} color={h.colors.accent}></AppIcons>
       <View style={styles.interior}>
         { props.icon && <AppIcons name={props.icon} size={props.size / 2}></AppIcons> }
       </View>
