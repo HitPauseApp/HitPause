@@ -9,6 +9,7 @@ import { AuthContext } from '../../AuthContext.js';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { AppContext } from '../../AppContext.js';
 import AppIcons from '../../components/AppIcons.js';
+import SuggestionCard from '../../components/SuggestionCard';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default function PauseSurvey(props) {
@@ -84,52 +85,22 @@ export default function PauseSurvey(props) {
             <ScrollView style={{ display: 'flex' }}>
               <Text style={{ textAlign: 'center', color: h.colors.primary, fontSize: RFValue(18), fontFamily: 'Poppins-Medium', paddingVertical: 40 }}>Here are our suggestions for you!</Text>
               <View style={{ flex: 1, display: 'flex', paddingHorizontal: 30, paddingTop: 20 }}>
-                <View style={styles.card}>
-                  <View style={{ position: 'absolute', top: -30, left: -10, right: 0 }}>
-                    <Text style={styles.bigNumber}>#1</Text>
-                    <Text style={styles.bigNumberNote}>Top Suggestion!</Text>
-                  </View>
-                  <View style={styles.titleHolder}>
-                    <AppIcons name={results.s1.icon} size={RFValue(96)} color={h.colors.primary} />
-                    <Text style={{ color: h.colors.primary, fontSize: RFValue(20), fontFamily: 'Poppins-Bold', maxWidth: '50%', paddingLeft: 20, textAlignVertical: 'center' }}>{results.s1.text}</Text>
-                  </View>
-                  <Text style={{ color: h.colors.primary, fontSize: RFValue(13), fontFamily: 'Poppins-Medium', paddingBottom: 20, textAlign: 'center' }}>{results.s1.body}</Text>
-                  <SuggestionSwitcher suggestionId={results.s1.$key}></SuggestionSwitcher>
-                  <TouchableOpacity style={styles.button } onPress={() => handleSuggestionSelect(results.s1.$key)}>
-                    <Text style={styles.buttonText}>I will try this: {results.s1.text}</Text>
-                  </TouchableOpacity>
-                </View>
-
-                <View style={styles.card}>
-                  <Text style={styles.smallNumber}>#2</Text>
-                  <View style={styles.titleHolder}>
-                    <AppIcons name={results.s2.icon} size={RFValue(36)} color={h.colors.primary}></AppIcons>
-                    <Text style={styles.cardTitle}>{results.s2.text}</Text>
-                  </View>
-                  <View style={{ flex: 1 }}>
-                    <Text style={{ fontSize: RFValue(12), paddingVertical: 10, fontFamily: 'Poppins-Medium', color: h.colors.primary }}>{results.s2.body}</Text>
-                    <SuggestionSwitcher suggestionId={results.s2.$key}></SuggestionSwitcher>
-                  </View>
-                  <TouchableOpacity style={styles.button} onPress={() => handleSuggestionSelect(results.s2.$key)}>
-                    <Text style={styles.buttonText}>I will try this: {results.s2.text}</Text>
-                  </TouchableOpacity>
-                </View>
-
-                <View style={styles.card}>
-                  <Text style={styles.smallNumber}>#3</Text>
-                  <View style={styles.titleHolder}>
-                    <AppIcons name={results.s3.icon} size={RFValue(36)} color={h.colors.primary}></AppIcons>
-                    <Text style={styles.cardTitle}>{results.s3.text}</Text>
-                  </View>
-                  <View style={{ flex: 1 }}>
-                    <Text style={{ fontSize: RFValue(12), paddingVertical: 10, fontFamily: 'Poppins-Medium', color: h.colors.primary }}>{results.s3.body}</Text>
-                    <SuggestionSwitcher suggestionId={results.s3.$key}></SuggestionSwitcher>
-                  </View>
-                  <TouchableOpacity style={styles.button} onPress={() => handleSuggestionSelect(results.s3.$key)}>
-                    <Text style={styles.buttonText}>I will try this: {results.s3.text}</Text>
-                  </TouchableOpacity>
-                </View>
-
+                <SuggestionCard
+                  suggestion={results.s1}
+                  bigNumber={true}
+                  suggestionNumber='1'
+                  handleSuggestionSelect={handleSuggestionSelect}
+                />
+                <SuggestionCard
+                  suggestion={results.s2}
+                  suggestionNumber='2'
+                  handleSuggestionSelect={handleSuggestionSelect}
+                />
+                <SuggestionCard
+                  suggestion={results.s2}
+                  suggestionNumber='3'
+                  handleSuggestionSelect={handleSuggestionSelect}
+                />
                 <TouchableOpacity style={[styles.button, { marginTop: 0, marginBottom: 20 }]} onPress={() => handleSuggestionSelect('$none')}>
                   <AppIcons name="materialicons:thumb-down" color="#fff" />
                   <Text style={[styles.buttonText, { paddingLeft: 10 }]}>I don't like any of these</Text>
