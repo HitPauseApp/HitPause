@@ -1,13 +1,13 @@
 import * as React from 'react';
-import h from '../../globals';
+import h from '../globals'
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
-import SuggestionSwitcher from '../../components/forms/SuggestionSwitcher';
+import SuggestionSwitcher from './forms/SuggestionSwitcher';
 import { RFValue } from 'react-native-responsive-fontsize';
-import AppIcons from '../../components/AppIcons.js';
+import AppIcons from './AppIcons.js';
 
 export default function SuggestionCard(props) {
   return (
-    <View style={[styles.card, props.cardStyle || {}]}>
+    <View style={[styles.card]}>
       {
         !!props.bigNumber ? (
           <View style={{ position: 'absolute', top: -30, left: -10, right: 0 }}>
@@ -15,27 +15,29 @@ export default function SuggestionCard(props) {
             <Text style={styles.bigNumberNote}>Top Suggestion!</Text>
           </View>
         ) : (
-          <Text style={styles.smallNumber}>#{props.suggestionNumber}</Text>
+          !!props.suggestionNumber && <Text style={styles.smallNumber}>#{props.suggestionNumber}</Text>
         )
       }
       <View style={styles.titleHolder}>
         <AppIcons name={props.suggestion.icon} size={RFValue(36)} color={h.colors.primary}></AppIcons>
         <Text style={styles.cardTitle}>{props.suggestion.text}</Text>
       </View>
-      <View style={{ flex: 1 }}>
+      <View>
         <Text style={{ fontSize: RFValue(12), paddingVertical: 10, fontFamily: 'Poppins-Medium', color: h.colors.primary }}>{props.suggestion.body}</Text>
         <SuggestionSwitcher suggestionId={props.suggestion.$key}></SuggestionSwitcher>
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => props.handleSuggestionSelect(props.suggestion.$key)}>
-        <Text style={styles.buttonText}>I will try this: {props.suggestion.text}</Text>
-      </TouchableOpacity>
+      {
+        !!props.handleSuggestionSelect &&
+        <TouchableOpacity style={styles.button} onPress={() => props.handleSuggestionSelect(props.suggestion.$key)}>
+          <Text style={styles.buttonText}>I will try this: {props.suggestion.text}</Text>
+        </TouchableOpacity>
+      }
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   card: {
-    flex: 1,
     display: 'flex',
     position: 'relative',
     alignContent: 'center',
