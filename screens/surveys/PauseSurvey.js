@@ -42,9 +42,13 @@ export default function PauseSurvey(props) {
       let effects = (hitpause.traits[userTraits[key]] || {}).effects;
       if (effects) traitEffects.push(effects);
     }
+    // Get the user's history profile
+    let historyEffects = await user.ref.child(`profile/historyEffects`).once('value').then(s => s.val() || {});
+    for (const key in historyEffects) historyEffects[key] = historyEffects[key] / 10;
+    console.log(historyEffects);
 
     // Tally the output flags, filter for the three highest, and randomize them
-    let outputFlags = h.tallyOutputFlags([...effects, ...traitEffects]);
+    let outputFlags = h.tallyOutputFlags([...effects, ...traitEffects, historyEffects]);
     let topThree = h.getHighsAndLows(outputFlags, 3, 0)[0];
     let suggestions = h.randomizeSuggestions(topThree);
     // // Set the outputSuggestions object with the randomized suggestions
@@ -68,7 +72,8 @@ export default function PauseSurvey(props) {
   }
 
   function handleSuggestionSelect(key) {
-    if (key && key !== '$none') user.ref.child(`profile/pauseSurveys/${pushId}`).update({ selected: key });
+    if (!key) return;
+    user.ref.child(`profile/pauseSurveys/${pushId}/selected`).set(key);
     props.navigation.navigate('Home');
   }
 
@@ -97,13 +102,13 @@ export default function PauseSurvey(props) {
                   handleSuggestionSelect={handleSuggestionSelect}
                 />
                 <SuggestionCard
-                  suggestion={results.s2}
+                  suggestion={results.s3}
                   suggestionNumber='3'
                   handleSuggestionSelect={handleSuggestionSelect}
                 />
-                <TouchableOpacity style={[styles.button, { marginTop: 0, marginBottom: 20 }]} onPress={() => handleSuggestionSelect('$none')}>
+                <TouchableOpacity style={[styles.button, { marginTop: 0, marginBottom: 20 }]} onPress={() => handleSuggestionSelect('_none')}>
                   <AppIcons name="materialicons:thumb-down" color="#fff" />
-                  <Text style={[styles.buttonText, { paddingLeft: 10 }]}>I don't like any of these</Text>
+                  <Text style={[styles.buttonText, { paddingLeft: 10 }]}>I don't want to do any of these</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>
