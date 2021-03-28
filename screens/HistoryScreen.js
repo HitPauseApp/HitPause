@@ -2,21 +2,16 @@ import * as React from 'react';
 import firebase from '../Firebase';
 import h from '../globals';
 import { StyleSheet, Text, TouchableOpacity, View, ScrollView, FlatList } from 'react-native';
-import { Portal, Modal } from 'react-native-paper';
 import { AuthContext } from '../AuthContext';
 import { AppContext } from '../AppContext';
-import StarRating from 'react-native-star-rating';
 import AppIcons from '../components/AppIcons';
-import ReviewScreen from './ReviewScreen';
+import { AirbnbRating } from 'react-native-ratings';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { getCurrentTimeInSeconds } from 'expo-auth-session/build/TokenRequest';
 
 export default function HistoryScreen(props) {
   const user = React.useContext(AuthContext);
   const hitpause = React.useContext(AppContext);
   const [userSurveys, setUserSurveys] = React.useState(null);
-  const [visible, setVisible] = React.useState(false);
-  const [currentReview, setCurrentReview] = React.useState(null);
 
   React.useEffect(() => {
     // On component load, query firebase for the user's past surveys
@@ -28,26 +23,11 @@ export default function HistoryScreen(props) {
     });
   }, []);
 
-  function handleRatingChanged(id, rating) {
-    // Update the suggestion's rating
-    user.ref.child(`profile/pauseSurvey/${id}`).update({ starRating: rating });
-    setCurrentReview({...currentReview, starRating: rating});
-  }
-
   function reviewSuggestion(surveyData) {
     // Find the review by its id, add some more information, and set currentReview
     if (!!surveyData.selected) surveyData.fullSuggestion = hitpause.suggestions[surveyData.selected];
     surveyData.allSuggestionData = Object.values(surveyData.suggestions).map(s => hitpause.suggestions[s]);
     props.navigation.navigate('ReviewScreen', { surveyData });
-    // setCurrentReview(surveyData);
-    // setVisible(true);
-  }
-
-  function removeSuggestion(){
-    setVisible(false);
-    if(currentReview.starRating >= 0.5){
-
-    }
   }
 
   function renderSuggestion({ item }) {
@@ -59,15 +39,37 @@ export default function HistoryScreen(props) {
         {
           !!suggestion ? (
             <View style={styles.reviewCard}>
-              <AppIcons name={suggestion.icon} color={h.colors.primary} />
+              <View style={{ width: 40, alignItems: 'center' }}>
+                <AppIcons name={suggestion.icon} color={h.colors.primary} size={30} />
+              </View>
               <View style={{ flex: 1, paddingLeft: 10 }}>
-                <Text>You selected: <Text style={{ fontFamily: 'Poppins-Bold' }}>{suggestion.text}</Text>. Tap here to review this survey.</Text>
+                <Text style={{ fontFamily: 'Poppins-Light' }}>You selected: <Text style={{ fontFamily: 'Poppins-Bold' }}>{suggestion.text}</Text>.</Text>
+                {
+                  !!item.ratingEffective ? (
+                    <View style={{ flexDirection: 'row' }}>
+                      <Text style={{ fontFamily: 'Poppins-Light' }}>Rated</Text>
+                      <AirbnbRating
+                        defaultRating={item.ratingEffective}
+                        size={12}
+                        showRating={false}
+                        isDisabled={true}
+                        selectedColor={h.colors.accent}
+                        starStyle={{ marginHorizontal: 1 }}
+                        starContainerStyle={{ marginLeft: 5, marginTop: -5 }}
+                      />
+                    </View>
+                  ) : (
+                    <Text style={{ fontFamily: 'Poppins-Light' }}>Tap here to review this survey.</Text>
+                  )
+                }
               </View>
             </View>
           ) : (
             <View style={styles.reviewCard}>
-              <AppIcons name="fontawesome5:info-circle" color={h.colors.primary} />
-              <Text style={{ flex: 1, paddingLeft: 10 }}>You did not select a suggestion from this survey. Tap here to review this survey.</Text>
+              <View style={{ width: 40, alignItems: 'center' }}>
+                <AppIcons name="fontawesome5:info-circle" color={h.colors.primary} size={30} />
+              </View>
+              <Text style={{ fontFamily: 'Poppins-Light', flex: 1, paddingLeft: 10 }}>You did not select a suggestion from this survey. Tap here to review this survey.</Text>
             </View>
           )
         }
@@ -77,58 +79,17 @@ export default function HistoryScreen(props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header2}>History</Text>
-      <ScrollView>
         <View style={styles.textContainer}>
-          {/* <Text style={styles.header}>Give these suggestions a review!</Text> */}
           <FlatList
+            ListHeaderComponent={
+              <Text style={styles.header2}>History</Text>
+            }
             data={userSurveys}
             renderItem={renderSuggestion}
             vertical={true}
             keyExtractor={item => item.id}
           />
-          {/* <TouchableOpacity>
-            <Text style={styles.text}>View More</Text>
-          </TouchableOpacity> */}
         </View>
-      </ScrollView>
-      <Portal>
-        {
-          !!currentReview &&
-          <Modal visible={visible} onDismiss={removeSuggestion} contentContainerStyle={styles.reviewModal}>
-            {
-              !!currentReview.selected ? (
-                <View>
-                  <Text style={styles.modalText}>{currentReview.fullSuggestion.text}</Text>
-                  <Text style={styles.modalText}>Leave a review!</Text>
-                  <StarRating
-                    disabled={false}
-                    maxStars={5}
-                    rating={currentReview.starRating}
-                    selectedStar={(rating) => handleRatingChanged(currentReview.id, rating)}
-                    fullStarColor={'white'}
-                    starStyle={styles.starRating}
-                    starSize={30}
-                  />
-                </View>
-              ) : (
-                <View>
-                  <Text>Which of these actions did you take?</Text>
-                  {
-                    currentReview.allSuggestionData.map((s) => {
-                      <View style={{ height: 50 }}>
-                        <TouchableOpacity>
-                          <Text>{s.text}</Text>
-                        </TouchableOpacity>
-                      </View>
-                    })
-                  }
-                </View>
-              )
-            }
-          </Modal>
-        }
-      </Portal>
     </View>
     
   );
@@ -232,6 +193,7 @@ const styles = StyleSheet.create({
   },
   smallText: {
     fontSize: 10,
+    fontFamily: 'Poppins-Light',
     color: '#333',
     alignSelf: 'center',
     textAlign: 'center',
