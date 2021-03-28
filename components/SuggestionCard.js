@@ -6,6 +6,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import AppIcons from './AppIcons.js';
 
 export default function SuggestionCard(props) {
+  let buttonText = props.buttonText || 'I will try this:';
   return (
     <View style={[styles.card]}>
       {
@@ -29,7 +30,7 @@ export default function SuggestionCard(props) {
       {
         !!props.handleSuggestionSelect &&
         <TouchableOpacity style={styles.button} onPress={() => props.handleSuggestionSelect(props.suggestion.$key)}>
-          <Text style={styles.buttonText}>I will try this: {props.suggestion.text}</Text>
+          <Text style={styles.buttonText}>{buttonText} {props.suggestion.text}</Text>
         </TouchableOpacity>
       }
     </View>

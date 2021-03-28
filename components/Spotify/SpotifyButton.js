@@ -45,12 +45,12 @@ const styles = StyleSheet.create({
   header: {
     color: 'white',
     fontFamily: 'Poppins-Medium',
-    fontSize: RFValue(11),
+    fontSize: RFValue(14),
   },
   bodyText: {
     color: 'white',
     fontFamily: 'Poppins-Extra-Light',
-    fontSize: RFValue(9),
+    fontSize: RFValue(10),
   },
   spotifyImage: {
     width: 100,

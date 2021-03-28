@@ -12,7 +12,8 @@ import { AirbnbRating } from 'react-native-ratings';
 export default function ReviewScreen(props) {
   const user = React.useContext(AuthContext);
   const hitpause = React.useContext(AppContext);
-  const surveyData = props.route.params.surveyData;
+  const [showReview, setShowReview] = React.useState(false);
+  let surveyData = props.route.params.surveyData;
 
   function ratingChanged(type, value) {
     user.ref.child(`profile/pauseSurveys/${surveyData.id}/${type}`).set(value);
@@ -23,44 +24,74 @@ export default function ReviewScreen(props) {
     }
   }
 
-  function getFullSuggestion(data) {
-    let suggestion = hitpause.suggestions[data.selected];
-    suggestion.$key = data.selected;
+  function handleSuggestionSelect(key) {
+    if (key && key !== '$none') user.ref.child(`profile/pauseSurveys/${surveyData.id}`).update({ selected: key });
+    surveyData.selected = key;
+    setShowReview(true)
+  }
+
+  function getFullSuggestion(key) {
+    let suggestion = hitpause.suggestions[key];
+    suggestion.$key = key;
     return suggestion;
   }
 
   return (
     <ScrollView style={styles.container}>
       {
-        !!surveyData.selected &&
-        <View style={styles.reviewContainer}>
-          <SuggestionCard
-            suggestion={getFullSuggestion(surveyData)}
-            suggestionNumber={null}
-          />
-          <View style={{ paddingBottom: 20 }}>
-            <Text style={[styles.smallText, { fontFamily: 'Poppins-Medium' }]}>How well did this work for you?</Text>
-            <Text style={[styles.smallText, { paddingTop: 0, paddingBottom: 10 }]}>(This is for you.)</Text>
-            <AirbnbRating 
-              count={5}
-              showRating={false}
-              defaultRating={surveyData.ratingEffective || 0}
-              onFinishRating={(r) => ratingChanged('ratingEffective', r)}
-              selectedColor={h.colors.accent}
-              reviewColor={h.colors.accent}
+        !!surveyData.selected ? (
+          <View style={styles.reviewContainer}>
+            <Text style={{ fontFamily: 'Poppins-Bold', color: h.colors.primary, fontSize: RFValue(18), paddingBottom: 20 }}>You selected...</Text>
+            <SuggestionCard
+              suggestion={getFullSuggestion(surveyData.selected)}
+              suggestionNumber={null}
             />
-            <Text style={[styles.smallText, { fontFamily: 'Poppins-Medium' }]}>In general, was this suggestion appropriate for how you were feeling?</Text>
-            <Text style={[styles.smallText, { paddingTop: 0, paddingBottom: 10 }]}>(This is for us.)</Text>
-            <AirbnbRating 
-              count={5}
-              showRating={false}
-              defaultRating={surveyData.ratingAppropriate || 0}
-              onFinishRating={(r) => ratingChanged('ratingAppropriate', r)}
-              selectedColor={h.colors.accent}
-              reviewColor={h.colors.accent}
+            <View style={{ paddingBottom: 20 }}>
+              <Text style={[styles.smallText, { fontFamily: 'Poppins-Medium' }]}>How well did this work for you?</Text>
+              <Text style={[styles.smallText, { paddingTop: 0, paddingBottom: 10 }]}>(This is for you.)</Text>
+              <AirbnbRating 
+                count={5}
+                showRating={false}
+                defaultRating={surveyData.ratingEffective || 0}
+                onFinishRating={(r) => ratingChanged('ratingEffective', r)}
+                selectedColor={h.colors.accent}
+                reviewColor={h.colors.accent}
+              />
+              <Text style={[styles.smallText, { fontFamily: 'Poppins-Medium' }]}>In general, was this suggestion appropriate for how you were feeling?</Text>
+              <Text style={[styles.smallText, { paddingTop: 0, paddingBottom: 10 }]}>(This is for us.)</Text>
+              <AirbnbRating 
+                count={5}
+                showRating={false}
+                defaultRating={surveyData.ratingAppropriate || 0}
+                onFinishRating={(r) => ratingChanged('ratingAppropriate', r)}
+                selectedColor={h.colors.accent}
+                reviewColor={h.colors.accent}
+              />
+            </View>
+          </View>
+        ) : (
+          <View style={[styles.reviewContainer, { paddingTop: 60 }]}>
+            <SuggestionCard
+              suggestion={getFullSuggestion(surveyData.suggestions[0])}
+              suggestionNumber={1}
+              bigNumber={true}
+              handleSuggestionSelect={handleSuggestionSelect}
+              buttonText="I tried this:"
+              />
+            <SuggestionCard
+              suggestion={getFullSuggestion(surveyData.suggestions[1])}
+              suggestionNumber={2}
+              handleSuggestionSelect={handleSuggestionSelect}
+              buttonText="I tried this:"
+              />
+            <SuggestionCard
+              suggestion={getFullSuggestion(surveyData.suggestions[2])}
+              suggestionNumber={3}
+              handleSuggestionSelect={handleSuggestionSelect}
+              buttonText="I tried this:"
             />
           </View>
-        </View>
+        )
       }
     </ScrollView>
   );
