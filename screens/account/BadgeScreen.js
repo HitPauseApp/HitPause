@@ -16,9 +16,11 @@ export default function BadgeScreen(props) {
   React.useEffect(() => {
     user.ref.child('profile/badges').on('value', (s) => {
       if (s.exists()) {
-        let keys = Object.keys(s.val());
-        setUserBadges(keys.map(key => histpause.badges[key]));
-        setAvailableBadges(Object.values(histpause.badges).filter(b => !keys.includes(b.id)));
+        let badges = Object.entries(s.val());
+        setUserBadges(badges.map(b => {
+          return { ...histpause.badges[b[0]], timestamp: b[1] }
+        }));
+        setAvailableBadges(Object.values(histpause.badges).filter(b => !badges.map(badge => badge[0]).includes(b.id)));
       }
       else {
         setUserBadges([]);
@@ -39,7 +41,7 @@ export default function BadgeScreen(props) {
                   <BadgeIcon size={80} icon={badge.icon}></BadgeIcon>
                   <View style={styles.badgeTextContainer}>
                     <Text style={styles.badgeTextHeader}>{badge.title}</Text>
-                    <Text style={styles.badgeText}>{badge.description}</Text>
+                    <Text style={styles.badgeText}>{badge.description}{'\n'}Earned {h.getDate(badge.timestamp)}</Text>
                   </View>
                 </View>
               </View>
