@@ -44,11 +44,14 @@ export default function WelcomeTutorial(props) {
         <View style={styles.page}>
           <View style={styles.textContainer}>
             <Text style={styles.largeText}>Let's begin!</Text>
-            <Text style={styles.smallText}>We look forward to walking with you in this journey towards better mental health! Tap the "Get Started" button below to access the rest of the app.</Text>
+            <Text style={styles.smallText}>We look forward to walking with you in this journey towards better mental health! Tap the "Get Started" button below to take a brief survey to ask about some of your preferences.</Text>
           </View>
-          <TouchableOpacity style={styles.getStarted} onPress={() => props.navigation.navigate('Home')}>
-            <Text style={styles.buttonText}>Get Started</Text>
-          </TouchableOpacity>
+          <View style={styles.buttons}>
+            <TouchableOpacity style={styles.getStarted} onPress={() => props.navigation.navigate('ProfileSurvey')}>
+              <Text style={styles.buttonText}>Get Started</Text>
+            </TouchableOpacity>
+            <Text style={styles.tinyText} onPress={() => props.navigation.navigate('Home')}>Continue without taking profile survey...</Text>
+          </View>
         </View>
       </Swiper>
     </View>
@@ -66,12 +69,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  getStarted: {
+  buttons: {
     position: 'absolute',
     alignSelf: 'center',
+    width: '100%',
     bottom: 75,
+    alignItems: 'center'
+  },
+  getStarted: {
     height: 50,
-    backgroundColor: h.colors.secondary,
+    width: 200,
+    backgroundColor: h.colors.primary,
     borderRadius: 15,
     elevation: 3,
     shadowColor: "#000",
@@ -84,16 +92,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 16
-  },
-  buttonTextContainer: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'row'
+    marginBottom: 20
   },
   buttonText: {
     fontFamily: 'Poppins-Medium',
-    color: h.colors.primary,
+    color: '#fff',
     fontSize: 18,
     textAlign: 'center',
     textAlignVertical: 'center'
@@ -114,6 +117,11 @@ const styles = StyleSheet.create({
   },
   smallText: {
     fontSize: RFValue(14),
+    color: h.colors.primary,
+    fontFamily: 'Poppins-Light'
+  },
+  tinyText: {
+    fontSize: RFValue(12),
     color: h.colors.primary,
     fontFamily: 'Poppins-Light'
   }

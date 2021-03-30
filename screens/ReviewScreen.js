@@ -17,7 +17,10 @@ export default function ReviewScreen(props) {
 
   function ratingChanged(type, value) {
     user.ref.child(`profile/pauseSurveys/${surveyData.id}/${type}`).set(value);
-    user.ref.child(`profile/badges/firstSuggestionReview`).set(true);
+    // Check if a badge has been awarded yet, and award one if not
+    user.ref.child(`profile/badges/firstSuggestionReview`).once('value').then(s => {
+      if (!s.exists()) user.ref.child(`profile/badges/firstSuggestionReview`).set(Date.now());
+    });
     // Update the user's history profile using the rating
     if (type == 'ratingEffective') {
       user.ref.child(`profile/historyEffects/${surveyData.selected}`).once('value', (s) => {

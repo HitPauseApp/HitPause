@@ -59,7 +59,7 @@ export default function PauseSurvey(props) {
     });
     // Check if the user has a pause survey folder, and award a badge if not
     if (user.ref.child('profile/pauseSurveys').once('value').then(s => !s.exists())) {
-      user.ref.child('profile/badges').update({ firstPauseSurvey: true });
+      user.ref.child('profile/badges/firstPauseSurvey').set(Date.now());
     }
     let id = user.ref.push().key;
     // Save the results to firebase
