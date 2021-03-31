@@ -4,6 +4,7 @@ import firebase from '../../Firebase.js';
 import h from '../../globals';
 import { AuthContext } from '../../AuthContext.js';
 import { AppContext } from '../../AppContext.js';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function AccountTraits(props) {
   const user = React.useContext(AuthContext);
@@ -22,25 +23,66 @@ export default function AccountTraits(props) {
     let trait = hitpause.traits[t];
     console.log('trait -->', trait);
     if (trait) return (
-      <Text key={i}>{trait.name}</Text>
+      <Text style={styles.traits} key={i}>{trait.name}</Text>
     )
     else return null;
   }
 
   return (
-    <View>
-      <View>
-        <Text>User Traits</Text>
+    <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.header}>After you took the initial survery, these were some of the things we learned about you:</Text>
       </View>
+      {/* <View>
+        <Text>User Traits</Text>
+      </View> */}
+      
       <ScrollView>
-        {
-          userTraits.map(renderTrait)
-        }
+        <View style={styles.traitContainer}>
+          {/* <Text > */}
+            
+            {             
+                userTraits.map(renderTrait) 
+            } 
+          {/* </Text> */}
+        </View> 
       </ScrollView>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+container:{
+  backgroundColor: "white",
+  height:'100%',
+  width:'100%',
 
+},
+headerContainer: {
+  //backgroundColor:'yellow', 
+  width:'90%',
+  alignSelf:'center',
+  paddingTop: 30
+},
+traitContainer:{
+  //flexDirection: 'column'
+  flex:1,
+  paddingTop:30,
+  alignSelf:'flex-start',
+  height:'100%',
+  paddingLeft:'10%'
+  
+},
+traits: {
+  fontFamily: 'Poppins-Medium',
+  color:h.colors.primary,
+  fontSize: RFValue(18),
+  paddingBottom:'3%'
+  
+},
+header: {
+  fontFamily: 'Poppins-Bold',
+  color:h.colors.primary,
+  fontSize: RFValue(18),
+}
 });
