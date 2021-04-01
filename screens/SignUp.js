@@ -21,7 +21,8 @@ export default function SignUp(props) {
             firstName: firstName,
             lastName: lastName,
             email: email,
-            isNewUser: true
+            isNewUser: true,
+            memberSince: Date.now()
           });
         })
         .catch(error => setErrorMessage(error.message));
