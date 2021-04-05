@@ -135,11 +135,11 @@ export default function HomeScreen(props) {
           </View>
         </View>
 
-        {/* <View style={styles.row}>
-          <TouchableOpacity style={[styles.button, { width: '100%' }]} onPress={() => props.navigation.navigate('WelcomeTutorial')}>
+        <View style={styles.row}>
+          <TouchableOpacity style={[styles.button, { width: '100%' }]} onPress={() => props.navigation.navigate('ProfileCompleted')}>
             <Text style={styles.buttonText}>Re-show Tutorial</Text>
           </TouchableOpacity>
-        </View> */}
+        </View> 
 
       </View>
     </ScrollView>
