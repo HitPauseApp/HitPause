@@ -34,9 +34,9 @@ export default function JournalScreen(props) {
     if (!entryId) {
       entryId = firebase.database().ref().push().key;
       // If entries is empty (and we are creating our first entry) award a badge
-      if (entries && entries.length == 0) user.ref.child('profile/badges').update({ firstJournalEntry: true })
+      if (entries && entries.length == 0) user.ref.child('profile/badges/firstJournalEntry').set(Date.now());
       // If there are 4 entries (and we are creating our fifth entry) award a badge
-      if (entries && entries.length == 4) user.ref.child('profile/badges').update({ fiveJournalEntries: true })
+      if (entries && entries.length == 4) user.ref.child('profile/badges/fiveJournalEntries').update(Date.now());
     }
     // Pass the existing (or new) entryId to JournalEntry as a parameter and navigate there
     props.navigation.navigate('JournalEntry', { entryId: entryId, title: title, text: text });

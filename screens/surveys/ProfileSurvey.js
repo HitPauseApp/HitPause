@@ -39,7 +39,7 @@ export default function ProfileSurvey(props) {
     }
     // If traits does not exist (and will be created) add the profile survey badge
     if (user.ref.child('profile/traits').once('value').then(s => !s.exists())) {
-      user.ref.child('profile/badges').update({ profileSurvey: true });
+      user.ref.child('profile/badges/profileSurvey').set(Date.now());
     }
     user.ref.child('profile/traits').set(data);
     setSurveyComplete(true);
@@ -70,7 +70,7 @@ export default function ProfileSurvey(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: h.colors.primary,
+    backgroundColor: "white",
     paddingTop: RFValue(20)
   },
   endCard: {

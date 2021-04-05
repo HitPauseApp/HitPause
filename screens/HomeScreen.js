@@ -32,8 +32,10 @@ export default function HomeScreen(props) {
     user.ref.child('profile/badges').on('value', (s) => {
       if (!s.exists()) setUserBadges({});
       else {
-        let badgeKeys = Object.keys(s.val());
-        setUserBadges(badgeKeys.map(key => hitpause.badges[key]));
+        let badges = Object.entries(s.val()).sort((a, b) => a[1] > b[1]).slice(0, 3);
+        setUserBadges(badges.map(b => {
+          return { ...hitpause.badges[b[0]], timestamp: b[1] }
+        }));
       }
     })
   }, []);
@@ -109,7 +111,7 @@ export default function HomeScreen(props) {
         <View style={styles.row}>
           <View style={styles.card}>
             <View style={{ display: 'flex', alignItems: 'center', width: '100%', paddingHorizontal: 20 }}>
-              <Text style={styles.cardHeader}>Badges</Text>
+              <Text style={styles.cardHeader}>Recent Badges</Text>
               {
                 !!Object.values(userBadges).length ? Object.values(userBadges).map(badge => (
                   <View style={{ paddingVertical: 10, width: '100%' }} key={badge.id}>
@@ -117,7 +119,7 @@ export default function HomeScreen(props) {
                       <BadgeIcon size={80} icon={badge.icon}></BadgeIcon>
                       <View style={styles.cardTextContainer}>
                         <Text style={styles.cardTextHeader}>{badge.title}</Text>
-                        <Text style={styles.cardText}>{badge.description}</Text>
+                        <Text style={styles.cardText}>{badge.description}{'\n'}Earned {h.getDate(badge.timestamp)}</Text>
                       </View>
                     </View>
                   </View>
@@ -129,7 +131,7 @@ export default function HomeScreen(props) {
                 style={[styles.button, { marginVertical: 20, width: '100%' }]}
                 onPress={() => props.navigation.navigate('BadgeScreen')}
               >
-                <Text style={styles.buttonText}>Earn More Badges</Text>
+                <Text style={styles.buttonText}>See All Badges</Text>
               </TouchableOpacity>
             </View>
           </View>

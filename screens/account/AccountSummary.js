@@ -64,15 +64,21 @@ export default function Account(props) {
             <Image source={{ uri: avatar }} style={styles.avatar}></Image>
             <View style={styles.userDetails}>
               <Text style={styles.userName}>{user.firstName} {user.lastName}</Text>
-              <View style={styles.contactInfo}>
-                <AppIcons name="materialicons:email" size={22} color={h.colors.primary} ></AppIcons>
-                <Text style={styles.smallText}>{user.email}</Text>
+              <View style={styles.smallDetails}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <AppIcons name="materialicons:email" size={22} color={h.colors.primary} ></AppIcons>
+                  <Text style={styles.smallText}>{user.email}</Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <AppIcons name="materialcommunityicons:calendar-month" size={22} color={h.colors.primary} ></AppIcons>
+                  <Text style={styles.smallText}>Member since {h.getDate(user.memberSince)}</Text>
+                </View>
               </View>
             </View>
           </View>
         </View>
 
-        <View style={styles.buttonContainter1}>
+        <View style={styles.buttonContainter}>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: h.colors.primary }]}
             onPress={pickImage}
@@ -112,7 +118,7 @@ export default function Account(props) {
           user.isAdmin &&
           <View style={styles.buttonContainter}>
             <TouchableOpacity
-              style={[styles.button, { backgroundColor: h.colors.tertiary }]}
+              style={[styles.button, { backgroundColor: h.colors.accent }]}
               onPress={() => props.navigation.navigate('AdminPanel')}
             >
               <Text style={styles.buttonText}>Admin Panel</Text>
@@ -147,14 +153,13 @@ const styles = StyleSheet.create({
   },
   smallText: {
     color: h.colors.primary,
-    fontFamily: 'Poppins-Medium',
-    fontSize: RFValue(9.5),
-    left: '45%'
+    fontFamily: 'Poppins-Light',
+    fontSize: RFValue(10),
+    paddingLeft: 5
   },
-  contactInfo: {
+  smallDetails: {
     width: '100%',
-    flexDirection: "row",
-    top: '2%'
+    flex: 1
   },
   avatar: {
     width: 100,
@@ -170,7 +175,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'center',
-    paddingTop: 50
+    paddingTop: 50,
+    paddingBottom: 20
   },
   userContainer: {
     width: '80%',
@@ -185,19 +191,7 @@ const styles = StyleSheet.create({
   },
   buttonContainter: {
     flex: 1,
-    paddingTop: 30
-  },
-  buttonContainter1: {
-    flex: 1,
-    paddingTop: 40
-  },
-  buttonContainter2: {
-    flex: 1,
-    paddingTop: 40
-  },
-  buttonContainter1: {
-    flex: 1,
-    paddingTop: 40
+    paddingTop: 20
   },
   button: {
     alignSelf: 'center',

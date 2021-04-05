@@ -21,7 +21,8 @@ export default function SignUp(props) {
             firstName: firstName,
             lastName: lastName,
             email: email,
-            isNewUser: true
+            isNewUser: true,
+            memberSince: Date.now()
           });
         })
         .catch(error => setErrorMessage(error.message));
@@ -45,7 +46,7 @@ export default function SignUp(props) {
         <View style={styles.form}>
           {
             !!errorMessage &&
-            <Text style={{ color: h.colors.tertiary, textAlign: 'center', paddingVertical: 10 }}>
+            <Text style={{ color: h.colors.accent, textAlign: 'center', paddingVertical: 10 }}>
               {errorMessage}
             </Text>
           }

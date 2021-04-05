@@ -49,9 +49,6 @@ const discovery = {
 export default function App(props) {
   const [isLoadingApp, setIsLoadingApp] = React.useState(true);
   const [isLoadingUser, setIsLoadingUser] = React.useState(false);
-  const [isAppConnected, setIsAppConnected] = React.useState(false);
-  const [authNavState, setAuthNavState] = React.useState('Home');
-  // TODO: There's probably a better way to pass these without using state...?
   const [authUser, setAuthUser] = React.useState(null);
   const [hitpause, setHitpause] = React.useState(null);
 
@@ -118,6 +115,7 @@ export default function App(props) {
         email: data.email,
         isAdmin: data.isAdmin,
         isNewUser: data.isNewUser,
+        memberSince: data.memberSince,
         ref: firebase.database().ref(`users/${uid}`)
       };
     }
