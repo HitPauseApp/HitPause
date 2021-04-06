@@ -82,12 +82,15 @@ export default function HistoryScreen(props) {
         <View style={styles.textContainer}>
           <FlatList
             ListHeaderComponent={
-              <Text style={styles.header2}>History</Text>
+              <Text style={styles.header}>History</Text>
             }
             data={userSurveys}
             renderItem={renderSuggestion}
             vertical={true}
             keyExtractor={item => item.id}
+            ListEmptyComponent={
+              <Text style={styles.emptyText}>You haven't taken a survey yet. When you do, your results will appear here.</Text>
+            }
           />
         </View>
     </View>
@@ -100,80 +103,22 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1
   },
-  header2: {
+  header: {
     fontFamily: 'Poppins-Bold',
     color: h.colors.primary,
     fontSize: RFValue(22),
-    // fontWeight: 'bold',
     paddingHorizontal: 20,
     paddingBottom: RFValue(16),
-    //paddingVertical: '5%',
     paddingTop: 80,
-    // marginTop: '7.8%'
-  },
-  header: {
-     padding: 15,
-    fontFamily: 'Poppins-Extra-Light',
-    fontSize: 20,
-    // paddingTop: 65,
-    color: 'white'
   },
   reviewCard: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center'
   },
-  imgBackground: {
-    width: '100%',
-    height: '20%'
-  },
-  recentTab: {
-    flexDirection: 'row',
-    justifyContent: 'space-around'
-  },
-  reviewModal:{
-    backgroundColor: '#132090',
-    justifyContent: 'center',
-    alignContent: 'center',
-    width: '80%',
-    alignSelf: 'center',
-    borderRadius: 10,
-    padding: 10,
-    bottom: 10,
-    margin: 30,
-  },
-  modalText:{
-    padding: 15,
-    fontFamily: 'Poppins-Extra-Light',
-    fontSize: 20,
-    color: 'white',
-    textAlign: 'center',
-  },
-  albumImages: {
-    borderRadius: 8,
-    width: 100,
-    height: 100,
-  },
-  buttonContainer: {
-    margin: 10,
-    padding: 10
-  },
   textContainer: {
     backgroundColor: 'white',
     marginBottom: 20,
-  },
-  button: {
-    marginBottom: 20,
-    backgroundColor: '#132090',
-    alignSelf: 'center',
-    padding: 10,
-    borderRadius: 8
-  },
-  text: {
-    color: 'white',
-    fontSize: 16,
-    fontFamily: 'Poppins-Extra-Light',
-    padding: 15
   },
   suggestionBlock: {
     width: '90%',
@@ -192,14 +137,16 @@ const styles = StyleSheet.create({
     padding: 20
   },
   smallText: {
-    fontSize: 10,
+    fontSize: RFValue(10),
     fontFamily: 'Poppins-Light',
     color: '#333',
     alignSelf: 'center',
     textAlign: 'center',
   },
-  starRating: {
-    
-  },
-
+  emptyText: {
+    paddingHorizontal: 40,
+    fontSize: RFValue(14),
+    fontFamily: 'Poppins-Light',
+    color: h.colors.primary
+  }
 });

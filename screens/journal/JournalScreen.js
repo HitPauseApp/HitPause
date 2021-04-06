@@ -59,7 +59,7 @@ export default function JournalScreen(props) {
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
-        <Text style={styles.header}>My Journal</Text>
+        <Text style={styles.header}>Journal</Text>
         <TextInput
           placeholder="Search"
           placeholderTextColor={h.colors.primary}
@@ -82,9 +82,7 @@ export default function JournalScreen(props) {
                 </View>
               )
             ) : (
-              <View style={styles.textContainer}>
-                <Text style={styles.text}>No journal entries here...</Text>
-              </View>
+              <Text style={[styles.text, { marginTop: 20, paddingHorizontal: 40 }]}>No journal entries yet, use the button below to create one!</Text>
             )
           }
         </ScrollView>
@@ -151,9 +149,8 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     color: h.colors.primary,
-    fontFamily: 'Poppins-Medium',
-    fontWeight: 'bold',
-    fontSize: 20,
+    fontFamily: 'Poppins-Light',
+    fontSize: RFValue(14),
   },
   contentContainer: {
     paddingTop: 15,
