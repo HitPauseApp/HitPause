@@ -13,31 +13,24 @@ export default function NotificationsScreen(props) {
     <ScrollView style={styles.container}>
       <View style={styles.contentContainer}>
         
-        <View style={styles.category}>
-          <Text style={styles.text}>Survey Reminders</Text>
-          <NotificationHandler notificationType={"survey_reminder"}></NotificationHandler>
+        <View style={styles.settingsGroup}>
+          <Text style={styles.groupTitle}>Notifications</Text>
+          <View style={styles.row}>
+            <Text style={styles.text}>Survey Reminders</Text>
+            <NotificationHandler notificationType={"survey_reminder"}></NotificationHandler>
+          </View>
+
+          <View style={styles.row}>
+            <Text style={styles.text}>Quote of the Day</Text>
+            <NotificationHandler notificationType={"QOTD"}></NotificationHandler>
+          </View>
+
+          <View style={styles.row}>
+            <Text style={styles.text}>Check In Reminders</Text>
+            <NotificationHandler notificationType={"checkin_reminder"}></NotificationHandler>
+          </View>
         </View>
-
-        <View style={styles.separator}></View>
-
-        <View style={styles.category}>
-          <Text style={styles.text}>Quote of the Day</Text>
-          <NotificationHandler notificationType={"QOTD"}></NotificationHandler>
-        </View>
-
-        <View style={styles.separator}></View>
-
-        <View style={styles.category}>
-          <Text style={styles.text}>Check In Reminders</Text>
-          <NotificationHandler notificationType={"checkin_reminder"}></NotificationHandler>
-        </View>
-
-        <View style={styles.separator}></View>
-
       </View>
-
-      
-      
     </ScrollView>
   );
 }
@@ -55,7 +48,6 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   switch: {
-   // float: 'right',
     padding: 50,
   },
   contentContainer: {
@@ -69,8 +61,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     margin: 20.5
   },
-  category: {
-    flexDirection: "row",
-    marginLeft: 40
+  settingsGroup: {
+    paddingHorizontal: 40
   },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10
+  },
+  groupTitle: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: RFValue(20),
+    color: h.colors.primary,
+    marginBottom: 10
+  }
 });
