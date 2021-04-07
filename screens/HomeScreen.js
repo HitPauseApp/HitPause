@@ -32,7 +32,7 @@ export default function HomeScreen(props) {
     user.ref.child('profile/badges').on('value', (s) => {
       if (!s.exists()) setUserBadges({});
       else {
-        let badges = Object.entries(s.val()).sort((a, b) => a[1] > b[1]).slice(0, 3);
+        let badges = Object.entries(s.val()).sort((a, b) => a[1] < b[1]).slice(0, 3);
         setUserBadges(badges.map(b => {
           return { ...hitpause.badges[b[0]], timestamp: b[1] }
         }));

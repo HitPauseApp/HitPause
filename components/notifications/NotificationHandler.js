@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, Button, Platform } from 'react-native';
 import { Switch } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../../AuthContext';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -14,9 +15,11 @@ Notifications.setNotificationHandler({
 });
 
 export default function NotificationHandler(props) {
+  const user = React.useContext(AuthContext);
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
   const [QOTD, setQOTD] = useState();
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
 
@@ -42,6 +45,10 @@ export default function NotificationHandler(props) {
       console.log(response);
     });
 
+    user.ref.child(`settings/notifications/${props.notificationType}`).once('value').then(s => {
+      setIsSwitchOn(s.val());
+    });
+    
     return () => {
       Notifications.removeNotificationSubscription(notificationListener);
       Notifications.removeNotificationSubscription(responseListener);
@@ -49,31 +56,17 @@ export default function NotificationHandler(props) {
   }, []);
 
 
-  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
-
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
   async function onClick() {
     onToggleSwitch();
     if (!isSwitchOn) {
       await schedulePushNotification(props, QOTD);
+      user.ref.child(`settings/notifications/${props.notificationType}`).set(true);
     }
+    else user.ref.child(`settings/notifications/${props.notificationType}`).set(false);
   }
-  // return (
-  //   <View
-  //     style={{
-  //       flex: 1,
-  //       alignItems: 'center',
-  //       justifyContent: 'space-around',
-  //     }}>
-  //     <Button
-  //       title="Enable All Notifications"
-  //       onPress={async () => {
-  //         await schedulePushNotification();
-  //       }}
-  //     />
-  //   </View>
-  // );
+  
   return (
     <View>
       <Switch
@@ -84,13 +77,6 @@ export default function NotificationHandler(props) {
     </View>
   );
 }
-
-
-
-
-
-
-
 
 async function schedulePushNotification(props, QOTD) {
   let quoteData = QOTD;
