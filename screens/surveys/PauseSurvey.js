@@ -19,6 +19,7 @@ export default function PauseSurvey(props) {
   const [results, setResults] = React.useState({});
   const [pushId, setPushId] = React.useState(null);
   const [survey, setSurvey] = React.useState({});
+  const [selected, setSelected] = React.useState(null);
 
   React.useEffect(() => {
     // Get survey config from firebase
@@ -74,7 +75,7 @@ export default function PauseSurvey(props) {
   function handleSuggestionSelect(key) {
     if (!key) return;
     user.ref.child(`profile/pauseSurveys/${pushId}/selected`).set(key);
-    props.navigation.navigate('Home');
+    setSelected(hitpause.suggestions[key]);
   }
 
   if (isLoading) return <Loading message="Loading your survey..."></Loading>;
@@ -87,31 +88,38 @@ export default function PauseSurvey(props) {
               <Form survey={survey} onSubmit={handleSubmit}></Form>
             </View>
           ) : (
-            <ScrollView style={{ display: 'flex' }}>
-              <Text style={{ textAlign: 'center', color: h.colors.primary, fontSize: RFValue(18), fontFamily: 'Poppins-Medium', paddingVertical: 40 }}>Here are our suggestions for you!</Text>
-              <View style={{ flex: 1, display: 'flex', paddingHorizontal: 30, paddingTop: 20 }}>
-                <SuggestionCard
-                  suggestion={results.s1}
-                  bigNumber={true}
-                  suggestionNumber='1'
-                  handleSuggestionSelect={handleSuggestionSelect}
-                />
-                <SuggestionCard
-                  suggestion={results.s2}
-                  suggestionNumber='2'
-                  handleSuggestionSelect={handleSuggestionSelect}
-                />
-                <SuggestionCard
-                  suggestion={results.s3}
-                  suggestionNumber='3'
-                  handleSuggestionSelect={handleSuggestionSelect}
-                />
-                <TouchableOpacity style={[styles.button, { marginTop: 0, marginBottom: 20 }]} onPress={() => handleSuggestionSelect('_none')}>
-                  <AppIcons name="materialicons:thumb-down" color="#fff" />
-                  <Text style={[styles.buttonText, { paddingLeft: 10 }]}>I don't want to do any of these</Text>
-                </TouchableOpacity>
+            !selected ? (
+              <ScrollView style={{ display: 'flex' }}>
+                <Text style={{ textAlign: 'center', color: h.colors.primary, fontSize: RFValue(18), fontFamily: 'Poppins-Medium', paddingVertical: 40 }}>Here are our suggestions for you!</Text>
+                <View style={{ flex: 1, display: 'flex', paddingHorizontal: 30, paddingTop: 20 }}>
+                  <SuggestionCard
+                    suggestion={results.s1}
+                    bigNumber={true}
+                    suggestionNumber='1'
+                    handleSuggestionSelect={handleSuggestionSelect}
+                  />
+                  <SuggestionCard
+                    suggestion={results.s2}
+                    suggestionNumber='2'
+                    handleSuggestionSelect={handleSuggestionSelect}
+                  />
+                  <SuggestionCard
+                    suggestion={results.s3}
+                    suggestionNumber='3'
+                    handleSuggestionSelect={handleSuggestionSelect}
+                  />
+                  <TouchableOpacity style={[styles.button, { marginTop: 0, marginBottom: 20 }]} onPress={() => handleSuggestionSelect('_none')}>
+                    <AppIcons name="materialicons:thumb-down" color="#fff" />
+                    <Text style={[styles.buttonText, { paddingLeft: 10 }]}>I don't want to do any of these</Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+            ) : (
+              <View>
+                {/* Selection success JSX goes here */}
+                <Text>Yup</Text>
               </View>
-            </ScrollView>
+            )
           )
         }
       </View>
