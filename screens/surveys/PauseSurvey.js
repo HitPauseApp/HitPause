@@ -74,7 +74,7 @@ export default function PauseSurvey(props) {
   function handleSuggestionSelect(key) {
     if (!key) return;
     user.ref.child(`profile/pauseSurveys/${pushId}/selected`).set(key);
-    props.navigation.navigate('Home');
+    props.navigation.navigate('SuccessScreen');
   }
 
   if (isLoading) return <Loading message="Loading your survey..."></Loading>;

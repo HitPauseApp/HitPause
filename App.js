@@ -27,6 +27,7 @@ import HomeScreen from './screens/HomeScreen';
 import HistoryScreen from './screens/HistoryScreen';
 import JournalScreen from './screens/journal/JournalScreen';
 import JournalEntry from './screens/journal/JournalEntry';
+import SuccessScreen from './screens/SuccessScreen';
 import AccountSummary from './screens/account/AccountSummary';
 import AccountTraits from './screens/account/AccountTraits';
 import NotificationsScreen from './screens/account/NotificationsScreen';
@@ -247,6 +248,11 @@ export default function App(props) {
                     name="PauseSurvey"
                     component={PauseSurvey}
                     options={{ headerTitle: 'Pause Survey' }}
+                  />
+                   <MainStack.Screen
+                    name="SuccessScreen"
+                    component={SuccessScreen}
+                    options={{ headerTitle: 'Success' }}
                   />
                   <MainStack.Screen
                     name="JournalEntry"
