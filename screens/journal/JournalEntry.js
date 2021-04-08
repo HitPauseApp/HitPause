@@ -42,7 +42,7 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
       <View style={styles.textInputContainer}>
         <TextInput
           style={styles.inputTitleStyle}
-          placeholder='Note Title...'
+          placeholder='Note title...'
           placeholderTextColor='#aaa'
           returnKeyType='next'
           onChangeText={title => setTitle(title)}
@@ -51,7 +51,7 @@ export default function JournalEntry({ navigation: { goBack }, ...props }) {
         <TextInput
           style={styles.inputDescriptionStyle}
           multiline={true}
-          placeholder='Note Description...'
+          placeholder='Note description...'
           placeholderTextColor='#aaa'
           returnKeyType='done'
           onChangeText={text => setText(text)}
@@ -84,14 +84,12 @@ const styles = StyleSheet.create({
     },
     inputTitleStyle: {
       color: h.colors.primary,
-      height: 60,
-      paddingTop: 5,
-      paddingLeft: 20,
-      paddingRight: 20,
-      paddingBottom: 0,
+      height: RFValue(50),
+      marginHorizontal: 20,
       fontFamily: 'Poppins-Medium',
-      fontSize: 20,
-      top: '2%'
+      fontSize: RFValue(20),
+      borderColor: h.colors.primary,
+      borderBottomWidth: 1
     },
     inputDescriptionStyle: {
       color: h.colors.primary,

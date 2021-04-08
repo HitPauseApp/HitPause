@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     color: h.colors.primary,
     fontFamily: 'Poppins-Bold',
     textAlign: 'left',
-    paddingLeft:'2%'
+    marginHorizontal:'2%'
   },
   textInput: {
     color: '#757575',
@@ -142,7 +142,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Light',
     marginTop: 4,
     zIndex: 3,
-    paddingLeft:'2%'
+    marginHorizontal:'2%',
+    borderBottomWidth: 1,
+    borderColor: h.colors.primary
   },
   buttonsContainer: {
     flex: 1

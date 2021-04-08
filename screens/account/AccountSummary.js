@@ -101,7 +101,7 @@ export default function Account(props) {
             style={[styles.button, { backgroundColor: h.colors.primary }]}
             onPress={() => props.navigation.navigate('NotificationsScreen')}
           >
-            <Text style={styles.buttonText}>Notification Settings</Text>
+            <Text style={styles.buttonText}>App Settings</Text>
           </TouchableOpacity>
         </View>
 

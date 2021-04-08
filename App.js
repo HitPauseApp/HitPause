@@ -262,7 +262,7 @@ export default function App(props) {
                   <MainStack.Screen
                     name="NotificationsScreen"
                     component={NotificationsScreen}
-                    options={{ headerTitle: 'Notification Settings' }}
+                    options={{ headerTitle: 'App Settings' }}
                   />
                   <MainStack.Screen
                     name="WelcomeTutorial"

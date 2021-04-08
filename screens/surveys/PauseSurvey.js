@@ -1,7 +1,7 @@
 import * as React from 'react';
 import firebase from '../../Firebase.js'
 import h from '../../globals';
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import Form from '../../components/forms/Form';
 import SuggestionSwitcher from '../../components/forms/SuggestionSwitcher';
 import Loading from '../Loading';
@@ -11,6 +11,7 @@ import { AppContext } from '../../AppContext.js';
 import AppIcons from '../../components/AppIcons.js';
 import SuggestionCard from '../../components/SuggestionCard';
 import { ScrollView } from 'react-native-gesture-handler';
+import LottieView from 'lottie-react-native';
 
 export default function PauseSurvey(props) {
   const user = React.useContext(AuthContext);
@@ -19,6 +20,9 @@ export default function PauseSurvey(props) {
   const [results, setResults] = React.useState({});
   const [pushId, setPushId] = React.useState(null);
   const [survey, setSurvey] = React.useState({});
+  const [selected, setSelected] = React.useState(null);
+
+ 
 
   React.useEffect(() => {
     // Get survey config from firebase
@@ -74,7 +78,8 @@ export default function PauseSurvey(props) {
   function handleSuggestionSelect(key) {
     if (!key) return;
     user.ref.child(`profile/pauseSurveys/${pushId}/selected`).set(key);
-    props.navigation.navigate('Home');
+    setSelected({ ...hitpause.suggestions[key], $key: key });
+    
   }
 
   if (isLoading) return <Loading message="Loading your survey..."></Loading>;
@@ -87,31 +92,63 @@ export default function PauseSurvey(props) {
               <Form survey={survey} onSubmit={handleSubmit}></Form>
             </View>
           ) : (
-            <ScrollView style={{ display: 'flex' }}>
-              <Text style={{ textAlign: 'center', color: h.colors.primary, fontSize: RFValue(18), fontFamily: 'Poppins-Medium', paddingVertical: 40 }}>Here are our suggestions for you!</Text>
-              <View style={{ flex: 1, display: 'flex', paddingHorizontal: 30, paddingTop: 20 }}>
-                <SuggestionCard
-                  suggestion={results.s1}
-                  bigNumber={true}
-                  suggestionNumber='1'
-                  handleSuggestionSelect={handleSuggestionSelect}
-                />
-                <SuggestionCard
-                  suggestion={results.s2}
-                  suggestionNumber='2'
-                  handleSuggestionSelect={handleSuggestionSelect}
-                />
-                <SuggestionCard
-                  suggestion={results.s3}
-                  suggestionNumber='3'
-                  handleSuggestionSelect={handleSuggestionSelect}
-                />
-                <TouchableOpacity style={[styles.button, { marginTop: 0, marginBottom: 20 }]} onPress={() => handleSuggestionSelect('_none')}>
-                  <AppIcons name="materialicons:thumb-down" color="#fff" />
-                  <Text style={[styles.buttonText, { paddingLeft: 10 }]}>I don't want to do any of these</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
+            !selected ? (
+              <ScrollView style={{ display: 'flex' }}>
+                <Text style={{ textAlign: 'center', color: h.colors.primary, fontSize: RFValue(18), fontFamily: 'Poppins-Medium', paddingVertical: 40 }}>Here are our suggestions for you!</Text>
+                <View style={{ flex: 1, display: 'flex', paddingHorizontal: 30, paddingTop: 20 }}>
+                  <SuggestionCard
+                    suggestion={results.s1}
+                    bigNumber={true}
+                    suggestionNumber='1'
+                    handleSuggestionSelect={handleSuggestionSelect}
+                  />
+                  <SuggestionCard
+                    suggestion={results.s2}
+                    suggestionNumber='2'
+                    handleSuggestionSelect={handleSuggestionSelect}
+                  />
+                  <SuggestionCard
+                    suggestion={results.s3}
+                    suggestionNumber='3'
+                    handleSuggestionSelect={handleSuggestionSelect}
+                  />
+                  <TouchableOpacity style={[styles.button, { marginTop: 0, marginBottom: 20 }]} onPress={() => handleSuggestionSelect('_none')}>
+                    <AppIcons name="materialicons:thumb-down" color="#fff" />
+                    <Text style={[styles.buttonText, { paddingLeft: 10 }]}>I don't want to do any of these</Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+            ) : (
+                <ScrollView style={styles.container1}>
+                    <Text style={styles.header}> Thank you for filling out the survey!</Text>
+                    <Text style={{ fontFamily: 'Poppins-Medium', color: h.colors.primary, fontSize: RFValue(12), alignSelf:'center', marginTop:'10%'}}>You selected:</Text>
+                    <View style = {styles.suggestionIcon}>
+                      <AppIcons name={selected.icon} color={h.colors.primary} size={80} style={styles.suggestionIcon}/>
+                    </View> 
+                    <Text style={styles.suggestionHeader}>{selected.text}</Text>
+                    <View style={styles.bodyContainer}>
+                      <Text style={styles.suggestionBody}>{selected.body}</Text>
+                    </View>
+
+                    <View style={styles.spotifyContainer}>
+                      <SuggestionSwitcher suggestionId={selected.$key}></SuggestionSwitcher>  
+                    </View>
+                    
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => props.navigation.navigate('Home')}>
+                          <LottieView style ={styles.playButton} source={require('../../assets/images/playButton6.json')} autoPlay loop />
+                    </TouchableOpacity>
+
+                    <LottieView style ={styles.animation} source={require('../../assets/images/confetti.json')} autoPlay/>
+
+
+                    <Text style={styles.buttonDescr}>Hit the Play button</Text>
+                    
+
+                    
+                </ScrollView>
+                // {/* Selection success JSX goes here */}
+                
+            )
           )
         }
       </View>
@@ -124,6 +161,49 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     paddingTop: RFValue(20)
+  },
+  container1: {
+    backgroundColor: 'white',
+    flex: 1
+  },
+  bodyContainer: {
+    width:'90%',
+    // backgroundColor: 'yellow',
+    alignSelf:'center',
+    marginTop:'8%'
+  },
+  spotifyContainer: {
+    width:'90%',
+    alignSelf:'center'
+  },
+  header: {
+    fontFamily: 'Poppins-Bold',
+    color: h.colors.primary,
+    fontSize: RFValue(16),
+    alignSelf:'center',
+    paddingHorizontal: 20,
+    zIndex:999,
+    //paddingVertical: '9%',
+    paddingTop: 40,
+    //paddingBottom: 1
+  },
+  suggestionHeader: {
+    fontFamily: 'Poppins-Bold',
+    color: h.colors.primary,
+    fontSize: RFValue(16),
+    alignSelf:'center'
+  },
+  suggestionBody: {
+    fontFamily: 'Poppins-Medium',
+    color: h.colors.primary,
+    fontSize: RFValue(14),
+    alignSelf:'center',
+    textAlign:'justify'
+  },
+  suggestionIcon: {
+    color: h.colors.primary,
+    alignSelf:'center',
+    //height:'50%'
   },
   card: {
     flex: 1,
@@ -226,5 +306,45 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     color: '#fff',
     fontSize: RFValue(14)
-  }
+  },
+  animation: {
+    height:'100%',//RFValue(1000),
+  //    width:'100%',
+    alignSelf:'center',
+  //   backgroundColor:'rgba(52, 52, 52, 0)'
+  backgroundColor:'transparent',
+  position:'absolute',
+  //paddingTop:0
+},
+playButton: {
+  // position:'relative',
+  width:'100%',
+  height:'100%',
+  alignSelf:'center',
+  right:'1%',
+//  paddingLeft:'11%',
+  backgroundColor:'transparent',
+
+},
+buttonContainer:{
+  alignSelf:'center',
+  marginTop:'5%',
+  //backgroundColor: 'yellow',
+  height:'12%',
+  width:'22%',
+  zIndex:999
+},
+buttonDescr: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: RFValue(18),
+    color: h.colors.primary,
+    alignSelf:'center',
+    paddingBottom:'10%'
+}
 });
+
+
+//500
+//500
+//8
+//8.25

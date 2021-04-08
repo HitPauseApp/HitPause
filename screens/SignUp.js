@@ -53,7 +53,7 @@ export default function SignUp(props) {
           <View style={styles.textbox}>
             <Text style={styles.textboxTitle}>First Name</Text>
             <TextInput
-              placeholder="Bob"
+              placeholder="First"
               placeholderTextColor="#757575"
               autoCapitalize="none"
               style={styles.textInput}
@@ -65,7 +65,7 @@ export default function SignUp(props) {
           <View style={styles.textbox}>
             <Text style={styles.textboxTitle}>Last Name</Text>
             <TextInput
-              placeholder="Marley"
+              placeholder="Last"
               placeholderTextColor="#757575"
               autoCapitalize="none"
               style={styles.textInput}
@@ -77,7 +77,7 @@ export default function SignUp(props) {
           <View style={styles.textbox}>
             <Text style={styles.textboxTitle}>Email</Text>
             <TextInput
-              placeholder="example123@gmail.com"
+              placeholder="Email address"
               placeholderTextColor="#757575"
               autoCapitalize="none"
               style={styles.textInput}
@@ -186,14 +186,16 @@ const styles = StyleSheet.create({
     color: h.colors.primary,
     fontFamily: 'Poppins-Bold',
     textAlign: 'left',
-    paddingLeft:'2%'
+    marginHorizontal:'2%'
   },
   textInput: {
     color: '#757575',
     fontSize: RFValue(12),
     marginTop: 4,
     zIndex: 3,
-    paddingLeft:'2%'
+    marginHorizontal:'2%',
+    borderBottomWidth: 1,
+    borderColor: h.colors.primary
   },
   smallText: {
     fontSize: RFValue(13),
