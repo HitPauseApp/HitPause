@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="72856f73-9976-4284-9425-e3a355986a0c" name="Default Changelist" comment="" />
+    <list default="true" id="72856f73-9976-4284-9425-e3a355986a0c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/surveys/PauseHome.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/surveys/PauseHome.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/surveys/ProfileCompleted.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/surveys/ProfileCompleted.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,10 +46,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="73" y="166" width="1280" height="586" key="AVDManager" timestamp="1614726207177">
+    <state x="73" y="166" width="1280" height="586" key="AVDManager" timestamp="1617639954295">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="73" y="166" width="1280" height="586" key="AVDManager/0.0.1536.824@0.0.1536.824" timestamp="1614726207177" />
+    <state x="73" y="166" width="1280" height="586" key="AVDManager/0.0.1536.824@0.0.1536.824" timestamp="1617639954295" />
     <state x="-265" y="109" key="SettingsEditor" timestamp="1614367243209">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

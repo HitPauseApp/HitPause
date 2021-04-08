@@ -22,7 +22,7 @@ import ResetPassword from './screens/ResetPassword';
 import PauseSurvey from './screens/surveys/PauseSurvey';
 import PauseHome from './screens/surveys/PauseHome';
 import ProfileSurvey from './screens/surveys/ProfileSurvey';
-import ProfileCompleted from '.screens/surveys/ProfileCompleted';
+import ProfileCompleted from './screens/surveys/ProfileCompleted';
 import Loading from './screens/Loading';
 import HomeScreen from './screens/HomeScreen';
 import HistoryScreen from './screens/HistoryScreen';
