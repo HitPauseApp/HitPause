@@ -11,12 +11,15 @@ export default function SuggestionCard(props) {
     <View style={[styles.card]}>
       {
         !!props.bigNumber ? (
-          <View style={{ position: 'absolute', top: -30, left: -10, right: 0 }}>
-            <Text style={styles.bigNumber}>#{props.suggestionNumber}</Text>
+          <View style={{ position: 'absolute', top: -30, left: -10, right: 0,  }}>
+            <View style={styles.bigNumberContainer}>
+                <Text style={styles.bigNumber}>#{props.suggestionNumber}</Text>
+            </View>
+            
             <Text style={styles.bigNumberNote}>Top Suggestion!</Text>
           </View>
         ) : (
-          !!props.suggestionNumber && <Text style={styles.smallNumber}>#{props.suggestionNumber}</Text>
+          !!props.suggestionNumber &&  <View style={styles.smallNumberContainer}><Text style={styles.smallNumber}>#{props.suggestionNumber}</Text></View>
         )
       }
       <View style={styles.titleHolder}>
@@ -72,15 +75,19 @@ const styles = StyleSheet.create({
   },
   bigNumber: {
     color: '#fff',
-    backgroundColor: h.colors.primary,
-    height: RFValue(56),
-    width: RFValue(56),
     textAlign: 'center',
     textAlignVertical: 'center',
     fontSize: RFValue(24),
     fontFamily: 'Poppins-Bold',
+    //paddingTop:'3.5%',
+    marginVertical: 12,
+    
+  },
+  bigNumberContainer: {
     borderRadius: 999,
-    paddingTop:'3.5%'
+    backgroundColor: h.colors.primary,
+    height: RFValue(56),
+    width: RFValue(56),
   },
   bigNumberNote: {
     position: 'absolute',
@@ -100,19 +107,25 @@ const styles = StyleSheet.create({
     paddingLeft:'10%'
   },
   smallNumber: {
-    position: 'absolute',
-    top: -10,
-    left: -10,
-    height: RFValue(48),
-    width: RFValue(48),
+   // position: 'absolute',
+    // top: -10,
+    // left: -10,
     textAlign: 'center',
     textAlignVertical: 'center',
     fontFamily: 'Poppins-Bold',
     fontSize: RFValue(18),
-    backgroundColor: h.colors.primary,
+    //backgroundColor: h.colors.primary,
     color: '#fff',
-    borderRadius: 999,
+    //borderRadius: 999,
     paddingTop:'25%'
+  },
+  smallNumberContainer: {
+    borderRadius: 999,
+    backgroundColor: h.colors.primary,
+    height: RFValue(48),
+    width: RFValue(48),
+    top: -30,
+    left: -30,
   },
   button: {
     backgroundColor: h.colors.primary,
