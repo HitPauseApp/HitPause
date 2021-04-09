@@ -106,7 +106,9 @@ export default function Form(props) {
     <View style={styles.container}>
 
       <View style={styles.surveyQuestion}>
-        <Text style={styles.questionNumber}>{surveyIndex + 1}</Text>
+        <View style={styles.numberContainer}>
+            <Text style={styles.questionNumber}>{surveyIndex + 1}</Text>
+        </View>
         <Text style={styles.questionText}>{props.survey.questions[surveyIndex].text}</Text>
         {
           props.survey.questions[surveyIndex].type == 'checkbox' &&
@@ -192,17 +194,25 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center'
   },
   questionNumber: {
-    width: RFValue(30),
-    height: RFValue(30),
-    borderRadius: 999,
+    
     textAlign: 'center',
     color: '#fff',
-    backgroundColor: h.colors.primary,
+    // backgroundColor: h.colors.primary,
     fontSize: RFValue(16),
     fontFamily: 'Poppins-Bold',
     textAlignVertical: 'center',
     paddingTop: RFValue(3),
-    marginVertical: 10
+
+  },
+  numberContainer: {
+    backgroundColor: h.colors.primary,
+    borderRadius: 999,
+    //overflow:'hidden',
+    marginVertical: 10,
+    width: RFValue(30),
+    height: RFValue(30),
+   
+    
   },
   helperMessage: {
     fontFamily: 'Poppins-Light',
