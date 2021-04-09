@@ -13,8 +13,11 @@ export default function ProfileCompleted(props) {
 
   return (
     <View style={styles.container}>
-      <Text></Text>
-
+      <Text style={styles.bigText}>Thank You!</Text>
+      <Text style={styles.smallText}>By filling out the profile survey, you've helped us help you.</Text>
+      <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('Home')}>
+        <Text style={styles.buttonText}>Home</Text>
+      </TouchableOpacity>
     </View>
 
     
@@ -27,41 +30,43 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     display: 'flex',
   },
-  pauseButton: {
-    width: Dimensions.get('window').width * 0.75,
-    height: Dimensions.get('window').width * 0.75,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 15,
-    borderColor: h.colors.primary,
-    backgroundColor: h.colors.secondary,
-    borderRadius: 999,
-    overflow: 'hidden'
-  },
-  modalContent:{
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignContent: 'center',
-    width: '80%',
-    alignSelf: 'center',
-    borderRadius: 10,
-    padding: 10,
-    bottom: 10,
-    margin: 30,
-  },
-  modalHeadingText:{
+  bigText: {
     textAlign: 'center',
-    padding: 5,
+    color: h.colors.primary, 
+    fontSize: RFValue(50),
+    paddingTop: 20,
+    fontFamily: 'Poppins-Bold',
+  },
+  smallText: {
+    textAlign: 'center',
+    color: h.colors.primary, 
+    fontSize: RFValue(25),
+    padding: 20,
     fontFamily: 'Poppins-Medium',
-    fontSize: 25,
-    color: h.colors.primary
   },
-  modalText: {
-    padding: 15,
-    fontFamily: 'Poppins-Light',
-    fontSize: 15,
-    color: h.colors.primary,
-    textAlign: 'center',
+  button: {
+    backgroundColor: h.colors.primary,
+    alignSelf: 'center',
+    borderRadius: RFValue(15),
+    padding: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: RFValue(1),
+      height: RFValue(5),
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: RFValue(3.84),
+    elevation: 3,
+    display: 'flex',
+    //flexDirection: 'row',
+    //justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonText: {
+    fontFamily: 'Poppins-Bold',
+    color: '#fff',
+    fontSize: RFValue(14),
+    paddingLeft: 20,
+    paddingRight: 20,
   }
 });
