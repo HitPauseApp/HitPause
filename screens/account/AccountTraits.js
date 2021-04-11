@@ -62,7 +62,8 @@ headerContainer: {
   //backgroundColor:'yellow', 
   width:'90%',
   alignSelf:'center',
-  paddingTop: 30
+  paddingTop: 30,
+  paddingBottom: 20,
 },
 traitContainer:{
   //flexDirection: 'column'
